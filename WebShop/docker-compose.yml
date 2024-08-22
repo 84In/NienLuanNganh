@@ -1,0 +1,12 @@
+version: '4'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: webshop
+    environment:
+      MYSQL_ROOT_PASSWORD: webshop
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
