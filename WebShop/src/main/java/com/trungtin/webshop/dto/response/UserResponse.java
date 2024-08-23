@@ -14,12 +14,10 @@ import java.util.Set;
 public class UserResponse {
     String id;
     String username;
-    String password;
     String firstName;
     String lastName;
     String email;
     String phone;
-    String address;
     String avatar;
     Date dob;
     Set<RoleResponse> roles;

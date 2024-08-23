@@ -14,7 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +33,13 @@ public class UserService {
             throw new RuntimeException();
         }
         User user = userMapper.toUser(request);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        var role = roleRepository.findByName("USER");
+        Optional<Role> role = roleRepository.findById("USER");
 
         Set<Role> roles = new HashSet<>();
 
-        roles.add(role);
+        roles.add(role.stream().findFirst().get());
 
         user.setRoles(roles);
 

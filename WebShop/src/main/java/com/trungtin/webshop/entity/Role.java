@@ -19,8 +19,8 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
     String name;
+    String description;
 
     @ManyToMany(mappedBy = "roles")
     Set<User> users = new HashSet<>();

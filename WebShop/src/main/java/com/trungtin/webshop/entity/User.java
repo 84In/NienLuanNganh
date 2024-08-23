@@ -25,7 +25,6 @@ public class User {
     String lastName;
     String email;
     String phone;
-    String address;
     String avatar;
     Date dob;
 

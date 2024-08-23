@@ -16,5 +16,6 @@ public class UserCreation {
     String firstName;
     String lastName;
     String email;
+    String phoneNumber;
     Date dob;
 }

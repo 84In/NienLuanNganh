@@ -9,9 +9,11 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponse<T> {
     int code = 0;
     String message;
     T result;
 }
+

@@ -7,83 +7,205 @@ CREATE TABLE `t_users`
     `last_name` text DEFAULT NULL,
     `email` varchar(255) DEFAULT NULL,
     `phone` varchar(255) NOT NULL UNIQUE,
-    `address` text DEFAULT NULL,
     `avatar` varchar(255) DEFAULT NULL,
     `dob` Date DEFAULT NULL,
-    `role` varchar(255),
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `t_roles`
 (
-    `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
-    PRIMARY KEY ( `id`)
+    `description` varchar(255) DEFAULT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY ( `name`)
 );
 
 CREATE TABLE `t_user_roles`
 (
     `user_id` varchar(255) NOT NULL,
-    `role_id`  bigint(20) NOT NULL,
+    `role_name` varchar(255) NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY(`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_role FOREIGN KEY(`role_id`) REFERENCES t_roles(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`user_id`, `role_id`)
+    CONSTRAINT fk_role FOREIGN KEY(`role_name`) REFERENCES t_roles(`name`) ON DELETE CASCADE,
+    PRIMARY KEY(`user_id`, `role_name`)
+);
+
+CREATE TABLE `t_images_product`(
+                                   `id` varchar(255) NOT NULL,
+                                   `images` text NOT NULL,
+                                   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                   `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_categories`(
+                               `id` varchar(255) NOT NULL,
+                               `name` varchar(255) NOT NULL UNIQUE,
+                               `description` text DEFAULT NULL,
+                               `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                               `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                               PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `t_products`(
   `id` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL UNIQUE,
   `description` text DEFAULT NULL,
   `price` bigint(20),
-  `inventory` bigint(20) DEFAULT 0,
-  `type_id` varchar(255) NOT NULL,
+  `stock_quantity` bigint(20) DEFAULT 0,
+  `category_id` varchar(255) NOT NULL,
   `image_id` varchar(255) NOT NULL,
-  CONSTRAINT fk_type FOREIGN KEY(`type_id`) REFERENCES t_product_types(`id`) ON DELETE CASCADE,
-  CONSTRAINT fk_images FOREIGN KEY(`image_id`) REFERENCES t_image_products(`id`) ON DELETE CASCADE,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_category FOREIGN KEY(`category_id`) REFERENCES t_categories(`id`) ON DELETE CASCADE,
+  CONSTRAINT fk_images FOREIGN KEY(`image_id`) REFERENCES t_images_product(`id`) ON DELETE CASCADE,
   PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `t_product_types`(
-  `id` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `t_image_products`(
-    `id` varchar(255) NOT NULL,
-    `images` text,
-    PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `t_bills`(
-    `id` varchar(255) NOT NULL,
-    'created_time' DATE NOT NULL DEFAULT CURRENT_TIME,
-    `status_id` varchar(50) NOT NULL,
-    `payment_method_id` varchar(255) NOT NULL
-    CONSTRAINT fk_payment_method FOREIGN KEY(`payment_method_id`) REFERENCES t_payment_methods(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_status_bill FOREIGN KEY(`status_id`) REFERENCES t_status_bills(`id`) ON DELETE CASCADE,
-    PRIMARY KEY (`id`)
-);
-
-CREATE TABLE `t_status_bills`(
-    `id` varchar(255) NOT NULL,
-    `name` varchar(255) NOT NULL ,
-    PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `t_payment_methods`(
-    `id` varchar(255) NOT NULL,
-    `name` varchar(255) NOT NULL ,
-    `payment_id` varchar(255) DEFAULT NULL,
-    CONSTRAINT fk_payment FOREIGN KEY(`payment_id`) REFERENCES t_payments(`id`) ON DELETE CASCADE,
-    PRIMARY KEY (`id`)
+                                    `id` varchar(255) NOT NULL,
+                                    `name` varchar(255) NOT NULL,
+                                    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                    PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `t_payments`(
+                             `id` varchar(255) NOT NULL,
+                             `payment_date` DATETIME NOT NULL,
+                             `amount` bigint(20) NOT NULL,
+                             `status` varchar(255) NOT NULL,
+                             `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                             `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                             PRIMARY KEY (`id`)
+);
+
+
+CREATE TABLE `t_status_order`(
+                                 `id` varchar(255) NOT NULL,
+                                 `name` varchar(255) NOT NULL,
+                                 `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                 `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                 PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_orders`(
     `id` varchar(255) NOT NULL,
-    `status` boolean DEFAULT false,
-    `exprice_time` DATE NOT NULL,
-    `created_time` DATE NOT NULL,
+    `shipping_address` text,
+    `total_amount` bigint(20),
+    `status_id` varchar(255) NOT NULL,
+    `payment_method_id` varchar(255) NOT NULL,
+    `payment_id` varchar(255) DEFAULT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_payment_method FOREIGN KEY(`payment_method_id`) REFERENCES t_payment_methods(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_status_order FOREIGN KEY(`status_id`) REFERENCES t_status_order(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_payment_id FOREIGN KEY (`payment_id`) REFERENCES t_payments(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
+
+
+
+
+
+
+CREATE TABLE `t_order_items`(
+  `id` varchar(255) NOT NULL,
+  `quantity` bigint(20) NOT NULL,
+  `price_at_time` bigint(20) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `t_reviews`(
+    `id` varchar(255) NOT NULL,
+    `ratting` int DEFAULT 1,
+    `comment` text default null,
+    `user_id` varchar(255) not null ,
+    `product_id` varchar(255) not null,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_review_user_id FOREIGN KEY (`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_review_product_id FOREIGN KEY (`product_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
+    primary key (`id`)
+);
+
+CREATE TABLE `t_provinces`(
+                              `id` int NOT NULL,
+                              `code_name` varchar(255) NOT NULL ,
+                              `name` varchar(255) NOT NULL ,
+                              `division_type` varchar(255) not null,
+                              primary key (`id`)
+);
+
+CREATE TABLE `t_districts`(
+                              `id` int not null,
+                              `name` varchar(255) not null,
+                              `division_type` varchar(255) not null,
+                              `code_name` varchar(255) not null,
+                              `province_code` int not null,
+                              CONSTRAINT fk_province_id FOREIGN KEY (`province_code`) REFERENCES t_provinces(`id`) ON DELETE CASCADE,
+                              primary key (`id`)
+);
+
+CREATE TABLE `t_wards`(
+                          `id` int not null,
+                          `name` varchar(255) not null,
+                          `division_type` varchar(255) not null,
+                          `code_name` varchar(255) not null,
+                          `district_code` int not null,
+                          CONSTRAINT fk_district_id FOREIGN KEY (`district_code`) REFERENCES t_districts(`id`) ON DELETE CASCADE,
+                          primary key (`id`)
+);
+
+
+CREATE TABLE `t_addresses`(
+    `id` varchar(255) NOT NULL,
+    `full_name` text NOT NULL,
+    `province` int NOT NULL,
+    `district` int NOT NULL,
+    `ward` int DEFAULT NULL,
+    CONSTRAINT fk_province_code FOREIGN KEY (`province`) REFERENCES t_provinces(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_district_code FOREIGN KEY (`district`) REFERENCES t_districts(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_ward_code FOREIGN KEY (`ward`) REFERENCES t_wards(`id`) ON DELETE CASCADE,
+    primary key (`id`)
+);
+
+CREATE TABLE `t_carts`(
+  `id` varchar(255) not null,
+  `user_id` varchar(255) not null ,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_user_id_cart FOREIGN KEY (`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
+  primary key (`id`)
+);
+
+CREATE TABLE `t_cart_items`(
+  `id` varchar(255) not null,
+  `quantity` bigint(20) not null,
+  `cart_id` varchar(255) not null,
+  `product_id` varchar(255) not null,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_cart_id FOREIGN KEY (`cart_id`) REFERENCES t_carts(`id`) ON DELETE CASCADE ,
+  CONSTRAINT fk_product_id_cart FOREIGN KEY (product_id) REFERENCES t_products(`id`) ON DELETE CASCADE,
+  primary key (`id`)
+);
+
+CREATE TABLE `t_promotions`(
+  `id` varchar(255) not null,
+  `code` varchar(255) not null Unique,
+  `description` text,
+  `discount_percentage` float not null default 0.0,
+  `start_date` DATE not null,
+  `end_date` DATE not null,
+  `stock_quantity` bigint(20),
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+
