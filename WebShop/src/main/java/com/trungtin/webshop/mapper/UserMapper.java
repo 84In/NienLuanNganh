@@ -1,7 +1,7 @@
 package com.trungtin.webshop.mapper;
 
+import com.trungtin.webshop.dto.request.UserCreationRequest;
 import com.trungtin.webshop.entity.User;
-import com.trungtin.webshop.dto.request.UserCreation;
 import com.trungtin.webshop.dto.request.UserUpdate;
 import com.trungtin.webshop.dto.response.UserResponse;
 import org.mapstruct.Mapper;
@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User toUser(UserCreation request);
+    User toUser(UserCreationRequest request);
 
     UserResponse toUserResponse(User user);
 

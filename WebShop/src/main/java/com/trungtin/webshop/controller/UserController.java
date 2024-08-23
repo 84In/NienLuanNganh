@@ -1,6 +1,6 @@
 package com.trungtin.webshop.controller;
 
-import com.trungtin.webshop.dto.request.UserCreation;
+import com.trungtin.webshop.dto.request.UserCreationRequest;
 import com.trungtin.webshop.dto.response.ApiResponse;
 import com.trungtin.webshop.dto.response.UserResponse;
 import com.trungtin.webshop.service.UserService;
@@ -18,7 +18,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    ApiResponse<UserResponse> createUser(@RequestBody UserCreation request) {
+    ApiResponse<UserResponse> createUser(@RequestBody UserCreationRequest request) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setMessage("Success");
         apiResponse.setResult(userService.createUser(request));

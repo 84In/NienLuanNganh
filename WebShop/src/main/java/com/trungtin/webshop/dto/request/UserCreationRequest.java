@@ -10,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreation {
+public class UserCreationRequest {
     String username;
     String password;
     String firstName;

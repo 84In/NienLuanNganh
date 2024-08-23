@@ -1,22 +1,20 @@
 package com.trungtin.webshop.service;
 
+import com.trungtin.webshop.dto.request.UserCreationRequest;
 import com.trungtin.webshop.entity.Role;
 import com.trungtin.webshop.entity.User;
 import com.trungtin.webshop.mapper.UserMapper;
 import com.trungtin.webshop.repository.RoleRepository;
 import com.trungtin.webshop.repository.UserRepository;
-import com.trungtin.webshop.dto.request.UserCreation;
 import com.trungtin.webshop.dto.response.UserResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +26,7 @@ public class UserService {
     RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserResponse createUser(UserCreation request) {
+    public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())){
             throw new RuntimeException();
         }
