@@ -11,9 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdate {
-    String id;
-    String username;
+public class UserUpdateRequest {
     String password;
     String firstName;
     String lastName;

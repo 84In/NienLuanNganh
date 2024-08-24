@@ -22,13 +22,13 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-//@EnableMethodSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
 
-    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect", "/auth/logout", "/auth/refresh"};
+    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/login", "/auth/introspect", "/auth/logout", "/auth/refresh"};
 
 
     @Bean

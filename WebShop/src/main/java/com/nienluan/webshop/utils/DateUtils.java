@@ -9,14 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Slf4j
-public class FormatDate {
+public class DateUtils {
     @Bean
-    public Date formatDate(String date) {
+    public static Date formatDate(String date) {
         try{
             return new SimpleDateFormat("yyyy-MM-dd").parse(date);
         }
         catch (ParseException e){
             log.error(e.getMessage());
         }
+        return null;
     }
 }

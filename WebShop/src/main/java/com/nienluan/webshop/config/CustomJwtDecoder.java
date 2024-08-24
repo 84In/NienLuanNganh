@@ -3,6 +3,7 @@ package com.nienluan.webshop.config;
 import com.nienluan.webshop.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import com.nienluan.webshop.dto.request.IntrospectRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -17,10 +18,10 @@ import java.text.ParseException;
 import java.util.Objects;
 
 @Component
+@RequiredArgsConstructor
 public class CustomJwtDecoder implements JwtDecoder {
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
     private NimbusJwtDecoder nimbusJwtDecoder = null;
 
@@ -28,17 +29,14 @@ public class CustomJwtDecoder implements JwtDecoder {
     private String signerKey;
 
     @Override
-    public Jwt decode(String token) throws JwtException {
+    public Jwt decode(String token) {
 
-        try {
-            var response  = authenticationService.introspect(IntrospectRequest.builder()
-                    .token(token)
-                    .build());
-            if (!response.isValid()) {
-                throw new JwtException("Invalid token");
-            }
-        } catch (JOSEException | ParseException e) {
-            throw new JwtException(e.getMessage());
+
+        var response  = authenticationService.introspect(IntrospectRequest.builder()
+                .token(token)
+                .build());
+        if (!response.isValid()) {
+            throw new JwtException("Invalid token");
         }
 
         if (Objects.isNull(nimbusJwtDecoder)) {

@@ -24,6 +24,7 @@ import lombok.experimental.NonFinal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -79,13 +80,13 @@ public class AuthenticationService {
                 .build();
     }
 
-    public IntrospectResponse introspect(IntrospectRequest request) throws ParseException, JOSEException{
+    public IntrospectResponse introspect(IntrospectRequest request){
         var token = request.getToken();
         boolean isValid = true;
 
         try {
             verifyToken(token, false);
-        }catch (AppException e){
+        }catch (AppException | ParseException | JOSEException e){
             isValid = false;
         }
 
@@ -115,7 +116,7 @@ public class AuthenticationService {
         return signedJWT;
     }
 
-    public void logout(LogoutRequest request) throws ParseException, JOSEException {
+    public void logout(LogoutRequest request) {
         try {
             var signedJWT = verifyToken(request.getToken(), true);
 
@@ -127,36 +128,40 @@ public class AuthenticationService {
                     .expiryTime(expirationDate)
                     .build();
             tokenRepository.save(invalidatedToken);
-        }catch (AppException e){
-            log.error("Token already expired");
+        }catch (ParseException | JOSEException e ){
+            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
     }
 
-    public AuthenticationResponse refreshToken(RefreshTokenRequest request) throws ParseException, JOSEException {
+    public AuthenticationResponse refreshToken(RefreshTokenRequest request) {
 
-        var signJWT = verifyToken(request.getToken(), true);
+        try {
+            var signJWT = verifyToken(request.getToken(), true);
 
-        var jit = signJWT.getJWTClaimsSet().getJWTID();
-        var expirationDate = signJWT.getJWTClaimsSet().getExpirationTime();
+            var jit = signJWT.getJWTClaimsSet().getJWTID();
+            var expirationDate = signJWT.getJWTClaimsSet().getExpirationTime();
 
-        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
-                .token(jit)
-                .expiryTime(expirationDate)
-                .build();
+            InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                    .token(jit)
+                    .expiryTime(expirationDate)
+                    .build();
 
-        tokenRepository.save(invalidatedToken);
+            tokenRepository.save(invalidatedToken);
 
-        var username = signJWT.getJWTClaimsSet().getSubject();
+            var username = signJWT.getJWTClaimsSet().getSubject();
 
-        var user = userRepository.findByUsername(username)
-                .orElseThrow(()->new AppException(ErrorCode.UNAUTHENTICATED));
+            var user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
-        var token = generateToken(user);
+            var token = generateToken(user);
 
-        return AuthenticationResponse.builder()
-                .token(token)
-                .authenticated(true)
-                .build();
+            return AuthenticationResponse.builder()
+                    .token(token)
+                    .authenticated(true)
+                    .build();
+        }catch (ParseException | JOSEException e){
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
 
     }
 
@@ -198,6 +203,18 @@ public class AuthenticationService {
         }
 
         return scopes.toString();
+    }
+
+    // Scheduled task to clean up expired tokens every 30 minutes
+    @Scheduled(fixedRate = 1800000)  // 1800000 ms = 30 minutes
+    public void cleanUpExpiredTokens() {
+        log.info("Starting cleanup of expired tokens...");
+        var now = new Date();
+        var expiredTokens = tokenRepository.findAll().stream()
+                .filter(token -> token.getExpiryTime().before(now))
+                .toList();
+        tokenRepository.deleteAll(expiredTokens);
+        log.info("Completed cleanup of expired tokens.");
     }
 
 }

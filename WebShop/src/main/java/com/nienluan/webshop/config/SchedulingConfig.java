@@ -1,4 +1,4 @@
-package com.pmss0168.springdemo.config;
+package com.nienluan.webshop.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

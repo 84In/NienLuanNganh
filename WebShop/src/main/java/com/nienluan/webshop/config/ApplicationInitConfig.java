@@ -1,15 +1,14 @@
-package com.pmss0168.springdemo.config;
+package com.nienluan.webshop.config;
 
-import com.pmss0168.springdemo.entity.Role;
-import com.pmss0168.springdemo.entity.User;
-import com.pmss0168.springdemo.enums.ErrorCode;
-import com.pmss0168.springdemo.exception.AppException;
-import com.pmss0168.springdemo.repository.RoleRepository;
-import com.pmss0168.springdemo.repository.UserRepository;
+
+import com.nienluan.webshop.entity.Role;
+import com.nienluan.webshop.entity.User;
+import com.nienluan.webshop.repository.RoleRepository;
+import com.nienluan.webshop.repository.UserRepository;
+import com.nienluan.webshop.utils.DateUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.type.descriptor.java.LocalDateJavaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
 import java.util.HashSet;
 
 @Configuration
@@ -36,10 +34,11 @@ public class ApplicationInitConfig {
                 adminRole.add(role.stream().findFirst().get());
                 User user = User.builder()
                         .username("admin")
-                        .firstName("ADMIN")
-                        .lastName("ADMIN")
-                        .birthDate(new LocalDateJavaType().fromString("1900-01-01"))
                         .password(passwordEncoder.encode("admin"))
+                        .firstName("admin")
+                        .lastName("ADMIN")
+                        .dob(DateUtils.formatDate("1900-01-01"))
+                        .phone("18001000")
                         .roles(adminRole)
                         .build();
                 userRepository.save(user);

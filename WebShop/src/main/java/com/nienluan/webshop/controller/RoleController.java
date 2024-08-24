@@ -20,18 +20,26 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping
-    public ApiResponse<RoleResponse> createRole(@RequestBody RoleRequest role) {
+    public ApiResponse<RoleResponse> createRole(@RequestBody RoleRequest request) {
         return ApiResponse.<RoleResponse>builder()
-                .message("Success!")
-                .result(roleService.createRole(role))
+                .message("Create success!")
+                .result(roleService.createRole(request))
                 .build();
     }
 
     @GetMapping
     public ApiResponse<List<RoleResponse>> getRoles() {
         return ApiResponse.<List<RoleResponse>>builder()
-                .message("Success!")
+                .message("Success")
                 .result(roleService.getAllRoles())
+                .build();
+    }
+
+    @DeleteMapping("/{roleName}")
+    public ApiResponse<Void> deleteRole(@PathVariable String roleName) {
+        roleService.deleteRole(roleName);
+        return ApiResponse.<Void>builder()
+                .message("Delete successful")
                 .build();
     }
 

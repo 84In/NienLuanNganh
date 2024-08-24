@@ -1,7 +1,7 @@
 package com.nienluan.webshop.mapper;
 
 import com.nienluan.webshop.dto.request.UserCreationRequest;
-import com.nienluan.webshop.dto.request.UserUpdate;
+import com.nienluan.webshop.dto.request.UserUpdateRequest;
 import com.nienluan.webshop.entity.User;
 import com.nienluan.webshop.dto.response.UserResponse;
 import org.mapstruct.Mapper;
@@ -16,5 +16,5 @@ public interface UserMapper {
     UserResponse toUserResponse(User user);
 
     @Mapping(target = "roles", ignore = true)
-    void updateUser(@MappingTarget User user, UserUpdate request);
+    void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }
