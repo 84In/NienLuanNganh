@@ -23,13 +23,13 @@ CREATE TABLE `t_roles`
     PRIMARY KEY ( `name`)
 );
 
-CREATE TABLE `t_user_roles`
+CREATE TABLE `t_users_roles`
 (
-    `user_id` varchar(255) NOT NULL,
-    `role_name` varchar(255) NOT NULL,
-    CONSTRAINT fk_user FOREIGN KEY(`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_role FOREIGN KEY(`role_name`) REFERENCES t_roles(`name`) ON DELETE CASCADE,
-    PRIMARY KEY(`user_id`, `role_name`)
+    `users_id` varchar(255) NOT NULL,
+    `roles_name` varchar(255) NOT NULL,
+    CONSTRAINT fk_user FOREIGN KEY(`users_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_role FOREIGN KEY(`roles_name`) REFERENCES t_roles(`name`) ON DELETE CASCADE,
+    PRIMARY KEY(`users_id`, `roles_name`)
 );
 
 CREATE TABLE `t_images_product`(

@@ -5574,9 +5574,9 @@
 										"$ref": "AAAAAAGRavq939mRig0="
 									},
 									"font": "Arial;13;0",
-									"left": 166,
+									"left": 160,
 									"top": 480,
-									"width": 7.22998046875,
+									"width": 19.5126953125,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -5584,7 +5584,7 @@
 										"$ref": "AAAAAAGRavq939mUKoA="
 									},
 									"edgePosition": 2,
-									"text": "1"
+									"text": "0..*"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -5645,7 +5645,7 @@
 									"hostEdge": {
 										"$ref": "AAAAAAGRavq939mUKoA="
 									},
-									"text": "0..*"
+									"text": "1"
 								},
 								{
 									"_type": "UMLQualifierCompartmentView",
@@ -7440,23 +7440,6 @@
 										},
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGRawn3ZbWzcDE=",
-											"_parent": {
-												"$ref": "AAAAAAGRawlx35mOyJo="
-											},
-											"model": {
-												"$ref": "AAAAAAGRawn3WrWDsVA="
-											},
-											"font": "Arial;13;0",
-											"left": 381,
-											"top": 724,
-											"width": 145.62158203125,
-											"height": 13,
-											"text": "+phone_number: varchar",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGRawn51rdORoY=",
 											"_parent": {
 												"$ref": "AAAAAAGRawlx35mOyJo="
@@ -7466,7 +7449,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 739,
+											"top": 724,
 											"width": 145.62158203125,
 											"height": 13,
 											"text": "+address: text",
@@ -7501,10 +7484,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 754,
+											"top": 739,
 											"width": 145.62158203125,
 											"height": 13,
-											"text": "+city",
+											"text": "+province",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7518,10 +7501,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 769,
+											"top": 754,
 											"width": 145.62158203125,
 											"height": 13,
-											"text": "+state",
+											"text": "+district",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7535,10 +7518,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 784,
+											"top": 769,
 											"width": 145.62158203125,
 											"height": 13,
-											"text": "+zip_code",
+											"text": "+ward",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7552,10 +7535,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 799,
+											"top": 784,
 											"width": 145.62158203125,
 											"height": 13,
-											"text": "+country",
+											"text": "+zip-code",
 											"horizontalAlignment": 0
 										},
 										{
@@ -7569,7 +7552,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 814,
+											"top": 799,
 											"width": 145.62158203125,
 											"height": 13,
 											"text": "+created_at",
@@ -7586,7 +7569,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 381,
-											"top": 829,
+											"top": 814,
 											"width": 145.62158203125,
 											"height": 13,
 											"text": "+updated_at",
@@ -7597,7 +7580,7 @@
 									"left": 376,
 									"top": 689,
 									"width": 155.62158203125,
-									"height": 158
+									"height": 143
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -7610,7 +7593,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 376,
-									"top": 847,
+									"top": 832,
 									"width": 155.62158203125,
 									"height": 10
 								},
@@ -7805,7 +7788,7 @@
 										"$ref": "AAAAAAGRawvgkwyiNf0="
 									},
 									"edgePosition": 2,
-									"text": "1..*"
+									"text": "1"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -7866,7 +7849,7 @@
 									"hostEdge": {
 										"$ref": "AAAAAAGRawvgkwyiNf0="
 									},
-									"text": "0..*"
+									"text": "1"
 								},
 								{
 									"_type": "UMLQualifierCompartmentView",
@@ -9699,7 +9682,7 @@
 								"reference": {
 									"$ref": "AAAAAAGROzpCePtanyU="
 								},
-								"multiplicity": "1"
+								"multiplicity": "0..*"
 							},
 							"end2": {
 								"_type": "UMLAssociationEnd",
@@ -9710,7 +9693,7 @@
 								"reference": {
 									"$ref": "AAAAAAGRavj+lGEzaQA="
 								},
-								"multiplicity": "0..*"
+								"multiplicity": "1"
 							}
 						},
 						{
@@ -9786,7 +9769,7 @@
 								"reference": {
 									"$ref": "AAAAAAGROzpCePtanyU="
 								},
-								"multiplicity": "1..*"
+								"multiplicity": "1"
 							},
 							"end2": {
 								"_type": "UMLAssociationEnd",
@@ -9797,7 +9780,7 @@
 								"reference": {
 									"$ref": "AAAAAAGRawlx35mGFiw="
 								},
-								"multiplicity": "0..*"
+								"multiplicity": "1"
 							}
 						}
 					],
@@ -11120,15 +11103,6 @@
 						},
 						{
 							"_type": "UMLAttribute",
-							"_id": "AAAAAAGRawn3WrWDsVA=",
-							"_parent": {
-								"$ref": "AAAAAAGRawlx35mGFiw="
-							},
-							"name": "phone_number",
-							"type": "varchar"
-						},
-						{
-							"_type": "UMLAttribute",
 							"_id": "AAAAAAGRawn5yrceGjQ=",
 							"_parent": {
 								"$ref": "AAAAAAGRawlx35mGFiw="
@@ -11151,8 +11125,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGRawlx35mGFiw="
 							},
-							"name": "city",
-							"type": ""
+							"name": "province"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11160,8 +11133,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGRawlx35mGFiw="
 							},
-							"name": "state",
-							"type": ""
+							"name": "district"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11169,8 +11141,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGRawlx35mGFiw="
 							},
-							"name": "zip_code",
-							"type": ""
+							"name": "ward"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11178,8 +11149,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGRawlx35mGFiw="
 							},
-							"name": "country",
-							"type": ""
+							"name": "zip-code"
 						},
 						{
 							"_type": "UMLAttribute",
