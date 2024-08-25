@@ -28,6 +28,14 @@ public class ApplicationInitConfig {
     @Bean
     ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
+
+            if(roleRepository.findById("ADMIN").isEmpty()) {
+                Role adminRole = new Role();
+                adminRole.setName("ADMIN");
+                adminRole.setDescription("Admin");
+                roleRepository.save(adminRole);
+            }
+
             if (userRepository.findByUsername("admin").isEmpty()) {
                 var role = roleRepository.findById("ADMIN");
                 var adminRole = new HashSet<Role>();
