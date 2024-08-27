@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.slick-prev,
+.slick-next {
+  z-index: 1;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  display: none; /* Ẩn mũi tên mặc định của slick */
+}
+
+.slick-prev {
+  left: 10px !important; /* Điều chỉnh vị trí nút Prev */
+}
+
+.slick-next {
+  right: 10px !important; /* Điều chỉnh vị trí nút Next */
+}
