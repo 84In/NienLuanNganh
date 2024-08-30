@@ -44,6 +44,7 @@ CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL UNIQUE,
     `description` text DEFAULT NULL,
+    `images` varchar(255) DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
