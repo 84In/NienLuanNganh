@@ -1,9 +1,9 @@
-import React from 'react';
-import Slider from 'react-slick';
-import { FaArrowRight, FaArrowLeft } from 'react-icons/fa6'; // Import icon từ react-icons
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { banner } from '../utils/constant';
+import { React, memo } from "react";
+import Slider from "react-slick";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa6"; // Import icon từ react-icons
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { banner } from "../utils/constant";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -72,6 +72,13 @@ function SliderCustom() {
         },
       },
       {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
         breakpoint: 600,
         settings: {
           slidesToShow: 1,
@@ -85,7 +92,7 @@ function SliderCustom() {
       <Slider {...settings}>
         {banner.map((item, index) => (
           <div key={index} className="px-2">
-            <img src={item.image} alt={item.title} className="w-full h-auto rounded-lg" />
+            <img src={item.image} alt={item.title} className="h-auto w-full rounded-lg" />
           </div>
         ))}
       </Slider>
@@ -93,4 +100,4 @@ function SliderCustom() {
   );
 }
 
-export default SliderCustom;
+export default memo(SliderCustom);

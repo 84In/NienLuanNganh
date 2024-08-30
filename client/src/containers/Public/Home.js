@@ -1,6 +1,6 @@
-import React from 'react';
-import { Header } from '.';
-import { MainContainer } from '../../components';
+import React from "react";
+import { Header } from ".";
+import { MainContainer } from "../../components";
 
 const Home = () => {
   return (

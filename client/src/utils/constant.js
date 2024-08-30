@@ -1,55 +1,103 @@
-import banner1 from '../assets/images/banner/banner1.png.webp';
-import banner2 from '../assets/images/banner/banner2.png.webp';
-import banner3 from '../assets/images/banner/banner3.png.webp';
-import banner4 from '../assets/images/banner/banner4.jpg.webp';
+import banner1 from "../assets/images/banner/banner1.png.webp";
+import banner2 from "../assets/images/banner/banner2.png.webp";
+import banner3 from "../assets/images/banner/banner3.png.webp";
+import banner4 from "../assets/images/banner/banner4.jpg.webp";
+import banner5 from "../assets/images/banner/banner5.png.webp";
+import banner6 from "../assets/images/banner/banner6.png.webp";
 
-const icon1 = require('../assets/images/icons/left-bar-icon1.png.webp');
-const icon2 = require('../assets/images/icons/left-bar-icon2.png.webp');
-const icon3 = require('../assets/images/icons/left-bar-icon3.png.webp');
-const icon4 = require('../assets/images/icons/left-bar-icon4.png.webp');
+const icon1 = require("../assets/images/icons/left-bar-icon1.png.webp");
+const icon2 = require("../assets/images/icons/left-bar-icon2.png.webp");
+const icon3 = require("../assets/images/icons/left-bar-icon3.png.webp");
+const icon4 = require("../assets/images/icons/left-bar-icon4.png.webp");
+const icon5 = require("../assets/images/icons/left-bar-icon5.png.webp");
+const icon6 = require("../assets/images/icons/left-bar-icon6.png.webp");
+
+const widget1 = require("../assets/images/widget/widget1.png");
+const widget2 = require("../assets/images/widget/widget2.png");
+const widget3 = require("../assets/images/widget/widget3.png");
+const widget4 = require("../assets/images/widget/widget4.png");
+const widget5 = require("../assets/images/widget/widget5.png");
+const widget6 = require("../assets/images/widget/widget6.png");
+const widget7 = require("../assets/images/widget/widget7.png");
+const widget8 = require("../assets/images/widget/widget8.png");
 
 export const path = {
-  HOME: '/*',
+  HOME: "/*",
 };
 
 export const banner = [
   {
     id: 1,
     image: banner1,
-    title: 'Banner 1',
+    title: "Banner 1",
   },
   {
     id: 2,
     image: banner2,
-    title: 'Banner 2',
+    title: "Banner 2",
   },
   {
     id: 3,
     image: banner3,
-    title: 'Banner 3',
+    title: "Banner 3",
   },
   {
     id: 4,
     image: banner4,
-    title: 'Banner 4',
+    title: "Banner 4",
+  },
+  {
+    id: 5,
+    image: banner5,
+    title: "Banner 5",
+  },
+  {
+    id: 6,
+    image: banner6,
+    title: "Banner 6",
   },
 ];
 
 export const iconsLeftBar = [
   {
     image: icon1,
-    title: 'Sách',
+    title: "Sách",
+    url: "/product?name=book",
   },
   {
     image: icon2,
-    title: 'Điện thoại',
+    title: "Điện thoại",
+    url: "/product?name=smartphone",
   },
   {
     image: icon3,
-    title: 'Thiết bị số - Phụ kiện điện tử',
+    title: "Thiết bị số - Phụ kiện điện tử",
+    url: "/product?name=digital-device",
   },
   {
     image: icon4,
-    title: 'Ô tô - Xe máy',
+    title: "Ô tô - Xe máy",
+    url: "/product?name=motobyte",
   },
+  {
+    image: icon5,
+    title: "Máy tính - Lap top",
+    url: "/product?name=computer",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+];
+
+export const widgetIcon = [
+  { icon: widget1, text: "TOP DEAL" },
+  { icon: widget2, text: "Trading" },
+  { icon: widget3, text: "Coupon siêu hot" },
+  { icon: widget4, text: "Xả kho nửa giá" },
+  { icon: widget5, text: "Hàng ngoại giá hot" },
+  { icon: widget6, text: "Cùng mẹ chăm bé" },
+  { icon: widget7, text: "Một sách" },
+  { icon: widget8, text: "Thế giới công nghệ" },
 ];
