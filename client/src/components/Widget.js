@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Box, Typography } from "@mui/material";
 import { widgetIcon } from "../utils/constant";
+import { Link } from "react-router-dom";
 
 const Widget = () => {
   return (
@@ -8,12 +9,14 @@ const Widget = () => {
       <Grid container spacing={2}>
         {widgetIcon.map((item, index) => (
           <Grid item xs={6} sm={3} md={1.5} key={index}>
-            <Box display="flex" flexDirection="column" alignItems="center" textAlign="center">
-              <img src={item.icon} alt={item.text} className="h-10 w-10 rounded-xl" />
-              <Typography variant="caption" color="text.secondary">
-                {item.text}
-              </Typography>
-            </Box>
+            <Link to={item.url}>
+              <Box display="flex" flexDirection="column" alignItems="center" textAlign="center">
+                <img src={item.icon} alt={item.text} className="h-10 w-10 rounded-xl" />
+                <Typography variant="caption" color="text.secondary">
+                  {item.text}
+                </Typography>
+              </Box>
+            </Link>
           </Grid>
         ))}
       </Grid>

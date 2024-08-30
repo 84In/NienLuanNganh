@@ -1,10 +1,10 @@
 import React from "react";
 import { Header } from ".";
-import { MainContainer } from "../../components";
+import MainContainer from "./MainContainer";
 
 const Home = () => {
   return (
-    <div className="w-full flex flex-col gap-5 items-center h-full px-20">
+    <div className="flex h-full w-full flex-col items-center gap-5 px-20">
       <Header />
       <MainContainer />
     </div>

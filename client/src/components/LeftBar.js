@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const LeftBar = () => {
   return (
     <>
-      <div className="h-full overflow-y-auto px-3 pb-3 scrollbar-hide">
+      <div className="max-h-screen overflow-y-auto px-3 pb-3 scrollbar-hide">
         <div className="font p-1 text-center text-lg">Danh mục</div>
         <div className="flex flex-col space-y-2">
           {iconsLeftBar.map((item, index) => (
