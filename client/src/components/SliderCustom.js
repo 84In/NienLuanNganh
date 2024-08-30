@@ -12,19 +12,19 @@ function NextArrow(props) {
       className={className}
       style={{
         ...style,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: '50%',
-        width: '30px',
-        height: '30px',
-        right: '10px',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        right: "10px",
         zIndex: 1,
       }}
       onClick={onClick}
     >
-      <FaArrowRight style={{ width: '10px', height: '10px', color: 'blue' }} />
+      <FaArrowRight style={{ width: "10px", height: "10px", color: "blue" }} />
     </div>
   );
 }
@@ -36,19 +36,19 @@ function PrevArrow(props) {
       className={className}
       style={{
         ...style,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: '50%',
-        width: '30px',
-        height: '30px',
-        left: '10px',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        left: "10px",
         zIndex: 1,
       }}
       onClick={onClick}
     >
-      <FaArrowLeft style={{ width: '10px', height: '10px', color: 'blue' }} />
+      <FaArrowLeft style={{ width: "10px", height: "10px", color: "blue" }} />
     </div>
   );
 }
