@@ -205,10 +205,10 @@ public class AuthenticationService {
         return scopes.toString();
     }
 
-    // Scheduled task to clean up expired tokens every 30 minutes
-    @Scheduled(fixedRate = 1800000)  // 1800000 ms = 30 minutes
+    // Scheduled task to clean up expired tokens at 00:00 AM daily
+    @Scheduled(cron = "0 0 0 * * ?")
     public void cleanUpExpiredTokens() {
-        log.info("Starting cleanup of expired tokens...");
+        log.info("Starting cleanup of expired tokens at 00:00 AM...");
         var now = new Date();
         var expiredTokens = tokenRepository.findAll().stream()
                 .filter(token -> token.getExpiryTime().before(now))
