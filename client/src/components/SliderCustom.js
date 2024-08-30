@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa6'; // Import icon từ react-icons
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { banner } from '../utils/constant';
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -80,32 +81,13 @@ function SliderCustom() {
     ],
   };
   return (
-    <div className="slider-container">
+    <div className="slider-container px-4 py-6">
       <Slider {...settings}>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-        <div>
-          <h3>7</h3>
-        </div>
-        <div>
-          <h3>8</h3>
-        </div>
+        {banner.map((item, index) => (
+          <div key={index} className="px-2">
+            <img src={item.image} alt={item.title} className="w-full h-auto rounded-lg" />
+          </div>
+        ))}
       </Slider>
     </div>
   );
