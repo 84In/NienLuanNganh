@@ -5,3 +5,4 @@ export { default as SliderCustom } from "./SliderCustom";
 export { default as LeftBar } from "./LeftBar";
 export { default as Widget } from "./Widget";
 export { default as Product } from "./Product";
+export { default as CardProduct } from "./CardProduct";

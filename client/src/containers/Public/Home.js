@@ -4,7 +4,7 @@ import MainContainer from "./MainContainer";
 
 const Home = () => {
   return (
-    <div className="flex h-full w-full flex-col items-center gap-5 px-20">
+    <div className="flex h-full w-full flex-col items-center gap-5 px-2">
       <Header />
       <MainContainer />
     </div>

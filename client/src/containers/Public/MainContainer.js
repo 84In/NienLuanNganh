@@ -1,7 +1,6 @@
 import { React, memo } from "react";
-import Grid from "@mui/material/Unstable_Grid2";
+import { Grid } from "@mui/material";
 import { SliderCustom, Widget, LeftBar, Product } from "../../components";
-import { products } from "../../utils/constant";
 
 const MainContainer = () => {
   return (
@@ -18,25 +17,8 @@ const MainContainer = () => {
             <Grid sx={{ bgcolor: "white", borderRadius: "10px", rowGap: "2rem", width: "100%", height: "fit-content" }}>
               <Widget />
             </Grid>
-            <Grid
-              container
-              display={"-webkit-flex"}
-              justifyContent={"space-evenly"}
-              gap={1}
-              sx={{
-                bgcolor: "white",
-                borderRadius: "10px",
-                rowGap: "2rem",
-                width: "100%",
-                height: "fit-content",
-                padding: "10px",
-              }}
-            >
-              {products.map((product, index) => (
-                <Grid xs={6} sm={6} md={4} lg={3} xl={2} key={index}>
-                  <Product {...product} />
-                </Grid>
-              ))}
+            <Grid sx={{ bgcolor: "white", borderRadius: "10px", rowGap: "2rem", width: "100%", height: "fit-content" }}>
+              <Product />
             </Grid>
           </Grid>
         </Grid>
