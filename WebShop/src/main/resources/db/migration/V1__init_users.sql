@@ -44,7 +44,7 @@ CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL UNIQUE,
     `description` text DEFAULT NULL,
-    `images` varchar(255) DEFAULT NULL,
+    `image` varchar(255) DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -194,6 +194,7 @@ CREATE TABLE `t_cart_items`(
 CREATE TABLE `t_promotions`(
     `id` varchar(255) not null,
     `code` varchar(255) not null Unique,
+    `name` varchar(255) not null,
     `description` text,
     `discount_percentage` float not null default 0.0,
     `start_date` DATE not null,

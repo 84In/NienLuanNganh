@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class ApiResponse<T> {
     @Builder.Default
     int code = 0;
-    String message;
+    String message = "Success!";
     T result;
 }
 
