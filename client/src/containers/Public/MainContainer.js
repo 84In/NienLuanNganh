@@ -5,19 +5,25 @@ import { SliderCustom, Widget, LeftBar, Product } from "../../components";
 const MainContainer = () => {
   return (
     <>
-      <Grid container display="flex" justifyContent="center" gap={2} sx={{ width: "100%" }}>
-        <Grid xs={12} md={2} sx={{ bgcolor: "white", borderRadius: "10px", height: "fit-content" }}>
+      <Grid
+        container
+        display="flex"
+        justifyContent="center"
+        gap={2}
+        sx={{ width: "100%", paddingX: "1rem", height: "100%" }}
+      >
+        <Grid item xs={12} md={2}>
           <LeftBar />
         </Grid>
-        <Grid xs={12} md={9.5}>
+        <Grid item xs={12} md={9.5}>
           <Grid container gap={2}>
-            <Grid sx={{ bgcolor: "white", borderRadius: "10px", rowGap: "2rem", width: "100%", height: "auto" }}>
+            <Grid sx={{ width: "100%" }}>
               <SliderCustom />
             </Grid>
-            <Grid sx={{ bgcolor: "white", borderRadius: "10px", rowGap: "2rem", width: "100%", height: "fit-content" }}>
+            <Grid sx={{ width: "100%" }}>
               <Widget />
             </Grid>
-            <Grid sx={{ bgcolor: "white", borderRadius: "10px", rowGap: "2rem", width: "100%", height: "fit-content" }}>
+            <Grid sx={{ width: "100%" }}>
               <Product />
             </Grid>
           </Grid>

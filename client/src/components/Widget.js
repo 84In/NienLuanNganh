@@ -5,7 +5,17 @@ import { Link } from "react-router-dom";
 
 const Widget = () => {
   return (
-    <Box sx={{ flexGrow: 1, p: 2, width: "100%" }}>
+    <Box
+      sx={{
+        flexGrow: 1,
+        p: 2,
+        bgcolor: "white",
+        borderRadius: "10px",
+        rowGap: "2rem",
+        width: "100%",
+        height: "fit-content",
+      }}
+    >
       <Grid container spacing={2}>
         {widgetIcon.map((item, index) => (
           <Grid item xs={6} sm={3} md={1.5} key={index}>

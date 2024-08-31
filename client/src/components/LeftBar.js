@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 const LeftBar = () => {
   return (
-    <>
-      <div className="max-h-screen overflow-y-auto px-3 pb-3 scrollbar-hide">
-        <div className="font p-1 text-center text-lg">Danh mục</div>
+    <div className="sticky top-4 rounded-lg bg-white px-3 pb-3">
+      <div className="max-h-screen overflow-y-auto scrollbar-hide">
+        <h1 className="p-1 text-center text-lg font-medium">Danh mục</h1>
         <div className="flex flex-col space-y-2">
           {iconsLeftBar.map((item, index) => (
             <Link to={`${item.url}`} key={index}>
@@ -18,7 +18,7 @@ const LeftBar = () => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

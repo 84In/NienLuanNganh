@@ -88,7 +88,7 @@ function SliderCustom() {
     ],
   };
   return (
-    <div className="slider-container px-4 py-6">
+    <div className="slider-container h-auto w-full rounded-lg bg-white px-4 py-6">
       <Slider {...settings}>
         {banner.map((item, index) => (
           <div key={index} className="px-2">

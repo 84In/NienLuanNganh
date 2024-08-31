@@ -9,6 +9,8 @@ const StyledCard = styled(Card)({
   display: "flex",
   flexDirection: "column",
   borderRadius: 8,
+  //   boxShadow:
+  //     "0px 0px 2px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
 });
 
 const ProductName = styled(Typography)({
@@ -30,7 +32,7 @@ const CardProduct = ({ image, name, price, originalPrice, discount, origin, rati
           <ProductName variant="subtitle2" gutterBottom>
             {name}
           </ProductName>
-          <Rating value={rating} readOnly size="small" />
+          <Rating name="half-rating-read" precision={0.5} value={rating} readOnly size="small" />
           {discount > 0 ? (
             <>
               <Typography variant="h6" color="error" fontWeight="bold">
