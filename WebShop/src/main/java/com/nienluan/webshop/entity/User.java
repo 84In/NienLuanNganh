@@ -25,10 +25,12 @@ public class User {
     String lastName;
     String email;
     String phone;
-    String avatar;
     Date dob;
 
     @ManyToMany
     Set<Role> roles;
 
+    @OneToOne
+    @JoinColumn(name = "image_id") // Cột khóa ngoại trong bảng User
+    Image image; // Một hình ảnh duy nhất
 }

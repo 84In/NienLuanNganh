@@ -7,7 +7,6 @@ CREATE TABLE `t_users`
     `last_name` text DEFAULT NULL,
     `email` varchar(255) DEFAULT NULL,
     `phone` varchar(255) NOT NULL UNIQUE,
-    `avatar` varchar(255) DEFAULT NULL,
     `dob` Date DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -32,19 +31,18 @@ CREATE TABLE `t_users_roles`
     PRIMARY KEY(`users_id`, `roles_name`)
 );
 
-CREATE TABLE `t_images_product`(
-    `id` varchar(255) NOT NULL,
-    `images` text NOT NULL,
-    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-);
+-- CREATE TABLE `t_images_product`(
+--     `id` varchar(255) NOT NULL,
+--     `images` text NOT NULL,
+--     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+--     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+--     PRIMARY KEY (`id`)
+-- );
 
 CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL UNIQUE,
     `description` text DEFAULT NULL,
-    `image` varchar(255) DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -57,13 +55,39 @@ CREATE TABLE `t_products`(
     `price` bigint(20),
     `stock_quantity` bigint(20) DEFAULT 0,
     `category_id` varchar(255) NOT NULL,
-    `image_id` varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_category FOREIGN KEY(`category_id`) REFERENCES t_categories(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_images FOREIGN KEY(`image_id`) REFERENCES t_images_product(`id`) ON DELETE CASCADE,
+--     CONSTRAINT fk_images FOREIGN KEY(`image_id`) REFERENCES t_images_product(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
+-- V4__Create_Image_Table.sql
+
+CREATE TABLE t_images (
+        id varchar(255) NOT NULL,
+        data TEXT NOT NULL, -- Hoặc TEXT nếu dữ liệu được lưu dưới dạng Base64
+        mime_type VARCHAR(255) NOT NULL,
+        product_id varchar(255),
+        category_id varchar(255),
+        `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+        `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (product_id) REFERENCES t_products(id) ON DELETE SET NULL,
+        FOREIGN KEY (category_id) REFERENCES t_categories(id) ON DELETE SET NULL,
+        PRIMARY KEY (`id`)
+);
+-- V5__Add_Category_Image_Foreign_Key.sql
+
+ALTER TABLE t_images
+    ADD CONSTRAINT fk_image_category
+        FOREIGN KEY (category_id) REFERENCES t_categories(id) ON DELETE SET NULL;
+-- V6__Add_Product_Image_Foreign_Key.sql
+
+ALTER TABLE t_images
+    ADD CONSTRAINT fk_image_product
+        FOREIGN KEY (product_id) REFERENCES t_products(id) ON DELETE SET NULL;
+
+ALTER TABLE t_users
+    ADD COLUMN image_id VARCHAR(255);
 
 CREATE TABLE `t_payment_methods`(
     `id` varchar(255) NOT NULL,

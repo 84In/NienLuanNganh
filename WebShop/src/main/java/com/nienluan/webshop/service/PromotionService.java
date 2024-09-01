@@ -3,6 +3,8 @@ package com.nienluan.webshop.service;
 import com.nienluan.webshop.dto.request.PromotionRequest;
 import com.nienluan.webshop.dto.request.PromotionUpdateRequest;
 import com.nienluan.webshop.dto.response.PromotionResponse;
+import com.nienluan.webshop.exception.AppException;
+import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.PromotionMapper;
 import com.nienluan.webshop.repository.PromotionRepository;
 import lombok.AccessLevel;
@@ -23,7 +25,7 @@ public class PromotionService {
 
     public PromotionResponse createPromotion(PromotionRequest request) {
         if (promotionRepository.existsByName(request.getName())) {
-            throw new RuntimeException("Promotion name already exists");
+            throw new AppException(ErrorCode.PROMOTION_EXISTED);
         }
         return promotionMapper.toPromotionResponse(promotionRepository.save(promotionMapper.toPromotion(request)));
     }
@@ -33,11 +35,11 @@ public class PromotionService {
     }
 
     public PromotionResponse getPromotion(String id) {
-        return promotionRepository.findById(id).map(promotionMapper::toPromotionResponse).orElseThrow(()->new RuntimeException("Promotion not found"));
+        return promotionRepository.findById(id).map(promotionMapper::toPromotionResponse).orElseThrow(()->new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
     }
 
     public PromotionResponse updatePromotion(String id,PromotionUpdateRequest request) {
-        var promotion = promotionRepository.findById(id).orElseThrow(()->new RuntimeException("Promotion not found"));
+        var promotion = promotionRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
         promotionMapper.updatePromotion(promotion,request);
         return promotionMapper.toPromotionResponse(promotion);
     }

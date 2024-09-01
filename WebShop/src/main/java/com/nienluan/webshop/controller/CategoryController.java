@@ -22,10 +22,10 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping
-    public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryRequest request, @RequestPart MultipartFile file) {
+    public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Created Successfully!")
-                .result(categoryService.CreatedCategory(request, file))
+                .result(categoryService.CreatedCategory(request))
                 .build();
     }
 
@@ -46,10 +46,10 @@ public class CategoryController {
     }
 
     @PutMapping("/{categoryId}")
-    public ApiResponse<CategoryResponse> updateCategory(@PathVariable String categoryId,@RequestPart MultipartFile file , @RequestBody CategoryUpdateRequest request) {
+    public ApiResponse<CategoryResponse> updateCategory(@PathVariable String categoryId, @RequestBody CategoryUpdateRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Success!")
-                .result(categoryService.UpdateCategory(request,file,categoryId))
+                .result(categoryService.UpdateCategory(request,categoryId))
                 .build();
     }
 

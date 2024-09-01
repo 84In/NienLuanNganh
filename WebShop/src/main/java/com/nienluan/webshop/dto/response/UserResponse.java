@@ -1,5 +1,6 @@
 package com.nienluan.webshop.dto.response;
 
+import com.nienluan.webshop.entity.Image;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,7 +19,7 @@ public class UserResponse {
     String lastName;
     String email;
     String phone;
-    String avatar;
     Date dob;
     Set<RoleResponse> roles;
+    Image image;
 }

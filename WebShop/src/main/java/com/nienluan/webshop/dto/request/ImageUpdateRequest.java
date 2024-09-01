@@ -1,16 +1,14 @@
 package com.nienluan.webshop.dto.request;
 
-import com.nienluan.webshop.entity.Image;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryRequest {
-    String name;
-    String description;
+public class ImageUpdateRequest {
+    String Data;
+    String mineType;
 }

@@ -2,6 +2,8 @@ package com.nienluan.webshop.exception;
 
 import com.nienluan.webshop.dto.response.ApiResponse;
 import jakarta.validation.ConstraintViolation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,17 +18,19 @@ public class GlobalExceptionHandler {
 
     private static final String MIN_ATTRIBUTE = "min";
     private static final String MAX_ATTRIBUTE = "max";
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException ex) {
-        ApiResponse response = new ApiResponse();
+    ResponseEntity<ApiResponse<?>> handlingRuntimeException(RuntimeException ex) {
+        ApiResponse<?> response = new ApiResponse<>();
         response.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
         response.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage()+ex.getMessage());
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
-    ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException exception) {
+    ResponseEntity<ApiResponse<?>> handlingAccessDeniedException(AccessDeniedException exception) {
+        log.error("Access denied", exception);
         return ResponseEntity
                 .status(ErrorCode
                         .UNAUTHORIZED
@@ -38,11 +42,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = AppException.class)
-    ResponseEntity<ApiResponse> handlingAppException(AppException exception) {
+    ResponseEntity<ApiResponse<?>> handlingAppException(AppException exception) {
 
         ErrorCode errorCode = exception.getErrorCode();
 
-        ApiResponse apiResponse = new ApiResponse();
+        ApiResponse<?> apiResponse = new ApiResponse<>();
 
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMessage());
@@ -53,7 +57,7 @@ public class GlobalExceptionHandler {
 
     }
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception){
+    ResponseEntity<ApiResponse<?>> handlingMethodArgumentNotValidException(MethodArgumentNotValidException exception){
         String enumKey = Objects.requireNonNull(exception.getFieldError()).getDefaultMessage();
 
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
@@ -70,10 +74,10 @@ public class GlobalExceptionHandler {
 
         }
         catch (IllegalArgumentException e){
-
+            System.out.println(e.getMessage());
         }
 
-        ApiResponse apiResponse = new ApiResponse();
+        ApiResponse<?> apiResponse = new ApiResponse<>();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(Objects.nonNull(attributes)?mapAttribute(errorCode.getMessage(),attributes):errorCode.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
