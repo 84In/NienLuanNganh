@@ -41,33 +41,23 @@ public class CategoryService {
         if (file.isEmpty()) {
             throw new IllegalArgumentException("File is empty");
         }
-
         String uploadPath = uploadDir + File.separator + category.getName();
-
         Path path = Paths.get(uploadPath);
-
         try {
-
             if (!Files.exists(path)) {
                 // Tạo thư mục nếu chưa tồn tại
                 Files.createDirectories(path);
             }
-
             // Tạo đường dẫn tới file
             Path filePath = Paths.get(uploadDir + File.separator + file.getOriginalFilename());
-
             // Tạo thư mục nếu chưa tồn tại
             Files.createDirectories(filePath.getParent());
-
             // Lưu file
             Files.write(filePath, file.getBytes());
-
             category.setImage(filePath.getFileName().toString());
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 

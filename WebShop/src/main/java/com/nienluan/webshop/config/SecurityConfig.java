@@ -30,6 +30,8 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_POST_METHOD_ENDPOINTS = {"/api/v1/users", "/api/v1/auth/**"};
     private final String[] PUBLIC_GET_METHOD_ENDPOINTS = {"/api/v1/categories", "/api/v1/promotions", "/api/v1/promotions/**"};
+    private final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**","/favicon.ico"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST,PUBLIC_POST_METHOD_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET,PUBLIC_GET_METHOD_ENDPOINTS).permitAll()
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

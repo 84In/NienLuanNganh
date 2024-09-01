@@ -1,10 +1,8 @@
 package com.nienluan.webshop.config;
 
 import com.nienluan.webshop.service.AuthenticationService;
-import com.nimbusds.jose.JOSEException;
 import com.nienluan.webshop.dto.request.IntrospectRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -14,7 +12,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.text.ParseException;
 import java.util.Objects;
 
 @Component
