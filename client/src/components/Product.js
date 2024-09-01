@@ -16,7 +16,7 @@ const Product = () => {
         height: "fit-content",
       }}
     >
-      <h2 className="px-5 pt-2 text-lg font-medium text-rose-600">Danh sách sản phẩm</h2>
+      <h2 className="pb-2 text-lg font-medium text-rose-500">Danh sách sản phẩm</h2>
       <Grid container spacing={1}>
         {products.slice(0, 6 * 2).map((product, index) => (
           <Grid item xs={6} sm={4} md={3} lg={2} key={index}>

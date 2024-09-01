@@ -1,5 +1,6 @@
 package com.nienluan.webshop.service;
 
+import com.nienluan.webshop.dto.request.ChangePasswordRequest;
 import com.nienluan.webshop.dto.request.UserCreationRequest;
 import com.nienluan.webshop.dto.request.UserUpdateRequest;
 import com.nienluan.webshop.entity.Role;
@@ -82,4 +83,17 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public UserResponse changePassword(String id, ChangePasswordRequest request){
+        var user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        boolean authentication = passwordEncoder.matches(request.getOldPassword(), user.getPassword());
+        if(!authentication){
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+        if(!request.getNewPassword().equals(request.getReNewPassword())){
+            throw new AppException(ErrorCode.PASSWORD_INCORRECT);
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
 }

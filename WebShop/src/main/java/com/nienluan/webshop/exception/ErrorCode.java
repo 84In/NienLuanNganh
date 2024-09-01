@@ -13,6 +13,7 @@ public enum ErrorCode {
     UNAUTHENTICATED(102,"Unauthenticated",HttpStatus.UNAUTHORIZED),
 
     INVALID_KEY(201, "Invalid message Key",HttpStatus.BAD_REQUEST),
+    PASSWORD_INCORRECT(201, "Password incorrect",HttpStatus.BAD_REQUEST),
 
     USER_NOT_EXISTED(301, "User not existed", HttpStatus.NOT_FOUND),
     USER_EXISTED(302, "User existed", HttpStatus.FOUND)

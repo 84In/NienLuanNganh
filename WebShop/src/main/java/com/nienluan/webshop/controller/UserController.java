@@ -1,5 +1,6 @@
 package com.nienluan.webshop.controller;
 
+import com.nienluan.webshop.dto.request.ChangePasswordRequest;
 import com.nienluan.webshop.dto.request.UserCreationRequest;
 import com.nienluan.webshop.dto.request.UserUpdateRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
@@ -61,6 +62,14 @@ public class UserController {
         userService.deleteUserById(userId);
         return ApiResponse.<Void>builder()
                 .message("Delete Successful")
+                .build();
+    }
+
+    @PostMapping("change-password/{userId}")
+    public ApiResponse<UserResponse> changePassword(@PathVariable String userId, @RequestBody ChangePasswordRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Change Successful")
+                .result(userService.changePassword(userId, request))
                 .build();
     }
 }

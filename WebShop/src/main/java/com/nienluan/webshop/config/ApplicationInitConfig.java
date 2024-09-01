@@ -35,6 +35,12 @@ public class ApplicationInitConfig {
                 adminRole.setDescription("Admin");
                 roleRepository.save(adminRole);
             }
+            if(roleRepository.findById("USER").isEmpty()) {
+                Role adminRole = new Role();
+                adminRole.setName("USER");
+                adminRole.setDescription("Customer");
+                roleRepository.save(adminRole);
+            }
 
             if (userRepository.findByUsername("admin").isEmpty()) {
                 var role = roleRepository.findById("ADMIN");
