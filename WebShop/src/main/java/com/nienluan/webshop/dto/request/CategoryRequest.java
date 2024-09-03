@@ -1,6 +1,5 @@
 package com.nienluan.webshop.dto.request;
 
-import com.nienluan.webshop.entity.Image;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,4 +12,6 @@ import lombok.experimental.FieldDefaults;
 public class CategoryRequest {
     String name;
     String description;
+    String images;
+
 }

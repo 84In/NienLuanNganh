@@ -18,6 +18,8 @@ public class UserUpdateRequest {
     String email;
     String phone;
     Date dob;
+    String avatar;
+
 
     List<String> roles;
 }

@@ -8,18 +8,13 @@ import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.ProductMapper;
 import com.nienluan.webshop.repository.ProductRepository;
-import com.nienluan.webshop.utils.UploadFile;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -31,21 +26,11 @@ public class ProductService {
     ProductMapper productMapper;
 
 
-    @NonFinal
-    @Value("${file.upload-dir}")
-    String uploadDir;
-
-    public ProductResponse createProduct(ProductRequest request, MultipartFile[] images) throws AppException {
+    public ProductResponse createProduct(ProductRequest request) throws AppException {
 
         if(productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.PRODUCT_EXISTED);
         }
-
-        if(images.length == 0){
-            throw new AppException(ErrorCode.FILEUPLOADED_ERROR);
-        }
-
-        Set<String> imageNames = UploadFile.uploadFileImages(uploadDir,request.getName(),images);
 
         Product product = productMapper.toProduct(request);
 
@@ -61,7 +46,7 @@ public class ProductService {
         return productRepository.findById(id).map(productMapper::toProductResponse).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
-    public ProductResponse updateProduct(ProductUpdateRequest request, MultipartFile[] images, String id) throws AppException {
+    public ProductResponse updateProduct(ProductUpdateRequest request, String id) throws AppException {
 
         var product = productRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 

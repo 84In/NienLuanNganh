@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImageRequest {
-    String Data;
-    String mineType;
+public class BannerRequest {
+    String title;
+    String data;
 }

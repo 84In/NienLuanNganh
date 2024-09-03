@@ -16,4 +16,5 @@ public class ProductRequest {
     BigDecimal price;
     BigDecimal stock_quantity;
     String category_id;
+    String images;
 }

@@ -1,26 +1,22 @@
 package com.nienluan.webshop.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "t_categories")
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
+@Entity
+@Table(name = "t_banner_images")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Category {
-
+public class Banner {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String name;
-    String description;
-    String images;
+    String title;
+    String data;
 }

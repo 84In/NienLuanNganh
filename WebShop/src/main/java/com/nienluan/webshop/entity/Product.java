@@ -26,7 +26,5 @@ public class Product {
     BigDecimal price;
     BigDecimal stock_quantity;
     String category_id;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Image> images = new HashSet<>();
+    String images;
 }

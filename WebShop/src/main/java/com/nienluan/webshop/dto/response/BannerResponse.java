@@ -1,8 +1,5 @@
 package com.nienluan.webshop.dto.response;
 
-
-import com.nienluan.webshop.entity.Category;
-import com.nienluan.webshop.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,15 +8,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ImageResponse {
-
+public class BannerResponse {
     String id;
-
-    String dataImage;
-
-    String mineType;
-
-    Product product;
-
-    Category category;
+    String title;
+    String data;
 }

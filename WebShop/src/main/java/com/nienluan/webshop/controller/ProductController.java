@@ -23,7 +23,7 @@ public class ProductController {
     @PostMapping
     public ApiResponse<ProductResponse> createProduct(@RequestBody ProductRequest request, @RequestPart MultipartFile[] files) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.createProduct(request, files))
+                .result(productService.createProduct(request))
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class ProductController {
     @PutMapping("/{productId}")
     public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId,@RequestPart MultipartFile[] files, @RequestBody ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.updateProduct(request,files,productId))
+                .result(productService.updateProduct(request,productId))
                 .build();
     }
 

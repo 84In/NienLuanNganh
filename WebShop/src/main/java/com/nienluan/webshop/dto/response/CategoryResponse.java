@@ -12,6 +12,6 @@ public class CategoryResponse {
     String id;
     String name;
     String description;
-    String image;
+    String images;
 }
 
