@@ -25,6 +25,7 @@ const product1 = require("../assets/images/product/product1.png");
 
 export const path = {
   HOME: "/*",
+  CART: "/cart",
 };
 
 export const banner = [

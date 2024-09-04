@@ -1,8 +1,8 @@
 import { React, memo } from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa6"; // Import icon từ react-icons
 import Slider from "react-slick";
-import { FaArrowRight, FaArrowLeft } from "react-icons/fa6"; // Import icon từ react-icons
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import { banner } from "../utils/constant";
 
 function NextArrow(props) {
@@ -57,8 +57,8 @@ function SliderCustom() {
     dots: true,
     infinite: true,
     autoplay: true,
-    speed: 1000,
-    autoplaySpeed: 2000,
+    speed: 1300,
+    autoplaySpeed: 3500,
     slidesToShow: 2,
     slidesToScroll: 2,
     nextArrow: <NextArrow />,
