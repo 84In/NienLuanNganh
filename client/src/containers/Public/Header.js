@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import { ButtonCustom, DotAlert, SearchBar } from "../../components";
@@ -6,10 +6,8 @@ import icons from "../../utils/icons";
 
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 
-const Header = () => {
+const Header = ({ setIsModelLogin }) => {
   const navigate = useNavigate();
-
-  const [isModelLogin, setIsModelLogin] = useState(false);
 
   return (
     <div className="flex h-[90px] w-full justify-between bg-white px-8">
@@ -41,9 +39,7 @@ const Header = () => {
               TextTitle={"Tài khoản"}
               FontWeight={"font-medium"}
               PaddingX={"px-4"}
-              ClickButton={() => {
-                setIsModelLogin(!isModelLogin);
-              }}
+              ClickButton={() => setIsModelLogin((prev) => !prev)}
             />
           </div>
           <span className="p-4 text-gray-200">|</span>

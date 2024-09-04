@@ -1,14 +1,38 @@
 import { Box, Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { apiLogin, apiRegister } from "../../services";
 
-const Login = () => {
+const Login = ({ setIsModelLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+
+  const [payload, setPayload] = useState({});
+
+  const handleSubmit = async (payload) => {
+    let response = "";
+    if (isLogin) {
+      setPayload = {
+        username: "username",
+        password: "password",
+      };
+      response = await apiLogin(payload);
+    } else {
+      setPayload = {
+        username: "username",
+        password: "password",
+        email: "email",
+        phone: "phone",
+        dob: "",
+      };
+      response = await apiRegister(payload);
+    }
+  };
 
   const handleClickOutside = (event) => {
     const box = document.getElementById("box-container");
     if (box && !box.contains(event.target)) {
+      setIsModelLogin(false);
       setIsVisible(false);
     }
   };
@@ -33,8 +57,8 @@ const Login = () => {
         alignItems: "center",
         height: "100vh",
         width: "100%",
-        bgcolor: "rgba(0, 0, 0, 0.1)",
-        position: "absolute",
+        bgcolor: "rgba(0, 0, 0, 0.6)",
+        // position: "absolute",
         position: "fixed",
         zIndex: 99,
       }}
@@ -57,7 +81,10 @@ const Login = () => {
         >
           <div className="relative w-full">
             <div
-              onClick={() => setIsVisible(false)}
+              onClick={() => {
+                setIsModelLogin(false);
+                setIsVisible(false);
+              }}
               className="absolute right-[-8px] top-[-40px] flex h-12 w-14 items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
@@ -75,7 +102,7 @@ const Login = () => {
                 required
               ></TextField>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained">
-                Login
+                Đăng Nhập
               </Button>
               <p>
                 Bạn chưa có tài khoản?{" "}
@@ -103,7 +130,10 @@ const Login = () => {
         >
           <div className="relative w-full">
             <div
-              onClick={() => setIsVisible(false)}
+              onClick={() => {
+                setIsModelLogin(false);
+                setIsVisible(false);
+              }}
               className="absolute right-[-8px] top-[-40px] flex h-12 w-14 items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
@@ -171,11 +201,25 @@ const Login = () => {
               </div>
               <div>
                 <TextField
+                  id="password1"
                   className="w-[80%]"
                   sx={{ m: 1, width: "42ch" }}
                   label="Mật khẩu"
                   variant="filled"
                   name="password"
+                  type="password"
+                  required
+                ></TextField>
+              </div>
+              <div>
+                <TextField
+                  id="password2"
+                  className="w-[80%]"
+                  sx={{ m: 1, width: "42ch" }}
+                  label="Nhập lại mật khẩu"
+                  variant="filled"
+                  name="re-enter-password"
+                  type="password"
                   required
                 ></TextField>
               </div>
@@ -186,7 +230,7 @@ const Login = () => {
                 size="large"
                 variant="contained"
               >
-                Register
+                Đăng Ký
               </Button>
               <p>
                 Bạn đã có tài khoản?{" "}

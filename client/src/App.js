@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Home, Login } from "./containers/Public";
+import { Home } from "./containers/Public";
 import { path } from "./utils/constant";
 
 function App() {
