@@ -6,6 +6,7 @@ export const apiRegister = (payload) =>
       const response = await axiosConfig({
         method: "POST",
         url: `/api/v1/users`,
+        data: payload,
       });
       resolve(response);
     } catch (error) {

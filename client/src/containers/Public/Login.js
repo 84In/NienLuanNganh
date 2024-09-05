@@ -1,31 +1,51 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, FormHelperText, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { apiLogin, apiRegister } from "../../services";
 
 const Login = ({ setIsModelLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
+  const [error, setError] = useState("");
 
-  const [payload, setPayload] = useState({});
+  const [payload, setPayload] = useState({
+    username: "",
+    password: "",
+    re_password: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    dob: "",
+  });
 
-  const handleSubmit = async (payload) => {
+  const handleInputChange = (field) => (event) => {
+    setPayload({ ...payload, [field]: event.target.value });
+  };
+
+  const handleSubmit = async () => {
     let response = "";
+
+    // Check if required fields are not empty
+    const requiredFields = isLogin
+      ? ["username", "password"]
+      : ["firstname", "lastname", "email", "phone", "dob", "username", "password", "re_password"];
+
+    const isValid = requiredFields.every((field) => payload[field].trim() !== "");
+    if (!isValid) {
+      setError("Vui lòng điền tất cả các trường bắt buộc!");
+      return;
+    }
+
     if (isLogin) {
-      setPayload = {
-        username: "username",
-        password: "password",
-      };
-      response = await apiLogin(payload);
+      response = await apiLogin({ username: payload.username, password: payload.password });
     } else {
-      setPayload = {
-        username: "username",
-        password: "password",
-        email: "email",
-        phone: "phone",
-        dob: "",
-      };
-      response = await apiRegister(payload);
+      if (payload.password !== payload.re_password) {
+        setError("Mật khẩu không khớp!");
+        return;
+      }
+      const { re_password, ...registerPayload } = payload;
+      console.log(registerPayload);
+      response = await apiRegister(registerPayload);
     }
   };
 
@@ -33,7 +53,7 @@ const Login = ({ setIsModelLogin }) => {
     const box = document.getElementById("box-container");
     if (box && !box.contains(event.target)) {
       setIsModelLogin(false);
-      setIsVisible(false);
+      setError("");
     }
   };
 
@@ -43,8 +63,9 @@ const Login = ({ setIsModelLogin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  if (!isVisible) return null;
+  useEffect(() => {
+    setError("");
+  }, [isLogin]);
 
   return (
     <Box
@@ -58,7 +79,6 @@ const Login = ({ setIsModelLogin }) => {
         height: "100vh",
         width: "100%",
         bgcolor: "rgba(0, 0, 0, 0.6)",
-        // position: "absolute",
         position: "fixed",
         zIndex: 99,
       }}
@@ -70,12 +90,14 @@ const Login = ({ setIsModelLogin }) => {
             boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px;",
             bgcolor: "white",
             width: "90%",
-            height: "30rem",
+            height: "fit-content",
+            maxHeight: "fit-content",
+            minheight: "30rem",
             maxWidth: "30rem",
             minWidth: "20rem",
-            borderRadius: "25px",
+            borderRadius: "28px",
             paddingX: 1,
-            paddingTop: 5,
+            paddingY: 5,
             margin: "auto",
           }}
         >
@@ -83,15 +105,26 @@ const Login = ({ setIsModelLogin }) => {
             <div
               onClick={() => {
                 setIsModelLogin(false);
-                setIsVisible(false);
               }}
-              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md"
+              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md hover:bg-[#1565c0]"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
             <h1 className="pb-12 text-center text-3xl font-bold text-[#1976d2]">ĐĂNG NHẬP</h1>
-            <div className="flex flex-col items-center justify-center gap-y-9">
-              <TextField className="w-[80%]" label="Tài khoản" variant="filled" name="username" required></TextField>
+            <div className="flex flex-col items-center justify-center gap-y-8">
+              {error && (
+                <Alert className="w-[80%]" severity="error">
+                  {error}
+                </Alert>
+              )}
+              <TextField
+                className="w-[80%]"
+                label="Tài khoản"
+                variant="filled"
+                name="username"
+                required
+                onChange={handleInputChange("username")}
+              ></TextField>
               <TextField
                 type="password"
                 autoComplete="off"
@@ -100,8 +133,9 @@ const Login = ({ setIsModelLogin }) => {
                 variant="filled"
                 name="password"
                 required
+                onChange={handleInputChange("password")}
               ></TextField>
-              <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained">
+              <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>
                 Đăng Nhập
               </Button>
               <p>
@@ -115,16 +149,19 @@ const Login = ({ setIsModelLogin }) => {
         </Box>
       ) : (
         <Box
+          id="box-container"
           sx={{
             boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px;",
             bgcolor: "white",
             width: "90%",
-            height: "40rem",
+            height: "fit-content",
+            maxHeight: "fit-content",
+            minHeight: "30rem",
             maxWidth: "30rem",
             minWidth: "20rem",
-            borderRadius: "25px",
+            borderRadius: "28px",
             paddingX: 1,
-            paddingTop: 5,
+            paddingY: 5,
             margin: "auto",
           }}
         >
@@ -132,14 +169,19 @@ const Login = ({ setIsModelLogin }) => {
             <div
               onClick={() => {
                 setIsModelLogin(false);
-                setIsVisible(false);
               }}
-              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md"
+              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md hover:bg-[#1565c0]"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
-            <h1 className="pb-8 text-center text-3xl font-bold text-[#1976d2]">ĐĂNG KÝ</h1>
+            <h1 className="pb-6 text-center text-3xl font-bold text-[#1976d2]">ĐĂNG KÝ</h1>
+
             <div className="flex flex-col items-center justify-center gap-2 align-middle">
+              {error && (
+                <Alert className="w-[78%]" severity="error">
+                  {error}
+                </Alert>
+              )}
               <div>
                 <TextField
                   sx={{ m: 1, width: "20ch" }}
@@ -148,6 +190,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="firstname"
                   required
+                  onChange={handleInputChange("firstname")}
                 ></TextField>
                 <TextField
                   sx={{ m: 1, width: "20ch" }}
@@ -156,6 +199,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="lastname"
                   required
+                  onChange={handleInputChange("lastname")}
                 ></TextField>
               </div>
               <div>
@@ -166,6 +210,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="email"
                   required
+                  onChange={handleInputChange("email")}
                 ></TextField>
               </div>
               <div>
@@ -176,6 +221,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="phone"
                   required
+                  onChange={handleInputChange("phone")}
                 ></TextField>
                 <TextField
                   className="w-[80%]"
@@ -185,8 +231,8 @@ const Login = ({ setIsModelLogin }) => {
                   type="date"
                   name="dob"
                   InputLabelProps={{ shrink: true }}
-                  InputProps={{ placeholder: "" }}
                   required
+                  onChange={handleInputChange("dob")}
                 ></TextField>
               </div>
               <div>
@@ -197,6 +243,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="username"
                   required
+                  onChange={handleInputChange("username")}
                 ></TextField>
               </div>
               <div>
@@ -209,6 +256,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="password"
                   type="password"
                   required
+                  onChange={handleInputChange("password")}
                 ></TextField>
               </div>
               <div>
@@ -218,9 +266,10 @@ const Login = ({ setIsModelLogin }) => {
                   sx={{ m: 1, width: "42ch" }}
                   label="Nhập lại mật khẩu"
                   variant="filled"
-                  name="re-enter-password"
+                  name="re_password"
                   type="password"
                   required
+                  onChange={handleInputChange("re_password")}
                 ></TextField>
               </div>
               <Button
@@ -229,6 +278,7 @@ const Login = ({ setIsModelLogin }) => {
                 type="submit"
                 size="large"
                 variant="contained"
+                onClick={handleSubmit}
               >
                 Đăng Ký
               </Button>
