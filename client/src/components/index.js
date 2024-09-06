@@ -6,3 +6,5 @@ export { default as LeftBar } from "./LeftBar";
 export { default as Widget } from "./Widget";
 export { default as Product } from "./Product";
 export { default as CardProduct } from "./CardProduct";
+export { default as Resolution } from "./Resolution";
+export { default as ResolutionCard } from "./ResolutionCard";

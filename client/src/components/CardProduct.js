@@ -9,8 +9,8 @@ const StyledCard = styled(Card)({
   display: "flex",
   flexDirection: "column",
   borderRadius: 8,
-  //   boxShadow:
-  //     "0px 0px 2px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
+  boxShadow:
+    "0px 0px 2px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
 });
 
 const ProductName = styled(Typography)({
@@ -26,7 +26,7 @@ const ProductName = styled(Typography)({
 const CardProduct = ({ image, name, price, originalPrice, discount, origin, rating }) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center" height="100%">
-      <StyledCard>
+      <StyledCard className="product-hover">
         <CardMedia component="img" sx={{ objectFit: "cover", height: "auto" }} image={image} alt={name} />
         <CardContent sx={{ padding: "10px" }}>
           <ProductName variant="subtitle2" gutterBottom>

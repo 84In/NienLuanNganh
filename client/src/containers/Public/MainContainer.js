@@ -1,34 +1,37 @@
 import { React, memo } from "react";
-import { Grid } from "@mui/material";
-import { SliderCustom, Widget, LeftBar, Product } from "../../components";
+import { SliderCustom, Widget, LeftBar, Product, Resolution } from "../../components";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const MainContainer = () => {
   return (
     <>
-      <Grid
+      <Grid2
         container
         display="flex"
         justifyContent="center"
         gap={2}
         sx={{ width: "100%", paddingX: "1rem", height: "100%" }}
       >
-        <Grid item xs={12} md={2}>
+        <Grid2 item xs={12} md={2.5}>
           <LeftBar />
-        </Grid>
-        <Grid item xs={12} md={9.5}>
-          <Grid container gap={2}>
-            <Grid sx={{ width: "100%" }}>
+        </Grid2>
+        <Grid2 item xs={12} md={9.2}>
+          <Grid2 container gap={2}>
+            <Grid2 sx={{ width: "100%" }}>
               <SliderCustom />
-            </Grid>
-            <Grid sx={{ width: "100%" }}>
+            </Grid2>
+            <Grid2 sx={{ width: "100%" }}>
               <Widget />
-            </Grid>
-            <Grid sx={{ width: "100%" }}>
-              <Product />
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+            </Grid2>
+            <Grid2 sx={{ width: "100%" }}>
+              <Product title={"Danh mục sản phẩm"} />
+            </Grid2>
+            <Grid2 sx={{ width: "100%" }}>
+              <Resolution />
+            </Grid2>
+          </Grid2>
+        </Grid2>
+      </Grid2>
     </>
   );
 };

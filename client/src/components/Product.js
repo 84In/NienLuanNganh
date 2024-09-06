@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { products } from "../utils/constant";
 import CardProduct from "./CardProduct";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
-const Product = () => {
+const Product = ({ title }) => {
   return (
     <Box
       sx={{
@@ -16,14 +17,14 @@ const Product = () => {
         height: "fit-content",
       }}
     >
-      <h2 className="pb-2 text-lg font-medium text-rose-500">Danh sách sản phẩm</h2>
-      <Grid container spacing={1}>
+      <h2 className="mb-4 px-2 text-lg font-medium text-rose-500">{title}</h2>
+      <Grid2 container spacing={1}>
         {products.slice(0, 6 * 2).map((product, index) => (
-          <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
+          <Grid2 item xs={6} sm={3} lg={2} key={index}>
             <CardProduct {...product} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   );
 };

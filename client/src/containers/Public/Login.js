@@ -1,4 +1,4 @@
-import { Box, Button, TextField, FormHelperText, Alert } from "@mui/material";
+import { Box, Button, TextField, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { apiLogin, apiRegister } from "../../services";
@@ -106,11 +106,11 @@ const Login = ({ setIsModelLogin }) => {
               onClick={() => {
                 setIsModelLogin(false);
               }}
-              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md hover:bg-[#1565c0]"
+              className="bg-primary-color hover:bg-secondary-color absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] shadow-md"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
-            <h1 className="pb-12 text-center text-3xl font-bold text-[#1976d2]">ĐĂNG NHẬP</h1>
+            <h1 className="text-primary-color pb-12 text-center text-3xl font-bold">ĐĂNG NHẬP</h1>
             <div className="flex flex-col items-center justify-center gap-y-8">
               {error && (
                 <Alert className="w-[80%]" severity="error">
@@ -140,7 +140,7 @@ const Login = ({ setIsModelLogin }) => {
               </Button>
               <p>
                 Bạn chưa có tài khoản?{" "}
-                <a className="cursor-pointer text-[#1976d2]" onClick={() => setIsLogin(false)}>
+                <a className="text-primary-color cursor-pointer" onClick={() => setIsLogin(false)}>
                   Tạo tài khoản
                 </a>
               </p>
@@ -170,11 +170,11 @@ const Login = ({ setIsModelLogin }) => {
               onClick={() => {
                 setIsModelLogin(false);
               }}
-              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-[#1976d2] shadow-md hover:bg-[#1565c0]"
+              className="bg-primary-color hover:bg-secondary-color absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] shadow-md"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
-            <h1 className="pb-6 text-center text-3xl font-bold text-[#1976d2]">ĐĂNG KÝ</h1>
+            <h1 className="text-primary-color pb-6 text-center text-3xl font-bold">ĐĂNG KÝ</h1>
 
             <div className="flex flex-col items-center justify-center gap-2 align-middle">
               {error && (
@@ -284,7 +284,7 @@ const Login = ({ setIsModelLogin }) => {
               </Button>
               <p>
                 Bạn đã có tài khoản?{" "}
-                <a className="cursor-pointer text-[#1976d2]" onClick={() => setIsLogin(true)}>
+                <a className="text-primary-color cursor-pointer" onClick={() => setIsLogin(true)}>
                   Đăng nhập ngay
                 </a>
               </p>

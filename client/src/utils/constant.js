@@ -92,6 +92,41 @@ export const iconsLeftBar = [
     title: "Giày - Dép",
     url: "/product?name=shoe",
   },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
 ];
 
 export const widgetIcon = [

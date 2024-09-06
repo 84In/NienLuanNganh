@@ -57,7 +57,7 @@ function SliderCustom() {
     dots: true,
     infinite: true,
     autoplay: true,
-    speed: 1300,
+    speed: 1000,
     autoplaySpeed: 3500,
     slidesToShow: 2,
     slidesToScroll: 2,
