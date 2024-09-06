@@ -71,6 +71,7 @@ const Login = ({ setIsModelLogin }) => {
     <Box
       id="box"
       key="box"
+      className="scrollbar-hide"
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -80,6 +81,7 @@ const Login = ({ setIsModelLogin }) => {
         width: "100%",
         bgcolor: "rgba(0, 0, 0, 0.6)",
         position: "fixed",
+        overflowY: "auto",
         zIndex: 99,
       }}
     >
@@ -106,11 +108,11 @@ const Login = ({ setIsModelLogin }) => {
               onClick={() => {
                 setIsModelLogin(false);
               }}
-              className="bg-primary-color hover:bg-secondary-color absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] shadow-md"
+              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-primary-color shadow-md hover:bg-secondary-color"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
-            <h1 className="text-primary-color pb-12 text-center text-3xl font-bold">ĐĂNG NHẬP</h1>
+            <h1 className="pb-6 text-center text-3xl font-bold text-primary-color">ĐĂNG NHẬP</h1>
             <div className="flex flex-col items-center justify-center gap-y-8">
               {error && (
                 <Alert className="w-[80%]" severity="error">
@@ -141,7 +143,7 @@ const Login = ({ setIsModelLogin }) => {
               <p>
                 Bạn chưa có tài khoản?{" "}
                 <span
-                  className="text-primary-color hover:text-primary-color cursor-pointer hover:underline"
+                  className="cursor-pointer text-primary-color hover:text-primary-color hover:underline"
                   onClick={() => setIsLogin(false)}
                 >
                   Tạo tài khoản
@@ -173,22 +175,21 @@ const Login = ({ setIsModelLogin }) => {
               onClick={() => {
                 setIsModelLogin(false);
               }}
-              className="bg-primary-color hover:bg-secondary-color absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] shadow-md"
+              className="absolute right-[-8px] top-[-40px] flex h-12 w-14 cursor-pointer items-center justify-center rounded-es-[25px] rounded-se-[25px] bg-primary-color shadow-md hover:bg-secondary-color"
             >
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
-            <h1 className="text-primary-color pb-6 text-center text-3xl font-bold">ĐĂNG KÝ</h1>
+            <h1 className="pb-4 text-center text-3xl font-bold text-primary-color">ĐĂNG KÝ</h1>
 
             <div className="flex flex-col items-center justify-center gap-2 align-middle">
               {error && (
-                <Alert className="w-[78%]" severity="error">
+                <Alert className="w-[80%]" severity="error">
                   {error}
                 </Alert>
               )}
-              <div>
+              <div className="flex w-[80%] gap-2">
                 <TextField
-                  sx={{ m: 1, width: "20ch" }}
-                  className="w-[80%]"
+                  className="w-full"
                   label="Họ"
                   variant="filled"
                   name="firstname"
@@ -196,8 +197,7 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("firstname")}
                 ></TextField>
                 <TextField
-                  sx={{ m: 1, width: "20ch" }}
-                  className="w-[80%]"
+                  className="w-full"
                   label="Tên"
                   variant="filled"
                   name="lastname"
@@ -205,10 +205,9 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("lastname")}
                 ></TextField>
               </div>
-              <div>
+              <div className="w-[80%]">
                 <TextField
-                  className="w-[80%]"
-                  sx={{ m: 1, width: "42ch" }}
+                  className="w-full"
                   label="Email"
                   variant="filled"
                   name="email"
@@ -216,10 +215,9 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("email")}
                 ></TextField>
               </div>
-              <div>
+              <div className="flex w-[80%] gap-2">
                 <TextField
-                  className="w-[80%]"
-                  sx={{ m: 1, width: "20ch" }}
+                  className="w-full"
                   label="Số điện thoại"
                   variant="filled"
                   name="phone"
@@ -227,8 +225,7 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("phone")}
                 ></TextField>
                 <TextField
-                  className="w-[80%]"
-                  sx={{ m: 1, width: "20ch" }}
+                  className="w-full"
                   label="Ngày sinh"
                   variant="filled"
                   type="date"
@@ -238,10 +235,9 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("dob")}
                 ></TextField>
               </div>
-              <div>
+              <div className="w-[80%]">
                 <TextField
-                  className="w-[80%]"
-                  sx={{ m: 1, width: "42ch" }}
+                  className="w-full"
                   label="Tài khoản"
                   variant="filled"
                   name="username"
@@ -249,11 +245,10 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("username")}
                 ></TextField>
               </div>
-              <div>
+              <div className="w-[80%]">
                 <TextField
                   id="password1"
-                  className="w-[80%]"
-                  sx={{ m: 1, width: "42ch" }}
+                  className="w-full"
                   label="Mật khẩu"
                   variant="filled"
                   name="password"
@@ -262,11 +257,10 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("password")}
                 ></TextField>
               </div>
-              <div>
+              <div className="w-[80%]">
                 <TextField
                   id="password2"
-                  className="w-[80%]"
-                  sx={{ m: 1, width: "42ch" }}
+                  className="w-full"
                   label="Nhập lại mật khẩu"
                   variant="filled"
                   name="re_password"
@@ -275,20 +269,13 @@ const Login = ({ setIsModelLogin }) => {
                   onChange={handleInputChange("re_password")}
                 ></TextField>
               </div>
-              <Button
-                sx={{ m: 1, width: "43ch" }}
-                className="h-12 w-[80%]"
-                type="submit"
-                size="large"
-                variant="contained"
-                onClick={handleSubmit}
-              >
+              <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>
                 Đăng Ký
               </Button>
               <p>
                 Bạn đã có tài khoản?{" "}
                 <span
-                  className="text-primary-color hover:text-primary-color cursor-pointer hover:underline"
+                  className="cursor-pointer text-primary-color hover:text-primary-color hover:underline"
                   onClick={() => setIsLogin(true)}
                 >
                   Đăng nhập ngay

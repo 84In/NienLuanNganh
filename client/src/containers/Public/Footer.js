@@ -135,6 +135,10 @@ const Footer = () => {
             ))}
           </Grid2>
         </Grid2>
+        <hr className="mx-4 flex h-[2px] w-full items-center justify-center bg-gray-400" />
+        <div className="flex w-full items-center justify-center p-2 text-center">
+          <h2 className="align-middle">&copy; VanouS 2024</h2>
+        </div>
       </Grid2>
     </Box>
   );

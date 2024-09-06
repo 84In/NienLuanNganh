@@ -1,6 +1,7 @@
 import { React, memo } from "react";
 import { SliderCustom, Widget, LeftBar, Product, Resolution } from "../../components";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { products } from "../../utils/constant";
 
 const MainContainer = () => {
   return (
@@ -24,7 +25,7 @@ const MainContainer = () => {
               <Widget />
             </Grid2>
             <Grid2 sx={{ width: "100%" }}>
-              <Product title={"Danh mục sản phẩm"} />
+              <Product data={products} title={"Danh mục sản phẩm"} />
             </Grid2>
             <Grid2 sx={{ width: "100%" }}>
               <Resolution />
