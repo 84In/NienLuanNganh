@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo2.png";
 import { ButtonCustom, DotAlert, SearchBar } from "../../components";
 import icons from "../../utils/icons";
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { Link } from "react-router-dom";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 
@@ -26,19 +27,23 @@ const Header = ({ setIsModelLogin }) => {
         padding: "16px",
       }}
     >
-      <Grid container sx={{ display: "flex", rowGap: "1rem", justifyContent: "space-between", alignItems: "center" }}>
-        <Grid item xs={12} md={2} lg={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Grid2
+        container
+        xs={12}
+        sx={{ display: "flex", rowGap: "1rem", justifyContent: "space-between", alignItems: "center" }}
+      >
+        <Grid2 item xs={12} md={2} lg={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <Link to={"/"}>
             <img className="h-[40px] w-[150px] max-w-none object-contain" src={logo} alt="logo" />
           </Link>
-        </Grid>
-        <Grid item xs={12} md={5} lg={6} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        </Grid2>
+        <Grid2 item xs={12} md={5} lg={6} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <div className="w-full pl-2">
             <SearchBar IconBefore={GoSearch} TextContent={"Tìm kiếm"} />
             {/* <div className="flex items-center justify-start">Nav Bar</div> */}
           </div>
-        </Grid>
-        <Grid
+        </Grid2>
+        <Grid2
           item
           container
           xs={12}
@@ -46,7 +51,7 @@ const Header = ({ setIsModelLogin }) => {
           lg={4}
           sx={{ display: "flex", justifyContent: "space-around", alignItems: "center", textWrap: "nowrap" }}
         >
-          <Grid item xs={9} className="flex items-center justify-around gap-1 sm:px-3">
+          <Grid2 item xs={9} className="flex items-center justify-around gap-1 sm:px-3">
             <ButtonCustom
               TypeButton={"button"}
               TextColor={"text-blue-600"}
@@ -63,11 +68,11 @@ const Header = ({ setIsModelLogin }) => {
               FontWeight={"font-medium"}
               ClickButton={() => setIsModelLogin((prev) => !prev)}
             />
-          </Grid>
-          <Grid item xs={1} className="flex items-center justify-center">
+          </Grid2>
+          <Grid2 item xs={1} className="flex items-center justify-center">
             <span className="p-2 text-gray-200">|</span>
-          </Grid>
-          <Grid item xs={2} className="flex w-1/4 items-center justify-center">
+          </Grid2>
+          <Grid2 item xs={2} className="flex w-1/4 items-center justify-center">
             <ButtonCustom
               TypeButton={"button"}
               IconBefore={FaCartShopping}
@@ -77,10 +82,10 @@ const Header = ({ setIsModelLogin }) => {
               TextTitle={<DotAlert />}
               ClickButton={() => navigate("/cart")}
             />
-          </Grid>
+          </Grid2>
           {/* <div className="flex items-center justify-center">Giao đến ABC</div> */}
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
     </Box>
   );
 };

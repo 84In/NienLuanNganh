@@ -41,7 +41,7 @@ const Resolution = () => {
       <h2 className="mb-4 px-2 text-lg font-medium">Cam Kết</h2>
       <Grid2 container spacing={1} sx={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
         {itemResolution.map((item, index) => (
-          <Grid2 xs={6} md={2.9}>
+          <Grid2 xs={6} md={2.9} key={index}>
             <ResolutionCard icon={item.icon} title={item.title} />
           </Grid2>
         ))}

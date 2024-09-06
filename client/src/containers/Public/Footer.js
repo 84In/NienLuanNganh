@@ -88,50 +88,52 @@ const Footer = () => {
           sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2 }}
         >
           <Link to={"/"}>
-            <img className="h-[80px] w-[210px] max-w-none object-contain" src={logo} alt="logo" />
+            <img className="h-[80px] w-[210px] max-w-none cursor-pointer object-contain" src={logo} alt="logo" />
           </Link>
-          <h3 className="text-justify">
+          <h3 className="text-justify text-gray-500">
             Vanous là nền tảng thương mại điện tử hiện đại, mang đến cho khách hàng trải nghiệm mua sắm tốt nhất. Chúng
             tôi cung cấp đa dạng các sản phẩm, từ thời trang đến điện tử, với giá cả cạnh tranh và dịch vụ chăm sóc
             khách hàng đáng tin cậy. Tại Vanous, sự hài lòng của bạn là ưu tiên hàng đầu của chúng tôi!
           </h3>
         </Grid2>
-        <Grid2
-          item
-          container
-          xs={12}
-          md={3}
-          sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 2, gap: 1 }}
-        >
-          <h2 className="text-lg font-semibold">Hỗ trợ khách hàng</h2>
-          <div className="flex flex-col gap-1">
-            {supportInfo.map((item, index) => (
-              <div className="h-full w-full" key={item.id}>
-                <a href={item.url}>{item.name}</a>
-              </div>
+        <Grid2 container xs={12} md={6}>
+          <Grid2
+            item
+            container
+            xs={6}
+            sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 2, gap: 1 }}
+          >
+            <h2 className="text-lg font-semibold">Hỗ trợ khách hàng</h2>
+            <div className="flex flex-col gap-1">
+              {supportInfo.map((item, index) => (
+                <div className="h-full w-full text-gray-500" key={index}>
+                  <a href={item.url} className="hover:underline">
+                    {item.name}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </Grid2>
+          <Grid2
+            item
+            container
+            xs={6}
+            sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 2, gap: 1 }}
+          >
+            <h2 className="text-lg font-semibold">Kết nối với chúng tôi</h2>
+            {creator.map((item, index) => (
+              <Grid2 item xs={6} sx={{ width: "100%" }} key={index}>
+                <h2 className="mb-2 text-lg text-gray-500">{item.name}</h2>
+                <div className="flex w-full gap-6">
+                  {item.info.map((e, i) => (
+                    <div key={i}>
+                      <a href={e.url}>{e.icon}</a>
+                    </div>
+                  ))}
+                </div>
+              </Grid2>
             ))}
-          </div>
-        </Grid2>
-        <Grid2
-          item
-          container
-          xs={12}
-          md={3}
-          sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 2, gap: 1 }}
-        >
-          <h2 className="text-lg font-semibold">Kết nối với chúng tôi</h2>
-          {creator.map((item, index) => (
-            <Grid2 item xs={6} sx={{ width: "100%" }} key={item.name}>
-              <h2 className="mb-2 text-lg">{item.name}</h2>
-              <div className="flex w-full gap-6">
-                {item.info.map((e, i) => (
-                  <div>
-                    <a href={e.url}>{e.icon}</a>
-                  </div>
-                ))}
-              </div>
-            </Grid2>
-          ))}
+          </Grid2>
         </Grid2>
       </Grid2>
     </Box>

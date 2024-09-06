@@ -140,9 +140,12 @@ const Login = ({ setIsModelLogin }) => {
               </Button>
               <p>
                 Bạn chưa có tài khoản?{" "}
-                <a className="text-primary-color cursor-pointer" onClick={() => setIsLogin(false)}>
+                <span
+                  className="text-primary-color hover:text-primary-color cursor-pointer hover:underline"
+                  onClick={() => setIsLogin(false)}
+                >
                   Tạo tài khoản
-                </a>
+                </span>
               </p>
             </div>
           </div>
@@ -284,9 +287,12 @@ const Login = ({ setIsModelLogin }) => {
               </Button>
               <p>
                 Bạn đã có tài khoản?{" "}
-                <a className="text-primary-color cursor-pointer" onClick={() => setIsLogin(true)}>
+                <span
+                  className="text-primary-color hover:text-primary-color cursor-pointer hover:underline"
+                  onClick={() => setIsLogin(true)}
+                >
                   Đăng nhập ngay
-                </a>
+                </span>
               </p>
             </div>
           </div>
