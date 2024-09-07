@@ -23,23 +23,28 @@ export const register = (payload) => async (dispath) => {
   }
 };
 export const login = (payload) => async (dispatch) => {
+  let response = null;
+
   try {
-    const response = await apiLogin(payload);
-    if (response?.code === 0) {
+    response = await apiLogin(payload);
+
+    if (response?.data.code === 0) {
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
-        data: response.result.token,
+        data: response.data,
       });
     } else {
       dispatch({
         type: actionTypes.LOGIN_FAIL,
-        data: response.message,
+        data: response?.data.code,
       });
     }
   } catch (error) {
+    console.log(response);
+
     dispatch({
       type: actionTypes.LOGIN_FAIL,
-      data: null,
+      data: response?.message,
     });
   }
 };
