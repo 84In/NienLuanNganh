@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL,
@@ -6,13 +6,18 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function (config) {
-    let token =
-      window.localStorage.getItem('persist:auth') &&
-      JSON.parse(window.localStorage.getItem('persist:auth'))?.token.slice(1, -1);
+    if (!config.url.startsWith("/api/v1/auth")) {
+      // Thêm token vào header cho các yêu cầu không phải auth
+      let token =
+        window.localStorage.getItem("persist:auth") &&
+        JSON.parse(window.localStorage.getItem("persist:auth"))?.token.slice(1, -1); // Hoặc từ một nguồn khác
+      if (token) {
+        config.headers = {
+          authorization: token ? `Bearer ${token}` : null,
+        };
+      }
+    }
 
-    config.headers = {
-      authorization: token ? `Bearer ${token}` : null,
-    };
     return config;
   },
   function (error) {
@@ -26,11 +31,15 @@ instance.interceptors.response.use(
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     //Refresh token
+
     return response;
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    if (error.response && error.response.status === 404) {
+      return error.response.data;
+    }
     return Promise.reject(error);
   },
 );

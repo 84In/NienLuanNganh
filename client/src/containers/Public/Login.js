@@ -1,11 +1,16 @@
-import { Box, Button, TextField, Alert } from "@mui/material";
+import { Alert, Box, Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import { apiLogin, apiRegister } from "../../services";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import * as actions from "../../store/actions";
 const Login = ({ setIsModelLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
+
+  const { isLoggedIn, message, update } = useSelector((state) => state.auth);
 
   const [payload, setPayload] = useState({
     username: "",
@@ -17,6 +22,10 @@ const Login = ({ setIsModelLogin }) => {
     phone: "",
     dob: "",
   });
+  const navigate = useNavigate();
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, [isLoggedIn, navigate]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,8 +33,6 @@ const Login = ({ setIsModelLogin }) => {
   };
   console.log(payload);
   const handleSubmit = async () => {
-    let response = "";
-
     // Check if required fields are not empty
     const requiredFields = isLogin
       ? ["username", "password"]
@@ -38,7 +45,7 @@ const Login = ({ setIsModelLogin }) => {
     }
 
     if (isLogin) {
-      response = await apiLogin({ username: payload.username, password: payload.password });
+      dispatch(actions.login({ username: payload.username, password: payload.password }));
     } else {
       if (payload.password !== payload.re_password) {
         setError("Mật khẩu không khớp!");
@@ -46,9 +53,19 @@ const Login = ({ setIsModelLogin }) => {
       }
       const { re_password, ...registerPayload } = payload;
       console.log(registerPayload);
-      response = await apiRegister(registerPayload);
+      dispatch(actions.register(registerPayload));
     }
   };
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsModelLogin(false);
+      Swal.fire({
+        title: isLogin ? "Login" : "Register",
+        text: message,
+        icon: "success",
+      });
+    }
+  }, [isLoggedIn]);
 
   const handleClickOutside = (event) => {
     const box = document.getElementById("box-container");
