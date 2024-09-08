@@ -11,7 +11,7 @@ const Login = ({ setIsModelLogin }) => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  const { isLoggedIn, message, update } = useSelector((state) => state.auth);
+  const { isLoggedIn, message } = useSelector((state) => state.auth);
 
   const [payload, setPayload] = useState({
     username: "",
@@ -65,9 +65,11 @@ const Login = ({ setIsModelLogin }) => {
         title: isLogin ? "Login" : "Register",
         text: message,
         icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, message, isLogin, setIsLogin, setIsModelLogin]);
 
   const handleClickOutside = (event) => {
     const box = document.getElementById("box-container");

@@ -1,17 +1,16 @@
-import React, { memo } from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo2.png";
-import { ButtonCustom, DotAlert, SearchBar } from "../../components";
-import icons from "../../utils/icons";
 import { Box } from "@mui/material";
-import { Link } from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { memo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/images/logo2.png";
+import { ButtonCustom, DotAlert, SearchBar, UserButton } from "../../components";
+import icons from "../../utils/icons";
 
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 
-const Header = ({ setIsModelLogin }) => {
+const Header = ({ setIsModelLogin, isLoggedIn }) => {
   const navigate = useNavigate();
-
+  const [isModelUser, setIsModelUser] = useState(false);
   return (
     <Box
       sx={{
@@ -61,13 +60,24 @@ const Header = ({ setIsModelLogin }) => {
               IconBefore={GoHomeFill}
               ClickButton={() => navigate("/")}
             />
-            <ButtonCustom
-              IconBefore={FaRegCircleUser}
-              TypeButton={"button"}
-              TextTitle={"Tài khoản"}
-              FontWeight={"font-medium"}
-              ClickButton={() => setIsModelLogin((prev) => !prev)}
-            />
+            {isLoggedIn ? (
+              <UserButton
+                DataImage={
+                  "https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-1/457408916_1968503646912827_7878531955205968521_n.jpg?stp=dst-jpg_s200x200&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeGPrAFDvlOlA5KjAN9naNLsxIwWz75rpsbEjBbPvmumxq3tx54-WL-f38LiONi-rihiP1gF2i1-j4tcfMjrOlzg&_nc_ohc=DRfuFMkJPG8Q7kNvgFQLxhU&_nc_ht=scontent.fsgn5-8.fna&oh=00_AYA1-1lfy7dGof9Fz_sxdjB7MgxsnSrTH5m8OQxiW55MUQ&oe=66E35B85"
+                }
+                Name={"Test do dai cua chu cai"}
+                isModelUser={isModelUser}
+                setIsModelUser={() => setIsModelUser((prev) => !prev)}
+              />
+            ) : (
+              <ButtonCustom
+                IconBefore={FaRegCircleUser}
+                TypeButton={"button"}
+                TextTitle={"Tài khoản"}
+                FontWeight={"font-medium"}
+                ClickButton={() => setIsModelLogin((prev) => !prev)}
+              />
+            )}
           </Grid2>
           <Grid2 item xs={1} className="flex items-center justify-center">
             <span className="p-2 text-gray-200">|</span>

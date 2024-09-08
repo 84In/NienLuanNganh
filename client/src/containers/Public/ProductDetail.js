@@ -1,6 +1,6 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React from "react";
-import { ProductCarousel, Purchase } from "..";
+import { ProductCarousel, Purchase } from "../../components";
 import { Box, Rating } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { formatCurrency } from "../../utils/format";
@@ -66,9 +66,7 @@ const ProductDetail = () => {
                   {product.discount !== "" && product.discount > 0 ? (
                     <>
                       <p className="text-3xl font-bold text-red-500">{formatCurrency(product.price)}</p>
-                      <p className="text-lg text-gray-500 line-through">
-                        {formatCurrency(product.originalPrice)}
-                      </p>
+                      <p className="text-lg text-gray-500 line-through">{formatCurrency(product.originalPrice)}</p>
                       <p className="rounded bg-red-100 px-2 py-1 text-sm font-semibold text-red-500">
                         -{product.discount}%
                       </p>

@@ -1,13 +1,15 @@
 export { default as MainContainer } from "./Home/MainContainer";
 export { default as ButtonCustom } from "./ButtonCustom";
+export { default as CardProduct } from "./Product/CardProduct";
 export { default as DotAlert } from "./DotAlert";
 export { default as SearchBar } from "./SearchBar";
 export { default as BannerCarousel } from "./Home/BannerCarousel";
 export { default as LeftBar } from "./Home/LeftBar";
 export { default as Widget } from "./Home/Widget";
 export { default as Product } from "./Product/Product";
-export { default as CardProduct } from "./Product/CardProduct";
 export { default as Resolution } from "./Home/Resolution";
 export { default as ResolutionCard } from "./Home/ResolutionCard";
 export { default as Purchase } from "./Product/Purchase";
+export { default as UserButton } from "./UserButton";
+export { default as ProfileUser } from "./ProfileUser";
 export { default as ProductCarousel } from "./Product/ProductCarousel";
