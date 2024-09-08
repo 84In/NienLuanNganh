@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import { widgetIcon } from "../utils/constant";
+import { widgetIcon } from "../../utils/constant";
 import { Link } from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 

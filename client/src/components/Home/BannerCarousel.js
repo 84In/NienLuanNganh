@@ -1,9 +1,8 @@
 import { React, memo } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6"; // Import icon từ react-icons
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { banner } from "../utils/constant";
 
 function NextArrow(props) {
   const { className, style, onClick } = props;
@@ -24,7 +23,7 @@ function NextArrow(props) {
       }}
       onClick={onClick}
     >
-      <FaArrowRight style={{ width: "10px", height: "10px", color: "blue" }} />
+      <IoIosArrowForward style={{ width: "20px", height: "20px", color: "blue" }} />
     </div>
   );
 }
@@ -48,11 +47,12 @@ function PrevArrow(props) {
       }}
       onClick={onClick}
     >
-      <FaArrowLeft style={{ width: "10px", height: "10px", color: "blue" }} />
+      <IoIosArrowBack style={{ width: "20px", height: "20px", color: "blue" }} />
     </div>
   );
 }
-function SliderCustom() {
+
+function BannerCarousel({ data }) {
   const settings = {
     dots: true,
     infinite: true,
@@ -90,7 +90,7 @@ function SliderCustom() {
   return (
     <div className="slider-container h-auto w-full rounded-lg bg-white px-4 py-6">
       <Slider {...settings}>
-        {banner.map((item, index) => (
+        {data.map((item, index) => (
           <div key={index} className="px-2">
             <img src={item.image} alt={item.title} className="h-auto w-full rounded-lg" />
           </div>
@@ -100,4 +100,4 @@ function SliderCustom() {
   );
 }
 
-export default memo(SliderCustom);
+export default memo(BannerCarousel);

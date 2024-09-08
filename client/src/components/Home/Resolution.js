@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { FaShippingFast, FaTags } from "react-icons/fa";
 import { HiBadgeCheck } from "react-icons/hi";
 import { RiRefund2Line } from "react-icons/ri";
-import { ResolutionCard } from ".";
+import { ResolutionCard } from "..";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const Resolution = () => {

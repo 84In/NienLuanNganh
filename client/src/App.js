@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Footer, Header, Home, Login } from "./containers/Public";
 import { path } from "./utils/constant";
 import React, { useState } from "react";
+import ProductDetail from "./components/Product/ProductDetail";
 
 function App() {
   const [isModelLogin, setIsModelLogin] = useState(false);
@@ -11,6 +12,7 @@ function App() {
       {isModelLogin && <Login setIsModelLogin={setIsModelLogin} />}
       <Routes>
         <Route path={path.HOME} element={<Home />} />
+        <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
       </Routes>
       <Footer />
     </div>

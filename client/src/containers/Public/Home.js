@@ -1,5 +1,5 @@
 import React from "react";
-import { MainContainer } from ".";
+import { MainContainer } from "../../components";
 
 const Home = () => {
   return (

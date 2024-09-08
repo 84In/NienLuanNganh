@@ -18,10 +18,11 @@ const Login = ({ setIsModelLogin }) => {
     dob: "",
   });
 
-  const handleInputChange = (field) => (event) => {
-    setPayload({ ...payload, [field]: event.target.value });
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setPayload({ ...payload, [name]: value });
   };
-
+  console.log(payload);
   const handleSubmit = async () => {
     let response = "";
 
@@ -125,7 +126,7 @@ const Login = ({ setIsModelLogin }) => {
                 variant="filled"
                 name="username"
                 required
-                onChange={handleInputChange("username")}
+                onChange={handleInputChange}
               ></TextField>
               <TextField
                 type="password"
@@ -135,7 +136,7 @@ const Login = ({ setIsModelLogin }) => {
                 variant="filled"
                 name="password"
                 required
-                onChange={handleInputChange("password")}
+                onChange={handleInputChange}
               ></TextField>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>
                 Đăng Nhập
@@ -194,7 +195,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="firstname"
                   required
-                  onChange={handleInputChange("firstname")}
+                  onChange={handleInputChange}
                 ></TextField>
                 <TextField
                   className="w-full"
@@ -202,7 +203,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="lastname"
                   required
-                  onChange={handleInputChange("lastname")}
+                  onChange={handleInputChange}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -212,7 +213,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="email"
                   required
-                  onChange={handleInputChange("email")}
+                  onChange={handleInputChange}
                 ></TextField>
               </div>
               <div className="flex w-[80%] gap-2">
@@ -222,7 +223,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="phone"
                   required
-                  onChange={handleInputChange("phone")}
+                  onChange={handleInputChange}
                 ></TextField>
                 <TextField
                   className="w-full"
@@ -232,7 +233,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="dob"
                   InputLabelProps={{ shrink: true }}
                   required
-                  onChange={handleInputChange("dob")}
+                  onChange={handleInputChange}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -242,7 +243,7 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="username"
                   required
-                  onChange={handleInputChange("username")}
+                  onChange={handleInputChange}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -254,7 +255,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="password"
                   type="password"
                   required
-                  onChange={handleInputChange("password")}
+                  onChange={handleInputChange}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -266,7 +267,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="re_password"
                   type="password"
                   required
-                  onChange={handleInputChange("re_password")}
+                  onChange={handleInputChange}
                 ></TextField>
               </div>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>

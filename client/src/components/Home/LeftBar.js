@@ -1,12 +1,12 @@
 import { React, memo } from "react";
-import ButtonCustom from "./ButtonCustom";
-import { iconsLeftBar } from "../utils/constant";
+import ButtonCustom from "../ButtonCustom";
+import { iconsLeftBar } from "../../utils/constant";
 import { Link } from "react-router-dom";
 
 const LeftBar = () => {
   return (
     <div className="sticky top-4 rounded-lg bg-white p-3">
-      <div className="grid-md:scrollbar-hide grid-md:max-h-screen max-h-80 overflow-y-auto scroll-smooth">
+      <div className="max-h-80 overflow-y-auto scroll-smooth grid-md:max-h-screen grid-md:scrollbar-hide">
         <h1 className="p-1 text-center text-lg font-semibold">Danh mục</h1>
         <div className="flex flex-col space-y-2">
           {iconsLeftBar.map((item, index) => (

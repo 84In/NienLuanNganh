@@ -17,7 +17,7 @@ const Product = ({ title, data }) => {
       }}
     >
       <h2 className="mb-4 px-2 text-lg font-semibold text-rose-500">{title}</h2>
-      <Grid2 container spacing={1}>
+      <Grid2 container spacing={2}>
         {data.slice(0, 6 * 2).map((product, index) => (
           <Grid2 item xs={6} sm={3} lg={2} key={index}>
             <CardProduct {...product} />

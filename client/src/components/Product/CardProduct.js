@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardMedia, Typography, Box, Rating } from "@mui/material";
 import { styled } from "@mui/system";
+import { formatCurrency } from "../../utils/format";
 
 const StyledCard = styled(Card)({
   maxWidth: "11.5rem",
@@ -36,11 +37,11 @@ const CardProduct = ({ image, name, price, originalPrice, discount, origin, rati
           {discount > 0 ? (
             <>
               <Typography variant="h6" color="error" fontWeight="bold">
-                {price}
+                {formatCurrency(price)}
               </Typography>
               <Box display="flex" alignItems="baseline" mt={1}>
                 <Typography variant="caption" color="text.secondary" sx={{ textDecoration: "line-through" }}>
-                  {originalPrice}
+                  {formatCurrency(originalPrice)}
                 </Typography>
                 <Typography
                   variant="caption"
@@ -53,7 +54,7 @@ const CardProduct = ({ image, name, price, originalPrice, discount, origin, rati
             </>
           ) : (
             <Typography variant="h6" fontWeight="bold">
-              {price}
+              {formatCurrency(price)}
             </Typography>
           )}
           <Typography variant="caption" color="text.secondary">

@@ -14,6 +14,7 @@ module.exports = {
       colors: {
         "primary-color": "var(--primary-color)",
         "secondary-color": "var(--secondary-color)",
+        "error-color": "var(--error-color)",
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],
