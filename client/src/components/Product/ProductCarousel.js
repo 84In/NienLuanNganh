@@ -14,18 +14,19 @@ import product1 from "../../assets/images/product/product1.png";
 const ProductCarousel = () => {
   const images = [
     { id: 1, imageSrc: product1 },
-    { id: 2, imageSrc: "https://swiperjs.com/demos/images/nature-2.jpg" },
-    // ... add more images as needed
+    { id: 2, imageSrc: product1 },
+    { id: 3, imageSrc: product1 },
+    { id: 4, imageSrc: "https://swiperjs.com/demos/images/nature-3.jpg" },
   ];
 
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
-    <Box sx={{ padding: 1, minHeight: "368px", maxHeight: "fit-content" }}>
+    <Box sx={{ padding: 1, width: "100%", height: "100%" }}>
       <Swiper
         style={{
           "--swiper-navigation-color": "var(--primary-color)",
-          "--swiper-navigation-size": "20px",
+          "--swiper-navigation-size": "30px",
           "--swiper-pagination-color": "var(--primary-color)",
         }}
         loop={true}
@@ -33,11 +34,11 @@ const ProductCarousel = () => {
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2"
+        className="mySwiper2 grid-xs:h-[300px] grid-md:h-[80%]"
       >
-        {images.map((image) => (
+        {images.slice(0, 4).map((image) => (
           <SwiperSlide className="rounded-md border border-gray-400" key={image.id}>
-            <img className="px-8" src={image.imageSrc} alt={`Nature ${image.id}`} />
+            <img className="object-contain px-8" src={image.imageSrc} alt={`Nature ${image.id}`} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -51,7 +52,7 @@ const ProductCarousel = () => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
-        {images.map((image) => (
+        {images.slice(0, 4).map((image) => (
           <SwiperSlide className="rounded-md border border-gray-400" key={image.id}>
             <img className="object-contain px-2" src={image.imageSrc} alt={`Nature ${image.id}`} />
           </SwiperSlide>

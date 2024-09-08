@@ -36,30 +36,16 @@ const CardProduct = ({ image, name, price, originalPrice, discount, origin, rati
           <Rating name="half-rating-read" precision={0.5} value={rating} readOnly size="small" />
           {discount > 0 ? (
             <>
-              <Typography variant="h6" color="error" fontWeight="bold">
-                {formatCurrency(price)}
-              </Typography>
-              <Box display="flex" alignItems="baseline" mt={1}>
-                <Typography variant="caption" color="text.secondary" sx={{ textDecoration: "line-through" }}>
-                  {formatCurrency(originalPrice)}
-                </Typography>
-                <Typography
-                  variant="caption"
-                  color="error"
-                  sx={{ ml: 1, bgcolor: "#fdd4d4", borderRadius: "3px", paddingX: "3px" }}
-                >
-                  -{discount}%
-                </Typography>
+              <p className="text-xl font-bold text-red-500">{formatCurrency(price)}</p>
+              <Box sx={{ display: "flex", alignItems: "baseline", mt: 1, gap: 1 }}>
+                <p className="text-sm text-gray-500 line-through">{formatCurrency(originalPrice)}</p>
+                <p className="rounded bg-red-100 p-1 text-xs font-semibold text-red-500">-{discount}%</p>
               </Box>
             </>
           ) : (
-            <Typography variant="h6" fontWeight="bold">
-              {formatCurrency(price)}
-            </Typography>
+            <p className="text-xl font-bold">{formatCurrency(price)}</p>
           )}
-          <Typography variant="caption" color="text.secondary">
-            Made in {origin}
-          </Typography>
+          <p className="mt-2 text-sm text-gray-500">Made in {origin}</p>
         </CardContent>
       </StyledCard>
     </Box>

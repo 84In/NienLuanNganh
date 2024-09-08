@@ -2,10 +2,22 @@ import { React, memo } from "react";
 import ButtonCustom from "../ButtonCustom";
 import { iconsLeftBar } from "../../utils/constant";
 import { Link } from "react-router-dom";
+import { Box } from "@mui/material";
 
 const LeftBar = () => {
   return (
-    <div className="sticky top-4 rounded-lg bg-white p-3">
+    <Box
+      className="sticky top-4"
+      sx={{
+        flexGrow: 1,
+        p: 2,
+        bgcolor: "white",
+        borderRadius: "8px",
+        rowGap: "2rem",
+        width: "100%",
+        height: "fit-content",
+      }}
+    >
       <div className="max-h-80 overflow-y-auto scroll-smooth grid-md:max-h-screen grid-md:scrollbar-hide">
         <h1 className="p-1 text-center text-lg font-semibold">Danh mục</h1>
         <div className="flex flex-col space-y-2">
@@ -18,7 +30,7 @@ const LeftBar = () => {
           ))}
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

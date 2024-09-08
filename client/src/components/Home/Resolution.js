@@ -32,7 +32,7 @@ const Resolution = () => {
         flexGrow: 1,
         p: 2,
         bgcolor: "white",
-        borderRadius: "10px",
+        borderRadius: "8px",
         rowGap: "2rem",
         width: "100%",
         height: "fit-content",

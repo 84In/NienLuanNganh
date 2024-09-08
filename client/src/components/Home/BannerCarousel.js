@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { React, memo } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
@@ -88,7 +89,18 @@ function BannerCarousel({ data }) {
     ],
   };
   return (
-    <div className="slider-container h-auto w-full rounded-lg bg-white px-4 py-6">
+    <Box
+      sx={{
+        flexGrow: 1,
+        px: 2,
+        py: 3,
+        bgcolor: "white",
+        borderRadius: "10px",
+        rowGap: "2rem",
+        width: "100%",
+        height: "fit-content",
+      }}
+    >
       <Slider {...settings}>
         {data.map((item, index) => (
           <div key={index} className="px-2">
@@ -96,7 +108,7 @@ function BannerCarousel({ data }) {
           </div>
         ))}
       </Slider>
-    </div>
+    </Box>
   );
 }
 

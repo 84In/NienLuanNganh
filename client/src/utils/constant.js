@@ -128,6 +128,21 @@ export const iconsLeftBar = [
     title: "Giày - Dép",
     url: "/product?name=shoe",
   },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
+  {
+    image: icon6,
+    title: "Giày - Dép",
+    url: "/product?name=shoe",
+  },
 ];
 
 export const widgetIcon = [
@@ -143,6 +158,7 @@ export const widgetIcon = [
 
 export const products = [
   {
+    id: "03adf-12sad-nasd0",
     image: product1,
     name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
     price: "102000",
@@ -152,57 +168,33 @@ export const products = [
     rating: 4.5,
   },
   {
+    id: "03adf-12sad-nasd0",
     image: product1,
     name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
     price: "102000",
-    originalPrice: "0",
-    discount: "0",
+    originalPrice: "132000",
+    discount: "",
     origin: "Poland",
     rating: 4.5,
   },
   {
+    id: "03adf-12sad-nasd0",
     image: product1,
     name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
     price: "102000",
-    originalPrice: "0",
-    discount: "0",
+    originalPrice: "132000",
+    discount: "",
     origin: "Poland",
     rating: 4.5,
   },
   {
-    image: product1,
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "0",
-    discount: "0",
-    origin: "Poland",
-    rating: 4.3,
-  },
-  {
+    id: "03adf-12sad-nasd0",
     image: product1,
     name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
     price: "102000",
     originalPrice: "132000",
     discount: "23",
     origin: "Poland",
-    rating: 3.7,
-  },
-  {
-    image: product1,
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "23",
-    origin: "Poland",
-    rating: 5,
-  },
-  {
-    image: product1,
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "23",
-    origin: "Poland",
-    rating: 5,
+    rating: 4.5,
   },
 ];

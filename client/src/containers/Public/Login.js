@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as actions from "../../store/actions";
+
 const Login = ({ setIsModelLogin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
@@ -22,6 +23,7 @@ const Login = ({ setIsModelLogin }) => {
     phone: "",
     dob: "",
   });
+
   const navigate = useNavigate();
   useEffect(() => {
     isLoggedIn && navigate("/");
@@ -31,7 +33,7 @@ const Login = ({ setIsModelLogin }) => {
     const { name, value } = event.target;
     setPayload({ ...payload, [name]: value });
   };
-  console.log(payload);
+
   const handleSubmit = async () => {
     // Check if required fields are not empty
     const requiredFields = isLogin

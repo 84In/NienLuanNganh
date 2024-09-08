@@ -17,9 +17,23 @@ const Purchase = ({ price }) => {
   };
 
   return (
-    <Box className="h-auto w-full rounded-lg bg-white p-4">
+    <Box
+      className="sticky top-4"
+      sx={{
+        flexGrow: 1,
+        p: 2,
+        bgcolor: "white",
+        borderRadius: "8px",
+        gap: "2rem",
+        width: "100%",
+        height: "fit-content",
+      }}
+    >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="mr-2">Số Lượng</h1>
+        <h1 className="">Giá:</h1> <span className="text-xl font-semibold">{formatCurrency(price)}</span>
+      </div>
+      <div className="mb-4 flex items-center justify-between">
+        <h1>Số Lượng</h1>
         <div className="flex gap-1">
           <IconButton onClick={handleDecrease} size="small">
             <AiOutlineMinus />
@@ -56,9 +70,11 @@ const Purchase = ({ price }) => {
           </IconButton>
         </div>
       </div>
-      <h1 className="mb-4">
-        Tạm tính: <span className="text-error-color text-xl font-semibold">{formatCurrency(price * quantity)}</span>
-      </h1>
+      <hr className="mx-4 mb-4 border-gray-400" />
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="">Tạm tính:</h1>{" "}
+        <span className="text-xl font-semibold text-error-color">{formatCurrency(price * quantity)}</span>
+      </div>
       <div className="flex w-full flex-col gap-2 py-2">
         <Button variant="contained" color="error" size="large" fullWidth className="mb-2">
           Mua ngay
