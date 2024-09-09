@@ -26,6 +26,7 @@ const product1 = require("../assets/images/product/product1.png");
 export const path = {
   HOME: "/*",
   CART: "/cart",
+  ACCOUNT: "/account",
   PRODUCT_DETAIL: "/product/:productID",
 };
 

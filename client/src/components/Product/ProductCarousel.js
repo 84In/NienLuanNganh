@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
@@ -7,18 +7,9 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-
 import { Box } from "@mui/material";
-import product1 from "../../assets/images/product/product1.png";
 
-const ProductCarousel = () => {
-  const images = [
-    { id: 1, imageSrc: product1 },
-    { id: 2, imageSrc: product1 },
-    { id: 3, imageSrc: product1 },
-    { id: 4, imageSrc: "https://swiperjs.com/demos/images/nature-3.jpg" },
-  ];
-
+const ProductCarousel = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (

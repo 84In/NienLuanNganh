@@ -10,6 +10,5 @@ export { default as Product } from "./Product/Product";
 export { default as Resolution } from "./Home/Resolution";
 export { default as ResolutionCard } from "./Home/ResolutionCard";
 export { default as Purchase } from "./Product/Purchase";
-export { default as UserButton } from "./UserButton";
-export { default as ProfileUser } from "./ProfileUser";
 export { default as ProductCarousel } from "./Product/ProductCarousel";
+export { default as ProductInfo } from "./Product/ProductInfo";

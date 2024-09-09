@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { Footer, Header, Home, Login, ProductDetail } from "./containers/Public";
+import { AccountInfo, Footer, Header, Home, Login, ProductDetail } from "./containers/Public";
 import { path } from "./utils/constant";
 
 function App() {
@@ -13,6 +13,7 @@ function App() {
       {isModelLogin && <Login setIsModelLogin={setIsModelLogin} />}
       <Routes>
         <Route path={path.HOME} element={<Home />} />
+        <Route path={path.ACCOUNT} element={<AccountInfo />} />
         <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
       </Routes>
       <Footer />

@@ -22,6 +22,7 @@ export const register = (payload) => async (dispath) => {
     });
   }
 };
+
 export const login = (payload) => async (dispatch) => {
   let response = null;
 

@@ -1,10 +1,9 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import { Button, Box, IconButton, TextField } from "@mui/material";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { formatCurrency } from "../../utils/format";
 
-const Purchase = ({ price }) => {
-  const [quantity, setQuantity] = useState(1);
+const Purchase = ({ price, quantity, setQuantity }) => {
   const minQuantity = 1;
   const maxQuantity = 50;
 
@@ -15,6 +14,10 @@ const Purchase = ({ price }) => {
   const handleDecrease = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, minQuantity));
   };
+
+  const handleAddToCart = () => {};
+
+  const handleBuyNow = () => {};
 
   return (
     <Box
@@ -34,7 +37,7 @@ const Purchase = ({ price }) => {
       </div>
       <div className="mb-4 flex items-center justify-between">
         <h1>Số Lượng</h1>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1">
           <IconButton onClick={handleDecrease} size="small">
             <AiOutlineMinus />
           </IconButton>
@@ -76,10 +79,10 @@ const Purchase = ({ price }) => {
         <span className="text-xl font-semibold text-error-color">{formatCurrency(price * quantity)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
-        <Button variant="contained" color="error" size="large" fullWidth className="mb-2">
+        <Button onClick={handleBuyNow} variant="contained" color="error" size="large" fullWidth className="mb-2">
           Mua ngay
         </Button>
-        <Button variant="outlined" color="primary" size="large" fullWidth className="mb-2">
+        <Button onClick={handleAddToCart} variant="outlined" color="primary" size="large" fullWidth className="mb-2">
           Thêm vào giỏ
         </Button>
       </div>
