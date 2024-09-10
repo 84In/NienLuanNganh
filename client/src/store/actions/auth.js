@@ -1,22 +1,22 @@
-import { apiLogin, apiRegister } from "../../services";
+import { apiLogin, apiLogout, apiRegister } from "../../services";
 import actionTypes from "./actionType";
 
-export const register = (payload) => async (dispath) => {
+export const register = (payload) => async (dispatch) => {
   try {
     const response = await apiRegister(payload);
     if (response?.code === 0) {
-      dispath({
+      dispatch({
         type: actionTypes.REGISTER_SUCCESS,
         data: response.result.user,
       });
     } else {
-      dispath({
+      dispatch({
         type: actionTypes.REGISTER_FAIL,
         data: response.message,
       });
     }
   } catch (error) {
-    dispath({
+    dispatch({
       type: actionTypes.REGISTER_FAIL,
       data: null,
     });
@@ -41,11 +41,22 @@ export const login = (payload) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log(response);
-
     dispatch({
       type: actionTypes.LOGIN_FAIL,
       data: response?.message,
     });
   }
+};
+
+export const logout = (token) => async (dispatch) => {
+  let response = null;
+  try {
+    response = await apiLogout(token);
+    if (response?.data.code === 0) {
+      dispatch({
+        type: actionTypes.LOGOUT_SUCCESS,
+        data: response?.data.message,
+      });
+    }
+  } catch (error) {}
 };

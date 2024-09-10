@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import * as actions from "../../store/actions";
 
 const Login = ({ setIsModelLogin }) => {
@@ -11,7 +10,7 @@ const Login = ({ setIsModelLogin }) => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
-  const { isLoggedIn, message } = useSelector((state) => state.auth);
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
   const [payload, setPayload] = useState({
     username: "",
@@ -25,9 +24,6 @@ const Login = ({ setIsModelLogin }) => {
   });
 
   const navigate = useNavigate();
-  useEffect(() => {
-    isLoggedIn && navigate("/");
-  }, [isLoggedIn, navigate]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -54,22 +50,16 @@ const Login = ({ setIsModelLogin }) => {
         return;
       }
       const { re_password, ...registerPayload } = payload;
-      console.log(registerPayload);
       dispatch(actions.register(registerPayload));
     }
   };
+
   useEffect(() => {
     if (isLoggedIn) {
       setIsModelLogin(false);
-      Swal.fire({
-        title: isLogin ? "Login" : "Register",
-        text: message,
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      window.location.reload();
     }
-  }, [isLoggedIn, message, isLogin, setIsLogin, setIsModelLogin]);
+  }, [isLoggedIn, setIsModelLogin]);
 
   const handleClickOutside = (event) => {
     const box = document.getElementById("box-container");
@@ -85,6 +75,7 @@ const Login = ({ setIsModelLogin }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   useEffect(() => {
     setError("");
   }, [isLogin]);

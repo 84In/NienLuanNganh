@@ -6,8 +6,10 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function (config) {
-    if (!config.url.startsWith("/api/v1/auth")) {
+    if (config.url.startsWith("/api/v1/auth")) {
       // Thêm token vào header cho các yêu cầu không phải auth
+      return config;
+    } else {
       let token =
         window.localStorage.getItem("persist:auth") &&
         JSON.parse(window.localStorage.getItem("persist:auth"))?.token.slice(1, -1); // Hoặc từ một nguồn khác
@@ -40,7 +42,6 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 404) {
       return error.response.data;
     }
-    return Promise.reject(error);
   },
 );
 

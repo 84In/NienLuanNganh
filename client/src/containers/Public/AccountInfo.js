@@ -1,22 +1,17 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
-import { BiPencil, BiEnvelope, BiPhone, BiCurrentLocation, BiLockOpenAlt } from "react-icons/bi";
+import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
 import { ContactButton } from "../../components";
+import { useLocation } from "react-router-dom";
+import { defaultAvatar } from "../../utils/constant";
 
 const AccountInfo = () => {
-  const response = {
-    firstName: "Phạm",
-    lastName: "Sáng",
-    image:
-      "https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-1/457408916_1968503646912827_7878531955205968521_n.jpg?stp=dst-jpg_s200x200&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeGPrAFDvlOlA5KjAN9naNLsxIwWz75rpsbEjBbPvmumxq3tx54-WL-f38LiONi-rihiP1gF2i1-j4tcfMjrOlzg&_nc_ohc=DRfuFMkJPG8Q7kNvgFQLxhU&_nc_ht=scontent.fsgn5-8.fna&oh=00_AYA1-1lfy7dGof9Fz_sxdjB7MgxsnSrTH5m8OQxiW55MUQ&oe=66E35B85",
-    phone: "18001000",
-    email: "temp@gmail.com",
-    dob: "2003-11-09",
-    address: "An Minh - Kiên Giang",
-  };
-
+  const location = useLocation();
+  const user = location.state?.ValueUser;
   const handleSaveChange = () => {};
+  const defaultAvatar = require("../../assets/images/profile.png");
+
   return (
     <Grid2
       container
@@ -42,7 +37,7 @@ const AccountInfo = () => {
             <div className="relative h-20 w-20 grid-md:h-24 grid-md:w-24">
               <img
                 className="avatar h-full w-full rounded-full border object-cover"
-                src={response.image}
+                src={user?.avatar !== null ? user?.avatar : defaultAvatar}
                 alt="Avatar"
               />
               <div className="absolute bottom-2 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-white">
@@ -72,7 +67,7 @@ const AccountInfo = () => {
                   <TextField
                     name="firstName"
                     type="text"
-                    defaultValue={response.firstName}
+                    defaultValue={user?.firstName}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -85,7 +80,7 @@ const AccountInfo = () => {
                   <TextField
                     name="lastName"
                     type="text"
-                    defaultValue={response.lastName}
+                    defaultValue={user?.lastName}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -98,7 +93,7 @@ const AccountInfo = () => {
                   <TextField
                     name="lastName"
                     type="date"
-                    defaultValue={response.dob}
+                    defaultValue={user?.dob}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -123,21 +118,21 @@ const AccountInfo = () => {
             <ContactButton
               icon={BiPhone}
               title={"Số điện thoại"}
-              info={response.phone}
+              info={user?.phone}
               nameButton={"Cập nhật"}
               onClick={""}
             />
             <ContactButton
               icon={BiEnvelope}
               title={"Địa chỉ email"}
-              info={response.email}
+              info={user?.email}
               nameButton={"Cập nhật"}
               onClick={""}
             />
             <ContactButton
               icon={BiCurrentLocation}
               title={"Địa chỉ"}
-              info={response.address}
+              // info={user?.address}
               nameButton={"Cập nhật"}
               onClick={""}
             />

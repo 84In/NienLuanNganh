@@ -3,6 +3,7 @@ const initState = {
   isLoggedIn: false,
   message: null,
   token: null,
+  username: null,
 };
 
 const authReducer = (state = initState, action) => {
@@ -14,6 +15,7 @@ const authReducer = (state = initState, action) => {
         isLoggedIn: action.data.result.authenticated,
         token: action.data.result.token,
         message: action.data.message,
+        username: action.data.result.username,
         update: false,
       };
     case actionTypes.REGISTER_FAIL:
@@ -29,8 +31,16 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         isLoggedIn: false,
-        token: null,
         message: "",
+        token: null,
+      };
+    case actionTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: false,
+        message: action.data,
+        token: null,
+        username: null,
       };
     default:
       return state;

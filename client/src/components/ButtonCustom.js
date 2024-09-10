@@ -1,6 +1,8 @@
-import React, { memo } from "react";
-import { Link } from "react-router-dom";
+import React, { memo, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { formatLengthName } from "../utils/format";
+import * as action from "../store/actions";
 
 const ButtonCustom = ({
   TypeButton,
@@ -17,7 +19,17 @@ const ButtonCustom = ({
   Padding,
   IconSize,
   ClickButton,
+  ValueUser,
 }) => {
+  const { isLoggedIn, token, message } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(action.logout({ token: token }));
+    navigate("/");
+  };
+
   return (
     <div
       className={`${PaddingX ? PaddingX : "px-2"} ${FontWeight ? FontWeight : "font-normal"} ${
@@ -56,14 +68,14 @@ const ButtonCustom = ({
             />
             <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
               <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <Link to={"/account"}>
+                <Link to={"/account"} state={{ ValueUser }}>
                   <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Thông tin tài khoản
                   </p>
                 </Link>
-                <Link to={"/logout"}>
+                <div onClick={handleLogout}>
                   <p className="block cursor-pointer px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Đăng xuất</p>
-                </Link>
+                </div>
               </div>
             </div>
             <span className="text-left">{formatLengthName(TextTitle)}</span>
