@@ -41,7 +41,7 @@ const ProductCarousel = ({ images }) => {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper"
+        className="mySwiper grid-xs:h-[100px] grid-md:h-[80%]"
       >
         {images.slice(0, 4).map((image) => (
           <SwiperSlide className="rounded-md border border-gray-400" key={image.id}>

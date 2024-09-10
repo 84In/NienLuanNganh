@@ -17,8 +17,8 @@ const Login = ({ setIsModelLogin }) => {
     username: "",
     password: "",
     re_password: "",
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     dob: "",
@@ -38,7 +38,7 @@ const Login = ({ setIsModelLogin }) => {
     // Check if required fields are not empty
     const requiredFields = isLogin
       ? ["username", "password"]
-      : ["firstname", "lastname", "email", "phone", "dob", "username", "password", "re_password"];
+      : ["firstName", "lastName", "email", "phone", "dob", "username", "password", "re_password"];
 
     const isValid = requiredFields.every((field) => payload[field].trim() !== "");
     if (!isValid) {
@@ -214,7 +214,7 @@ const Login = ({ setIsModelLogin }) => {
                   className="w-full"
                   label="Họ"
                   variant="filled"
-                  name="firstname"
+                  name="firstName"
                   required
                   onChange={handleInputChange}
                 ></TextField>
@@ -222,7 +222,7 @@ const Login = ({ setIsModelLogin }) => {
                   className="w-full"
                   label="Tên"
                   variant="filled"
-                  name="lastname"
+                  name="lastName"
                   required
                   onChange={handleInputChange}
                 ></TextField>

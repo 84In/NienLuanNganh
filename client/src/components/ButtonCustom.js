@@ -52,7 +52,7 @@ const ButtonCustom = ({
             <img
               src={Avatar}
               alt={TextTitle}
-              className={`${ImageSize ? ImageSize : "w-full"} ${ImageSize ? ImageSize : "h-8"} rounded-full object-contain`}
+              className={`${ImageSize ? ImageSize : "w-full"} ${ImageSize ? ImageSize : "h-6"} rounded-full object-center`}
             />
             <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
               <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">

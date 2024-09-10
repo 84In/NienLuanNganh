@@ -12,3 +12,4 @@ export { default as ResolutionCard } from "./Home/ResolutionCard";
 export { default as Purchase } from "./Product/Purchase";
 export { default as ProductCarousel } from "./Product/ProductCarousel";
 export { default as ProductInfo } from "./Product/ProductInfo";
+export { default as ContactButton } from "./ContactButton";

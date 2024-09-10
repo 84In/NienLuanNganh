@@ -1,5 +1,5 @@
 import { Box, Rating } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import { formatCurrency } from "../../utils/format";
 
 const ProductInfo = ({ product }) => {
@@ -42,4 +42,4 @@ const ProductInfo = ({ product }) => {
   );
 };
 
-export default ProductInfo;
+export default memo(ProductInfo);
