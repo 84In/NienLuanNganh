@@ -64,7 +64,7 @@ public class UserService {
         var user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return userMapper.toUserResponse(user);
     }
-    @PreAuthorize("returnObject.username == authentication.name")
+
     public UserResponse getUserByUsername(String username) {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return userMapper.toUserResponse(user);
