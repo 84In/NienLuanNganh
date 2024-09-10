@@ -13,6 +13,7 @@ const AccountInfo = () => {
     phone: "18001000",
     email: "temp@gmail.com",
     dob: "2003-11-09",
+    address: "An Minh - Kiên Giang",
   };
 
   const handleSaveChange = () => {};
@@ -39,9 +40,26 @@ const AccountInfo = () => {
           <h1 className="mb-4 text-gray-500">Thông tin cá nhân</h1>
           <div className="flex justify-between gap-4">
             <div className="relative h-20 w-20 grid-md:h-24 grid-md:w-24">
-              <img className="h-full w-full rounded-full" src={response.image}></img>
+              <img
+                className="avatar h-full w-full rounded-full border object-cover"
+                src={response.image}
+                alt="Avatar"
+              />
               <div className="absolute bottom-2 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-white">
-                <input type="file" style={{ display: "none" }} id="fileInput" name="fileInput" />
+                <input
+                  type="file"
+                  style={{ display: "none" }}
+                  id="fileInput"
+                  name="fileInput"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = (e) => (document.querySelector(".avatar").src = e.target.result);
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
                 <label htmlFor="fileInput" className="button">
                   <BiPencil />
                 </label>
