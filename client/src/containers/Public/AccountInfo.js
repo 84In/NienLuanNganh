@@ -1,16 +1,23 @@
 import { Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
-import { useLocation } from "react-router-dom";
-import { defaultAvatar } from "../../utils/constant";
+import { path } from "../../utils/constant";
 
 const AccountInfo = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const user = location.state?.ValueUser;
   const handleSaveChange = () => {};
   const defaultAvatar = require("../../assets/images/profile.png");
+
+  useEffect(() => {
+    if (user === undefined || user === null) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <Grid2
@@ -120,23 +127,28 @@ const AccountInfo = () => {
               title={"Số điện thoại"}
               info={user?.phone}
               nameButton={"Cập nhật"}
-              onClick={""}
+              onClick={() => navigate(path.EDIT_PHONE, { state: { phone: user?.phone } })} // Pass phone number
             />
             <ContactButton
               icon={BiEnvelope}
               title={"Địa chỉ email"}
               info={user?.email}
               nameButton={"Cập nhật"}
-              onClick={""}
+              onClick={() => navigate(path.EDIT_EMAIL, { state: { email: user?.email } })}
             />
             <ContactButton
               icon={BiCurrentLocation}
               title={"Địa chỉ"}
               // info={user?.address}
               nameButton={"Cập nhật"}
-              onClick={""}
+              onClick={() => navigate(path.EDIT_ADDRESS, { state: { address: user?.address } })}
             />
-            <ContactButton icon={BiLockOpenAlt} title={"Đổi mật khẩu"} nameButton={"Cập nhật"} onClick={""} />
+            <ContactButton
+              icon={BiLockOpenAlt}
+              title={"Đổi mật khẩu"}
+              nameButton={"Cập nhật"}
+              onClick={() => navigate(path.EDIT_PASSWORD)}
+            />
           </div>
         </Grid2>
       </Grid2>

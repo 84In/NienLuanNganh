@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { AccountInfo, Footer, Header, Home, Login, ProductDetail } from "./containers/Public";
 import { path } from "./utils/constant";
 import * as action from "./store/actions";
+import { EditContact } from "./components";
 
 function App() {
   const [isModelLogin, setIsModelLogin] = useState(false);
@@ -23,6 +24,10 @@ function App() {
       <Routes>
         <Route path={path.HOME} element={<Home />} />
         <Route path={path.ACCOUNT} element={<AccountInfo />} />
+        <Route path={path.EDIT_PHONE} element={<EditContact />} />
+        <Route path={path.EDIT_EMAIL} element={<EditContact />} />
+        <Route path={path.EDIT_ADDRESS} element={<EditContact />} />
+        <Route path={path.EDIT_PASSWORD} element={<EditContact />} />
         <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
       </Routes>
       <Footer />
