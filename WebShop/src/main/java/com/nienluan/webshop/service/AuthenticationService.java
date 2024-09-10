@@ -77,6 +77,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(token)
                 .authenticated(true)
+                .username(request.getUsername())
                 .build();
     }
 
