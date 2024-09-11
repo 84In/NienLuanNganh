@@ -192,7 +192,8 @@ CREATE TABLE `t_promotions`(
     `end_date` DATE not null,
     `stock_quantity` bigint(20),
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    primary key (`id`)
 );
 
 CREATE TABLE `t_banner_images`(
@@ -200,5 +201,13 @@ CREATE TABLE `t_banner_images`(
     `title` varchar(255) not null ,
     `data` text not null,
     primary key (`id`)
-)
+);
 
+CREATE TABLE `t_products_promotions`
+(
+    `products_id` varchar(255) NOT NULL,
+    `promotions_id` varchar(255) NOT NULL,
+    CONSTRAINT fk_productP FOREIGN KEY(`products_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_promotionP FOREIGN KEY(`promotions_id`) REFERENCES t_promotions(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`products_id`, `promotions_id`)
+);

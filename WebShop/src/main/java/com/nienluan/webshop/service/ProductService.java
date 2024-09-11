@@ -8,12 +8,15 @@ import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.ProductMapper;
 import com.nienluan.webshop.repository.ProductRepository;
+import com.nienluan.webshop.repository.PromotionRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 
 
 @Service
@@ -24,6 +27,7 @@ public class ProductService {
     ProductRepository productRepository;
 
     ProductMapper productMapper;
+    PromotionRepository promotionRepository;
 
 
     public ProductResponse createProduct(ProductRequest request) throws AppException {
@@ -51,6 +55,10 @@ public class ProductService {
         var product = productRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         productMapper.updateProduct(product,request);
+
+        var promotions = promotionRepository.findAllById(request.getPromotions());
+
+        product.setPromotions(new HashSet<>(promotions));
 
         return  productMapper.toProductResponse(productRepository.save(product));
     }

@@ -27,4 +27,7 @@ public class Product {
     BigDecimal stock_quantity;
     String category_id;
     String images;
+
+    @ManyToMany
+    Set<Promotion> promotions;
 }
