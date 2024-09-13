@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
 import { path } from "../../utils/constant";
 
-const AccountInfo = () => {
+const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state?.ValueUser;
@@ -15,9 +15,10 @@ const AccountInfo = () => {
 
   useEffect(() => {
     if (user === undefined || user === null) {
+      setIsModelLogin(true);
       navigate("/");
     }
-  }, [user]);
+  }, [navigate, user]);
 
   return (
     <Grid2

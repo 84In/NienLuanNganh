@@ -1,14 +1,21 @@
 import { Button, InputAdornment, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { useEffect } from "react";
+import React from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPhone } from "react-icons/bi";
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../utils/constant";
 
-const EditContact = () => {
-  const location = useLocation();
+const EditContact = ({ isModelLogin, setIsModelLogin }) => {
+  const { isLoggedIn } = useSelector((state) => state.auth);
 
-  useEffect(() => {}, [location]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  if (isLoggedIn === false) {
+    setIsModelLogin(true);
+    navigate("/");
+  }
 
   return (
     <Grid2
