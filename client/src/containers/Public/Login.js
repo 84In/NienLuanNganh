@@ -12,7 +12,7 @@ const Login = ({ setIsModelLogin }) => {
 
   const location = useLocation();
   useEffect(() => {}, [location]);
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, code } = useSelector((state) => state.auth);
 
   const [payload, setPayload] = useState({
     username: "",
@@ -24,6 +24,13 @@ const Login = ({ setIsModelLogin }) => {
     phone: "",
     dob: "",
   });
+
+  useEffect(() => {
+    if (code === 301) {
+      setError("Tài khoản hoặc mật khẩu chưa chính xác!");
+      console.log(error);
+    }
+  }, [code]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -83,9 +90,9 @@ const Login = ({ setIsModelLogin }) => {
     };
   }, []);
 
-  useEffect(() => {
-    setError("");
-  }, [isLogin]);
+  // useEffect(() => {
+  //   setError("");
+  // }, [isLogin]);
 
   return (
     <Box
