@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
-import { AccountInfo, Home, ProductDetail } from "./containers/Public";
+import { AccountInfo, Home, Page404, ProductDetail } from "./containers/Public";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
-
 function App() {
   const dispath = useDispatch();
   const { isLoggedIn, username } = useSelector((state) => state.auth);
@@ -21,7 +20,7 @@ function App() {
     <div className="flex h-full w-full flex-col items-center gap-4 bg-gray-200">
       <Routes>
         <Route path={path.HOME} element={<Home isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}>
-          <Route path="*" element={<MainContainer />} />
+          <Route index element={<MainContainer />} />
           <Route
             path={path.ACCOUNT}
             element={<AccountInfo isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
@@ -43,6 +42,7 @@ function App() {
             element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
+          <Route path="*" element={<Page404 />} />
         </Route>
       </Routes>
     </div>
