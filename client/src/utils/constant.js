@@ -25,14 +25,15 @@ const product1 = require("../assets/images/product/product1.png");
 
 export const path = {
   HOME: "/*",
-  CART: "/cart",
-  ACCOUNT: "/account",
-  EDIT: "/account/edit/*",
-  EDIT_PHONE: "/account/edit/phone",
-  EDIT_EMAIL: "/account/edit/email",
-  EDIT_PASSWORD: "/account/edit/password",
-  EDIT_ADDRESS: "/account/edit/address",
-  PRODUCT_DETAIL: "/product/:productID",
+  CART: "cart",
+  BASE_ACCOUNT: "account/",
+  ACCOUNT: "account/*",
+  EDIT_PHONE: "edit/phone",
+  EDIT_EMAIL: "edit/email",
+  EDIT_PASSWORD: "edit/password",
+  EDIT_ADDRESS: "edit/address",
+  PRODUCT_DETAIL: "product/:productID",
+  MANAGER_HOME: "/manager/*",
 };
 
 export const banner = [
@@ -152,14 +153,46 @@ export const iconSideBar = [
 ];
 
 export const widgetIcon = [
-  { icon: widget1, text: "TOP DEAL", url: "/product/topdeal" },
-  { icon: widget2, text: "Trading", url: "/product/trading" },
-  { icon: widget3, text: "Coupon siêu hot", url: "/product/coupon" },
-  { icon: widget4, text: "Xả kho nửa giá", url: "/product/xa-kho" },
-  { icon: widget5, text: "Hàng ngoại giá hot", url: "/product/hang-ngoai" },
-  { icon: widget6, text: "Cùng mẹ chăm bé", url: "/product/cham-be" },
-  { icon: widget7, text: "Một sách", url: "/product/mot-sach" },
-  { icon: widget8, text: "Thế giới công nghệ", url: "/product/cong-nghe" },
+  {
+    icon: widget1,
+    text: "TOP DEAL",
+    url: "/product/topdeal",
+  },
+  {
+    icon: widget2,
+    text: "Trading",
+    url: "/product/trading",
+  },
+  {
+    icon: widget3,
+    text: "Coupon siêu hot",
+    url: "/product/coupon",
+  },
+  {
+    icon: widget4,
+    text: "Xả kho nửa giá",
+    url: "/product/xa-kho",
+  },
+  {
+    icon: widget5,
+    text: "Hàng ngoại giá hot",
+    url: "/product/hang-ngoai",
+  },
+  {
+    icon: widget6,
+    text: "Cùng mẹ chăm bé",
+    url: "/product/cham-be",
+  },
+  {
+    icon: widget7,
+    text: "Một sách",
+    url: "/product/mot-sach",
+  },
+  {
+    icon: widget8,
+    text: "Thế giới công nghệ",
+    url: "/product/cong-nghe",
+  },
 ];
 
 export const products = [

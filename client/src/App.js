@@ -1,37 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { AccountInfo, Cart, Footer, Header, Home, Login, ProductDetail } from "./containers/Public";
-import { path } from "./utils/constant";
+import { EditContact, MainContainer } from "./components";
+import { AccountInfo, Home, Page404, Cart, ProductDetail } from "./containers/Public";
 import * as action from "./store/actions";
-import { EditContact } from "./components";
-
+import { path } from "./utils/constant";
 function App() {
-  const [isModelLogin, setIsModelLogin] = useState(false);
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const { isLoggedIn, username } = useSelector((state) => state.auth);
+  const [isModelLogin, setIsModelLogin] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
-      dispath(action.getUserInfo(username));
+      dispatch(action.getUserInfo(username));
     }
-  }, [isLoggedIn, username]);
+  }, [dispatch, isLoggedIn, username]);
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-4 bg-gray-200">
-      <Header isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} isLoggedIn={isLoggedIn} />
-      {isModelLogin && <Login setIsModelLogin={setIsModelLogin} />}
       <Routes>
-        <Route path={path.HOME} element={<Home />} />
-        <Route path={path.ACCOUNT} element={<AccountInfo />} />
-        <Route path={path.EDIT_PHONE} element={<EditContact />} />
-        <Route path={path.EDIT_EMAIL} element={<EditContact />} />
-        <Route path={path.EDIT_ADDRESS} element={<EditContact />} />
-        <Route path={path.EDIT_PASSWORD} element={<EditContact />} />
-        <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
-        <Route path={path.CART} element={<Cart />} />
+        <Route path={path.HOME} element={<Home isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}>
+          <Route index element={<MainContainer />} />
+          <Route
+            path={path.ACCOUNT}
+            element={<AccountInfo isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+          />
+          <Route
+            path={path.BASE_ACCOUNT + path.EDIT_PHONE}
+            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+          />
+          <Route
+            path={path.BASE_ACCOUNT + path.EDIT_EMAIL}
+            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+          />
+          <Route
+            path={path.BASE_ACCOUNT + path.EDIT_ADDRESS}
+            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+          />
+          <Route
+            path={path.BASE_ACCOUNT + path.EDIT_PASSWORD}
+            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+          />
+          <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
+          <Route path="*" element={<Page404 />} />
+          <Route path={path.CART} element={<Cart />} />
+        </Route>
       </Routes>
-      <Footer />
     </div>
   );
 }

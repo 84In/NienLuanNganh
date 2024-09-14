@@ -5,8 +5,10 @@ const SearchBar = ({ IconBefore, TextContent }) => {
     <div className="my-1 flex w-full rounded-md border border-gray-400">
       {IconBefore && <span className="flex items-center justify-center p-1 px-4 py-2">{<IconBefore size={20} />}</span>}
       <input
+        name="search"
         className="flex flex-auto items-center justify-center border-r-[1px] border-gray-400 outline-none"
         type="text"
+        autoComplete="off"
       />
       {TextContent && (
         <span className="flex items-center justify-center">

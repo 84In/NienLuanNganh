@@ -34,7 +34,7 @@ const ButtonCustom = ({
     <div
       className={`${PaddingX ? PaddingX : "px-2"} ${FontWeight ? FontWeight : "font-normal"} ${
         Width ? Width : "w-auto"
-      } ${HoverColor ? HoverColor : "hover:bg-gray-300"} ${Padding ? Padding : "p-2"} group rounded-md`}
+      } ${HoverColor ? HoverColor : "hover:bg-gray-200"} ${Padding ? Padding : "p-2"} group rounded-md`}
     >
       <button
         type={TypeButton || "button"}

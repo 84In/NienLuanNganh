@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo2.png";
 import { ButtonCustom, DotAlert, SearchBar } from "../../components";
 import icons from "../../utils/icons";
-import { useSelector } from "react-redux";
 
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 const defaultAvatar = require("../../assets/images/profile.png");

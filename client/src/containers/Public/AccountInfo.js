@@ -8,7 +8,7 @@ import { path } from "../../utils/constant";
 
 const defaultAvatar = require("../../assets/images/profile.png");
 
-const AccountInfo = () => {
+const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state?.ValueUser;
@@ -16,9 +16,10 @@ const AccountInfo = () => {
 
   useEffect(() => {
     if (user === undefined || user === null) {
+      setIsModelLogin(true);
       navigate("/");
     }
-  }, [user]);
+  }, [navigate, user]);
 
   return (
     <Grid2
@@ -99,9 +100,9 @@ const AccountInfo = () => {
                 <h1 className="w-3/12">Ngày sinh</h1>
                 <div className="w-9/12">
                   <TextField
-                    name="lastName"
+                    name="dob"
                     type="date"
-                    defaultValue={user?.dob}
+                    defaultValue={user?.dob ? user?.dob.split("T")[0] : ""}
                     variant="outlined"
                     size="small"
                     fullWidth
