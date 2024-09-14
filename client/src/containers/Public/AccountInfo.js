@@ -6,12 +6,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
 import { path } from "../../utils/constant";
 
+const defaultAvatar = require("../../assets/images/profile.png");
+
 const AccountInfo = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state?.ValueUser;
   const handleSaveChange = () => {};
-  const defaultAvatar = require("../../assets/images/profile.png");
 
   useEffect(() => {
     if (user === undefined || user === null) {

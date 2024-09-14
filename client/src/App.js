@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import { AccountInfo, Footer, Header, Home, Login, ProductDetail } from "./containers/Public";
+import { AccountInfo, Cart, Footer, Header, Home, Login, ProductDetail } from "./containers/Public";
 import { path } from "./utils/constant";
 import * as action from "./store/actions";
 import { EditContact } from "./components";
@@ -29,6 +29,7 @@ function App() {
         <Route path={path.EDIT_ADDRESS} element={<EditContact />} />
         <Route path={path.EDIT_PASSWORD} element={<EditContact />} />
         <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
+        <Route path={path.CART} element={<Cart />} />
       </Routes>
       <Footer />
     </div>

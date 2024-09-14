@@ -68,7 +68,7 @@ export const banner = [
   },
 ];
 
-export const iconsLeftBar = [
+export const iconSideBar = [
   {
     image: icon1,
     title: "Sách",

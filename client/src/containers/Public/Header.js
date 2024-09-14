@@ -8,6 +8,7 @@ import icons from "../../utils/icons";
 import { useSelector } from "react-redux";
 
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
+const defaultAvatar = require("../../assets/images/profile.png");
 
 const Header = ({ setIsModelLogin, isLoggedIn }) => {
   const navigate = useNavigate();
@@ -64,11 +65,7 @@ const Header = ({ setIsModelLogin, isLoggedIn }) => {
             />
             {isLoggedIn ? (
               <ButtonCustom
-                Avatar={
-                  userData?.avatar
-                    ? userData?.avatar
-                    : "https://scontent.fsgn5-8.fna.fbcdn.net/v/t39.30808-1/457408916_1968503646912827_7878531955205968521_n.jpg?stp=dst-jpg_s200x200&_nc_cat=109&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeGPrAFDvlOlA5KjAN9naNLsxIwWz75rpsbEjBbPvmumxq3tx54-WL-f38LiONi-rihiP1gF2i1-j4tcfMjrOlzg&_nc_ohc=DRfuFMkJPG8Q7kNvgFQLxhU&_nc_ht=scontent.fsgn5-8.fna&oh=00_AYA1-1lfy7dGof9Fz_sxdjB7MgxsnSrTH5m8OQxiW55MUQ&oe=66E35B85"
-                }
+                Avatar={userData?.avatar ? userData?.avatar : defaultAvatar}
                 TextTitle={userData?.lastName && userData?.lastName}
                 ValueUser={userData}
               />
