@@ -26,6 +26,7 @@ public enum ErrorCode {
 
     USER_NOT_EXISTED(301, "User not existed", HttpStatus.NOT_FOUND),
     USER_EXISTED(302, "User existed", HttpStatus.FOUND),
+    INCORRECT_PASSWORD(303, "Incorrect password", HttpStatus.NOT_FOUND),
 
     INTERNAL_SERVER_ERROR(500, "Internal server error", HttpStatus.INTERNAL_SERVER_ERROR);
     private Integer code = 0;
