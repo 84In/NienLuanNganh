@@ -1,8 +1,10 @@
 package com.nienluan.webshop.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,7 +20,8 @@ public class UserResponse {
     String lastName;
     String email;
     String phone;
-    Date dob;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    LocalDate dob;
     String avatar;
 
     Set<RoleResponse> roles;

@@ -51,7 +51,7 @@ public class ApplicationInitConfig {
                         .password(passwordEncoder.encode("admin"))
                         .firstName("admin")
                         .lastName("ADMIN")
-                        .dob(DateUtils.formatDate("1900-01-01"))
+                        .dob(DateUtils.formatStringToLocalDate("1900-01-01"))
                         .phone("18001000")
                         .roles(adminRole)
                         .build();

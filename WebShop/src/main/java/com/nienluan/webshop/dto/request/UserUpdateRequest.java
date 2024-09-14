@@ -3,6 +3,7 @@ package com.nienluan.webshop.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class UserUpdateRequest {
     String lastName;
     String email;
     String phone;
-    Date dob;
+    LocalDate dob;
     String avatar;
 
 

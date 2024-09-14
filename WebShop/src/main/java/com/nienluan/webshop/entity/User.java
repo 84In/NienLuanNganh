@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class User {
     String avatar;
     String email;
     String phone;
-    Date dob;
+    LocalDate dob;
 
     @ManyToMany
     Set<Role> roles;
