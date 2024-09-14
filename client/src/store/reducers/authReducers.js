@@ -14,8 +14,8 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         isLoggedIn: action.data.result.authenticated,
-        token: action.data.result.token,
         message: action.data.message,
+        token: action.data.result.token,
         code: null,
         username: action.data.result.username,
         update: false,
@@ -34,16 +34,9 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         isLoggedIn: false,
-        message: "",
-        token: null,
-        code: null,
-      };
-    case actionTypes.LOGOUT_SUCCESS:
-      return {
-        ...state,
-        isLoggedIn: false,
         message: action.data,
         token: null,
+        code: null,
         username: null,
       };
     default:

@@ -26,7 +26,7 @@ const Login = ({ setIsModelLogin }) => {
   });
 
   useEffect(() => {
-    if (code === 301) {
+    if (code === 301 || code === 303) {
       setError("Tài khoản hoặc mật khẩu chưa chính xác!");
       console.log(error);
     }
@@ -71,28 +71,29 @@ const Login = ({ setIsModelLogin }) => {
   useEffect(() => {
     if (isLoggedIn) {
       setIsModelLogin(false);
-      window.location.reload();
+      // window.location.reload();
     }
   }, [isLoggedIn, setIsModelLogin]);
 
-  const handleClickOutside = (event) => {
-    const box = document.getElementById("box-container");
-    if (box && !box.contains(event.target)) {
-      setIsModelLogin(false);
-      setError("");
-    }
-  };
-
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      const box = document.getElementById("box-container");
+      if (box && !box.contains(event.target)) {
+        setIsModelLogin(false);
+        setError("");
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
+      setError("");
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  // useEffect(() => {
-  //   setError("");
-  // }, [isLogin]);
+  useEffect(() => {
+    setError("");
+  }, [isLogin]);
 
   return (
     <Box
