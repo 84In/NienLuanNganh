@@ -15,3 +15,4 @@ export { default as ProductInfo } from "./Product/ProductInfo";
 export { default as ContactButton } from "./ContactButton";
 export { default as EditContact } from "./EditContact";
 export { default as CartSideBar } from "./CartSideBar";
+export { default as CartItem } from "./CartItem";
