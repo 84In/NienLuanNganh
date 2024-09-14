@@ -1,4 +1,5 @@
 export { default as ButtonCustom } from "./ButtonCustom";
+export { default as CartItem } from "./CartItem";
 export { default as CartSideBar } from "./CartSideBar";
 export { default as ContactButton } from "./ContactButton";
 export { default as DotAlert } from "./DotAlert";
@@ -13,13 +14,7 @@ export { default as CardProduct } from "./Product/CardProduct";
 export { default as Product } from "./Product/Product";
 export { default as ProductCarousel } from "./Product/ProductCarousel";
 export { default as ProductInfo } from "./Product/ProductInfo";
-<<<<<<< HEAD
 export { default as Purchase } from "./Product/Purchase";
 export { default as SearchBar } from "./SearchBar";
 export { default as AdminLogo } from "./System/Home/AdminLogo";
-=======
-export { default as ContactButton } from "./ContactButton";
-export { default as EditContact } from "./EditContact";
-export { default as CartSideBar } from "./CartSideBar";
-export { default as CartItem } from "./CartItem";
->>>>>>> 5fa507e27962870f95cafaf0c1a7fe2dd5e27798
+export { default as AdminNav } from "./System/Home/AdminNav";

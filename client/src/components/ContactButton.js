@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 
 const ContactButton = ({ icon, title, info, nameButton, onClick }) => {
   return (
@@ -22,4 +22,4 @@ const ContactButton = ({ icon, title, info, nameButton, onClick }) => {
   );
 };
 
-export default ContactButton;
+export default memo(ContactButton);

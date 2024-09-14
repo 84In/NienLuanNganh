@@ -1,6 +1,6 @@
-import React from "react";
-import { Card, CardContent, CardMedia, Typography, Box, Rating } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Rating, Typography } from "@mui/material";
 import { styled } from "@mui/system";
+import React, { memo } from "react";
 import { formatCurrency } from "../../utils/format";
 
 const StyledCard = styled(Card)({
@@ -52,4 +52,4 @@ const CardProduct = ({ image, name, price, originalPrice, discount, origin, rati
   );
 };
 
-export default CardProduct;
+export default memo(CardProduct);

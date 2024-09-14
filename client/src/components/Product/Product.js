@@ -1,8 +1,8 @@
-import React from "react";
 import { Box } from "@mui/material";
-import CardProduct from "./CardProduct";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
+import CardProduct from "./CardProduct";
 
 const Product = ({ title, data }) => {
   return (
@@ -31,4 +31,4 @@ const Product = ({ title, data }) => {
   );
 };
 
-export default Product;
+export default memo(Product);

@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
-import React from "react";
-import logo from "../../assets/images/logo2.png";
-import { Link } from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { memo } from "react";
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { TbMessageCircleFilled } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo2.png";
 
 const Footer = () => {
   const supportInfo = [
@@ -144,4 +144,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default memo(Footer);

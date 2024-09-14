@@ -1,5 +1,5 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { useSelector } from "react-redux";
 import { CartItem, CartSideBar } from "../../components";
 
@@ -80,4 +80,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default memo(Cart);

@@ -1,7 +1,7 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { useState } from "react";
-import { ProductCarousel, ProductInfo, Purchase } from "../../components";
+import React, { memo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { ProductCarousel, ProductInfo, Purchase } from "../../components";
 
 import product1 from "../../assets/images/product/product1.png";
 
@@ -54,4 +54,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default memo(ProductDetail);

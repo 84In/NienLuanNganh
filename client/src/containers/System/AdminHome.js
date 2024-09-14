@@ -1,12 +1,12 @@
-import React from "react";
+import React, { memo } from "react";
 import { AdminHeader } from "./";
 
-const AdminHome = () => {
+const AdminHome = ({ user }) => {
   return (
     <div className="w-full">
-      <AdminHeader />
+      <AdminHeader user={user} />
     </div>
   );
 };
 
-export default AdminHome;
+export default memo(AdminHome);

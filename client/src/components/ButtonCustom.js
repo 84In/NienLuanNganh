@@ -1,8 +1,9 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { formatLengthName } from "../utils/format";
 import * as action from "../store/actions";
+import { path } from "../utils/constant";
+import { formatLengthName } from "../utils/format";
 
 const ButtonCustom = ({
   TypeButton,
@@ -20,8 +21,9 @@ const ButtonCustom = ({
   IconSize,
   ClickButton,
   ValueUser,
+  User,
 }) => {
-  const { isLoggedIn, token, message } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -66,19 +68,56 @@ const ButtonCustom = ({
               alt={TextTitle}
               className={`${ImageSize ? ImageSize : "w-full"} ${ImageSize ? ImageSize : "h-6"} rounded-full object-cover`}
             />
-            <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
-              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <Link to={"/account"} state={{ ValueUser }}>
-                  <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Thông tin tài khoản
-                  </p>
-                </Link>
-                <div onClick={handleLogout}>
-                  <p className="block cursor-pointer px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Đăng xuất</p>
+            {User?.roles.some((role) => role.name === "ADMIN") ? (
+              <>
+                <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
+                  <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <Link to={"/account"} state={{ ValueUser }}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Thông tin tài khoản
+                      </p>
+                    </Link>
+                    <Link to={"/"}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Trang Chủ
+                      </p>
+                    </Link>
+                    <Link to={path.MANAGER_HOME}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Trang Quản Lý
+                      </p>
+                    </Link>
+                    <div onClick={handleLogout}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Đăng xuất</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <span className="text-left">{formatLengthName(TextTitle)}</span>
+                <span className="text-left">{formatLengthName(TextTitle)}</span>
+              </>
+            ) : (
+              <>
+                <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
+                  <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <Link to={"/account"} state={{ ValueUser }}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Thông tin tài khoản
+                      </p>
+                    </Link>
+                    {User?.roles.some((role) => role.name === "ADMIN") && (
+                      <Link to={path.MANAGER_HOME}>
+                        <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          Trang Quản Lý
+                        </p>
+                      </Link>
+                    )}
+                    <div onClick={handleLogout}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Đăng xuất</p>
+                    </div>
+                  </div>
+                </div>
+                <span className="text-left">{formatLengthName(TextTitle)}</span>
+              </>
+            )}
           </>
         )}
       </button>

@@ -1,5 +1,5 @@
-import React from "react";
 import { Box } from "@mui/material";
+import React, { memo } from "react";
 
 const ResolutionCard = ({ icon, title }) => {
   return (
@@ -12,4 +12,4 @@ const ResolutionCard = ({ icon, title }) => {
   );
 };
 
-export default ResolutionCard;
+export default memo(ResolutionCard);

@@ -1,15 +1,26 @@
-import React from "react";
-import { AdminLogo } from "../../components";
+import React, { memo } from "react";
+import { AdminLogo, AdminNav, SearchBar } from "../../components";
+import icons from "../../utils/icons";
 
-const AdminHeader = () => {
+const { GoSearch } = icons;
+
+const AdminHeader = ({ user }) => {
   return (
-    <div className="bg-third-color flex h-16 w-full items-center">
-      <div>
+    <div className="flex h-16 w-full items-center gap-3 bg-third-color">
+      <div className="flex w-[288px]">
         <AdminLogo />
       </div>
-      AdminHeader
+      <div className="flex flex-auto items-center justify-start">
+        <div className="pl-2">
+          <SearchBar isAdmin={true} IconBefore={GoSearch} />
+          {/* <div className="flex items-center justify-start">Nav Bar</div> */}
+        </div>
+      </div>
+      <div className="flex">
+        <AdminNav user={user} />
+      </div>
     </div>
   );
 };
 
-export default AdminHeader;
+export default memo(AdminHeader);

@@ -1,11 +1,11 @@
 import { Button, InputAdornment, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React from "react";
+import React, { memo } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPhone } from "react-icons/bi";
+import { IoIosArrowBack } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../utils/constant";
-import { IoIosArrowBack } from "react-icons/io";
 import ButtonCustom from "./ButtonCustom";
 
 const EditContact = ({ isModelLogin, setIsModelLogin }) => {
@@ -199,4 +199,4 @@ const EditContact = ({ isModelLogin, setIsModelLogin }) => {
   );
 };
 
-export default EditContact;
+export default memo(EditContact);

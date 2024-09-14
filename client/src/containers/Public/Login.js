@@ -1,5 +1,5 @@
 import { Alert, Box, Button, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -327,4 +327,4 @@ const Login = ({ setIsModelLogin }) => {
   );
 };
 
-export default Login;
+export default memo(Login);

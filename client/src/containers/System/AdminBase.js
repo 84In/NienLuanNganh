@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 
-const AdminBase = () => {
+const AdminBase = ({ user }) => {
   return <div>AdminBase</div>;
 };
 
-export default AdminBase;
+export default memo(AdminBase);

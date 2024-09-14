@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
-import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo2.png";
 import { ButtonCustom, DotAlert, SearchBar } from "../../components";
@@ -10,9 +9,8 @@ import icons from "../../utils/icons";
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 const defaultAvatar = require("../../assets/images/profile.png");
 
-const Header = ({ setIsModelLogin, isLoggedIn }) => {
+const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
   const navigate = useNavigate();
-  const { userData } = useSelector((state) => state.user);
 
   return (
     <Box
@@ -65,9 +63,10 @@ const Header = ({ setIsModelLogin, isLoggedIn }) => {
             />
             {isLoggedIn ? (
               <ButtonCustom
-                Avatar={userData?.avatar ? userData?.avatar : defaultAvatar}
-                TextTitle={userData?.lastName && userData?.lastName}
-                ValueUser={userData}
+                Avatar={User?.avatar ? User?.avatar : defaultAvatar}
+                TextTitle={User?.lastName && User?.lastName}
+                ValueUser={User}
+                User={User}
               />
             ) : (
               <ButtonCustom
