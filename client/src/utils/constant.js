@@ -27,7 +27,7 @@ export const path = {
   HOME: "/*",
   CART: "cart",
   BASE_ACCOUNT: "account/",
-  ACCOUNT: "account/*",
+  ACCOUNT: "account/",
   EDIT_PHONE: "edit/phone",
   EDIT_EMAIL: "edit/email",
   EDIT_PASSWORD: "edit/password",

@@ -71,7 +71,7 @@ const Login = ({ setIsModelLogin }) => {
   useEffect(() => {
     if (isLoggedIn) {
       setIsModelLogin(false);
-      // window.location.reload();
+      window.location.reload();
     }
   }, [isLoggedIn, setIsModelLogin]);
 

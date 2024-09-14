@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
-import { AccountInfo, Home, Page404, Cart, ProductDetail } from "./containers/Public";
+import { AccountInfo, Cart, Home, Page404, ProductDetail } from "./containers/Public";
+import { AdminBase, AdminHome } from "./containers/System";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
 function App() {
@@ -15,6 +16,8 @@ function App() {
       dispatch(action.getUserInfo(username));
     }
   }, [dispatch, isLoggedIn, username]);
+
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-4 bg-gray-200">
@@ -42,8 +45,12 @@ function App() {
             element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
-          <Route path="*" element={<Page404 />} />
+
           <Route path={path.CART} element={<Cart />} />
+          <Route path="*" element={<Page404 />} />
+        </Route>
+        <Route path={path.MANAGER_HOME} element={<AdminHome />}>
+          <Route index element={<AdminBase />} />
         </Route>
       </Routes>
     </div>
