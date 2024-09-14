@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
+import { Box } from "@mui/material";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import { Box } from "@mui/material";
 
 const ProductCarousel = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -53,4 +53,4 @@ const ProductCarousel = ({ images }) => {
   );
 };
 
-export default ProductCarousel;
+export default memo(ProductCarousel);

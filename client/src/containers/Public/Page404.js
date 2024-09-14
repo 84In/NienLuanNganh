@@ -2,6 +2,7 @@ import { Box, Button } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
+import { path } from "../../utils/constant";
 
 const Page404 = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const Page404 = () => {
         <div className="flex flex-col items-center justify-center gap-2">
           <div className="text-center font-mono text-[180px] text-primary-color">404</div>
           <div className="h-12 text-center text-2xl">Page Not Found</div>
-          <Button variant="contained" onClick={() => navigate("/")}>
+          <Button variant="contained" onClick={() => navigate(path.HOME)}>
             Trở lại trang chủ
           </Button>
         </div>

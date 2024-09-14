@@ -1,8 +1,8 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
-import { widgetIcon } from "../../utils/constant";
-import { Link } from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { memo } from "react";
+import { Link } from "react-router-dom";
+import { widgetIcon } from "../../utils/constant";
 
 const Widget = () => {
   return (
@@ -35,4 +35,4 @@ const Widget = () => {
   );
 };
 
-export default Widget;
+export default memo(Widget);

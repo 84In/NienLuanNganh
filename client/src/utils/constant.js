@@ -24,16 +24,15 @@ const widget8 = require("../assets/images/widget/widget8.png");
 const product1 = require("../assets/images/product/product1.png");
 
 export const path = {
-  HOME: "/*",
-  CART: "cart",
-  BASE_ACCOUNT: "account/",
-  ACCOUNT: "account/*",
-  EDIT_PHONE: "edit/phone",
-  EDIT_EMAIL: "edit/email",
-  EDIT_PASSWORD: "edit/password",
-  EDIT_ADDRESS: "edit/address",
-  PRODUCT_DETAIL: "product/:productID",
-  MANAGER_HOME: "/manager/*",
+  HOME: "/",
+  CART: "cart/",
+  ACCOUNT: "account/",
+  EDIT_PHONE: "edit/phone/",
+  EDIT_EMAIL: "edit/email/",
+  EDIT_PASSWORD: "edit/password/",
+  EDIT_ADDRESS: "edit/address/",
+  PRODUCT_DETAIL: "product/:productID/",
+  MANAGER_HOME: "/manager/",
 };
 
 export const banner = [

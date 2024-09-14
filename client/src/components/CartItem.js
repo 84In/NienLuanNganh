@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { formatCurrency } from "../utils/format";
 import { IconButton, TextField } from "@mui/material";
+import React, { memo, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BiTrash } from "react-icons/bi";
+import { formatCurrency } from "../utils/format";
 
 const product1 = require("../assets/images/product/product1.png");
 
@@ -103,4 +103,4 @@ const CartItem = () => {
   );
 };
 
-export default CartItem;
+export default memo(CartItem);

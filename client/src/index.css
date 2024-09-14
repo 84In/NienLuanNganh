@@ -8,10 +8,13 @@
 #docs-root {
   --primary-color: #1976d2;
   --secondary-color: #1565c0;
+  --third-color: #5951da;
   --error-color: #d32f2f;
 }
+
 * {
-  font-family: "Open Sans", sans-serif; /* Thay đổi từ Poppins sang Open Sans */
+  font-family: "Open Sans", sans-serif;
+  /* Thay đổi từ Poppins sang Open Sans */
   scroll-behavior: smooth;
 }
 
@@ -23,15 +26,18 @@
 
 .slick-prev::before,
 .slick-next::before {
-  display: none; /* Ẩn mũi tên mặc định của slick */
+  display: none;
+  /* Ẩn mũi tên mặc định của slick */
 }
 
 .slick-prev {
-  left: 10px !important; /* Điều chỉnh vị trí nút Prev */
+  left: 10px !important;
+  /* Điều chỉnh vị trí nút Prev */
 }
 
 .slick-next {
-  right: 10px !important; /* Điều chỉnh vị trí nút Next */
+  right: 10px !important;
+  /* Điều chỉnh vị trí nút Next */
 }
 
 /* Swiper */

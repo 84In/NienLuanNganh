@@ -1,18 +1,17 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
-import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo2.png";
 import { ButtonCustom, DotAlert, SearchBar } from "../../components";
 import icons from "../../utils/icons";
+import { path } from "../../utils/constant";
 
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 const defaultAvatar = require("../../assets/images/profile.png");
 
-const Header = ({ setIsModelLogin, isLoggedIn }) => {
+const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
   const navigate = useNavigate();
-  const { userData } = useSelector((state) => state.user);
 
   return (
     <Box
@@ -35,7 +34,7 @@ const Header = ({ setIsModelLogin, isLoggedIn }) => {
         sx={{ display: "flex", rowGap: "1rem", justifyContent: "space-between", alignItems: "center" }}
       >
         <Grid2 item xs={12} md={2} lg={2} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Link to={"/"}>
+          <Link to={path.HOME}>
             <img className="h-[40px] w-[150px] max-w-none object-contain" src={logo} alt="logo" />
           </Link>
         </Grid2>
@@ -61,13 +60,13 @@ const Header = ({ setIsModelLogin, isLoggedIn }) => {
               FontWeight={"font-medium"}
               HoverColor={"hover:bg-blue-100"}
               IconBefore={GoHomeFill}
-              ClickButton={() => navigate("/")}
+              ClickButton={() => navigate(path.HOME)}
             />
             {isLoggedIn ? (
               <ButtonCustom
-                Avatar={userData?.avatar ? userData?.avatar : defaultAvatar}
-                TextTitle={userData?.lastName && userData?.lastName}
-                ValueUser={userData}
+                Avatar={User?.avatar ? User?.avatar : defaultAvatar}
+                TextTitle={User?.lastName && User?.lastName}
+                User={User}
               />
             ) : (
               <ButtonCustom
@@ -90,7 +89,7 @@ const Header = ({ setIsModelLogin, isLoggedIn }) => {
               FontWeight={"font-medium"}
               HoverColor={"hover:bg-blue-100"}
               TextTitle={<DotAlert />}
-              ClickButton={() => navigate("/cart")}
+              ClickButton={() => navigate(path.CART)}
             />
           </Grid2>
           {/* <div className="flex items-center justify-center">Giao đến ABC</div> */}

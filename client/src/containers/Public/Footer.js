@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
-import React from "react";
-import logo from "../../assets/images/logo2.png";
-import { Link } from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { memo } from "react";
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { TbMessageCircleFilled } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo2.png";
+import { path } from "../../utils/constant";
 
 const Footer = () => {
   const supportInfo = [
@@ -87,7 +88,7 @@ const Footer = () => {
           md={6}
           sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2 }}
         >
-          <Link to={"/"}>
+          <Link to={path.HOME}>
             <img className="h-[80px] w-[210px] max-w-none cursor-pointer object-contain" src={logo} alt="logo" />
           </Link>
           <h3 className="text-justify text-gray-500">
@@ -144,4 +145,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default memo(Footer);

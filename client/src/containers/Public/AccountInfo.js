@@ -11,13 +11,13 @@ const defaultAvatar = require("../../assets/images/profile.png");
 const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const user = location.state?.ValueUser;
+  const user = location.state?.User;
   const handleSaveChange = () => {};
 
   useEffect(() => {
     if (user === undefined || user === null) {
       setIsModelLogin(true);
-      navigate("/");
+      navigate(path.HOME);
     }
   }, [navigate, user]);
 
