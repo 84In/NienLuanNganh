@@ -104,3 +104,28 @@
     rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 }
+
+/* Custom scrollbar styles */
+.custom-scrollbar {
+  overflow-y: auto; /* Ensure the scrollbar appears */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color on hover */
+}
+
+/* Custom checkbox */
+.custom-checkbox {
+  accent-color: var(--primary-color);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

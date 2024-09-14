@@ -43,7 +43,11 @@ const Cart = () => {
           className="text-gray-500"
         >
           <div className="flex w-5/12 items-center gap-2 text-black">
-            <input type="checkbox" name="" className="h-4 w-4 text-blue-500 transition duration-150 ease-in-out" />
+            <input
+              type="checkbox"
+              name=""
+              className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
+            />
             <p>Tất cả</p>
           </div>
           <div className="flex w-2/12 items-center justify-center">Đơn giá</div>
@@ -65,8 +69,8 @@ const Cart = () => {
             width: "100%",
             height: "fit-content",
             maxHeight: "100vh",
-            overflowY: "auto",
           }}
+          className="custom-scrollbar"
         >
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
             <CartItem key={index} />

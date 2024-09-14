@@ -24,7 +24,11 @@ const CartItem = () => {
   return (
     <div className="flex">
       <div className="flex w-5/12 items-center gap-2 text-black">
-        <input type="checkbox" name="" className="h-4 w-4 text-blue-500 transition duration-150 ease-in-out" />
+        <input
+          type="checkbox"
+          name=""
+          className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
+        />
         <div className="flex w-full flex-col items-center justify-start gap-1 grid-md:flex-row">
           <img
             src={product1}
