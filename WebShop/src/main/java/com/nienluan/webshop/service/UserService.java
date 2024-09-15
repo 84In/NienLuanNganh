@@ -40,10 +40,13 @@ public class UserService {
         if (userRepository.existsByUsername(request.getUsername())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
+        if (userRepository.existsByPhone(request.getPhone())){
+            throw new AppException(ErrorCode.PHONE_EXISTED);
+        }
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        log.info("User created: {}", user.toString());
+        log.info("User created: {}", user);
         Optional<Role> role = roleRepository.findById("USER");
         Set<Role> roles = new HashSet<>();
         roles.add(role.stream().findFirst().get());
