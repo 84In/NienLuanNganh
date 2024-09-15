@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
 import { AccountInfo, Cart, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
 import { AdminBase, AdminHome, AdminProduct, AdminUser } from "./containers/System";
-import PrivateAdminFilterRouter from "./router/filter/PrivateAdminFilterRouter";
+import { PrivateAdminFilterRouter, PrivateRoute } from "./router";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
+
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize useNavigate
   const { isLoggedIn, username } = useSelector((state) => state.auth);
   const [isModelLogin, setIsModelLogin] = useState(false);
 
@@ -20,6 +22,11 @@ function App() {
 
   const { userData } = useSelector((state) => state.user);
 
+  const handleAccessDenied = () => {
+    setIsModelLogin(true); // Set model login to true
+    navigate(path.HOME); // Optionally navigate to home or another route
+  };
+
   return (
     <div className="flex h-full w-full flex-col items-center gap-4 bg-gray-200">
       <Routes>
@@ -30,28 +37,45 @@ function App() {
           <Route index element={<MainContainer />} />
           <Route
             path={path.ACCOUNT}
-            element={<AccountInfo isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+            element={
+              <PrivateRoute element={<AccountInfo />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
           />
           <Route
             path={path.ACCOUNT + path.EDIT_PHONE}
-            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+            element={
+              <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
           />
           <Route
             path={path.ACCOUNT + path.EDIT_EMAIL}
-            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+            element={
+              <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
           />
           <Route
             path={path.ACCOUNT + path.EDIT_ADDRESS}
-            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+            element={
+              <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
           />
           <Route
             path={path.ACCOUNT + path.EDIT_PASSWORD}
-            element={<EditContact isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+            element={
+              <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
+          />
+          <Route
+            path={path.CART}
+            element={<PrivateRoute element={<Cart />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />}
+          />
+          <Route
+            path={path.ORDER_HISTORY}
+            element={
+              <PrivateRoute element={<OrderHistory />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
-
-          <Route path={path.CART} element={<Cart />} />
-          <Route path={path.ORDER_HISTORY} element={<OrderHistory />} />
           <Route path="*" element={<Page404 />} />
         </Route>
         <Route

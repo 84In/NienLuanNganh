@@ -7,7 +7,7 @@ const PrivateAdminFilterRouter = ({ element: Element, roles, ...rest }) => {
   const { userData } = useSelector((state) => state.user);
 
   if (!isLoggedIn) {
-    return <Navigate to={"/" + path.ACCOUNT} />;
+    return <Navigate to={path.HOME + path.ACCOUNT} />;
   }
 
   if (roles && userData?.roles && !userData.roles.some((role) => roles.includes(role.name))) {

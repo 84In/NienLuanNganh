@@ -14,13 +14,6 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
   const user = location.state?.User;
   const handleSaveChange = () => {};
 
-  useEffect(() => {
-    if (user === undefined || user === null) {
-      setIsModelLogin(true);
-      navigate(path.HOME);
-    }
-  }, [navigate, user]);
-
   return (
     <Grid2
       container

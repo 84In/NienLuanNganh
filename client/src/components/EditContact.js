@@ -8,16 +8,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../utils/constant";
 import ButtonCustom from "./ButtonCustom";
 
-const EditContact = ({ isModelLogin, setIsModelLogin }) => {
-  const { isLoggedIn } = useSelector((state) => state.auth);
-
+const EditContact = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  if (isLoggedIn === false) {
-    setIsModelLogin(true);
-    navigate(path.HOME);
-  }
 
   return (
     <Grid2
