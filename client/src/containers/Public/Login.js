@@ -30,7 +30,7 @@ const Login = ({ setIsModelLogin }) => {
       setError("Tài khoản hoặc mật khẩu chưa chính xác!");
       console.log(error);
     }
-  }, [code]);
+  }, [code, error]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {

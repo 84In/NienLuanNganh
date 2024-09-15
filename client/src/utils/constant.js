@@ -32,6 +32,7 @@ export const path = {
   EDIT_PASSWORD: "edit/password/",
   EDIT_ADDRESS: "edit/address/",
   PRODUCT_DETAIL: "product/:productID/",
+  ORDER_HISTORY: "order/history/",
   MANAGER_HOME: "/manager/",
 };
 

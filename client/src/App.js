@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
-import { AccountInfo, Cart, Home, Page404, ProductDetail } from "./containers/Public";
+import { AccountInfo, Cart, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
 import { AdminBase, AdminHome } from "./containers/System";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
@@ -50,6 +50,7 @@ function App() {
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
 
           <Route path={path.CART} element={<Cart />} />
+          <Route path={path.ORDER_HISTORY} element={<OrderHistory />} />
           <Route path="*" element={<Page404 />} />
         </Route>
         <Route path={path.MANAGER_HOME} element={<AdminHome user={userData} />}>
