@@ -43,7 +43,7 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        log.info("User created: {}", user);
+        log.info("User created: {}", user.toString());
         Optional<Role> role = roleRepository.findById("USER");
         Set<Role> roles = new HashSet<>();
         roles.add(role.stream().findFirst().get());

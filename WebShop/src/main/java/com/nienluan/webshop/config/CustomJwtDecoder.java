@@ -1,5 +1,7 @@
 package com.nienluan.webshop.config;
 
+import com.nienluan.webshop.exception.AppException;
+import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.service.AuthenticationService;
 import com.nienluan.webshop.dto.request.IntrospectRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,6 @@ public class CustomJwtDecoder implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) {
-
-
         var response  = authenticationService.introspect(IntrospectRequest.builder()
                 .token(token)
                 .build());

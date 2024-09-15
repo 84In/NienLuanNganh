@@ -87,7 +87,7 @@ public class AuthenticationService {
 
         try {
             verifyToken(token, false);
-        }catch (AppException | ParseException | JOSEException e){
+        }catch (AppException e){
             isValid = false;
         }
 
@@ -96,21 +96,25 @@ public class AuthenticationService {
                 .build();
     }
 
-    private SignedJWT verifyToken(String token, boolean isRefresh) throws ParseException, JOSEException {
-        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
-        SignedJWT signedJWT = SignedJWT.parse(token);
+    private SignedJWT verifyToken(String token, boolean isRefresh){
+        SignedJWT signedJWT = null;
+        try {
+            JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+            signedJWT = SignedJWT.parse(token);
+            Date expiration = (isRefresh)?
+                    new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESH_DURATION,ChronoUnit.HOURS).toEpochMilli())
+                    :signedJWT.getJWTClaimsSet().getExpirationTime();
 
-        Date expiration = (isRefresh)?
-                new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESH_DURATION,ChronoUnit.HOURS).toEpochMilli())
-                :signedJWT.getJWTClaimsSet().getExpirationTime();
+            var verified = signedJWT.verify(verifier);
 
-        var verified = signedJWT.verify(verifier);
+            if(!verified && expiration.after(new Date())){
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
 
-        if(!verified && expiration.after(new Date())){
-            throw new AppException(ErrorCode.UNAUTHORIZED);
-        }
-
-        if (tokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
+            if (tokenRepository.existsById(signedJWT.getJWTClaimsSet().getJWTID())) {
+                throw new AppException(ErrorCode.UNAUTHORIZED);
+            }
+        } catch (ParseException | JOSEException e) {
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
 
@@ -129,7 +133,7 @@ public class AuthenticationService {
                     .expiryTime(expirationDate)
                     .build();
             tokenRepository.save(invalidatedToken);
-        }catch (ParseException | JOSEException e ){
+        }catch (ParseException e ){
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
         }
     }
@@ -160,7 +164,7 @@ public class AuthenticationService {
                     .token(token)
                     .authenticated(true)
                     .build();
-        }catch (ParseException | JOSEException e){
+        }catch (ParseException e){
             throw new AppException(ErrorCode.UNAUTHORIZED);
         }
 
