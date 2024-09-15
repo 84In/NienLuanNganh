@@ -1,5 +1,5 @@
 import { Box, Rating } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 
 const defaultAvatar = require("../../assets/images/profile.png");
 
@@ -22,4 +22,4 @@ const ReviewItem = ({ rating }) => {
   );
 };
 
-export default ReviewItem;
+export default memo(ReviewItem);

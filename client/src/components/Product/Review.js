@@ -1,5 +1,5 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React from "react";
+import React, { memo } from "react";
 import { Box, LinearProgress, Rating } from "@mui/material";
 import ReviewItem from "./ReviewItem";
 
@@ -69,4 +69,4 @@ const Review = () => {
   );
 };
 
-export default Review;
+export default memo(Review);

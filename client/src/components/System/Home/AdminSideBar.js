@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { AdminNavButton } from "../../";
 import { adminSideBar } from "../../../utils/constant";
 
@@ -17,4 +17,4 @@ const AdminSideBar = () => {
   );
 };
 
-export default AdminSideBar;
+export default memo(AdminSideBar);

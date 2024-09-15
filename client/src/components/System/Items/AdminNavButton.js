@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { NavLink } from "react-router-dom";
 
 const active = "flex gap-4 p-2 item-center rounded-md bg-gray-200";
@@ -26,4 +26,4 @@ const AdminNavButton = ({ Icon, path, title, sizeIC }) => {
   );
 };
 
-export default AdminNavButton;
+export default memo(AdminNavButton);

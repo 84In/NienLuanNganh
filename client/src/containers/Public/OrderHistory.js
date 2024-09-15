@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 
 const OrderHistory = () => {
   return <div>OrderHistory</div>;
 };
 
-export default OrderHistory;
+export default memo(OrderHistory);

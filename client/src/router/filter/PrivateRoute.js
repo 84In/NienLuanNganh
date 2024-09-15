@@ -7,7 +7,7 @@ const PrivateRoute = ({ element, isLoggedIn, onAccessDenied }) => {
     onAccessDenied(); // Trigger the callback
   }
 
-  return isLoggedIn ? element : <Navigate to={path.HOME} />;
+  return element;
 };
 
 export default PrivateRoute;
