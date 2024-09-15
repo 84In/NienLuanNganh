@@ -6,7 +6,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function (config) {
-    if (config.url.startsWith("/api/v1/auth")) {
+    if (config.url.startsWith("/api/v1/auth") || config.url.startsWith("/api/v1/users")) {
       // Thêm token vào header cho các yêu cầu không phải auth
       return config;
     } else {
