@@ -2,23 +2,25 @@ import { apiLogin, apiLogout, apiRegister } from "../../services";
 import actionTypes from "./actionType";
 
 export const register = (payload) => async (dispatch) => {
+  let response = null;
   try {
-    const response = await apiRegister(payload);
-    if (response?.code === 0) {
+    response = await apiRegister(payload);
+    console.log(response);
+    if (response?.data.code === 0) {
       dispatch({
         type: actionTypes.REGISTER_SUCCESS,
-        data: response.result.user,
+        data: response?.data.result.user,
       });
     } else {
       dispatch({
         type: actionTypes.REGISTER_FAIL,
-        data: response.message,
+        data: response?.data.code,
       });
     }
   } catch (error) {
     dispatch({
       type: actionTypes.REGISTER_FAIL,
-      data: null,
+      data: response,
     });
   }
 };
@@ -28,11 +30,11 @@ export const login = (payload) => async (dispatch) => {
 
   try {
     response = await apiLogin(payload);
-
+    console.log(response);
     if (response?.data.code === 0) {
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
-        data: response.data,
+        data: response?.data,
       });
     } else {
       dispatch({
@@ -41,6 +43,7 @@ export const login = (payload) => async (dispatch) => {
       });
     }
   } catch (error) {
+    console.log(error);
     dispatch({
       type: actionTypes.LOGIN_FAIL,
       data: response,
@@ -58,5 +61,7 @@ export const logout = (token) => async (dispatch) => {
         data: response?.data.message,
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };

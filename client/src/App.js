@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
 import { AccountInfo, Cart, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
-import { AdminBase, AdminHome } from "./containers/System";
+import { AdminBase, AdminHome, AdminProduct, AdminUser } from "./containers/System";
+import PrivateAdminFilterRouter from "./router/filter/PrivateAdminFilterRouter";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
 function App() {
@@ -53,8 +54,19 @@ function App() {
           <Route path={path.ORDER_HISTORY} element={<OrderHistory />} />
           <Route path="*" element={<Page404 />} />
         </Route>
-        <Route path={path.MANAGER_HOME} element={<AdminHome user={userData} />}>
+        <Route
+          path={path.MANAGER_HOME}
+          element={<PrivateAdminFilterRouter element={AdminHome} roles={["ADMIN"]} user={userData} />}
+        >
           <Route index element={<AdminBase user={userData} />} />
+          <Route
+            path={path.ADMIN_USER}
+            element={<PrivateAdminFilterRouter element={AdminUser} roles={["ADMIN"]} user={userData} />}
+          />
+          <Route
+            path={path.ADMIN_PRODUCT}
+            element={<PrivateAdminFilterRouter element={AdminProduct} roles={["ADMIN"]} user={userData} />}
+          />
         </Route>
       </Routes>
     </div>

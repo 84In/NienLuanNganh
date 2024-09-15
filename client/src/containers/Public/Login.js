@@ -26,11 +26,16 @@ const Login = ({ setIsModelLogin }) => {
   });
 
   useEffect(() => {
-    if (code === 301 || code === 303) {
+    if (code === 303 || code === 301) {
       setError("Tài khoản hoặc mật khẩu chưa chính xác!");
-      console.log(error);
     }
-  }, [code, error]);
+    if (code === 304) {
+      setError("Số điện thoại đã được sử dụng!");
+    }
+    if (code === 302) {
+      setError("Tên tài khoản đã được sử dụng!");
+    }
+  }, [code]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {

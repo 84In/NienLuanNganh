@@ -1,9 +1,21 @@
+import {
+  BiCreditCard,
+  BiFile,
+  BiGift,
+  BiLogoProductHunt,
+  BiSolidDashboard,
+  BiSolidUserAccount,
+  BiSync,
+} from "react-icons/bi";
 import banner1 from "../assets/images/banner/banner1.png.webp";
 import banner2 from "../assets/images/banner/banner2.png.webp";
 import banner3 from "../assets/images/banner/banner3.png.webp";
 import banner4 from "../assets/images/banner/banner4.jpg.webp";
 import banner5 from "../assets/images/banner/banner5.png.webp";
 import banner6 from "../assets/images/banner/banner6.png.webp";
+import icons from "./icons";
+
+const {} = icons;
 
 const icon1 = require("../assets/images/icons/left-bar-icon1.png.webp");
 const icon2 = require("../assets/images/icons/left-bar-icon2.png.webp");
@@ -34,7 +46,47 @@ export const path = {
   PRODUCT_DETAIL: "product/:productID/",
   ORDER_HISTORY: "order/history/",
   MANAGER_HOME: "/manager/",
+  ADMIN_USER: "user/",
+  ADMIN_PRODUCT: "product/",
 };
+
+export const adminSideBar = [
+  {
+    name: "Dashboard",
+    path: "",
+    icon: BiSolidDashboard,
+  },
+  {
+    name: "User",
+    path: "user",
+    icon: BiSolidUserAccount,
+  },
+  {
+    name: "Product",
+    path: "product",
+    icon: BiLogoProductHunt,
+  },
+  {
+    name: "Order",
+    path: "order",
+    icon: BiGift,
+  },
+  {
+    name: "Preview",
+    path: "preview",
+    icon: BiFile,
+  },
+  {
+    name: "Payment",
+    path: "payment",
+    icon: BiCreditCard,
+  },
+  {
+    name: "Convert Image",
+    path: "convert-image",
+    icon: BiSync,
+  },
+];
 
 export const banner = [
   {
