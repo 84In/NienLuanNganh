@@ -1,3 +1,12 @@
+import {
+  BiCreditCard,
+  BiFile,
+  BiGift,
+  BiLogoProductHunt,
+  BiSolidDashboard,
+  BiSolidUserAccount,
+  BiSync,
+} from "react-icons/bi";
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
 import { GoHomeFill, GoSearch } from "react-icons/go";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -9,5 +18,12 @@ const icons = {
   GoSearch,
   RiLogoutBoxLine,
   IoNotificationsOutline,
+  BiSolidDashboard,
+  BiSolidUserAccount,
+  BiLogoProductHunt,
+  BiGift,
+  BiFile,
+  BiCreditCard,
+  BiSync,
 };
 export default icons;
