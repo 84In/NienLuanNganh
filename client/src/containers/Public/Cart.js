@@ -7,6 +7,8 @@ const Cart = () => {
   const { userData } = useSelector((state) => state.user);
   const [quantity, setQuantity] = useState(1);
 
+  const carts = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   const minQuantity = 1;
   const maxQuantity = 50;
   const price = 180000;
@@ -72,8 +74,13 @@ const Cart = () => {
           }}
           className="custom-scrollbar"
         >
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
-            <CartItem key={index} />
+          {carts.map((item, index) => (
+            <>
+              <CartItem key={index} />
+              {carts.length - 1 !== index && (
+                <hr className="flex h-[2px] w-full items-center justify-center bg-gray-400 px-4" />
+              )}
+            </>
           ))}
         </Grid2>
       </Grid2>

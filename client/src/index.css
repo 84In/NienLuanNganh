@@ -114,6 +114,7 @@
 /* Custom scrollbar styles */
 .custom-scrollbar {
   overflow-y: auto; /* Ensure the scrollbar appears */
+  overflow-x: hidden;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

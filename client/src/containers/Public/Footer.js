@@ -86,7 +86,14 @@ const Footer = () => {
           item
           xs={12}
           md={6}
-          sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 2 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingY: 2,
+            paddingX: { xs: 0, md: 2 },
+          }}
         >
           <Link to={path.HOME}>
             <img className="h-[80px] w-[210px] max-w-none cursor-pointer object-contain" src={logo} alt="logo" />
@@ -102,7 +109,14 @@ const Footer = () => {
             item
             container
             xs={6}
-            sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 2, gap: 1 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              paddingY: 2,
+              paddingX: { xs: 0, md: 2 },
+              gap: 1,
+            }}
           >
             <h2 className="text-lg font-semibold">Hỗ trợ khách hàng</h2>
             <div className="flex flex-col gap-1">
@@ -119,7 +133,14 @@ const Footer = () => {
             item
             container
             xs={6}
-            sx={{ display: "flex", flexDirection: "column", justifyContent: "flex-start", padding: 2, gap: 1 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              paddingY: 2,
+              paddingX: { xs: 0, md: 2 },
+              gap: 1,
+            }}
           >
             <h2 className="text-lg font-semibold">Kết nối với chúng tôi</h2>
             {creator.map((item, index) => (
@@ -136,7 +157,7 @@ const Footer = () => {
             ))}
           </Grid2>
         </Grid2>
-        <hr className="mx-4 flex h-[2px] w-full items-center justify-center bg-gray-400" />
+        <hr className="flex h-[2px] w-full items-center justify-center bg-gray-400 px-4" />
         <div className="flex w-full items-center justify-center p-2 text-center">
           <h2 className="align-middle">&copy; VanouS 2024</h2>
         </div>

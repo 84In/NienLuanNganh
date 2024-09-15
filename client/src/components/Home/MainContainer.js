@@ -23,7 +23,7 @@ const MainContainer = () => {
             <Widget />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
-            <Product data={products} title={"Danh mục sản phẩm"} />
+            <Product products={products} title={"Danh mục sản phẩm"} />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Resolution />

@@ -24,7 +24,7 @@ const ProductName = styled(Typography)({
   maxHeight: "2.4em",
 });
 
-const CardProduct = ({ image, name, price, originalPrice, discount, origin, rating }) => {
+const CardProduct = ({ image, name, description, price, originalPrice, discount, origin, rating }) => {
   return (
     <Box display="flex" flexDirection="column" alignItems="center" height="100%">
       <StyledCard className="product-hover">

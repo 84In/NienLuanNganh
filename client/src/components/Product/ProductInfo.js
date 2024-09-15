@@ -2,6 +2,9 @@ import { Box, Rating } from "@mui/material";
 import React, { memo } from "react";
 import { formatCurrency } from "../../utils/format";
 
+import image1 from "../../assets/images/icons/product_info1.png";
+import image2 from "../../assets/images/icons/product_info2.png";
+
 const ProductInfo = ({ product }) => {
   return (
     <Box
@@ -10,11 +13,15 @@ const ProductInfo = ({ product }) => {
         p: 1,
         display: "flex",
         flexDirection: "column",
-        rowGap: "1rem",
+        rowGap: 2,
         width: "100%",
         height: "fit-content",
       }}
     >
+      <div className="flex h-5 gap-2">
+        <img src={image1} className="w-24" alt="Product Info 1" />
+        <img src={image2} className="w-28" alt="Product Info 2" />
+      </div>
       <h1 className="text-justify text-xl font-semibold">{product.name}</h1>
       <div className="flex items-center justify-start font-semibold">
         {product.rating}{" "}
@@ -37,6 +44,9 @@ const ProductInfo = ({ product }) => {
         ) : (
           <p className="text-black-500 text-3xl font-bold">{formatCurrency(product.price)}</p>
         )}
+      </div>
+      <div className="text-justify text-gray-600">
+        <p>{product.description}</p>
       </div>
     </Box>
   );
