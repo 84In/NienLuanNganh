@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useEffect } from "react";
+import React, { memo } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
@@ -33,8 +33,8 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
           height: "fit-content",
         }}
       >
-        <Grid2 item xs={12} md={6} sx={{ p: 2 }}>
-          <h1 className="mb-4 text-gray-500">Thông tin cá nhân</h1>
+        <Grid2 item xs={12} md={6} sx={{ px: { xs: 0, md: 2 }, py: 2 }}>
+          <h1 className="mb-4 text-lg font-semibold">Thông tin cá nhân</h1>
           <div className="flex justify-between gap-4">
             <div className="relative h-20 w-20 grid-md:h-24 grid-md:w-24">
               <img
@@ -64,7 +64,7 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
             </div>
             <div className="flex w-8/12 flex-col gap-6">
               <div className="flex">
-                <h1 className="w-3/12">Họ</h1>
+                <h1 className="w-3/12 text-gray-500">Họ</h1>
                 <div className="w-9/12">
                   <TextField
                     name="firstName"
@@ -77,7 +77,7 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
                 </div>
               </div>
               <div className="flex">
-                <h1 className="w-3/12">Tên</h1>
+                <h1 className="w-3/12 text-gray-500">Tên</h1>
                 <div className="w-9/12">
                   <TextField
                     name="lastName"
@@ -90,7 +90,7 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
                 </div>
               </div>
               <div className="flex">
-                <h1 className="w-3/12">Ngày sinh</h1>
+                <h1 className="w-3/12 text-gray-500">Ngày sinh</h1>
                 <div className="w-9/12">
                   <TextField
                     name="dob"
@@ -114,8 +114,8 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
             </div>
           </div>
         </Grid2>
-        <Grid2 xs={12} md={6} sx={{ p: 2 }}>
-          <h1 className="mb-4 text-gray-500">Thông tin liên lạc</h1>
+        <Grid2 xs={12} md={6} sx={{ px: { xs: 0, md: 2 }, py: 2 }}>
+          <h1 className="mb-4 text-lg font-semibold">Thông tin liên lạc</h1>
           <div className="flex flex-col gap-10">
             <ContactButton
               icon={BiPhone}

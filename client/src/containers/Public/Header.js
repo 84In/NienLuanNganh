@@ -39,9 +39,8 @@ const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
           </Link>
         </Grid2>
         <Grid2 item xs={12} md={5} lg={6} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <div className="w-full pl-2">
-            <SearchBar IconBefore={GoSearch} TextContent={"Tìm kiếm"} />
-            {/* <div className="flex items-center justify-start">Nav Bar</div> */}
+          <div className="w-full px-2">
+            <SearchBar IconBefore={GoSearch} TextContent={"Tìm kiếm"} Name={"search"} />
           </div>
         </Grid2>
         <Grid2

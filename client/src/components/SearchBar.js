@@ -1,11 +1,13 @@
 import React, { memo } from "react";
 
-const SearchBar = ({ isAdmin, IconBefore, TextContent }) => {
+const SearchBar = ({ isAdmin, IconBefore, TextContent, Name }) => {
   return (
     <div className={`my-1 flex w-full rounded-md ${isAdmin ? "bg-white" : ""} border border-gray-400`}>
-      {IconBefore && <span className="flex items-center justify-center p-1 px-4 py-2">{<IconBefore size={20} />}</span>}
+      {IconBefore && (
+        <span className="flex items-center justify-center p-1 px-4 py-2 text-gray-500">{<IconBefore size={20} />}</span>
+      )}
       <input
-        name="search"
+        name={Name}
         className={`flex flex-auto items-center justify-center border-r-[1px] border-gray-400 outline-none ${TextContent ? "" : "rounded-r-md"}`}
         type="text"
         autoComplete="off"

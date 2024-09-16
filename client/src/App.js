@@ -10,7 +10,7 @@ import { path } from "./utils/constant";
 
 function App() {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const { isLoggedIn, username } = useSelector((state) => state.auth);
   const [isModelLogin, setIsModelLogin] = useState(false);
 
@@ -23,8 +23,8 @@ function App() {
   const { userData } = useSelector((state) => state.user);
 
   const handleAccessDenied = () => {
-    setIsModelLogin(true); // Set model login to true
-    navigate(path.HOME); // Optionally navigate to home or another route
+    setIsModelLogin(true);
+    navigate(path.HOME);
   };
 
   return (
