@@ -26,3 +26,27 @@ export const apiUserInfo = (username) =>
       reject(error);
     }
   });
+export const apiGetUsers = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/users`,
+      });
+      resolve(response?.data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetUserById = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/users/id/${userId}`,
+      });
+      resolve(response?.data);
+    } catch (error) {
+      reject(error);
+    }
+  });

@@ -48,6 +48,8 @@ export const path = {
   MANAGER_HOME: "/manager/",
   ADMIN_USER: "user/",
   ADMIN_PRODUCT: "product/",
+  ADMIN_USER_CREATE: "create-user",
+  ADMIN_USER_EDIT: "edit/:id",
 };
 
 export const adminSideBar = [

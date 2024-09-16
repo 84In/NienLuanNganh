@@ -3,7 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
 import { AccountInfo, Cart, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
-import { AdminBase, AdminHome, AdminProduct, AdminUser } from "./containers/System";
+import {
+  AdminBase,
+  AdminHome,
+  AdminProduct,
+  AdminUser,
+  AdminUserContent,
+  AdminUserCreate,
+  AdminUserEdit,
+} from "./containers/System";
 import { PrivateAdminFilterRouter, PrivateRoute } from "./router";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
@@ -86,7 +94,11 @@ function App() {
           <Route
             path={path.ADMIN_USER}
             element={<PrivateAdminFilterRouter element={AdminUser} roles={["ADMIN"]} user={userData} />}
-          />
+          >
+            <Route index element={<AdminUserContent />} />
+            <Route path={path.ADMIN_USER_CREATE} element={<AdminUserCreate />} />
+            <Route path={path.ADMIN_USER_EDIT} element={<AdminUserEdit />} />
+          </Route>
           <Route
             path={path.ADMIN_PRODUCT}
             element={<PrivateAdminFilterRouter element={AdminProduct} roles={["ADMIN"]} user={userData} />}

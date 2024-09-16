@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import '@coreui/coreui/dist/css/coreui.min.css';
 
 .root,
 #root,
@@ -113,21 +114,26 @@
 
 /* Custom scrollbar styles */
 .custom-scrollbar {
-  overflow-y: auto; /* Ensure the scrollbar appears */
+  overflow-y: auto;
+  /* Ensure the scrollbar appears */
   overflow-x: hidden;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px; /* Width of the scrollbar */
+  width: 6px;
+  /* Width of the scrollbar */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the scrollbar thumb */
-  border-radius: 10px; /* Rounded corners */
+  background-color: #888;
+  /* Color of the scrollbar thumb */
+  border-radius: 10px;
+  /* Rounded corners */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Color on hover */
+  background-color: #555;
+  /* Color on hover */
 }
 
 /* Custom checkbox */
