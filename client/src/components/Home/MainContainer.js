@@ -11,10 +11,10 @@ const MainContainer = () => {
       columnGap={"none"}
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
-      <Grid2 item xs={12} md={2.5}>
+      <Grid2 item xs={12} md={3}>
         <SideBar />
       </Grid2>
-      <Grid2 item container xs={12} md={9.3} sx={{ width: "100%" }}>
+      <Grid2 item container xs={12} md={8.8} sx={{ width: "100%" }}>
         <Grid2 item container spacing={2}>
           <Grid2 sx={{ width: "100%" }}>
             <BannerCarousel data={banner} />

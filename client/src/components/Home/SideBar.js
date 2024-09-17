@@ -18,7 +18,7 @@ const SideBar = () => {
         height: "fit-content",
       }}
     >
-      <div className="max-h-80 overflow-y-auto scroll-smooth grid-md:max-h-screen grid-md:scrollbar-hide">
+      <div className="custom-scrollbar max-h-80 overflow-y-auto scroll-smooth grid-md:max-h-screen grid-md:scrollbar-hide">
         <h1 className="p-1 text-center text-lg font-semibold">Danh mục</h1>
         <div className="flex flex-col space-y-2">
           {iconSideBar.map((item, index) => (

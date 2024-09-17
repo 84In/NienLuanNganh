@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { EditContact, MainContainer } from "./components";
-import { AccountInfo, Cart, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
+import { AccountInfo, Cart, Filter, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
 import {
   AdminBase,
   AdminHome,
@@ -85,6 +85,7 @@ function App() {
             }
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
+          <Route path={path.PRODUCT_SEARCH} element={<Filter />} />
           <Route path="*" element={<Page404 />} />
         </Route>
         <Route

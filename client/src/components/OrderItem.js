@@ -22,13 +22,14 @@ const OrderItem = ({ product }) => {
       <div className="flex items-start gap-4">
         <img src={product.image} alt={product.name} className="h-20 w-20 rounded object-cover" />
         <div className="flex-grow">
-          <h3 className="line-clamp-2 h-12 font-medium">{product.name}</h3>
+          <h3 className="line-clamp-3 font-medium">{product.name}</h3>
         </div>
         <div className="text-right">
           <p className="font-medium">{formatCurrency(product.price)}</p>
           <p className="text-sm text-gray-500">x{product.quantity}</p>
         </div>
       </div>
+      <hr className="flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm text-gray-500">Tổng tiền:</p>
@@ -38,10 +39,6 @@ const OrderItem = ({ product }) => {
           <Button variant="outlined" size="small" className="whitespace-nowrap">
             <FaShoppingCart className="mr-2 h-4 w-4" />
             Mua lại
-          </Button>
-          <Button variant="outlined" size="small" className="whitespace-nowrap">
-            <FaInfoCircle className="mr-2 h-4 w-4" />
-            Xem chi tiết
           </Button>
         </div>
       </div>

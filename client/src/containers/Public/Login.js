@@ -11,7 +11,6 @@ const Login = ({ setIsModelLogin }) => {
   const dispatch = useDispatch();
 
   const location = useLocation();
-  useEffect(() => {}, [location]);
   const { isLoggedIn, code } = useSelector((state) => state.auth);
 
   const [payload, setPayload] = useState({
@@ -24,18 +23,6 @@ const Login = ({ setIsModelLogin }) => {
     phone: "",
     dob: "",
   });
-
-  useEffect(() => {
-    if (code === 303 || code === 301) {
-      setError("Tài khoản hoặc mật khẩu chưa chính xác!");
-    }
-    if (code === 304) {
-      setError("Số điện thoại đã được sử dụng!");
-    }
-    if (code === 302) {
-      setError("Tên tài khoản đã được sử dụng!");
-    }
-  }, [code]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -72,6 +59,23 @@ const Login = ({ setIsModelLogin }) => {
       dispatch(actions.register(registerPayload));
     }
   };
+
+  // useEffect(() => {}, [location]);
+
+  useEffect(() => {
+    if (!isLogin && code === 0) {
+      setIsLogin(true);
+    }
+    if (code === 303 || code === 301) {
+      setError("Tài khoản hoặc mật khẩu chưa chính xác!");
+    }
+    if (code === 304) {
+      setError("Số điện thoại đã được sử dụng!");
+    }
+    if (code === 302) {
+      setError("Tên tài khoản đã được sử dụng!");
+    }
+  }, [code]);
 
   useEffect(() => {
     if (isLoggedIn) {

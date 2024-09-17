@@ -43,13 +43,14 @@ export const path = {
   EDIT_EMAIL: "edit/email/",
   EDIT_PASSWORD: "edit/password/",
   EDIT_ADDRESS: "edit/address/",
-  PRODUCT_DETAIL: "product/:productID/",
+  PRODUCT_DETAIL: "product/id/:productId/",
+  PRODUCT_SEARCH: "product/search/",
   ORDER_HISTORY: "order/history/",
   MANAGER_HOME: "/manager/",
   ADMIN_USER: "user/",
   ADMIN_PRODUCT: "product/",
-  ADMIN_USER_CREATE: "create-user",
-  ADMIN_USER_EDIT: "edit/:id",
+  ADMIN_USER_CREATE: "create-user/",
+  ADMIN_USER_EDIT: "edit/:id/",
 };
 
 export const adminSideBar = [
@@ -210,46 +211,58 @@ export const widgetIcon = [
   {
     icon: widget1,
     text: "TOP DEAL",
-    url: "/product/topdeal",
+    url: "/product/search/topdeal",
   },
   {
     icon: widget2,
     text: "Trading",
-    url: "/product/trading",
+    url: "/product/search/trading",
   },
   {
     icon: widget3,
     text: "Coupon siêu hot",
-    url: "/product/coupon",
+    url: "/product/search/coupon",
   },
   {
     icon: widget4,
     text: "Xả kho nửa giá",
-    url: "/product/xa-kho",
+    url: "/product/search/xa-kho",
   },
   {
     icon: widget5,
     text: "Hàng ngoại giá hot",
-    url: "/product/hang-ngoai",
+    url: "/product/search/hang-ngoai",
   },
   {
     icon: widget6,
     text: "Cùng mẹ chăm bé",
-    url: "/product/cham-be",
+    url: "/product/search/cham-be",
   },
   {
     icon: widget7,
     text: "Một sách",
-    url: "/product/mot-sach",
+    url: "/product/search/mot-sach",
   },
   {
     icon: widget8,
     text: "Thế giới công nghệ",
-    url: "/product/cong-nghe",
+    url: "/product/search/cong-nghe",
   },
 ];
 
 export const products = [
+  {
+    id: "03adf-12sad-nasd0",
+    image: product1,
+    description:
+      "Là sản phẩm thuộc dòng S cao cấp nhất của hãng Samsung. Chắc chắn rằng sẽ mang đến cho người dùng một trải nghiệm tốt nhất với tấm nền Oled sắc nét, sống động từng khung hình. Bên cạnh đó còn có con chip SnapDragon 1000 mang đến hiệu năng vượt trội trong tầm giá, kết hợp với hệ điều hành được tùy biến bởi nhà sản xuất giúp sản phẩm luôn đáp ứng tối đa trong công việc, tác vụ hằng nhày",
+    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
+    price: "102000",
+    originalPrice: "132000",
+    discount: "23",
+    origin: "Poland",
+    rating: 4.5,
+  },
   {
     id: "03adf-12sad-nasd0",
     image: product1,

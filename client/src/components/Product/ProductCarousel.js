@@ -13,7 +13,7 @@ const ProductCarousel = ({ images }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
-    <Box sx={{ padding: 1, width: "100%", height: "100%" }}>
+    <Box sx={{ padding: 1, width: "100%", height: "100%", minHeight: "420px" }}>
       <Swiper
         style={{
           "--swiper-navigation-color": "var(--primary-color)",
@@ -25,11 +25,11 @@ const ProductCarousel = ({ images }) => {
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2 grid-xs:h-[300px] grid-md:h-[80%]"
+        className="mySwiper2 flex items-center justify-center rounded-md border border-gray-400 grid-xs:h-[300px] grid-md:h-[80%] grid-md:max-h-full grid-md:min-h-[330px]"
       >
         {images.slice(0, 4).map((image) => (
-          <SwiperSlide className="rounded-md border border-gray-400" key={image.id}>
-            <img className="object-contain px-8" src={image.imageSrc} alt={`Nature ${image.id}`} />
+          <SwiperSlide className="h-full" key={image.id}>
+            <img className="h-full object-contain px-8" src={image.imageSrc} alt={`Nature ${image.id}`} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -41,11 +41,11 @@ const ProductCarousel = ({ images }) => {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper grid-xs:h-[100px] grid-md:h-[80%]"
+        className="mySwiper grid-xs:h-[100px] grid-md:h-[100%] grid-md:max-h-full grid-md:min-h-[120px]"
       >
         {images.slice(0, 4).map((image) => (
-          <SwiperSlide className="rounded-md border border-gray-400" key={image.id}>
-            <img className="object-contain px-2" src={image.imageSrc} alt={`Nature ${image.id}`} />
+          <SwiperSlide className="h-full rounded-md border border-gray-400" key={image.id}>
+            <img className="h-full min-h-20 object-contain px-2" src={image.imageSrc} alt={`Nature ${image.id}`} />
           </SwiperSlide>
         ))}
       </Swiper>
