@@ -46,7 +46,7 @@ const OrderHistory = () => {
         <div className="w-full">
           <SearchBar IconBefore={GoSearch} TextContent={"Tìm đơn hàng"} Name={"order-search"} />
         </div>
-        <div className="w-full space-y-6 px-0 py-4 grid-md:p-4">
+        <div className="w-full space-y-6 px-0 py-4 grid-md:px-4 grid-md:py-4">
           {items.map((item, index) => (
             <OrderItem product={item} key={index} />
           ))}

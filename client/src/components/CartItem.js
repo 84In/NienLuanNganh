@@ -30,7 +30,7 @@ const CartItem = () => {
           name=""
           className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
         />
-        <Link /*to={`/product/${product.id}`} state={{ product }*/>
+        <Link /*to={`/product/id/${product.id}`} state={{ product }*/>
           <div className="flex w-full flex-col items-center justify-start gap-1 grid-md:flex-row">
             <img
               src={product1}
