@@ -14,7 +14,7 @@ export const apiRegister = (payload) =>
     }
   });
 
-export const apiUserInfo = (username) =>
+export const apiGetUserByUsername = (username) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({

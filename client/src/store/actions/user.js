@@ -1,10 +1,10 @@
-import { apiUserInfo } from "../../services";
+import { apiGetUserByUsername } from "../../services";
 import actionType from "./actionType";
 
 export const getUserInfo = (username) => async (dispatch) => {
   let response = null;
   try {
-    response = await apiUserInfo(username);
+    response = await apiGetUserByUsername(username);
     if (response?.data.code === 0) {
       dispatch({
         type: actionType.GET_USER_SUCCESS,
