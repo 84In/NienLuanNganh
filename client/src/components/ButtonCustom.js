@@ -26,7 +26,7 @@ const ButtonCustom = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(action.logout({ token: token }));
     navigate(path.HOME);
   };

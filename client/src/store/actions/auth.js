@@ -30,8 +30,8 @@ export const login = (payload) => async (dispatch) => {
 
   try {
     response = await apiLogin(payload);
-    console.log(response);
     if (response?.data.code === 0) {
+      console.log(response);
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
         data: response?.data,
@@ -58,7 +58,6 @@ export const logout = (token) => async (dispatch) => {
     if (response?.data.code === 0) {
       dispatch({
         type: actionTypes.LOGOUT,
-        data: response?.data.message,
       });
     }
   } catch (error) {

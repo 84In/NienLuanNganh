@@ -19,16 +19,17 @@ import { path } from "./utils/constant";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn, username } = useSelector((state) => state.auth);
+  const { isLoggedIn, username, token } = useSelector((state) => state.auth);
+  const { userData } = useSelector((state) => state.user);
   const [isModelLogin, setIsModelLogin] = useState(false);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(action.getUserInfo(username));
+    if (isLoggedIn && username) {
+      setTimeout(() => {
+        dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
+      }, 1000);
     }
-  }, [dispatch, isLoggedIn, username]);
-
-  const { userData } = useSelector((state) => state.user);
+  }, [isLoggedIn, username]);
 
   const handleAccessDenied = () => {
     setIsModelLogin(true);

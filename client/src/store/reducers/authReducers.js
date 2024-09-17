@@ -34,7 +34,7 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         isLoggedIn: false,
-        message: action.data,
+        message: null,
         token: null,
         code: null,
         username: null,

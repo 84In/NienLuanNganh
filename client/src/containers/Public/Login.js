@@ -62,7 +62,7 @@ const Login = ({ setIsModelLogin }) => {
     }
 
     if (isLogin) {
-      dispatch(actions.login({ username: payload.username, password: payload.password }));
+      if (isLoggedIn === false) dispatch(actions.login({ username: payload.username, password: payload.password }));
     } else {
       if (payload.password !== payload.re_password) {
         setError("Mật khẩu không khớp!");
@@ -76,7 +76,7 @@ const Login = ({ setIsModelLogin }) => {
   useEffect(() => {
     if (isLoggedIn) {
       setIsModelLogin(false);
-      window.location.reload();
+      
     }
   }, [isLoggedIn, setIsModelLogin]);
 
