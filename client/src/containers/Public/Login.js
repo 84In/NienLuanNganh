@@ -63,6 +63,7 @@ const Login = ({ setIsModelLogin }) => {
   // useEffect(() => {}, [location]);
 
   useEffect(() => {
+    setError("");
     if (!isLogin && code === 0) {
       setIsLogin(true);
     }
@@ -80,7 +81,6 @@ const Login = ({ setIsModelLogin }) => {
   useEffect(() => {
     if (isLoggedIn) {
       setIsModelLogin(false);
-      
     }
   }, [isLoggedIn, setIsModelLogin]);
 

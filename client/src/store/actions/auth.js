@@ -9,7 +9,7 @@ export const register = (payload) => async (dispatch) => {
     if (response?.data.code === 0) {
       dispatch({
         type: actionTypes.REGISTER_SUCCESS,
-        data: response?.data.result.user,
+        data: response?.data,
       });
     } else {
       dispatch({
@@ -27,7 +27,7 @@ export const register = (payload) => async (dispatch) => {
 
 export const login = (payload) => async (dispatch) => {
   let response = null;
-
+  console.log(response);
   try {
     response = await apiLogin(payload);
     if (response?.data.code === 0) {

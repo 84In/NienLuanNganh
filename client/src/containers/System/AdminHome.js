@@ -10,7 +10,7 @@ const AdminHome = ({ user }) => {
   }
 
   return (
-    <div className="w-full border border-blue-700">
+    <div className="w-full">
       <AdminHeader user={user} />
       <div className="flex">
         <AdminSideBar />

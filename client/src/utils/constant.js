@@ -128,82 +128,32 @@ export const iconSideBar = [
   {
     image: icon1,
     title: "Sách",
-    url: "/product?name=book",
+    url: "/product/search?name=book",
   },
   {
     image: icon2,
     title: "Điện thoại",
-    url: "/product?name=smartphone",
+    url: "/product/search?name=smartphone",
   },
   {
     image: icon3,
     title: "Thiết bị số - Phụ kiện điện tử",
-    url: "/product?name=digital-device",
+    url: "/product/search?name=digital-device",
   },
   {
     image: icon4,
     title: "Ô tô - Xe máy",
-    url: "/product?name=motobyte",
+    url: "/product/search?name=motobyte",
   },
   {
     image: icon5,
     title: "Máy tính - Lap top",
-    url: "/product?name=computer",
+    url: "/product/search?name=computer",
   },
   {
     image: icon6,
     title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product?name=shoe",
+    url: "/product/search?name=shoe",
   },
 ];
 

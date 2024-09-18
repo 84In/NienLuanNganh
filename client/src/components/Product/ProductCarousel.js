@@ -45,7 +45,7 @@ const ProductCarousel = ({ images }) => {
       >
         {images.slice(0, 4).map((image) => (
           <SwiperSlide className="h-full rounded-md border border-gray-400" key={image.id}>
-            <img className="h-full min-h-20 object-contain px-2" src={image.imageSrc} alt={`Nature ${image.id}`} />
+            <img className="h-full min-h-[78px] object-contain px-2" src={image.imageSrc} alt={`Nature ${image.id}`} />
           </SwiperSlide>
         ))}
       </Swiper>

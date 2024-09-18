@@ -26,7 +26,7 @@ const EditContact = () => {
         position: "relative",
       }}
     >
-      <div className="absolute flex items-center gap-1 p-2 text-lg capitalize">
+      <div className="absolute flex items-center gap-1 p-2 text-lg">
         <ButtonCustom
           TypeButton={"button"}
           FontWeight={"font-medium"}
@@ -44,6 +44,7 @@ const EditContact = () => {
           display: "flex",
           justifyContent: "center",
           p: 2,
+          paddingTop: { xs: 8, md: 2 },
           bgcolor: "white",
           borderRadius: "8px",
           rowGap: "1rem",

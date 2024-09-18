@@ -3,12 +3,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const AdminTable = ({ data }) => {
-  // Check if data and content exist
-  const sampleData = data[0];
-
-  if (!sampleData) {
+  if (!data == null) {
     return <div>No data available</div>; // Display a message or return null if there's no data
   }
+  // Check if data and content exist
+  const sampleData = data[0];
 
   // Dynamically build the columns from the sample data, excluding "id", and add "Edit" column
   const columns = Object.keys(sampleData)

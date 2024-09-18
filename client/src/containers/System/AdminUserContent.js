@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminTable from "../../components/System/Items/AdminTable";
 import { apiGetUsers } from "../../services";
+import { Loading } from "../../components";
 
 const AdminUserContent = () => {
   const [dataUsers, setDataUsers] = useState(null);
@@ -12,6 +13,7 @@ const AdminUserContent = () => {
         const response = await apiGetUsers();
         setDataUsers(response?.result?.content);
       } catch (error) {
+        return;
       } finally {
         setLoading(false);
       }
@@ -20,7 +22,7 @@ const AdminUserContent = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return <AdminTable data={dataUsers} />;
