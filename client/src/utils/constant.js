@@ -13,6 +13,11 @@ import banner3 from "../assets/images/banner/banner3.png.webp";
 import banner4 from "../assets/images/banner/banner4.jpg.webp";
 import banner5 from "../assets/images/banner/banner5.png.webp";
 import banner6 from "../assets/images/banner/banner6.png.webp";
+import banner7 from "../assets/images/banner/banner7.png.webp";
+import banner8 from "../assets/images/banner/banner8.png.webp";
+import banner9 from "../assets/images/banner/banner9.png.webp";
+import banner10 from "../assets/images/banner/banner10.png.webp";
+
 import icons from "./icons";
 
 const {} = icons;
@@ -46,7 +51,7 @@ export const path = {
   PRODUCT_DETAIL: "product/id/:productId/",
   PRODUCT_SEARCH: "product/search/",
   ORDER_HISTORY: "order/history/",
-  MANAGER_HOME: "/manager/",
+  ADMIN_HOME: "/manager/",
   ADMIN_USER: "user/",
   ADMIN_PRODUCT: "product/",
   ADMIN_USER_CREATE: "create-user/",
@@ -121,6 +126,29 @@ export const banner = [
     id: 6,
     image: banner6,
     title: "Banner 6",
+  },
+];
+
+export const banner_filter = [
+  {
+    id: 1,
+    image: banner7,
+    title: "Banner 1",
+  },
+  {
+    id: 2,
+    image: banner8,
+    title: "Banner 2",
+  },
+  {
+    id: 3,
+    image: banner9,
+    title: "Banner 3",
+  },
+  {
+    id: 4,
+    image: banner10,
+    title: "Banner 4",
   },
 ];
 

@@ -30,14 +30,14 @@ const ProductCard = ({ image, name, description, price, originalPrice, discount,
             <Rating name="half-rating-read" precision={0.5} value={rating} readOnly size="small" />
             {discount > 0 ? (
               <>
-                <p className="text-xl font-bold text-red-500">{formatCurrency(price)}</p>
+                <p className="text-lg font-bold text-red-500 grid-sm:text-xl">{formatCurrency(price)}</p>
                 <Box sx={{ display: "flex", alignItems: "baseline", mt: 1, gap: 1 }}>
                   <p className="text-sm text-gray-500 line-through">{formatCurrency(originalPrice)}</p>
                   <p className="rounded bg-red-100 p-1 text-xs font-semibold text-red-500">-{discount}%</p>
                 </Box>
               </>
             ) : (
-              <p className="text-xl font-bold">{formatCurrency(price)}</p>
+              <p className="text-lg font-bold grid-sm:text-xl">{formatCurrency(price)}</p>
             )}
           </div>
           <p className="mt-2 text-sm text-gray-500">Made in {origin}</p>
