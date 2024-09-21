@@ -81,7 +81,7 @@ const ButtonCustom = ({
                         Trang Chủ
                       </p>
                     </Link>
-                    <Link to={path.MANAGER_HOME}>
+                    <Link to={path.ADMIN_HOME}>
                       <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         Trang Quản Lý
                       </p>
@@ -108,7 +108,7 @@ const ButtonCustom = ({
                       </p>
                     </Link>
                     {User?.roles.some((role) => role.name === "ADMIN") && (
-                      <Link to={path.MANAGER_HOME}>
+                      <Link to={path.ADMIN_HOME}>
                         <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                           Trang Quản Lý
                         </p>

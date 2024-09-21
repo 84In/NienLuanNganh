@@ -89,7 +89,7 @@ function App() {
           <Route path="*" element={<Page404 />} />
         </Route>
         <Route
-          path={path.MANAGER_HOME}
+          path={path.ADMIN_HOME}
           element={<PrivateAdminFilterRouter element={AdminHome} roles={["ADMIN"]} user={userData} />}
         >
           <Route index element={<AdminBase user={userData} />} />
