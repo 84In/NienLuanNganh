@@ -1,3 +1,4 @@
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AdminSideBar } from "../../components";
@@ -11,11 +12,22 @@ const AdminHome = ({ user }) => {
 
   return (
     <div className="w-full">
-      <AdminHeader user={user} />
-      <div className="flex">
-        <AdminSideBar />
-        <Outlet />
-      </div>
+      <Grid2 container sx={{ width: "100%" }}>
+        {/* Header full màn hình */}
+        <Grid2 item xs={12}>
+          <AdminHeader user={user} />
+        </Grid2>
+        <Grid2 container xs={12}>
+          {/* Sidebar chiếm 2 cột */}
+          <Grid2 item xs={2}>
+            <AdminSideBar />
+          </Grid2>
+          {/* Nội dung chính chiếm 10 cột */}
+          <Grid2 item xs={10}>
+            <Outlet />
+          </Grid2>
+        </Grid2>
+      </Grid2>
     </div>
   );
 };

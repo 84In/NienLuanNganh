@@ -1,50 +1,88 @@
-import { CTable } from "@coreui/react";
+import {
+  Paper,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import icons from "../../../utils/icons";
 
 const AdminTable = ({ data }) => {
-  if (!data == null) {
-    return <div>No data available</div>; // Display a message or return null if there's no data
+  const { BiEdit } = icons;
+
+  // Check if data exists
+  if (data == null || data.length === 0) {
+    return <div>No data available</div>; // Display a message if there's no data
   }
-  // Check if data and content exist
-  const sampleData = data[0];
 
-  // Dynamically build the columns from the sample data, excluding "id", and add "Edit" column
-  const columns = Object.keys(sampleData)
-    .filter((key) => key !== "id") // Exclude the "id" column
-    .map((key) => {
-      return { key, label: key.charAt(0).toUpperCase() + key.slice(1), _props: { scope: "col" } };
-    });
+  const sampleData = data[0]; // Get a sample from data to build the columns dynamically
 
-  // Add the "Edit" column at the end
-  columns.push({ key: "edit", label: "", _props: { scope: "col" } });
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
 
-  // Build the rows (items), excluding the "id" field
-  const items = data.map((user) => {
-    const row = { class: "Default" };
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // Hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
 
-    Object.keys(user)
-      .filter((key) => key !== "id") // Exclude the "id" field from rows
-      .forEach((key) => {
-        if (key === "roles") {
-          // Concatenate role names if the key is "roles"
-          row[key] = user[key].map((role) => role.name).join(", ");
-        } else {
-          row[key] = user[key] != null ? user[key] : ""; // Fallback for null values
-        }
-      });
-
-    // Add the "edit" field with the NavLink
-    row["edit"] = (
-      <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${user.id}`}>
-        Edit
-      </NavLink>
-    );
-
-    return row;
-  });
-
-  return <CTable striped columns={columns} items={items} />;
+  return (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableHead>
+          <TableRow>
+            {Object.keys(sampleData)
+              .filter((key) => key !== "id") // Exclude the "id" column
+              .map((key, index) => (
+                <StyledTableCell align="center" key={index}>
+                  {key}
+                </StyledTableCell>
+              ))}
+            <StyledTableCell>Edit</StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((user, index) => (
+            <StyledTableRow key={index}>
+              {Object.keys(user)
+                .filter((key) => key !== "id")
+                .map((key, index) => (
+                  <StyledTableCell key={index} align="center">
+                    {key === "roles"
+                      ? user[key].map((role) => role.name).join(", ")
+                      : user[key] != null
+                        ? user[key]
+                        : ""}
+                  </StyledTableCell>
+                ))}
+              <StyledTableCell align="center">
+                <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${user.id}`}>
+                  <BiEdit size={24} />
+                </NavLink>
+              </StyledTableCell>
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 };
 
 export default AdminTable;

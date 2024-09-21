@@ -19,7 +19,7 @@ import { path } from "./utils/constant";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn, username, token } = useSelector((state) => state.auth);
+  const { isLoggedIn, username } = useSelector((state) => state.auth);
   const { userData } = useSelector((state) => state.user);
   const [isModelLogin, setIsModelLogin] = useState(false);
 
@@ -29,7 +29,7 @@ function App() {
         dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
       }, 500);
     }
-  }, [isLoggedIn, username]);
+  }, [isLoggedIn, username, dispatch]);
 
   const handleAccessDenied = () => {
     setIsModelLogin(true);
@@ -37,7 +37,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center gap-4 bg-gray-200">
+    <div className="flex h-full w-screen flex-col items-center gap-4 bg-gray-200">
       <Routes>
         <Route
           path={path.HOME}

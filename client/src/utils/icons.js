@@ -1,5 +1,6 @@
 import {
   BiCreditCard,
+  BiEdit,
   BiFile,
   BiGift,
   BiLogoProductHunt,
@@ -25,5 +26,6 @@ const icons = {
   BiFile,
   BiCreditCard,
   BiSync,
+  BiEdit,
 };
 export default icons;
