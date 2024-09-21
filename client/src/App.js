@@ -37,7 +37,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-full w-screen flex-col items-center gap-4 bg-gray-200">
+    <div className="flex h-full w-full flex-col items-center gap-4 bg-gray-200">
       <Routes>
         <Route
           path={path.HOME}

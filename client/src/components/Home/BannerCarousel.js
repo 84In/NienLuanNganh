@@ -53,30 +53,30 @@ function PrevArrow(props) {
   );
 }
 
-function BannerCarousel({ data }) {
+function BannerCarousel({ data, slide }) {
   const settings = {
     dots: true,
     infinite: true,
     autoplay: true,
     speed: 1000,
     autoplaySpeed: 3500,
-    slidesToShow: 2,
-    slidesToScroll: 2,
+    slidesToShow: slide && slide > 0 ? slide : 2,
+    slidesToScroll: slide && slide > 0 ? slide : 2,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1200,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: slide && slide > 0 ? slide : 2,
+          slidesToScroll: slide && slide > 0 ? slide : 2,
         },
       },
       {
-        breakpoint: 800,
+        breakpoint: 900,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: slide && slide > 1 ? slide - 1 : 1,
+          slidesToScroll: slide && slide > 1 ? slide - 1 : 1,
         },
       },
       {

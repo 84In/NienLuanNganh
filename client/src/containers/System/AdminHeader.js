@@ -6,10 +6,8 @@ const { GoSearch } = icons;
 
 const AdminHeader = ({ user }) => {
   return (
-    <div className="flex h-16 w-full items-center gap-3 bg-third-color">
-      <div className="flex w-[288px]">
-        <AdminLogo />
-      </div>
+    <div className="flex h-fit min-h-[90px] w-full items-center gap-4 bg-third-color px-6 py-2">
+      <AdminLogo />
       <div className="flex flex-auto items-center justify-start">
         <div className="pl-2">
           <SearchBar isAdmin={true} IconBefore={GoSearch} />
