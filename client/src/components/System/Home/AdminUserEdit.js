@@ -1,8 +1,11 @@
 import { Button, FormControl, MenuItem, Select, styled, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { CloudUploadIcon } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import defaultAvatar from "../../../assets/images/profile.png";
+import { apiGetRoles } from "../../../services";
+import { useNavigate } from "react-router-dom";
+import { path } from "../../../utils/constant";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -32,6 +35,48 @@ const cssField = {
 };
 const AdminUserEdit = ({ user }) => {
   const [role, setRole] = useState("");
+  const [dataRoles, setDataRoles] = useState([]);
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    avatar: null,
+    dob: null,
+    email: null,
+    firstName: null,
+    id: null,
+    lastName: null,
+    phone: null,
+    roles: null,
+    username: null,
+  });
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await apiGetRoles();
+        // console.log(response);
+        setDataRoles(response?.result);
+      } catch (error) {
+        navigate(path.ADMIN_USER);
+      }
+    };
+
+    fetchRoles();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setData({
+        avatar: user?.avatar || null,
+        dob: user?.dob || null,
+        email: user?.email || null,
+        firstName: user?.firstName || "",
+        id: user?.id || null,
+        lastName: user?.lastName || "",
+        phone: user?.phone || "",
+        roles: user?.roles || [],
+        username: user?.username || "",
+      });
+    }
+  }, [user]);
 
   const handleChange = (event) => {
     setRole(event.target.value);
@@ -62,7 +107,7 @@ const AdminUserEdit = ({ user }) => {
                 <div className="flex flex-col items-center justify-end gap-4">
                   <img
                     className="avatar h-28 w-28 rounded-full border border-black bg-white p-2"
-                    src={user?.avatar ? user?.avatar : defaultAvatar}
+                    src={data?.avatar ? data?.avatar : defaultAvatar}
                     alt="avatar"
                   />
                   <Button
@@ -106,7 +151,7 @@ const AdminUserEdit = ({ user }) => {
                       labelId="role"
                       id="role-select"
                       value={role}
-                      defaultValue={"USER"}
+                      // defaultValue={"USER"}
                       size="small"
                       variant="outlined"
                       onChange={handleChange}
@@ -121,8 +166,23 @@ const AdminUserEdit = ({ user }) => {
                         textAlign: "center", // Căn giữa chữ
                       }}
                     >
-                      <MenuItem value={"USER"}>USER</MenuItem>
-                      <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
+                      {dataRoles &&
+                        dataRoles?.map((item, index) => {
+                          return (
+                            <MenuItem
+                              key={index}
+                              value={item?.name}
+                              sx={{
+                                fontSize: "16px", // Kích thước chữ cho các item
+                                textAlign: "center", // Căn giữa chữ trong MenuItem
+                                display: "flex",
+                                alignItems: "center", // Căn giữa theo chiều dọc
+                              }}
+                            >
+                              {item?.description}
+                            </MenuItem>
+                          );
+                        })}
                     </Select>
                   </FormControl>
                 </div>
@@ -133,26 +193,34 @@ const AdminUserEdit = ({ user }) => {
                     <TextField
                       name="firstName"
                       type="text"
-                      defaultValue={user?.firstName}
+                      value={data?.firstName}
                       variant="outlined"
                       size="small"
                       backgroundColor="white"
                       fullWidth
                       className="bg-white"
                       label="Họ"
+                      InputLabelProps={{
+                        shrink: true,
+                        style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                      }}
                       required
                       sx={cssField}
                     />
                     <TextField
                       name="lastName"
                       type="text"
-                      defaultValue={user?.lastName}
+                      value={data?.lastName}
                       variant="outlined"
                       size="small"
                       backgroundColor="white"
                       fullWidth
                       className="bg-white"
                       label="Tên"
+                      InputLabelProps={{
+                        shrink: true,
+                        style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                      }}
                       required
                       sx={cssField}
                     />
@@ -160,7 +228,7 @@ const AdminUserEdit = ({ user }) => {
                   <TextField
                     name="dob"
                     type="date"
-                    defaultValue={user?.dob ? new Date(user.dob).toISOString().slice(0, 10) : ""}
+                    value={data?.dob ? new Date(data.dob).toISOString().slice(0, 10) : ""}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -168,6 +236,7 @@ const AdminUserEdit = ({ user }) => {
                     label="Ngày sinh"
                     InputLabelProps={{
                       shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
                     }}
                     required
                     sx={cssField}
@@ -175,26 +244,34 @@ const AdminUserEdit = ({ user }) => {
                   <TextField
                     name="username"
                     type="text"
-                    defaultValue={user?.username}
+                    value={data?.username}
                     variant="outlined"
                     size="small"
                     backgroundColor="white"
                     fullWidth
                     className="bg-white"
                     label="Tài khoản"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                    }}
                     required
                     sx={cssField}
                   />
                   <TextField
                     name="password"
                     type="password"
-                    defaultValue={user?.password}
+                    // defaultValue={data?.password}
                     variant="outlined"
                     size="small"
                     backgroundColor="white"
                     fullWidth
                     className="bg-white"
                     label="Mật khẩu"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                    }}
                     required
                     sx={cssField}
                   />
@@ -211,37 +288,49 @@ const AdminUserEdit = ({ user }) => {
                 <TextField
                   name="address"
                   type="text"
-                  defaultValue={user?.firstName}
+                  value={data?.firstName}
                   variant="outlined"
                   size="small"
                   backgroundColor="white"
                   fullWidth
                   className="bg-white"
                   label="Địa chỉ"
+                  InputLabelProps={{
+                    shrink: true,
+                    style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                  }}
                   sx={cssField}
                 />
                 <TextField
                   name="email"
                   type="Email"
-                  defaultValue={user?.firstName}
+                  value={data?.email}
                   variant="outlined"
                   size="small"
                   backgroundColor="white"
                   fullWidth
                   className="bg-white"
                   label="Email"
+                  InputLabelProps={{
+                    shrink: true,
+                    style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                  }}
                   sx={cssField}
                 />
                 <TextField
                   name="phoneNumber"
                   type="Phone"
-                  defaultValue={user?.firstName}
+                  value={data?.phone}
                   variant="outlined"
                   size="small"
                   backgroundColor="white"
                   fullWidth
                   className="bg-white"
                   label="Số điện thoại"
+                  InputLabelProps={{
+                    shrink: true,
+                    style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                  }}
                   sx={cssField}
                   required
                 />

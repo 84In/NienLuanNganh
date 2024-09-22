@@ -42,7 +42,7 @@ instance.interceptors.response.use(
   function (response) {
     // Bất kỳ mã trạng thái 2xx sẽ kích hoạt hàm này
     // Làm gì đó với dữ liệu response (ví dụ: refresh token)
-    return response;
+    return response.data;
   },
   function (error) {
     // Bất kỳ mã trạng thái nào ngoài 2xx sẽ kích hoạt hàm này
