@@ -95,7 +95,6 @@ const AdminUserEdit = ({ user }) => {
                           reader.readAsDataURL(file);
                         }
                       }}
-                      multiple
                     />
                   </Button>
                 </div>
