@@ -150,7 +150,7 @@ const AdminUserEdit = ({ user }) => {
                     <Select
                       labelId="role"
                       id="role-select"
-                      value={role}
+                      value={role ? role : data?.roles[0]?.name}
                       // defaultValue={"USER"}
                       size="small"
                       variant="outlined"
