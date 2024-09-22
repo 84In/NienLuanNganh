@@ -19,11 +19,11 @@ const AdminHome = ({ user }) => {
         </Grid2>
         <Grid2 container xs={12}>
           {/* Sidebar chiếm 2 cột */}
-          <Grid2 item xs={2}>
+          <Grid2 item xs={3}>
             <AdminSideBar />
           </Grid2>
           {/* Nội dung chính chiếm 10 cột */}
-          <Grid2 item xs={10}>
+          <Grid2 item xs={9}>
             <Outlet />
           </Grid2>
         </Grid2>

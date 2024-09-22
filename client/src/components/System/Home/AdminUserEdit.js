@@ -38,15 +38,15 @@ const AdminUserEdit = ({ user }) => {
   const [dataRoles, setDataRoles] = useState([]);
   const navigate = useNavigate();
   const [data, setData] = useState({
-    avatar: null,
+    id: null,
+    firstName: null,
+    lastName: null,
+    username: null,
     dob: null,
     email: null,
-    firstName: null,
-    id: null,
-    lastName: null,
     phone: null,
     roles: null,
-    username: null,
+    avatar: null,
   });
   useEffect(() => {
     const fetchRoles = async () => {
@@ -65,15 +65,15 @@ const AdminUserEdit = ({ user }) => {
   useEffect(() => {
     if (user) {
       setData({
-        avatar: user?.avatar || null,
+        id: user?.id || null,
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        username: user?.username || "",
         dob: user?.dob || null,
         email: user?.email || null,
-        firstName: user?.firstName || "",
-        id: user?.id || null,
-        lastName: user?.lastName || "",
         phone: user?.phone || "",
         roles: user?.roles || [],
-        username: user?.username || "",
+        avatar: user?.avatar || null,
       });
     }
   }, [user]);
@@ -140,7 +140,6 @@ const AdminUserEdit = ({ user }) => {
                           reader.readAsDataURL(file);
                         }
                       }}
-                      multiple
                     />
                   </Button>
                 </div>
@@ -288,7 +287,7 @@ const AdminUserEdit = ({ user }) => {
                 <TextField
                   name="address"
                   type="text"
-                  value={data?.firstName}
+                  value={data?.address}
                   variant="outlined"
                   size="small"
                   backgroundColor="white"
