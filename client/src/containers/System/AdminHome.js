@@ -11,7 +11,7 @@ const AdminHome = ({ user }) => {
   }
 
   return (
-    <div className="w-full">
+    <div className="h-full min-h-screen w-full">
       <Grid2 container sx={{ width: "100%" }}>
         {/* Header full màn hình */}
         <Grid2 item xs={12}>

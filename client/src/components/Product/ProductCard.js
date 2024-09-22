@@ -26,7 +26,7 @@ const ProductCard = ({ image, name, description, price, originalPrice, discount,
         />
         <CardContent className="flex h-full min-h-[190px] flex-col justify-between p-3">
           <div className="flex flex-col gap-1">
-            <p className="line-clamp-2 text-sm">{name}</p>
+            <p className="line-clamp-2 min-h-10 text-sm">{name}</p>
             <Rating name="half-rating-read" precision={0.5} value={rating} readOnly size="small" />
             {discount > 0 ? (
               <>
@@ -40,7 +40,7 @@ const ProductCard = ({ image, name, description, price, originalPrice, discount,
               <p className="text-lg font-bold grid-sm:text-xl">{formatCurrency(price)}</p>
             )}
           </div>
-          <p className="mt-2 text-sm text-gray-500">Made in {origin}</p>
+          {origin && <p className="mt-2 text-sm text-gray-500">Made in {origin}</p>}
         </CardContent>
       </StyledCard>
     </Box>
