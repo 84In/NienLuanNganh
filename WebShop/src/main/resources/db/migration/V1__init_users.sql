@@ -121,31 +121,30 @@ CREATE TABLE `t_reviews`(
 );
 
 CREATE TABLE `t_provinces`(
-    `id` int NOT NULL,
-    `code_name` varchar(255) NOT NULL ,
-    `name` varchar(255) NOT NULL ,
-    `division_type` varchar(255) not null,
-    primary key (`id`)
+                              `id` int AUTO_INCREMENT PRIMARY KEY,
+                              `code_name` varchar(255) NOT NULL,
+                              `name` varchar(255) NOT NULL,
+                              `division_type` varchar(255) NOT NULL
 );
+
 
 CREATE TABLE `t_districts`(
-    `id` int not null,
-    `name` varchar(255) not null,
-    `division_type` varchar(255) not null,
-    `code_name` varchar(255) not null,
-    `province_code` int not null,
-    CONSTRAINT fk_province_id FOREIGN KEY (`province_code`) REFERENCES t_provinces(`id`) ON DELETE CASCADE,
-    primary key (`id`)
+                              `id` int AUTO_INCREMENT PRIMARY KEY,
+                              `name` varchar(255) NOT NULL,
+                              `division_type` varchar(255) NOT NULL,
+                              `code_name` varchar(255) NOT NULL,
+                              `province_code` int NOT NULL,
+                              CONSTRAINT fk_province_id FOREIGN KEY (`province_code`) REFERENCES t_provinces(`id`) ON DELETE CASCADE
 );
 
+
 CREATE TABLE `t_wards`(
-    `id` int not null,
-    `name` varchar(255) not null,
-    `division_type` varchar(255) not null,
-    `code_name` varchar(255) not null,
-    `district_code` int not null,
-    CONSTRAINT fk_district_id FOREIGN KEY (`district_code`) REFERENCES t_districts(`id`) ON DELETE CASCADE,
-    primary key (`id`)
+                          `id` int AUTO_INCREMENT PRIMARY KEY,
+                          `name` varchar(255) NOT NULL,
+                          `division_type` varchar(255) NOT NULL,
+                          `code_name` varchar(255) NOT NULL,
+                          `district_code` int NOT NULL,
+                          CONSTRAINT fk_district_id FOREIGN KEY (`district_code`) REFERENCES t_districts(`id`) ON DELETE CASCADE
 );
 
 

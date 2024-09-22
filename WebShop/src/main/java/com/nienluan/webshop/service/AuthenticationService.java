@@ -69,10 +69,11 @@ public class AuthenticationService {
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if(!authenticated){
-            throw  new AppException(ErrorCode.INCORRECT_PASSWORD);
+            throw new AppException(ErrorCode.INCORRECT_PASSWORD);
         }
 
         var token = generateToken(user);
+        log.info(token);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -83,6 +84,7 @@ public class AuthenticationService {
 
     public IntrospectResponse introspect(IntrospectRequest request){
         var token = request.getToken();
+        log.info("token: {}", token);
         boolean isValid = true;
 
         try {

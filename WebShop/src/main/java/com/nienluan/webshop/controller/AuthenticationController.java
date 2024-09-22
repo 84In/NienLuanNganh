@@ -9,7 +9,9 @@ import com.nienluan.webshop.dto.response.AuthenticationResponse;
 import com.nienluan.webshop.dto.response.IntrospectResponse;
 import com.nienluan.webshop.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
     public ApiResponse<?> login(@RequestBody AuthenticationRequest request) {
+        log.info(request.toString());
         return ApiResponse.<AuthenticationResponse>builder()
                 .message("Login successful")
                 .result(authenticationService.authenticate(request))

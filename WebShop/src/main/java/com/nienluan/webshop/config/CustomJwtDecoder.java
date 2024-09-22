@@ -5,6 +5,8 @@ import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.service.AuthenticationService;
 import com.nienluan.webshop.dto.request.IntrospectRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -20,6 +22,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CustomJwtDecoder implements JwtDecoder {
 
+    private static final Logger log = LoggerFactory.getLogger(CustomJwtDecoder.class);
     private final AuthenticationService authenticationService;
 
     private NimbusJwtDecoder nimbusJwtDecoder = null;
@@ -32,6 +35,7 @@ public class CustomJwtDecoder implements JwtDecoder {
         var response  = authenticationService.introspect(IntrospectRequest.builder()
                 .token(token)
                 .build());
+        log.info("introspection response {}", response);
         if (!response.isValid()) {
             throw new JwtException("Invalid token");
         }
