@@ -358,7 +358,7 @@ const AdminUserEdit = ({ user }) => {
             },
           }}
         >
-          Tạo tài khoản
+          {user ? "Cập nhật tài khoản" : "Tạo tài khoản"}
         </Button>
       </div>
     </div>
