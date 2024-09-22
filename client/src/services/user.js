@@ -33,7 +33,7 @@ export const apiGetUsers = () =>
         method: "GET",
         url: `/api/v1/users`,
       });
-      resolve(response?.data);
+      resolve(response);
     } catch (error) {
       reject(error);
     }
@@ -45,7 +45,7 @@ export const apiGetUserById = (userId) =>
         method: "GET",
         url: `/api/v1/users/id/${userId}`,
       });
-      resolve(response?.data);
+      resolve(response);
     } catch (error) {
       reject(error);
     }

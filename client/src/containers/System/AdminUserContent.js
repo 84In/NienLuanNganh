@@ -11,7 +11,8 @@ const AdminUserContent = () => {
     const fetchData = async () => {
       try {
         const response = await apiGetUsers();
-        setDataUsers(response?.result?.content);
+
+        setDataUsers(response?.result.content);
       } catch (error) {
         return;
       } finally {

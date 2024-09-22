@@ -6,15 +6,15 @@ export const register = (payload) => async (dispatch) => {
   try {
     response = await apiRegister(payload);
     console.log(response);
-    if (response?.data.code === 0) {
+    if (response?.code === 0) {
       dispatch({
         type: actionTypes.REGISTER_SUCCESS,
-        data: response?.data,
+        data: response,
       });
     } else {
       dispatch({
         type: actionTypes.REGISTER_FAIL,
-        data: response?.data.code,
+        data: response.code,
       });
     }
   } catch (error) {
@@ -30,16 +30,16 @@ export const login = (payload) => async (dispatch) => {
   console.log(response);
   try {
     response = await apiLogin(payload);
-    if (response?.data.code === 0) {
+    if (response?.code === 0) {
       console.log(response);
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
-        data: response?.data,
+        data: response,
       });
     } else {
       dispatch({
         type: actionTypes.LOGIN_FAIL,
-        data: response?.data.code,
+        data: response?.code,
       });
     }
   } catch (error) {

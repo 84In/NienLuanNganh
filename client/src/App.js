@@ -15,6 +15,7 @@ import {
 import { PrivateAdminFilterRouter, PrivateRoute } from "./router";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
+import AdminUserEditByID from "./containers/System/AdminUserEditByID";
 
 function App() {
   const dispatch = useDispatch();
@@ -99,7 +100,7 @@ function App() {
           >
             <Route index element={<AdminUserContent />} />
             <Route path={path.ADMIN_USER_CREATE} element={<AdminUserCreate />} />
-            <Route path={path.ADMIN_USER_EDIT} element={<AdminUserEdit />} />
+            <Route path={path.ADMIN_USER_EDIT} element={<AdminUserEditByID />} />
           </Route>
           <Route
             path={path.ADMIN_PRODUCT}

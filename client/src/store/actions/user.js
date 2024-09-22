@@ -5,15 +5,15 @@ export const getUserInfo = (username) => async (dispatch) => {
   let response = null;
   try {
     response = await apiGetUserByUsername(username);
-    if (response?.data.code === 0) {
+    if (response?.code === 0) {
       dispatch({
         type: actionType.GET_USER_SUCCESS,
-        data: response?.data.result,
+        data: response?.result,
       });
     } else {
       dispatch({
         type: actionType.GET_USER_FAIL,
-        data: response?.data.message,
+        data: response?.message,
       });
     }
   } catch (error) {
