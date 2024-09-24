@@ -98,21 +98,16 @@ const AdminUserEdit = ({ user }) => {
     }
   }, [user]);
 
-  const handleChangeRole = (event) => {
-    setRole(event.target.value);
+  const handleChange = (setter) => (event) => {
+    setter(event.target.value);
   };
-  const handleChangeProvince = (event) => {
-    setProvince(event.target.value);
-  };
-  const handleChangeDistrict = (event) => {
-    setDistrict(event.target.value);
-  };
-  const handleChangeWard = (event) => {
-    setWard(event.target.value);
-  };
-  const handleChangeAddress = (event) => {
-    setDataAddress(event.target.value);
-  };
+
+  const handleChangeRole = handleChange(setRole);
+  const handleChangeProvince = handleChange(setProvince);
+  const handleChangeDistrict = handleChange(setDistrict);
+  const handleChangeWard = handleChange(setWard);
+  const handleChangeAddress = handleChange(setDataAddress);
+
   const CSS_HEADING = "font-bold text-2xl";
   return (
     <div className="flex flex-col">
@@ -178,7 +173,7 @@ const AdminUserEdit = ({ user }) => {
                 </div>
                 <div className="mt-2 flex w-2/3 flex-col items-center justify-center">
                   <FormControl className="relative" fullWidth>
-                    <div className="absolute left-3 top-2 z-20">Role:</div>
+                    {!role && <div className="absolute left-3 top-2 z-20">Role:</div>}
                     <Select
                       labelId="role"
                       id="role-select"
