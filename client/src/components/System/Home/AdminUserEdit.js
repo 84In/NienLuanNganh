@@ -3,9 +3,8 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { CloudUploadIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import defaultAvatar from "../../../assets/images/profile.png";
-import { apiGetRoles } from "../../../services";
-import { useNavigate } from "react-router-dom";
-import { path } from "../../../utils/constant";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../../store/actions";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -35,51 +34,84 @@ const cssField = {
 };
 const AdminUserEdit = ({ user }) => {
   const [role, setRole] = useState("");
-  const [dataRoles, setDataRoles] = useState([]);
-  const navigate = useNavigate();
+  const { roles, provinces, districts, wards } = useSelector((state) => state.app);
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
+  const [ward, setWard] = useState("");
+  const [dataFullAddress, setDataFullAddress] = useState("");
+  const [dataAddress, setDataAddress] = useState("");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setDistrict("");
+    setWard("");
+    if (province !== "") {
+      dispatch(actions.getDistrictsByProvince(province));
+    }
+  }, [province]);
+  useEffect(() => {
+    setWard("");
+    if (district !== "") {
+      dispatch(actions.getWardsByDistrict(district));
+    }
+  }, [district]);
+
+  useEffect(() => {
+    var provinceObj = provinces.find((item) => item.id === province);
+    var districtObj = districts && districts.find((item) => item.id === district);
+    var wardObj = wards && wards.find((item) => item.id === ward);
+
+    var fullAddress =
+      (dataAddress ? dataAddress.trim() + ", " : "") +
+      (wardObj ? wardObj?.name + ", " : "") +
+      (districtObj ? districtObj?.name + ", " : "") +
+      (provinceObj ? provinceObj?.name : "");
+    setDataFullAddress(fullAddress);
+  }, [province, district, ward, dataAddress]);
+
   const [data, setData] = useState({
-    id: null,
-    firstName: null,
-    lastName: null,
-    username: null,
+    avatar: null,
     dob: null,
     email: null,
+    firstName: null,
+    id: null,
+    lastName: null,
     phone: null,
     roles: null,
-    avatar: null,
+    username: null,
   });
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const response = await apiGetRoles();
-        // console.log(response);
-        setDataRoles(response?.result);
-      } catch (error) {
-        navigate(path.ADMIN_USER);
-      }
-    };
-
-    fetchRoles();
-  }, []);
 
   useEffect(() => {
     if (user) {
       setData({
-        id: user?.id || null,
-        firstName: user?.firstName || "",
-        lastName: user?.lastName || "",
-        username: user?.username || "",
+        avatar: user?.avatar || null,
         dob: user?.dob || null,
         email: user?.email || null,
+        firstName: user?.firstName || "",
+        id: user?.id || null,
+        lastName: user?.lastName || "",
         phone: user?.phone || "",
         roles: user?.roles || [],
-        avatar: user?.avatar || null,
+        username: user?.username || "",
       });
     }
   }, [user]);
 
-  const handleChange = (event) => {
+  const handleChangeRole = (event) => {
     setRole(event.target.value);
+  };
+  const handleChangeProvince = (event) => {
+    setProvince(event.target.value);
+  };
+  const handleChangeDistrict = (event) => {
+    setDistrict(event.target.value);
+  };
+  const handleChangeWard = (event) => {
+    setWard(event.target.value);
+  };
+  const handleChangeAddress = (event) => {
+    setDataAddress(event.target.value);
   };
   const CSS_HEADING = "font-bold text-2xl";
   return (
@@ -140,6 +172,7 @@ const AdminUserEdit = ({ user }) => {
                           reader.readAsDataURL(file);
                         }
                       }}
+                      multiple
                     />
                   </Button>
                 </div>
@@ -149,11 +182,11 @@ const AdminUserEdit = ({ user }) => {
                     <Select
                       labelId="role"
                       id="role-select"
-                      value={role ? role : data?.roles[0]?.name}
+                      value={role ? role : data?.roles && data?.roles.lenth > 0 ? data?.roles[0]?.name : ""}
                       // defaultValue={"USER"}
                       size="small"
                       variant="outlined"
-                      onChange={handleChange}
+                      onChange={handleChangeRole}
                       sx={{
                         ...cssField, // Giữ nguyên các styles khác nếu có
                         fontSize: "14px", // Kích thước chữ bên trong Select nhỏ hơn
@@ -165,8 +198,19 @@ const AdminUserEdit = ({ user }) => {
                         textAlign: "center", // Căn giữa chữ
                       }}
                     >
-                      {dataRoles &&
-                        dataRoles?.map((item, index) => {
+                      <MenuItem
+                        value=""
+                        sx={{
+                          fontSize: "16px", // Kích thước chữ cho các item
+                          textAlign: "center", // Căn giữa chữ trong MenuItem
+                          display: "flex",
+                          alignItems: "center", // Căn giữa theo chiều dọc
+                        }}
+                      >
+                        ---------
+                      </MenuItem>
+                      {roles &&
+                        roles?.map((item, index) => {
                           return (
                             <MenuItem
                               key={index}
@@ -283,56 +327,242 @@ const AdminUserEdit = ({ user }) => {
           <span className="mb-2 text-xl font-semibold">Thông tin liên hệ</span>
           <div>
             <Grid2 container className="pb-6">
-              <div className="m-2 flex w-full gap-2 p-2">
-                <TextField
-                  name="address"
-                  type="text"
-                  value={data?.address}
-                  variant="outlined"
-                  size="small"
-                  backgroundColor="white"
-                  fullWidth
-                  className="bg-white"
-                  label="Địa chỉ"
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
-                  }}
-                  sx={cssField}
-                />
-                <TextField
-                  name="email"
-                  type="Email"
-                  value={data?.email}
-                  variant="outlined"
-                  size="small"
-                  backgroundColor="white"
-                  fullWidth
-                  className="bg-white"
-                  label="Email"
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
-                  }}
-                  sx={cssField}
-                />
-                <TextField
-                  name="phoneNumber"
-                  type="Phone"
-                  value={data?.phone}
-                  variant="outlined"
-                  size="small"
-                  backgroundColor="white"
-                  fullWidth
-                  className="bg-white"
-                  label="Số điện thoại"
-                  InputLabelProps={{
-                    shrink: true,
-                    style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
-                  }}
-                  sx={cssField}
-                  required
-                />
+              <div className="flex w-full flex-col gap-2 p-2">
+                <div className="m-2 flex w-full gap-2 p-2">
+                  <TextField
+                    name="fullAddress"
+                    type="text"
+                    value={dataFullAddress}
+                    variant="outlined"
+                    size="small"
+                    backgroundColor="white"
+                    fullWidth
+                    className="bg-white"
+                    label="Địa chỉ"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" },
+                      // Chữ lớn và đậm
+                    }}
+                    InputProps={{
+                      readOnly: true,
+                      style: {
+                        color: "black", // Màu chữ bên trong TextField
+                      },
+                    }}
+                    sx={{
+                      ...cssField,
+                      fontWeight: "semibold",
+                    }}
+                  />
+                </div>
+                <div className="m-2 flex w-full gap-2 p-2">
+                  <FormControl className="relative" fullWidth>
+                    {!province && <div className="absolute left-3 top-2 z-20">Tỉnh:</div>}
+                    <Select
+                      labelId="provinceId"
+                      id="province-select"
+                      value={province ? province : ""}
+                      // defaultValue={"USER"}
+                      size="small"
+                      variant="outlined"
+                      onChange={handleChangeProvince}
+                      sx={{
+                        ...cssField, // Giữ nguyên các styles khác nếu có
+                        fontSize: "14px", // Kích thước chữ bên trong Select nhỏ hơn
+                        padding: "8px", // Tùy chỉnh padding
+                        height: "40px", // Giảm chiều cao Select
+                        borderRadius: "6px", // Bo góc nhỏ hơn
+                        alignItems: "center",
+                        justifyContent: "center", // Căn giữa giá trị
+                        textAlign: "center", // Căn giữa chữ
+                      }}
+                    >
+                      <MenuItem
+                        value=""
+                        sx={{
+                          fontSize: "16px", // Kích thước chữ cho các item
+                          textAlign: "center", // Căn giữa chữ trong MenuItem
+                          display: "flex",
+                          alignItems: "center", // Căn giữa theo chiều dọc
+                        }}
+                      >
+                        ---------
+                      </MenuItem>
+                      {provinces &&
+                        provinces?.map((item, index) => {
+                          return (
+                            <MenuItem
+                              key={index}
+                              value={item?.id}
+                              sx={{
+                                fontSize: "16px", // Kích thước chữ cho các item
+                                textAlign: "center", // Căn giữa chữ trong MenuItem
+                                display: "flex",
+                                alignItems: "center", // Căn giữa theo chiều dọc
+                              }}
+                            >
+                              {item?.name}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
+
+                  <FormControl className="relative" fullWidth>
+                    {!district && <div className="absolute left-3 top-2 z-20">Thành phố:</div>}
+                    <Select
+                      labelId="districtId"
+                      id="district-select"
+                      value={district ? district : ""}
+                      size="small"
+                      variant="outlined"
+                      onChange={handleChangeDistrict}
+                      sx={{
+                        ...cssField, // Giữ nguyên các styles khác nếu có
+                        fontSize: "14px", // Kích thước chữ bên trong Select nhỏ hơn
+                        padding: "8px", // Tùy chỉnh padding
+                        height: "40px", // Giảm chiều cao Select
+                        borderRadius: "6px", // Bo góc nhỏ hơn
+                        alignItems: "center",
+                        justifyContent: "center", // Căn giữa giá trị
+                        textAlign: "center", // Căn giữa chữ
+                      }}
+                    >
+                      <MenuItem
+                        value=""
+                        sx={{
+                          fontSize: "16px", // Kích thước chữ cho các item
+                          textAlign: "center", // Căn giữa chữ trong MenuItem
+                          display: "flex",
+                          alignItems: "center", // Căn giữa theo chiều dọc
+                        }}
+                      >
+                        ---------
+                      </MenuItem>
+                      {districts &&
+                        districts?.map((item, index) => {
+                          return (
+                            <MenuItem
+                              key={index}
+                              value={item?.id}
+                              sx={{
+                                fontSize: "16px", // Kích thước chữ cho các item
+                                textAlign: "center", // Căn giữa chữ trong MenuItem
+                                display: "flex",
+                                alignItems: "center", // Căn giữa theo chiều dọc
+                              }}
+                            >
+                              {item?.name}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
+
+                  <FormControl className="relative" fullWidth>
+                    {!ward && <div className="absolute left-3 top-2 z-20">Quận/Huyện:</div>}
+                    <Select
+                      labelId="wardId"
+                      id="ward-select"
+                      value={ward ? ward : ""}
+                      size="small"
+                      variant="outlined"
+                      onChange={handleChangeWard}
+                      sx={{
+                        ...cssField, // Giữ nguyên các styles khác nếu có
+                        fontSize: "14px", // Kích thước chữ bên trong Select nhỏ hơn
+                        padding: "8px", // Tùy chỉnh padding
+                        height: "40px", // Giảm chiều cao Select
+                        borderRadius: "6px", // Bo góc nhỏ hơn
+                        alignItems: "center",
+                        justifyContent: "center", // Căn giữa giá trị
+                        textAlign: "center", // Căn giữa chữ
+                      }}
+                    >
+                      <MenuItem
+                        value=""
+                        sx={{
+                          fontSize: "16px", // Kích thước chữ cho các item
+                          textAlign: "center", // Căn giữa chữ trong MenuItem
+                          display: "flex",
+                          alignItems: "center", // Căn giữa theo chiều dọc
+                        }}
+                      >
+                        ---------
+                      </MenuItem>
+                      {wards &&
+                        wards?.map((item, index) => {
+                          return (
+                            <MenuItem
+                              key={index}
+                              value={item?.id}
+                              sx={{
+                                fontSize: "16px", // Kích thước chữ cho các item
+                                textAlign: "center", // Căn giữa chữ trong MenuItem
+                                display: "flex",
+                                alignItems: "center", // Căn giữa theo chiều dọc
+                              }}
+                            >
+                              {item?.name}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="m-2 flex w-full gap-2 p-2">
+                  <TextField
+                    name="address"
+                    type="text"
+                    value={dataAddress}
+                    variant="outlined"
+                    size="small"
+                    backgroundColor="white"
+                    onChange={handleChangeAddress}
+                    fullWidth
+                    className="bg-white"
+                    label="Số nhà"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                    }}
+                    sx={cssField}
+                  />
+                  <TextField
+                    name="email"
+                    type="Email"
+                    value={data?.email}
+                    variant="outlined"
+                    size="small"
+                    backgroundColor="white"
+                    fullWidth
+                    className="bg-white"
+                    label="Email"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                    }}
+                    sx={cssField}
+                  />
+                  <TextField
+                    name="phoneNumber"
+                    type="Phone"
+                    value={data?.phone}
+                    variant="outlined"
+                    size="small"
+                    backgroundColor="white"
+                    fullWidth
+                    className="bg-white"
+                    label="Số điện thoại"
+                    InputLabelProps={{
+                      shrink: true,
+                      style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
+                    }}
+                    sx={cssField}
+                    required
+                  />
+                </div>
               </div>
             </Grid2>
           </div>

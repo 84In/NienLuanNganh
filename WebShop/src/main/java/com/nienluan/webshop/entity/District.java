@@ -26,10 +26,10 @@ public class District {
     String divisionType;
     String codeName;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "province_code", nullable = false)
-    private Province province;
+    Province province;
 
-    @OneToMany(mappedBy = "district", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<Ward> wards = new HashSet<>();;
+    @OneToMany(mappedBy = "district", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+    Set<Ward> wards = new HashSet<>();;
 }

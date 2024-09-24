@@ -1,14 +1,22 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AdminSideBar } from "../../components";
 import { AdminHeader } from "./";
+import { useDispatch } from "react-redux";
+import * as actions from "../../store/actions";
 
 const AdminHome = ({ user }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   if (user === null || user === undefined || !user?.roles.some((role) => role.name === "ADMIN")) {
     navigate("/");
   }
+
+  useEffect(() => {
+    dispatch(actions.getRoles());
+    dispatch(actions.getProvinces());
+  });
 
   return (
     <div className="h-full min-h-screen w-full">

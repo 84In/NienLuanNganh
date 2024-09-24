@@ -10,7 +10,7 @@ const AdminUser = ({ user }) => {
     <div className="flex flex-col gap-2 bg-gray-200 p-2">
       <div className="rounded-md bg-white p-2 text-2xl font-semibold underline-offset-1">Manager User</div>
       <div className="rounded-md bg-white">
-        <div className="rouded-tr-md flex h-10 items-center rounded-tl-md bg-gray-100">
+        <div className="flex h-10 items-center rounded-tl-md rounded-tr-md bg-gray-100">
           <NavLink to={""} end className={({ isActive }) => (isActive ? active : nonActive)}>
             User Table
           </NavLink>
