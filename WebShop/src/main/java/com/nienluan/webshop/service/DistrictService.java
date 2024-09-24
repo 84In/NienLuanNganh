@@ -1,12 +1,16 @@
 package com.nienluan.webshop.service;
 
+import com.nienluan.webshop.dto.response.DistrictResponse;
 import com.nienluan.webshop.entity.District;
+import com.nienluan.webshop.mapper.DistrictMapper;
 import com.nienluan.webshop.repository.DistrictRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,17 +19,14 @@ import org.springframework.stereotype.Service;
 public class DistrictService {
 
     DistrictRepository districtRepository;
+    DistrictMapper districtMapper;
 
-    @Transactional
-    public void saveOrUpdateDistrict(District district) {
-        // Kiểm tra xem thực thể có ID không
-        if (district.getId() != null) {
-            // Nếu có ID, sử dụng merge để cập nhật
-            districtRepository.save(district); // Hibernate sẽ tự động update
-        } else {
-            // Nếu không có ID, sử dụng save để insert
-            districtRepository.save(district); // Hibernate sẽ insert
-        }
+    public List<DistrictResponse> getAllDistricts() {
+        return districtRepository.findAll().stream().map(districtMapper::toDistrictResponse).toList();
+    }
+
+    public List<DistrictResponse> getDistrictsByProvince(Integer province) {
+        return districtRepository.findAllByProvince(province).stream().map(districtMapper::toDistrictResponse).toList();
     }
 
 }
