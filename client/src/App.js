@@ -10,12 +10,11 @@ import {
   AdminUser,
   AdminUserContent,
   AdminUserCreate,
-  AdminUserEdit,
+  AdminUserEditByID,
 } from "./containers/System";
 import { PrivateAdminFilterRouter, PrivateRoute } from "./router";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
-import AdminUserEditByID from "./containers/System/AdminUserEditByID";
 
 function App() {
   const dispatch = useDispatch();

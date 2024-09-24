@@ -38,15 +38,15 @@ const AdminUserEdit = ({ user }) => {
   const [dataRoles, setDataRoles] = useState([]);
   const navigate = useNavigate();
   const [data, setData] = useState({
-    id: null,
-    firstName: null,
-    lastName: null,
-    username: null,
+    avatar: null,
     dob: null,
     email: null,
+    firstName: null,
+    id: null,
+    lastName: null,
     phone: null,
     roles: null,
-    avatar: null,
+    username: null,
   });
   useEffect(() => {
     const fetchRoles = async () => {
@@ -65,15 +65,15 @@ const AdminUserEdit = ({ user }) => {
   useEffect(() => {
     if (user) {
       setData({
-        id: user?.id || null,
-        firstName: user?.firstName || "",
-        lastName: user?.lastName || "",
-        username: user?.username || "",
+        avatar: user?.avatar || null,
         dob: user?.dob || null,
         email: user?.email || null,
+        firstName: user?.firstName || "",
+        id: user?.id || null,
+        lastName: user?.lastName || "",
         phone: user?.phone || "",
         roles: user?.roles || [],
-        avatar: user?.avatar || null,
+        username: user?.username || "",
       });
     }
   }, [user]);
@@ -140,6 +140,7 @@ const AdminUserEdit = ({ user }) => {
                           reader.readAsDataURL(file);
                         }
                       }}
+                      multiple
                     />
                   </Button>
                 </div>
@@ -149,7 +150,7 @@ const AdminUserEdit = ({ user }) => {
                     <Select
                       labelId="role"
                       id="role-select"
-                      value={role ? role : data?.roles[0]?.name}
+                      value={role ? role : data?.roles && data?.roles.lenth > 0 ? data?.roles[0]?.name : ""}
                       // defaultValue={"USER"}
                       size="small"
                       variant="outlined"
@@ -165,6 +166,17 @@ const AdminUserEdit = ({ user }) => {
                         textAlign: "center", // Căn giữa chữ
                       }}
                     >
+                      <MenuItem
+                        value=""
+                        sx={{
+                          fontSize: "16px", // Kích thước chữ cho các item
+                          textAlign: "center", // Căn giữa chữ trong MenuItem
+                          display: "flex",
+                          alignItems: "center", // Căn giữa theo chiều dọc
+                        }}
+                      >
+                        ---------
+                      </MenuItem>
                       {dataRoles &&
                         dataRoles?.map((item, index) => {
                           return (
@@ -287,7 +299,7 @@ const AdminUserEdit = ({ user }) => {
                 <TextField
                   name="address"
                   type="text"
-                  value={data?.address}
+                  value={data?.firstName}
                   variant="outlined"
                   size="small"
                   backgroundColor="white"
