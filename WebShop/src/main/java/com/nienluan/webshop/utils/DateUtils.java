@@ -11,7 +11,7 @@ import java.time.format.DateTimeParseException;
 public class DateUtils {
 
     // Định dạng ngày
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static LocalDate formatStringToLocalDate(String date) {
         try {
