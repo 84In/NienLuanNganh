@@ -3,6 +3,7 @@ package com.nienluan.webshop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -31,4 +32,8 @@ public class User {
 
     @ManyToMany
     Set<Role> roles;
+
+    @OneToOne
+    @JoinColumn(name = "address", nullable = true)
+    Address address;
 }

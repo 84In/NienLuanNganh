@@ -1,3 +1,45 @@
+
+
+CREATE TABLE `t_provinces`(
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `code_name` varchar(255) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `division_type` varchar(255) NOT NULL
+);
+
+
+CREATE TABLE `t_districts`(
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `name` varchar(255) NOT NULL,
+    `division_type` varchar(255) NOT NULL,
+    `code_name` varchar(255) NOT NULL,
+    `province_code` int NOT NULL,
+    CONSTRAINT fk_province_id FOREIGN KEY (`province_code`) REFERENCES t_provinces(`id`) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `t_wards`(
+    `id` int AUTO_INCREMENT PRIMARY KEY,
+    `name` varchar(255) NOT NULL,
+    `division_type` varchar(255) NOT NULL,
+    `code_name` varchar(255) NOT NULL,
+    `district_code` int NOT NULL,
+    CONSTRAINT fk_district_id FOREIGN KEY (`district_code`) REFERENCES t_districts(`id`) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `t_addresses`(
+    `id` varchar(255) NOT NULL,
+    `full_name` text NOT NULL,
+    `province` int NOT NULL,
+    `district` int NOT NULL,
+    `ward` int DEFAULT NULL,
+    CONSTRAINT fk_province_code FOREIGN KEY (`province`) REFERENCES t_provinces(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_district_code FOREIGN KEY (`district`) REFERENCES t_districts(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_ward_code FOREIGN KEY (`ward`) REFERENCES t_wards(`id`) ON DELETE CASCADE,
+    primary key (`id`)
+);
+
 CREATE TABLE `t_users`
 (
     `id` varchar(255) NOT NULL,
@@ -9,8 +51,10 @@ CREATE TABLE `t_users`
     `phone` varchar(255) NOT NULL UNIQUE,
     `avatar` text DEFAULT NULL,
     `dob` Date DEFAULT NULL,
+    `address` varchar(255) DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_address FOREIGN KEY(`address`) REFERENCES t_addresses(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 
@@ -117,46 +161,6 @@ CREATE TABLE `t_reviews`(
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_review_user_id FOREIGN KEY (`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_review_product_id FOREIGN KEY (`product_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
-    primary key (`id`)
-);
-
-CREATE TABLE `t_provinces`(
-                              `id` int AUTO_INCREMENT PRIMARY KEY,
-                              `code_name` varchar(255) NOT NULL,
-                              `name` varchar(255) NOT NULL,
-                              `division_type` varchar(255) NOT NULL
-);
-
-
-CREATE TABLE `t_districts`(
-                              `id` int AUTO_INCREMENT PRIMARY KEY,
-                              `name` varchar(255) NOT NULL,
-                              `division_type` varchar(255) NOT NULL,
-                              `code_name` varchar(255) NOT NULL,
-                              `province_code` int NOT NULL,
-                              CONSTRAINT fk_province_id FOREIGN KEY (`province_code`) REFERENCES t_provinces(`id`) ON DELETE CASCADE
-);
-
-
-CREATE TABLE `t_wards`(
-                          `id` int AUTO_INCREMENT PRIMARY KEY,
-                          `name` varchar(255) NOT NULL,
-                          `division_type` varchar(255) NOT NULL,
-                          `code_name` varchar(255) NOT NULL,
-                          `district_code` int NOT NULL,
-                          CONSTRAINT fk_district_id FOREIGN KEY (`district_code`) REFERENCES t_districts(`id`) ON DELETE CASCADE
-);
-
-
-CREATE TABLE `t_addresses`(
-    `id` varchar(255) NOT NULL,
-    `full_name` text NOT NULL,
-    `province` int NOT NULL,
-    `district` int NOT NULL,
-    `ward` int DEFAULT NULL,
-    CONSTRAINT fk_province_code FOREIGN KEY (`province`) REFERENCES t_provinces(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_district_code FOREIGN KEY (`district`) REFERENCES t_districts(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_ward_code FOREIGN KEY (`ward`) REFERENCES t_wards(`id`) ON DELETE CASCADE,
     primary key (`id`)
 );
 
