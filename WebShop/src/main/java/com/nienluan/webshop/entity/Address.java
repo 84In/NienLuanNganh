@@ -17,18 +17,18 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     @Column(name = "full_name", nullable = false, columnDefinition = "TEXT")
-    private String fullName;
+    String fullName;
 
     @OneToOne
     @JoinColumn(name = "province", nullable = false)
-    private Province province;
+    Province province;
 
     @OneToOne
     @JoinColumn(name = "district", nullable = false)
-    private District district;
+    District district;
 
     @OneToOne
     @JoinColumn(name = "ward")
-    private Ward ward;
+    Ward ward;
 
 }

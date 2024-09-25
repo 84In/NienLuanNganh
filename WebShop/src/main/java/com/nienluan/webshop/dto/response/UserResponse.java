@@ -1,6 +1,7 @@
 package com.nienluan.webshop.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nienluan.webshop.entity.Address;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -23,6 +24,8 @@ public class UserResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate dob;
     String avatar;
+
+    AddressResponse address;
 
     Set<RoleResponse> roles;
 }

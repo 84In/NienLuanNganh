@@ -9,8 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProvinceRequest {
-
-    Integer id;
     String codeName;
     String name;
     String divisionType;

@@ -1,9 +1,9 @@
 package com.nienluan.webshop.repository;
 
-import com.nienluan.webshop.entity.InvalidatedToken;
+import com.nienluan.webshop.entity.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InvalidateTokenRepository extends JpaRepository<InvalidatedToken, String> {
+public interface AddressRepository extends JpaRepository<Address, String> {
 }

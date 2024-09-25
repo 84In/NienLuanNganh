@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DistrictRequest {
-    Integer id;
 
     String name;
     String divisionType;
