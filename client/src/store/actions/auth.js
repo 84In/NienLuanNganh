@@ -55,7 +55,7 @@ export const logout = (token) => async (dispatch) => {
   let response = null;
   try {
     response = await apiLogout(token);
-    if (response?.data.code === 0) {
+    if (response?.code === 0) {
       dispatch({
         type: actionTypes.LOGOUT,
       });
