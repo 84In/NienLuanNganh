@@ -8,7 +8,6 @@ export const apiLogin = (payload) =>
         url: "/api/v1/auth/login",
         data: payload,
       });
-
       resolve(response);
     } catch (error) {
       reject(error);

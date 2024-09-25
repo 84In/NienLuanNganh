@@ -48,7 +48,10 @@ instance.interceptors.response.use(
     // Bất kỳ mã trạng thái nào ngoài 2xx sẽ kích hoạt hàm này
     if (error.response) {
       // Xử lý lỗi 404 và 400
+
       if (error.response.status === 404 || error.response.status === 400) {
+        console.log(error.response);
+
         return error.response.data;
       }
 

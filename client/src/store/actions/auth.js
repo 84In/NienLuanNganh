@@ -27,7 +27,6 @@ export const register = (payload) => async (dispatch) => {
 
 export const login = (payload) => async (dispatch) => {
   let response = null;
-  console.log(response);
   try {
     response = await apiLogin(payload);
     if (response?.code === 0) {
@@ -39,7 +38,7 @@ export const login = (payload) => async (dispatch) => {
     } else {
       dispatch({
         type: actionTypes.LOGIN_FAIL,
-        data: response?.code,
+        data: response,
       });
     }
   } catch (error) {
