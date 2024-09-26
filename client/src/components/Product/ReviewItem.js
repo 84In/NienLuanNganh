@@ -9,7 +9,7 @@ const ReviewItem = ({ rating }) => {
       <div className="flex h-14 w-full items-center justify-between">
         <div className="flex items-center gap-4">
           <img
-            className="avatar h-10 w-10 rounded-full border border-gray-400 object-cover"
+            className="avatar h-10 w-10 rounded-full border border-black bg-white object-cover"
             src={defaultAvatar}
             alt="Avatar"
           />

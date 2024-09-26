@@ -1,7 +1,7 @@
 import { Alert, Box, Button, TextField } from "@mui/material";
 import React, { memo } from "react";
 import { IoMdClose } from "react-icons/io";
-import useLogin from "../../hooks/useLogin";
+import { useLogin } from "../../hooks";
 
 const Login = ({ setIsModelLogin }) => {
   const { isLogin, error, handleInputChange, handleSubmit, setIsLogin } = useLogin(setIsModelLogin);
