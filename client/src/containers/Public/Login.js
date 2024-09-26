@@ -1,108 +1,10 @@
 import { Alert, Box, Button, TextField } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
+import React, { memo } from "react";
 import { IoMdClose } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import * as actions from "../../store/actions";
+import useLogin from "../../hooks/useLogin";
 
 const Login = ({ setIsModelLogin }) => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [error, setError] = useState("");
-  const dispatch = useDispatch();
-
-  const location = useLocation();
-  const { isLoggedIn, code } = useSelector((state) => state.auth);
-
-  const [payload, setPayload] = useState({
-    username: "",
-    password: "",
-    re_password: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    dob: "",
-  });
-
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault(); // Ngăn chặn hành vi mặc định của phím Enter
-      handleSubmit();
-    }
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setPayload({ ...payload, [name]: value });
-  };
-
-  const handleSubmit = async () => {
-    // Check if required fields are not empty
-    const requiredFields = isLogin
-      ? ["username", "password"]
-      : ["firstName", "lastName", "email", "phone", "dob", "username", "password", "re_password"];
-
-    const isValid = requiredFields.every((field) => payload[field].trim() !== "");
-    if (!isValid) {
-      setError("Vui lòng điền tất cả các trường bắt buộc!");
-      return;
-    }
-
-    if (isLogin) {
-      if (isLoggedIn === false) dispatch(actions.login({ username: payload.username, password: payload.password }));
-    } else {
-      if (payload.password !== payload.re_password) {
-        setError("Mật khẩu không khớp!");
-        return;
-      }
-      const { re_password, ...registerPayload } = payload;
-      dispatch(actions.register(registerPayload));
-    }
-  };
-
-  // useEffect(() => {}, [location]);
-
-  useEffect(() => {
-    setError("");
-    if (!isLogin && code === 0) {
-      setIsLogin(true);
-    }
-    if (code === 303 || code === 301) {
-      setError("Tài khoản hoặc mật khẩu chưa chính xác!");
-    }
-    if (code === 304) {
-      setError("Số điện thoại đã được sử dụng!");
-    }
-    if (code === 302) {
-      setError("Tên tài khoản đã được sử dụng!");
-    }
-  }, [code]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setIsModelLogin(false);
-    }
-  }, [isLoggedIn, setIsModelLogin]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const box = document.getElementById("box-container");
-      if (box && !box.contains(event.target)) {
-        setIsModelLogin(false);
-        setError("");
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      setError("");
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    setError("");
-  }, [isLogin]);
+  const { isLogin, error, handleInputChange, handleSubmit, setIsLogin } = useLogin(setIsModelLogin);
 
   return (
     <Box
@@ -120,10 +22,10 @@ const Login = ({ setIsModelLogin }) => {
         position: "fixed",
         overflowY: "auto",
         zIndex: 99,
-        top:0,
-        right:0,
-        left:0,
-        bottom:0,
+        top: 0,
+        right: 0,
+        left: 0,
+        bottom: 0,
       }}
     >
       {isLogin ? (
@@ -167,7 +69,6 @@ const Login = ({ setIsModelLogin }) => {
                 name="username"
                 required
                 onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
               ></TextField>
               <TextField
                 type="password"
@@ -178,7 +79,6 @@ const Login = ({ setIsModelLogin }) => {
                 name="password"
                 required
                 onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
               ></TextField>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>
                 Đăng Nhập
@@ -238,7 +138,6 @@ const Login = ({ setIsModelLogin }) => {
                   name="firstName"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
                 <TextField
                   className="w-full"
@@ -247,7 +146,6 @@ const Login = ({ setIsModelLogin }) => {
                   name="lastName"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -258,7 +156,6 @@ const Login = ({ setIsModelLogin }) => {
                   name="email"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="flex w-[80%] gap-2">
@@ -269,7 +166,6 @@ const Login = ({ setIsModelLogin }) => {
                   name="phone"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
                 <TextField
                   className="w-full"
@@ -280,7 +176,6 @@ const Login = ({ setIsModelLogin }) => {
                   InputLabelProps={{ shrink: true }}
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -291,7 +186,6 @@ const Login = ({ setIsModelLogin }) => {
                   name="username"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -304,7 +198,6 @@ const Login = ({ setIsModelLogin }) => {
                   type="password"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -317,7 +210,6 @@ const Login = ({ setIsModelLogin }) => {
                   type="password"
                   required
                   onChange={handleInputChange}
-                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>
