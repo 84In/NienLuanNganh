@@ -9,7 +9,7 @@ public enum ErrorCode {
 
     UNCATEGORIZED_EXCEPTION (999, "",HttpStatus.INTERNAL_SERVER_ERROR),
 
-    CATEGORY_NOT_EXISTED(1,"Category not found",HttpStatus.BAD_REQUEST),
+    CATEGORY_NOT_FOUND(1,"Category not found",HttpStatus.BAD_REQUEST),
     CATEGORY_EXISTED(2,"Category already existed",HttpStatus.BAD_REQUEST),
     PROMOTION_NOT_EXISTED(3,"Promotion not found",HttpStatus.BAD_REQUEST),
     PROMOTION_EXISTED(4,"Promotion already existed",HttpStatus.BAD_REQUEST),
@@ -17,6 +17,7 @@ public enum ErrorCode {
     PRODUCT_EXISTED(6,"Product already existed",HttpStatus.BAD_REQUEST),
     BANNER_NOT_EXISTED(7,"Banner not found",HttpStatus.BAD_REQUEST),
     BANNER_EXISTED(8,"Banner already existed", HttpStatus.BAD_REQUEST),
+    BRAND_NOT_FOUND(9,"Brand not found",HttpStatus.BAD_REQUEST),
 
     UNAUTHORIZED(101,"You do not have permission",HttpStatus.FORBIDDEN),
     UNAUTHENTICATED(102,"Unauthenticated",HttpStatus.UNAUTHORIZED),
