@@ -1,9 +1,13 @@
 package com.nienluan.webshop.controller;
 
+import com.nienluan.webshop.dto.ProductCsvDTO;
 import com.nienluan.webshop.dto.request.ProductRequest;
 import com.nienluan.webshop.dto.request.ProductUpdateRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.ProductResponse;
+import com.nienluan.webshop.exception.AppException;
+import com.nienluan.webshop.exception.ErrorCode;
+import com.nienluan.webshop.service.CsvService;
 import com.nienluan.webshop.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +17,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
     ProductService productService;
+    private final CsvService csvService;
 
     @PostMapping
     public ApiResponse<ProductResponse> createProduct(@RequestBody ProductRequest request, @RequestPart MultipartFile[] files) {
@@ -54,6 +62,25 @@ public class ProductController {
         return ApiResponse.<Void>builder()
                 .message("Product deleted!")
                 .build();
+    }
+
+    @PostMapping("/upload-csv/{categoryId}")
+    public ApiResponse<Void> uploadCsv(@PathVariable String categoryId,@RequestParam("file") MultipartFile file) {
+        if(file.isEmpty()){
+            return ApiResponse.<Void>builder()
+                    .code(ErrorCode.FILE_EMPTY.getCode())
+                    .message(ErrorCode.FILE_EMPTY.getMessage())
+                    .build();
+        }
+        try{
+            List<ProductCsvDTO> products = csvService.parseCsvFile(file);
+            productService.saveProductsFromCsv(products, categoryId);
+            return ApiResponse.<Void>builder()
+                    .message("Products saved!")
+                    .build();
+        } catch (IOException e) {
+            throw new AppException(ErrorCode.PARSE_ERROR);
+        }
     }
 
 

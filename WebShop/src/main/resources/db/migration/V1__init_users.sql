@@ -75,6 +75,13 @@ CREATE TABLE `t_users_roles`
     CONSTRAINT fk_role FOREIGN KEY(`roles_name`) REFERENCES t_roles(`name`) ON DELETE CASCADE,
     PRIMARY KEY(`users_id`, `roles_name`)
 );
+CREATE TABLE `t_brands` (
+    `id` varchar(255) NOT NULL,
+    `name` varchar(255) NOT NULL UNIQUE,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
 
 CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
@@ -94,9 +101,11 @@ CREATE TABLE `t_products`(
     `stock_quantity` bigint(20) DEFAULT 0,
     `images` text DEFAULT NULL,
     `category_id` varchar(255) NOT NULL,
+    `brand_id` varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_category FOREIGN KEY(`category_id`) REFERENCES t_categories(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_brand FOREIGN KEY (`brand_id`) REFERENCES t_brands(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 

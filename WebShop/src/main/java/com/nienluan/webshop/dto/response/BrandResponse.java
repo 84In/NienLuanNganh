@@ -1,9 +1,9 @@
 package com.nienluan.webshop.dto.response;
 
+import com.nienluan.webshop.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Data
@@ -11,15 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class BrandResponse {
     String id;
     String name;
-    String description;
-    BigDecimal price;
-    BigDecimal stock_quantity;
-    String category_id;
-    String brand_id;
-    String images;
-
-    Set<PromotionResponse> promotions;
+    Set<Product> products;
 }

@@ -3,19 +3,12 @@ package com.nienluan.webshop.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRequest {
+public class BrandUpdateRequest {
+    String id;
     String name;
-    String description;
-    BigDecimal price;
-    BigDecimal stock_quantity;
-    String category_id;
-    String brand_id;
-    String images;
 }
