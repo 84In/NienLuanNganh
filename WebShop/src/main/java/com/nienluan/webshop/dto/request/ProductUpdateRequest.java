@@ -18,6 +18,7 @@ public class ProductUpdateRequest {
     BigDecimal stock_quantity;
     String category_id;
     String images;
+    String brand_id;
 
     Set<String> promotions;
 }

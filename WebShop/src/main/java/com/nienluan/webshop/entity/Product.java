@@ -25,8 +25,15 @@ public class Product {
     String description;
     BigDecimal price;
     BigDecimal stock_quantity;
-    String category_id;
     String images;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false)
+    Brand brand;
 
     @ManyToMany
     Set<Promotion> promotions;
