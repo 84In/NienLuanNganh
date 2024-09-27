@@ -18,5 +18,5 @@ public class Banner {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String title;
-    String data;
+    String images;
 }

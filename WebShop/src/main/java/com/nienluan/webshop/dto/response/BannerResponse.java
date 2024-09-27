@@ -11,5 +11,5 @@ import lombok.experimental.FieldDefaults;
 public class BannerResponse {
     String id;
     String title;
-    String data;
+    String images;
 }

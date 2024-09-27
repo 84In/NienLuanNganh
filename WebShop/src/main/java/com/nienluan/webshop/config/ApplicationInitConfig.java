@@ -5,6 +5,7 @@ import com.nienluan.webshop.entity.Role;
 import com.nienluan.webshop.entity.User;
 import com.nienluan.webshop.repository.RoleRepository;
 import com.nienluan.webshop.repository.UserRepository;
+import com.nienluan.webshop.service.DataLoaderService;
 import com.nienluan.webshop.utils.DateUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,12 @@ import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.InputStream;
 import java.util.HashSet;
 
 @Configuration
@@ -26,7 +29,7 @@ public class ApplicationInitConfig {
     PasswordEncoder passwordEncoder;
 
     @Bean
-    ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
+    ApplicationRunner addDefaultUserAndRole(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
 
             if(roleRepository.findById("ADMIN").isEmpty()) {
@@ -57,6 +60,19 @@ public class ApplicationInitConfig {
                         .build();
                 userRepository.save(user);
                 log.warn("Default admin user has bean created with default password: admin, please change!");
+            }
+        };
+    }
+
+    @Bean
+    ApplicationRunner addDataProvinces(DataLoaderService dataLoaderService) {
+        return args -> {
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dataProvinces.json");
+            if (inputStream != null) {
+                dataLoaderService.loadDataFromJson(inputStream);
+                log.warn("Data VietNam location is successfully loaded!");
+            } else {
+                System.err.println("File dataProvinces.json không tồn tại trong classpath.");
             }
         };
     }

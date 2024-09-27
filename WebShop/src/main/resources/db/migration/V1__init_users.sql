@@ -208,10 +208,10 @@ CREATE TABLE `t_promotions`(
     primary key (`id`)
 );
 
-CREATE TABLE `t_banner_images`(
+CREATE TABLE `t_banner`(
     `id` varchar(255) not null,
     `title` varchar(255) not null ,
-    `data` text not null,
+    `images` text not null,
     primary key (`id`)
 );
 
