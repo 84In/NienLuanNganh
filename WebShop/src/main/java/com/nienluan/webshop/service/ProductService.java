@@ -1,5 +1,6 @@
 package com.nienluan.webshop.service;
 
+import com.nienluan.webshop.dto.ProductCsvDTO;
 import com.nienluan.webshop.dto.request.ProductRequest;
 import com.nienluan.webshop.dto.request.ProductUpdateRequest;
 import com.nienluan.webshop.dto.response.ProductResponse;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -94,5 +96,26 @@ public class ProductService {
             throw new AppException(ErrorCode.PRODUCT_NOT_EXISTED);
         }
         productRepository.deleteById(id);
+    }
+
+    public void saveProductsFromCsv(List<ProductCsvDTO> products, String categoryId){
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        products.forEach(product -> {
+            if(!brandRepository.existsByName(product.getBrandName())){
+                brandRepository.save(Brand.builder().name(product.getBrandName()).build());
+            }
+            var brand = brandRepository.findByName(product.getName()).orElseThrow(()-> new AppException(ErrorCode.BRAND_NOT_FOUND));
+
+            Product pr = Product.builder()
+                    .name(product.getName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .stock_quantity(product.getStock_quantity())
+                    .images(product.getImages())
+                    .category(category)
+                    .brand(brand)
+                    .build();
+            productRepository.save(pr);
+        });
     }
 }
