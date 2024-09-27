@@ -62,7 +62,7 @@ const useLogin = (setIsModelLogin) => {
     if (code === 302) {
       setError("Tên tài khoản đã được sử dụng!");
     }
-  }, [code, isLogin]);
+  }, [code]);
 
   useEffect(() => {
     if (isLoggedIn) {

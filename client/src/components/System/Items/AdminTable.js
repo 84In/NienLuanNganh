@@ -13,7 +13,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
 
-const AdminTable = ({ data }) => {
+const AdminTable = ({ data, pagination }) => {
   const { BiEdit } = icons;
 
   // Check if data exists
@@ -81,6 +81,7 @@ const AdminTable = ({ data }) => {
           ))}
         </TableBody>
       </Table>
+      {pagination} {/* Render the pagination component here */}
     </TableContainer>
   );
 };

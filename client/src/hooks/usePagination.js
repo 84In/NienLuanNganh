@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (initialPage = 0, requestPath) => {
+const usePagination = (initialPage = 0, url) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = parseInt(searchParams.get("page")) || initialPage;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
@@ -15,7 +15,7 @@ const usePagination = (initialPage = 0, requestPath) => {
     try {
       const response = await axiosConfig({
         method: "GET",
-        url: `${requestPath}?page=${page}`,
+        url: `${url}?page=${page}`,
       });
       console.log(response);
       const result = response.result;
@@ -62,6 +62,7 @@ const usePagination = (initialPage = 0, requestPath) => {
   return {
     data,
     currentPage,
+    setCurrentPage,
     totalPages,
     loading,
     nextPage,
