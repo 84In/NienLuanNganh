@@ -65,7 +65,7 @@ public class ProductController {
     }
 
     @PostMapping("/upload-csv/{categoryId}")
-    public ApiResponse<Void> uploadCsv(@PathVariable String categoryId,@RequestParam("file") MultipartFile file) {
+    public ApiResponse<Void> uploadCsv(@PathVariable String categoryId, @RequestParam("file") MultipartFile file) {
         if(file.isEmpty()){
             return ApiResponse.<Void>builder()
                     .code(ErrorCode.FILE_EMPTY.getCode())

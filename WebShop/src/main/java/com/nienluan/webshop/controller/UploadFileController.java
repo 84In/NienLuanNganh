@@ -39,4 +39,11 @@ public class UploadFileController {
                 .build();
     }
 
+    @PostMapping("/category/{name}")
+    public ApiResponse<List<String>> uploadCategory(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
+        return ApiResponse.<List<String>>builder()
+                .result(uploadFileService.uploadFile("category", name, files))
+                .build();
+    }
+
 }

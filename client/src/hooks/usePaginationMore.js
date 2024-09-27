@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axiosConfig from "../axiosConfig";
 
-const usePaginationMore = (pageSize = 15, requestPath) => {
+const usePaginationMore = (pageSize = 15, url, addPageSize = 10) => {
   const [data, setData] = useState([]);
   const [currentSize, setCurrentSize] = useState(pageSize);
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ const usePaginationMore = (pageSize = 15, requestPath) => {
     try {
       const response = await axiosConfig({
         method: "GET",
-        url: requestPath,
+        url: url,
         params: {
           size: size,
         },
@@ -34,7 +34,7 @@ const usePaginationMore = (pageSize = 15, requestPath) => {
   }, [currentSize]);
 
   const loadMore = () => {
-    setCurrentSize((prev) => prev + 10); // Add 10 more items
+    setCurrentSize((prev) => prev + addPageSize); // Add 10 more items
   };
 
   const hasMore = currentSize < totalElements; // Check if there are more items to load

@@ -25,7 +25,7 @@ public class CategoryController {
     public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Created Successfully!")
-                .result(categoryService.CreatedCategory(request))
+                .result(categoryService.createdCategory(request))
                 .build();
     }
 
@@ -49,7 +49,7 @@ public class CategoryController {
     public ApiResponse<CategoryResponse> updateCategory(@PathVariable String categoryId, @RequestBody CategoryUpdateRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Success!")
-                .result(categoryService.UpdateCategory(request,categoryId))
+                .result(categoryService.updateCategory(request,categoryId))
                 .build();
     }
 

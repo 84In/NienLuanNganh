@@ -217,7 +217,7 @@ const AdminUserEdit = ({ user }) => {
                                 alignItems: "center", // Căn giữa theo chiều dọc
                               }}
                             >
-                              {`Role ${item?.description}`}
+                              {`Role ${item?.name}`}
                             </MenuItem>
                           );
                         })}
