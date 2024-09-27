@@ -10,6 +10,7 @@ const actionTypes = {
   GET_PROVINCES: "GET_PROVINCES",
   GET_DISTRICTS: "GET_DISTRICTS",
   GET_WARDS: "GET_WARDS",
+  GET_CATEGORIES: "GET_CATEGORIES",
 };
 
 export default actionTypes;

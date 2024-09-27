@@ -55,7 +55,7 @@ const ButtonCustom = ({
             <img
               src={Image}
               alt={TextTitle}
-              className={`${ImageSize ? ImageSize : "w-8"} ${ImageSize ? ImageSize : "h-8"} object-contain`}
+              className={`${ImageSize ? `w${ImageSize}` : "w-8"} ${ImageSize ? `h-${ImageSize}` : "h-8"} rounded-full object-contain`}
             />
             <span className="text-left">{TextTitle}</span>
           </>
@@ -65,7 +65,7 @@ const ButtonCustom = ({
             <img
               src={Avatar}
               alt={TextTitle}
-              className={`${ImageSize ? ImageSize : "w-full"} ${ImageSize ? ImageSize : "h-6"} rounded-full object-cover`}
+              className={`${ImageSize ? `w-${ImageSize}` : "w-full"} ${ImageSize ? `h-${ImageSize}` : "h-6"} rounded-full object-cover`}
             />
             {User?.roles.some((role) => role.name === "ADMIN") ? (
               <>

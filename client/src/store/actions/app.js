@@ -23,6 +23,7 @@ export const getRoles = () => async (dispatch) => {
     });
   }
 };
+
 export const getProvinces = () => async (dispatch) => {
   try {
     const response = await apis.apiGetProvinces();
@@ -88,6 +89,29 @@ export const getWardsByDistrict = (district) => async (dispatch) => {
     dispatch({
       type: actionTypes.GET_WARDS,
       wards: null,
+    });
+  }
+};
+
+export const getCategories = () => async (dispatch) => {
+  try {
+    const response = await apis.apiGetCategories();
+    if (response?.code === 0) {
+      dispatch({
+        type: actionTypes.GET_CATEGORIES,
+        categories: response.result,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_CATEGORIES,
+        msg: response.message,
+        categories: [],
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_CATEGORIES,
+      categories: null,
     });
   }
 };

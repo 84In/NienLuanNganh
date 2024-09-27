@@ -6,6 +6,7 @@ const initState = {
   provinces: [],
   districts: [],
   wards: [],
+  categories: [],
 };
 const appReducer = (state = initState, action) => {
   switch (action.type) {
@@ -31,6 +32,12 @@ const appReducer = (state = initState, action) => {
       return {
         ...state,
         wards: action.wards || [],
+        msg: action.msg || "",
+      };
+    case actionTypes.GET_CATEGORIES:
+      return {
+        ...state,
+        categories: action.categories || [],
         msg: action.msg || "",
       };
     default:

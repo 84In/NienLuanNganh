@@ -31,6 +31,10 @@ function App() {
     }
   }, [isLoggedIn, username, dispatch]);
 
+  useEffect(() => {
+    dispatch(action.getCategories());
+  }, [dispatch]);
+
   const handleAccessDenied = () => {
     setIsModelLogin(true);
     navigate(path.HOME);
