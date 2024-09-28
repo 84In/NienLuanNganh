@@ -1,13 +1,12 @@
 import { React, memo } from "react";
 import ButtonCustom from "../ButtonCustom";
-import { iconSideBar, path } from "../../utils/constant";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const { categories } = useSelector((state) => state.app);
-  const cates = categories.content;
+  console.log(categories);
 
   return (
     <Box
@@ -25,8 +24,8 @@ const SideBar = () => {
       <div className="custom-scrollbar max-h-80 overflow-y-auto scroll-smooth grid-md:max-h-screen grid-md:scrollbar-hide">
         <h1 className="p-1 text-center text-lg font-semibold">Danh mục</h1>
         <div className="flex flex-col space-y-2">
-          {cates &&
-            cates.map((item, index) => (
+          {categories &&
+            categories.map((item, index) => (
               <Link to={`product/search/${item.name}`} key={index}>
                 <div>
                   <ButtonCustom
