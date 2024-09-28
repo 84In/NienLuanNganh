@@ -143,20 +143,26 @@ CREATE TABLE `t_orders`(
     `status_id` varchar(255) NOT NULL,
     `payment_method_id` varchar(255) NOT NULL,
     `payment_id` varchar(255) DEFAULT NULL,
+    `user_id` varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_payment_method FOREIGN KEY(`payment_method_id`) REFERENCES t_payment_methods(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_status_order FOREIGN KEY(`status_id`) REFERENCES t_status_order(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_payment_id FOREIGN KEY (`payment_id`) REFERENCES t_payments(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_user_id FOREIGN KEY (`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `t_order_items`(
+CREATE TABLE `t_order_details`(
     `id` varchar(255) NOT NULL,
     `quantity` bigint(20) NOT NULL,
     `price_at_time` bigint(20) NOT NULL,
+    `order_id` varchar(255) NOT NULL,
+    `product_id` varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_order_id FOREIGN KEY (`order_id`) REFERENCES t_orders(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_product_id FOREIGN KEY (`product_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 

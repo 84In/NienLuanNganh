@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class Product {
     String name;
     String description;
     BigDecimal price;
-    BigDecimal stock_quantity;
+    BigDecimal stockQuantity;
     String images;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,4 +38,7 @@ public class Product {
 
     @ManyToMany
     Set<Promotion> promotions;
+
+    @OneToMany(mappedBy = "product")
+    List<OrderDetail> orderDetails;
 }

@@ -7,21 +7,16 @@ import lombok.experimental.FieldDefaults;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_categories")
-@Setter
-@Getter
-@NoArgsConstructor
+@Data
+@Table(name = "t_status_order")
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public final class Category {
-
+public class StatusOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String name;
-    String codeName;
-    String images;
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Product> products;
+    @OneToMany(mappedBy = "status", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Order> orders;
 }

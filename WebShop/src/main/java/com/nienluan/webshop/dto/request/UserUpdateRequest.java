@@ -20,7 +20,5 @@ public class UserUpdateRequest {
     String phone;
     LocalDate dob;
     String avatar;
-
-
     List<String> roles;
 }
