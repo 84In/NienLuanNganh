@@ -20,7 +20,7 @@ public final class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String name;
-    String description;
+    String codeName;
     String images;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
