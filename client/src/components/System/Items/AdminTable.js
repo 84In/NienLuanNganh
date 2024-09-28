@@ -52,7 +52,8 @@ const AdminTable = ({ data, pagination }) => {
               {Object.keys(sampleData)
                 .filter((key) => key !== "id")
                 .filter((key) => key !== "category_id")
-                .filter((key) => key !== "brand_id") // Exclude the "id" column
+                .filter((key) => key !== "brand_id")
+                .filter((key) => key !== "promotions") // Exclude the "id" column
                 .map((key, index) => (
                   <StyledTableCell align="center" key={index}>
                     {key}
@@ -68,8 +69,9 @@ const AdminTable = ({ data, pagination }) => {
                   .filter((key) => key !== "id")
                   .filter((key) => key !== "category_id")
                   .filter((key) => key !== "brand_id")
+                  .filter((key) => key !== "promotions")
                   .map((key, index) => (
-                    <StyledTableCell key={index} align="center">
+                    <StyledTableCell key={index} align="left">
                       {key === "roles" ? (
                         user[key].map((role) => role.name).join(", ")
                       ) : key === "images" ? (
