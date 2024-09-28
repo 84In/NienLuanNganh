@@ -16,9 +16,9 @@ public class ProductResponse {
     String name;
     String description;
     BigDecimal price;
-    BigDecimal stock_quantity;
-    String category_id;
-    String brand_id;
+    BigDecimal stockQuantity;
+    String categoryId;
+    String brandId;
     String images;
 
     Set<PromotionResponse> promotions;

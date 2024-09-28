@@ -29,11 +29,11 @@ public class User {
     String email;
     String phone;
     LocalDate dob;
-
     @ManyToMany
     Set<Role> roles;
-
     @OneToOne
     @JoinColumn(name = "address", nullable = true)
     Address address;
+    @OneToMany(mappedBy = "user")
+    Set<Order> orders;
 }

@@ -27,5 +27,5 @@ public class Promotion {
     Integer discountPercentage;
     LocalDate startDate;
     LocalDate endDate;
-    BigDecimal stock_quantity;
+    BigDecimal stockQuantity;
 }

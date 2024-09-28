@@ -33,7 +33,7 @@ public class CategoryService {
     }
 
     public CategoryResponse updateCategory(CategoryUpdateRequest request, String id){
-        Category categoryUpdate = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        Category categoryUpdate = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         categoryMapper.updateCategory(categoryUpdate,request);
         return categoryMapper.toCategoryResponse(categoryRepository.save(categoryUpdate));
     }
@@ -44,7 +44,7 @@ public class CategoryService {
     }
 
     public CategoryResponse getCategory(String id){
-        var category = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        var category = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         return categoryMapper.toCategoryResponse(category);
     }
 

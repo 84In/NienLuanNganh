@@ -15,10 +15,10 @@ public class ProductUpdateRequest {
     String name;
     String description;
     BigDecimal price;
-    BigDecimal stock_quantity;
-    String category_id;
+    BigDecimal stockQuantity;
+    String categoryId;
     String images;
-    String brand_id;
+    String brandId;
 
     Set<String> promotions;
 }
