@@ -82,8 +82,8 @@ const AdminTable = ({ data, pagination }) => {
             ))}
           </TableBody>
         </Table>
-        {/* Render the pagination component here */}
       </TableContainer>
+      {/* Render the pagination component here */}
       {pagination}
     </div>
   );

@@ -14,19 +14,28 @@ import com.nienluan.webshop.repository.BrandRepository;
 import com.nienluan.webshop.repository.CategoryRepository;
 import com.nienluan.webshop.repository.ProductRepository;
 import com.nienluan.webshop.repository.PromotionRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.flogger.Flogger;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class ProductService {
 
     ProductRepository productRepository;
@@ -98,14 +107,24 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public void saveProductsFromCsv(List<ProductCsvDTO> products, String categoryId){
-        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
-        products.forEach(product -> {
-            if(!brandRepository.existsByName(product.getBrandName())){
-                brandRepository.save(Brand.builder().name(product.getBrandName()).build());
-            }
-            var brand = brandRepository.findByName(product.getName()).orElseThrow(()-> new AppException(ErrorCode.BRAND_NOT_FOUND));
+    @Transactional
+    public void saveProductsFromCsv(List<ProductCsvDTO> products, String categoryId) {
+        // Kiểm tra danh mục tồn tại
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        Set<String> existingProductNames = new HashSet<>();
 
+        for (ProductCsvDTO product : products) {
+
+            if (!brandRepository.existsByName(product.getBrandName())) {
+                brandRepository.save( Brand.builder().name(product.getBrandName()).build());
+            }
+        }
+        for (ProductCsvDTO product : products) {
+            if (existingProductNames.contains(product.getName()) || productRepository.existsByName(product.getName())) {
+                continue; // Nếu sản phẩm đã tồn tại, bỏ qua
+            }
+            Brand brand = brandRepository.findByName(product.getBrandName()).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
             Product pr = Product.builder()
                     .name(product.getName())
                     .description(product.getDescription())
@@ -113,9 +132,14 @@ public class ProductService {
                     .stock_quantity(product.getStock_quantity())
                     .images(product.getImages())
                     .category(category)
-                    .brand(brand)
+                    .brand(brand) // Sử dụng thương hiệu đã kiểm tra
                     .build();
             productRepository.save(pr);
-        });
+            existingProductNames.add(product.getName());
+        }
+
     }
+
+
+
 }

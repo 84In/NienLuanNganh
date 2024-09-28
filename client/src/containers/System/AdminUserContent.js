@@ -6,7 +6,7 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const AdminUserContent = () => {
   const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(0, "/api/v1/users");
+    usePagination("/api/v1/users", 0);
 
   if (loading) {
     return <Loading />;

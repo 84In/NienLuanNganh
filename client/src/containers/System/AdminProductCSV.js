@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { CloudUploadIcon } from "lucide-react";
+import { CloudUploadIcon, SendIcon } from "lucide-react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import * as apis from "../../services";
+import Swal from "sweetalert2";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -28,6 +30,22 @@ const AdminProductCSV = () => {
 
   const handleSetFile = (event) => {
     setFile(event.target.files[0]);
+  };
+
+  const handleSubmit = async () => {
+    if (category && file) {
+      const response = await apis.apiUploadCSV(file, category);
+      if (response?.code === 0) {
+        Swal.fire({
+          title: "Submit!",
+          text: "Complete data entry",
+          type: "success",
+          timer: 3000,
+        });
+        setCategory("");
+        setFile(null);
+      }
+    }
   };
 
   return (
@@ -71,6 +89,11 @@ const AdminProductCSV = () => {
 
       <Grid2 xs={12} className="flex items-center justify-center">
         {file && <p>File đã chọn: {file.name}</p>}
+      </Grid2>
+      <Grid2 xs={12} className="flex items-center justify-center">
+        <Button variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>
+          Submit
+        </Button>
       </Grid2>
     </Grid2>
   );

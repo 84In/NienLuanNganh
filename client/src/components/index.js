@@ -5,6 +5,7 @@ export { default as ContactButton } from "./ContactButton";
 export { default as DotAlert } from "./DotAlert";
 export { default as EditContact } from "./EditContact";
 export { default as Pagination } from "./Pagination";
+export { default as PaginationMore } from "./PaginationMore";
 export { default as BannerCarousel } from "./Home/BannerCarousel";
 export { default as MainContainer } from "./Home/MainContainer";
 export { default as Resolution } from "./Home/Resolution";
