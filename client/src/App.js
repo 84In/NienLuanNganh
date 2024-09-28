@@ -7,6 +7,10 @@ import {
   AdminBase,
   AdminHome,
   AdminProduct,
+  AdminProductContent,
+  AdminProductCreate,
+  AdminProductCSV,
+  AdminProductEditByID,
   AdminUser,
   AdminUserContent,
   AdminUserCreate,
@@ -108,7 +112,12 @@ function App() {
           <Route
             path={path.ADMIN_PRODUCT}
             element={<PrivateAdminFilterRouter element={AdminProduct} roles={["ADMIN"]} user={userData} />}
-          />
+          >
+            <Route index element={<AdminProductContent />} />
+            <Route path={path.ADMIN_PRODUCT_CREATE} element={<AdminProductCreate />} />
+            <Route path={path.ADMIN_PRODUCT_EDIT} element={<AdminProductEditByID />} />
+            <Route path={path.ADMIN_PRODUCT_IMPORT_CSV} element={<AdminProductCSV />} />
+          </Route>
         </Route>
       </Routes>
     </div>

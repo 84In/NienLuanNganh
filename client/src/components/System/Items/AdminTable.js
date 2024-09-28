@@ -44,45 +44,48 @@ const AdminTable = ({ data, pagination }) => {
   }));
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            {Object.keys(sampleData)
-              .filter((key) => key !== "id") // Exclude the "id" column
-              .map((key, index) => (
-                <StyledTableCell align="center" key={index}>
-                  {key}
-                </StyledTableCell>
-              ))}
-            <StyledTableCell>Edit</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((user, index) => (
-            <StyledTableRow key={index}>
-              {Object.keys(user)
-                .filter((key) => key !== "id")
+    <div className="flex w-full flex-col items-center justify-center">
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              {Object.keys(sampleData)
+                .filter((key) => key !== "id") // Exclude the "id" column
                 .map((key, index) => (
-                  <StyledTableCell key={index} align="center">
-                    {key === "roles"
-                      ? user[key].map((role) => role.name).join(", ")
-                      : user[key] != null
-                        ? user[key]
-                        : ""}
+                  <StyledTableCell align="center" key={index}>
+                    {key}
                   </StyledTableCell>
                 ))}
-              <StyledTableCell align="center">
-                <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${user.id}`}>
-                  <BiEdit size={24} />
-                </NavLink>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {pagination} {/* Render the pagination component here */}
-    </TableContainer>
+              <StyledTableCell>Edit</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((user, index) => (
+              <StyledTableRow key={index}>
+                {Object.keys(user)
+                  .filter((key) => key !== "id")
+                  .map((key, index) => (
+                    <StyledTableCell key={index} align="center">
+                      {key === "roles"
+                        ? user[key].map((role) => role.name).join(", ")
+                        : user[key] != null
+                          ? user[key]
+                          : ""}
+                    </StyledTableCell>
+                  ))}
+                <StyledTableCell align="center">
+                  <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${user.id}`}>
+                    <BiEdit size={24} />
+                  </NavLink>
+                </StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {/* Render the pagination component here */}
+      </TableContainer>
+      {pagination}
+    </div>
   );
 };
 

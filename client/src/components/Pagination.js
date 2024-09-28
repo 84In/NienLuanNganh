@@ -17,32 +17,34 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages, nextPage, prevPag
   }
 
   return (
-    <div>
-      <div className="pagination flex items-center gap-2 p-2">
-        <button
-          className={`flex h-8 w-8 items-center justify-center rounded-full ${hasPrevPage ? `text-primary-color hover:bg-blue-200` : `text-gray-500`}`}
-          onClick={prevPage}
-          disabled={!hasPrevPage}
-        >
-          <IoIosArrowBack className={`h-5 w-5`} />
-        </button>
-        {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+    <div className="flex items-center justify-center">
+      {!startPage === 0 && !endPage === 0 && (
+        <div className="pagination flex items-center gap-2 p-2">
           <button
-            key={index}
-            className={`flex h-8 w-8 items-center justify-center rounded-full font-semibold ${startPage + index === currentPage ? `bg-blue-500 text-white` : `hover:bg-blue-200`}`}
-            onClick={() => setCurrentPage(startPage + index)}
+            className={`flex h-8 w-8 items-center justify-center rounded-full ${hasPrevPage ? `text-primary-color hover:bg-blue-200` : `text-gray-500`}`}
+            onClick={prevPage}
+            disabled={!hasPrevPage}
           >
-            {startPage + index + 1}
+            <IoIosArrowBack className={`h-5 w-5`} />
           </button>
-        ))}
-        <button
-          className={`flex h-8 w-8 items-center justify-center rounded-full ${hasNextPage ? `text-primary-color hover:bg-blue-200` : `text-gray-500`}`}
-          onClick={nextPage}
-          disabled={!hasNextPage}
-        >
-          <IoIosArrowForward className={`h-5 w-5`} />
-        </button>
-      </div>
+          {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+            <button
+              key={index}
+              className={`flex h-8 w-8 items-center justify-center rounded-full font-semibold ${startPage + index === currentPage ? `bg-blue-500 text-white` : `hover:bg-blue-200`}`}
+              onClick={() => setCurrentPage(startPage + index)}
+            >
+              {startPage + index + 1}
+            </button>
+          ))}
+          <button
+            className={`flex h-8 w-8 items-center justify-center rounded-full ${hasNextPage ? `text-primary-color hover:bg-blue-200` : `text-gray-500`}`}
+            onClick={nextPage}
+            disabled={!hasNextPage}
+          >
+            <IoIosArrowForward className={`h-5 w-5`} />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

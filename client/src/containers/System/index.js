@@ -6,3 +6,7 @@ export { default as AdminUser } from "./AdminUser";
 export { default as AdminUserContent } from "./AdminUserContent";
 export { default as AdminUserCreate } from "./AdminUserCreate";
 export { default as AdminUserEditByID } from "./AdminUserEditByID";
+export { default as AdminProductContent } from "./AdminProductContent";
+export { default as AdminProductCreate } from "./AdminProductCreate";
+export { default as AdminProductEditByID } from "./AdminProductEditByID";
+export { default as AdminProductCSV } from "./AdminProductCSV";

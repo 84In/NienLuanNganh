@@ -5,7 +5,6 @@ export const register = (payload) => async (dispatch) => {
   let response = null;
   try {
     response = await apiRegister(payload);
-    console.log(response);
     if (response?.code === 0) {
       dispatch({
         type: actionTypes.REGISTER_SUCCESS,
@@ -29,9 +28,8 @@ export const login = (payload) => async (dispatch) => {
   let response = null;
   try {
     response = await apiLogin(payload);
-    console.log(response);
+
     if (response?.code === 0) {
-      console.log(response);
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
         data: response,
@@ -43,7 +41,6 @@ export const login = (payload) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log(error);
     dispatch({
       type: actionTypes.LOGIN_FAIL,
       data: response,

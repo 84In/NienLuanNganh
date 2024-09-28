@@ -17,9 +17,7 @@ const usePaginationMore = (pageSize = 15, url, addPageSize = 10) => {
           size: size,
         },
       });
-      console.log(response);
       const result = response.result;
-      console.log(result);
       setData(result.content);
       setTotalElements(result.totalElements);
     } catch (error) {

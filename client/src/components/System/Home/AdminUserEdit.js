@@ -159,7 +159,6 @@ const AdminUserEdit = ({ user }) => {
                     <VisuallyHiddenInput
                       type="file"
                       onChange={(e) => {
-                        console.log(e.target.files);
                         const file = e.target.files[0];
                         if (file) {
                           const reader = new FileReader();

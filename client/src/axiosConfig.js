@@ -50,8 +50,6 @@ instance.interceptors.response.use(
       // Xử lý lỗi 404 và 400
 
       if (error.response.status === 404 || error.response.status === 400) {
-        console.log(error.response);
-
         return error.response.data;
       }
 

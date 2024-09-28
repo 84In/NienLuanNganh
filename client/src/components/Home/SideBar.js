@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const { categories } = useSelector((state) => state.app);
-  console.log(categories);
 
   return (
     <Box

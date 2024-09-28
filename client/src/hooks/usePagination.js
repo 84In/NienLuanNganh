@@ -17,7 +17,6 @@ const usePagination = (initialPage = 0, url) => {
         method: "GET",
         url: `${url}?page=${page}`,
       });
-      console.log(response);
       const result = response.result;
       setData(result.content);
       setTotalPages(result.totalPages);
