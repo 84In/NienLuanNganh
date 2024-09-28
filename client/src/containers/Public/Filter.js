@@ -2,8 +2,9 @@ import { Box, Button } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useState } from "react";
 import { BiFilterAlt } from "react-icons/bi";
-import { BannerCarousel, FilterSideBar, ProductCard } from "../../components";
+import { BannerCarousel, FilterSideBar, Loading, PaginationMore, ProductCard } from "../../components";
 import { banner_filter } from "../../utils/constant";
+import { usePaginationMore } from "../../hooks";
 
 const product1 = require("../../assets/images/product/xm1.png");
 
@@ -98,6 +99,9 @@ const motorcycleData = [
 ];
 
 const Filter = () => {
+  const categoryUrl = window.location.pathname.split("/").pop();
+  const { data, loading, loadMore, hasMore } = usePaginationMore(`api/v1/product/search/${categoryUrl}`);
+
   const [priceFilter, setPriceFilter] = useState([]);
   const [brandFilter, setBrandFilter] = useState([]);
   const [colorFilter, setColorFilter] = useState([]);
@@ -125,6 +129,10 @@ const Filter = () => {
     const colorMatch = colorFilter.length === 0 || colorFilter.includes(motorcycle.color);
     return priceMatch && brandMatch && colorMatch;
   });
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Grid2
@@ -222,6 +230,9 @@ const Filter = () => {
               {filteredMotorcycles.map((product) => (
                 <ProductCard {...product} />
               ))}
+            </div>
+            <div className="mt-2 flex items-center justify-center p-2">
+              <PaginationMore loadMore={loadMore} hasMore={hasMore} />
             </div>
           </Box>
         </Grid2>

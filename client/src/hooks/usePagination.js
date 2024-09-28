@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (initialPage = 0, url) => {
+const usePagination = (url, initialPage = 0) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = parseInt(searchParams.get("page")) || initialPage;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);

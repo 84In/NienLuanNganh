@@ -86,7 +86,7 @@ CREATE TABLE `t_brands` (
 CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL UNIQUE,
-    `description` text DEFAULT NULL,
+    `code_name` text DEFAULT NULL,
     `images` text DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
