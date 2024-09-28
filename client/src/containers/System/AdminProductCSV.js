@@ -23,7 +23,6 @@ const AdminProductCSV = () => {
   const { categories } = useSelector((state) => state.app);
   const [category, setCategory] = useState("");
   const [file, setFile] = useState(null);
-  const dispatch = useDispatch();
 
   const handleSetCategory = (event) => {
     setCategory(event.target.value);
@@ -35,7 +34,7 @@ const AdminProductCSV = () => {
 
   const handleSubmit = async () => {
     if (category && file) {
-      const response = apis.apiUploadCSV(file, category);
+      const response = await apis.apiUploadCSV(file, category);
       if (response?.code === 0) {
         Swal.fire({
           title: "Submit!",
