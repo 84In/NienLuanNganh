@@ -50,7 +50,9 @@ const AdminTable = ({ data, pagination }) => {
           <TableHead>
             <TableRow>
               {Object.keys(sampleData)
-                .filter((key) => key !== "id") // Exclude the "id" column
+                .filter((key) => key !== "id")
+                .filter((key) => key !== "category_id")
+                .filter((key) => key !== "brand_id") // Exclude the "id" column
                 .map((key, index) => (
                   <StyledTableCell align="center" key={index}>
                     {key}
@@ -64,13 +66,26 @@ const AdminTable = ({ data, pagination }) => {
               <StyledTableRow key={index}>
                 {Object.keys(user)
                   .filter((key) => key !== "id")
+                  .filter((key) => key !== "category_id")
+                  .filter((key) => key !== "brand_id")
                   .map((key, index) => (
                     <StyledTableCell key={index} align="center">
-                      {key === "roles"
-                        ? user[key].map((role) => role.name).join(", ")
-                        : user[key] != null
-                          ? user[key]
-                          : ""}
+                      {key === "roles" ? (
+                        user[key].map((role) => role.name).join(", ")
+                      ) : key === "images" ? (
+                        <div className="flex flex-wrap-reverse">
+                          {JSON.parse(user[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                            .map((item, idx) => (
+                              <div key={idx}>
+                                <img src={item} alt={`Image ${idx}`} style={{ width: "50px", height: "50px" }} />
+                              </div>
+                            ))}
+                        </div>
+                      ) : user[key] != null ? (
+                        user[key]
+                      ) : (
+                        ""
+                      )}
                     </StyledTableCell>
                   ))}
                 <StyledTableCell align="center">
