@@ -3,8 +3,6 @@ import React, { memo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
 
-import product1 from "../../assets/images/product/product1.png";
-
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const location = useLocation();

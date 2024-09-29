@@ -1,11 +1,10 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useState } from "react";
-import { BiFilterAlt } from "react-icons/bi";
-import { BannerCarousel, FilterSideBar, Loading, PaginationMore, ProductCard } from "../../components";
-import { banner_filter } from "../../utils/constant";
-import { usePaginationMore } from "../../hooks";
+import React, { memo } from "react";
 import { Link } from "react-router-dom";
+import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
+import { usePaginationMore } from "../../hooks";
+import { banner_filter } from "../../utils/constant";
 
 const Filter = () => {
   const type = window.location.pathname.split("/")[2];

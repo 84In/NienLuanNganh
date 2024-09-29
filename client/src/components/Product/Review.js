@@ -1,6 +1,6 @@
+import { LinearProgress, Rating } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
-import { Box, LinearProgress, Rating } from "@mui/material";
 import ReviewItem from "./ReviewItem";
 
 const Review = () => {
@@ -62,7 +62,7 @@ const Review = () => {
       <hr className="mt-4 flex h-[2px] w-full items-center justify-center bg-gray-400 px-4" />
       <Grid2 item sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}>
         {ratings.map((item, index) => (
-          <ReviewItem rating={rating} />
+          <ReviewItem rating={rating} key={index} />
         ))}
       </Grid2>
     </Grid2>
