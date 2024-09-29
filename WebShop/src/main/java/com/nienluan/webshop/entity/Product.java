@@ -37,7 +37,12 @@ public class Product {
     Brand brand;
 
     @ManyToMany
-    Set<Promotion> promotions;
+    @JoinTable(
+            name = "t_products_promotions",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "promotion_id")
+    )
+    Set<Promotion> promotions = new HashSet<>();
 
     @OneToMany(mappedBy = "product")
     List<OrderDetail> orderDetails;

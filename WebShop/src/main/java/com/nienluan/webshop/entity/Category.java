@@ -14,8 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public final class Category {
-
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

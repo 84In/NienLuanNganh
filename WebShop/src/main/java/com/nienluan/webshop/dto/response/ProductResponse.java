@@ -20,6 +20,5 @@ public class ProductResponse {
     String categoryId;
     String brandId;
     String images;
-
     Set<PromotionResponse> promotions;
 }

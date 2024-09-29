@@ -34,7 +34,7 @@ public class CsvService {
                 ProductCsvDTO product = ProductCsvDTO.builder()
                         .name(record.get("product_name"))
                         .description(record.get("description"))
-                        .price(new BigDecimal(record.get("price")))
+                        .price(new BigDecimal(record.get("original_price")))
                         .stock_quantity(new BigDecimal(record.get("stock_item_qty")))
                         .images(record.get("images"))
                         .brandName(record.get("brand_name"))

@@ -7,6 +7,8 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -28,4 +30,7 @@ public class Promotion {
     LocalDate startDate;
     LocalDate endDate;
     BigDecimal stockQuantity;
+
+    @ManyToMany(mappedBy = "promotions")
+    Set<Product> products = new HashSet<>();
 }

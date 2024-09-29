@@ -86,7 +86,7 @@ CREATE TABLE `t_brands` (
 CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL UNIQUE,
-    `code_name` text DEFAULT NULL,
+    `code_name` varchar(255) NOT NULL UNIQUE,
     `images` text DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -223,9 +223,9 @@ CREATE TABLE `t_banner`(
 
 CREATE TABLE `t_products_promotions`
 (
-    `products_id` varchar(255) NOT NULL,
-    `promotions_id` varchar(255) NOT NULL,
-    CONSTRAINT fk_productP FOREIGN KEY(`products_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_promotionP FOREIGN KEY(`promotions_id`) REFERENCES t_promotions(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`products_id`, `promotions_id`)
+    `product_id` varchar(255) NOT NULL,
+    `promotion_id` varchar(255) NOT NULL,
+    CONSTRAINT fk_productP FOREIGN KEY(`product_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_promotionP FOREIGN KEY(`promotion_id`) REFERENCES t_promotions(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`product_id`, `promotion_id`)
 );

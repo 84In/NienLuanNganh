@@ -73,6 +73,17 @@ public class ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
+    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String categoryCodeName) {
+        if(!categoryRepository.existsByCodeName(categoryCodeName)){
+            throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
+        }
+        Category category = categoryRepository.findByCodeName(categoryCodeName);
+        log.info(category.getName());
+        Page<Product> products = productRepository.findByCategory(pageable, category);
+        log.info(products.getTotalElements() + " products");
+        return products.map(productMapper::toProductResponse);
+    }
+
     public ProductResponse updateProduct(ProductUpdateRequest request, String id) throws AppException {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
