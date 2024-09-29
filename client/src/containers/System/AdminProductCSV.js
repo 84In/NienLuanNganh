@@ -71,11 +71,12 @@ const AdminProductCSV = () => {
             onChange={handleSetCategory}
           >
             <MenuItem value="">------Select------</MenuItem>
-            {categories?.map((item, index) => (
-              <MenuItem key={index} value={item.id}>
-                {item?.name}
-              </MenuItem>
-            ))}
+            {categories.content &&
+              categories.content.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item?.name}
+                </MenuItem>
+              ))}
           </Select>
         </FormControl>
       </Grid2>
