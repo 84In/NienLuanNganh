@@ -14,16 +14,25 @@ const StyledCard = styled(Card)({
     "0px 0px 2px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
 });
 
-const ProductCard = ({ image, name, description, price, originalPrice, discount, origin, rating }) => {
+const ProductCard = ({ images, name, description, price, originalPrice, discount, origin, rating }) => {
+  const imagesUrl = JSON.parse(images.replace(/'/g, '"'));
+  const firstImageUrl = imagesUrl[0];
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center" height="100%" width="100%">
       <StyledCard className="product-hover">
-        <CardMedia
-          component="img"
-          sx={{ objectFit: "cover", height: "100%", width: "100%" }}
-          image={image}
-          alt={name}
-        />
+        <div className="min-h-[280px]">
+          <CardMedia
+            component="img"
+            sx={{ objectFit: "contain", height: "100%" }}
+            image={
+              firstImageUrl && firstImageUrl.startsWith("https://")
+                ? firstImageUrl
+                : process.env.REACT_APP_SERVER_URL + firstImageUrl
+            }
+            alt={name}
+          />
+        </div>
         <CardContent className="flex h-full min-h-[190px] flex-col justify-between p-3">
           <div className="flex flex-col gap-1">
             <p className="line-clamp-2 min-h-10 text-sm">{name}</p>

@@ -37,7 +37,7 @@ const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {
 
   const hasMore = currentSize < totalElements; // Check if there are more items to load
 
-  return { data, loading, loadMore, hasMore };
+  return { data, totalElements, loading, loadMore, hasMore };
 };
 
 export default usePaginationMore;

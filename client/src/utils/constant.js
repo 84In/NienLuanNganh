@@ -49,7 +49,7 @@ export const path = {
   EDIT_PASSWORD: "edit/password/",
   EDIT_ADDRESS: "edit/address/",
   PRODUCT_DETAIL: "product/id/:productId/",
-  PRODUCT_SEARCH: "product/search/:name",
+  PRODUCT_SEARCH: "search/:type/:name",
   ORDER_HISTORY: "order/history/",
   ADMIN_HOME: "/manager/",
   ADMIN_USER: "user/",

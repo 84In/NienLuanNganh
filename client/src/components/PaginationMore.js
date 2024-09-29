@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-const PaginationMore = (loadMore, hasMore) => {
+const PaginationMore = ({ loadMore, hasMore }) => {
   return (
     <div>
       {hasMore && (
