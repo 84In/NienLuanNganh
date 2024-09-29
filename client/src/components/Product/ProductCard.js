@@ -16,6 +16,7 @@ const StyledCard = styled(Card)({
 
 const ProductCard = ({ images, name, description, price, originalPrice, discount, origin, rating }) => {
   const imagesUrl = JSON.parse(images.replace(/'/g, '"'));
+  console.log(imagesUrl);
   const firstImageUrl = imagesUrl[0];
 
   return (

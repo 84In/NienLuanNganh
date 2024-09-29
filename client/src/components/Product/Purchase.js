@@ -24,10 +24,11 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       className="sticky top-4"
       sx={{
         flexGrow: 1,
-        p: 2,
+        px: 2,
+        py: 4,
         bgcolor: "white",
         borderRadius: "8px",
-        gap: "2rem",
+        gap: 2,
         width: "100%",
         height: "fit-content",
       }}
