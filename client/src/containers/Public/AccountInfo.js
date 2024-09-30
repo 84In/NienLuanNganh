@@ -46,8 +46,8 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
                 <input
                   type="file"
                   style={{ display: "none" }}
-                  id="fileInput"
-                  name="fileInput"
+                  id="avatarInput"
+                  name="avatarInput"
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
@@ -57,7 +57,7 @@ const AccountInfo = ({ isModelLogin, setIsModelLogin }) => {
                     }
                   }}
                 />
-                <label htmlFor="fileInput" className="button">
+                <label htmlFor="avatarInput" className="cusor">
                   <BiPencil />
                 </label>
               </div>

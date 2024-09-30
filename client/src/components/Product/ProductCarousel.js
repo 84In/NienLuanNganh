@@ -36,7 +36,7 @@ const ProductCarousel = ({ product }) => {
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2 flex items-center justify-center rounded-md border border-black grid-xs:h-[300px] grid-md:h-[80%] grid-md:max-h-full grid-md:min-h-[330px]"
+        className="mySwiper2 flex items-center rounded-md border border-black grid-xs:h-[300px] grid-md:h-[80%] grid-md:max-h-full grid-md:min-h-[330px]"
       >
         {imagesUrl.slice(0, 4).map((image, index) => (
           <SwiperSlide className="h-full" key={index}>
