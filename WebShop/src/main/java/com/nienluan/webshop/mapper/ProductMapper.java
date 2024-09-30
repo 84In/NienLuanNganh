@@ -15,8 +15,6 @@ public interface ProductMapper {
     @Mapping(source = "brandId", target = "brand.id")
     Product toProduct(ProductRequest productRequest);
 
-    @Mapping(source = "category.id", target = "categoryId")
-    @Mapping(source = "brand.id", target = "brandId")
     ProductResponse toProductResponse(Product product);
 
     @Mapping(target = "promotions", ignore = true)

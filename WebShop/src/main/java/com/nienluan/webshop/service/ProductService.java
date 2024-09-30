@@ -80,7 +80,7 @@ public class ProductService {
         Category category = categoryRepository.findByCodeName(categoryCodeName);
         log.info(category.getName());
         Page<Product> products = productRepository.findByCategory(pageable, category);
-        log.info(products.getTotalElements() + " products");
+        log.info("{} products", products.getTotalElements());
         return products.map(productMapper::toProductResponse);
     }
 
