@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
@@ -15,9 +15,10 @@ const Filter = () => {
     10,
   );
 
+  const [sort, setSort] = useState("");
+
   // const [priceFilter, setPriceFilter] = useState([]);
   // const [brandFilter, setBrandFilter] = useState([]);
-  // const [colorFilter, setColorFilter] = useState([]);
 
   // const handlePriceFilterChange = (value) => {
   //   setPriceFilter((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
@@ -25,10 +26,6 @@ const Filter = () => {
 
   // const handleBrandFilterChange = (value) => {
   //   setBrandFilter((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
-  // };
-
-  // const handleColorFilterChange = (value) => {
-  //   setColorFilter((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
   // };
 
   // const filteredMotorcycles = motorcycleData.filter((motorcycle) => {
@@ -71,14 +68,19 @@ const Filter = () => {
           >
             {/* Sort options */}
             <div className="mb-6 flex items-center justify-between">
-              <span className="text-sm text-gray-500">Hiển thị {totalElements} sản phẩm</span>
-              <div class="relative">
-                <select class="w-[180px] rounded-md border p-2">
+              <span className="text-sm text-gray-500">{totalElements} sản phẩm</span>
+              <div className="relative">
+                <select
+                  className="w-[180px] rounded-md border p-2"
+                  value={sort}
+                  onChange={(e) => {
+                    setSort(e.target.value);
+                  }}
+                >
                   <option className="hidden" selected disabled>
                     Sắp xếp
                   </option>
                   <option value="popular">Phổ biến</option>
-                  <option value="newest">Mới nhất</option>
                   <option value="price-asc">Giá tăng dần</option>
                   <option value="price-desc">Giá giảm dần</option>
                 </select>
@@ -89,7 +91,7 @@ const Filter = () => {
             <div className="grid grid-cols-2 gap-2 grid-sm:grid-cols-3 grid-md:grid-cols-4 grid-lg:grid-cols-5">
               {data.map((product, index) => (
                 <Link to={`/product/id/${product.id}`} state={{ product }}>
-                  <ProductCard {...product} />
+                  <ProductCard {...product} key={index} />
                 </Link>
               ))}
             </div>
