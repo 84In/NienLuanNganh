@@ -76,9 +76,14 @@ const ButtonCustom = ({
                         Thông tin tài khoản
                       </p>
                     </Link>
+                    <Link to={path.HOME}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Trang chủ
+                      </p>
+                    </Link>
                     <Link to={path.ADMIN_HOME}>
                       <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        Trang Quản Lý
+                        Trang quản Lý
                       </p>
                     </Link>
                     <div onClick={handleLogout}>
