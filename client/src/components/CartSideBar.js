@@ -20,11 +20,12 @@ const CartSideBar = () => {
       }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="">Tạm tính:</h1> <span className="text-xl font-semibold">{formatCurrency(price)}</span>
+        <h1 className="font-semibold">Tạm tính:</h1>{" "}
+        <span className="text-xl font-semibold">{formatCurrency(price)}</span>
       </div>
       <hr className="mx-4 mb-4 border-gray-400" />
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="">Tổng thành tiền:</h1>{" "}
+        <h1 className="font-semibold">Tổng tiền:</h1>{" "}
         <span className="text-xl font-semibold text-error-color">{formatCurrency(price * quantity)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">

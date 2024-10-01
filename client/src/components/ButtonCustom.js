@@ -69,7 +69,7 @@ const ButtonCustom = ({
             />
             {User?.roles.some((role) => role.name === "ADMIN") ? (
               <>
-                <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
+                <div className="absolute -left-2 top-8 z-50 hidden w-48 rounded-md bg-white text-left shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
                   <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     <Link to={path.HOME + path.ACCOUNT} state={{ User }}>
                       <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -95,7 +95,7 @@ const ButtonCustom = ({
               </>
             ) : (
               <>
-                <div className="absolute -right-2 top-8 z-50 hidden w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
+                <div className="absolute -left-2 top-8 z-50 hidden w-48 rounded-md bg-white text-left shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
                   <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     <Link to={path.HOME + path.ACCOUNT} state={{ User }}>
                       <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

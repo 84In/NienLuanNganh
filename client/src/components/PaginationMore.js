@@ -5,7 +5,7 @@ const PaginationMore = ({ loadMore, hasMore }) => {
   return (
     <div>
       {hasMore && (
-        <Button variant="outlined" size="large" color="primary" onClick={loadMore}>
+        <Button variant="contained" size="large" color="primary" onClick={loadMore}>
           Xem Thêm
         </Button>
       )}

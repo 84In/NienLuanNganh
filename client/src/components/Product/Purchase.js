@@ -24,8 +24,7 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       className="sticky top-4"
       sx={{
         flexGrow: 1,
-        px: 2,
-        py: 4,
+        p: 2,
         bgcolor: "white",
         borderRadius: "8px",
         gap: 2,
@@ -34,10 +33,10 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="">Giá:</h1> <span className="text-xl font-semibold">{formatCurrency(price)}</span>
+        <h1 className="font-semibold">Giá:</h1> <span className="text-xl font-semibold">{formatCurrency(price)}</span>
       </div>
       <div className="mb-4 flex items-center justify-between">
-        <h1>Số Lượng</h1>
+        <h1 className="font-semibold">Số Lượng</h1>
         <div className="flex items-center gap-1">
           <IconButton onClick={handleDecrease} size="small">
             <AiOutlineMinus />
@@ -76,7 +75,7 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       </div>
       <hr className="mx-4 mb-4 border-gray-400" />
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="">Tạm tính:</h1>{" "}
+        <h1 className="font-semibold">Tạm tính:</h1>{" "}
         <span className="text-xl font-semibold text-error-color">{formatCurrency(price * quantity)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">

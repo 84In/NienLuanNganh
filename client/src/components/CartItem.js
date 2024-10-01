@@ -38,14 +38,14 @@ const CartItem = () => {
               className="h-full min-h-20 w-3/12 min-w-20 object-cover"
             />
             <p
-              className="w-8/12 text-sm grid-md:text-base"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: window.innerWidth < 900 ? 4 : 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
+              className="line-clamp-4 w-8/12 text-sm grid-md:line-clamp-2 grid-md:text-base"
+              // style={{
+              //   display: "-webkit-box",
+              //   WebkitLineClamp: window.innerWidth < 900 ? 4 : 2,
+              //   WebkitBoxOrient: "vertical",
+              //   overflow: "hidden",
+              //   textOverflow: "ellipsis",
+              // }}
             >
               Điện thoại Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng
             </p>

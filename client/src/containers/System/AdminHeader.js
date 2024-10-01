@@ -10,18 +10,18 @@ const { GoSearch } = icons;
 const AdminHeader = ({ user }) => {
   return (
     <div className="flex h-fit min-h-[90px] w-full items-center gap-4 bg-third-color px-6 py-2">
-      <div className="flex h-full w-48 items-center justify-center">
+      <div className="flex h-full w-2/12 items-center justify-center">
         <Link to={path.ADMIN_HOME}>
           <img className="h-[40px] w-[150px] max-w-none object-cover" src={logo} alt="Logo" />
         </Link>
       </div>
-      <div className="flex flex-auto items-center justify-start">
-        <div className="pl-2">
+      <div className="flex w-8/12 flex-auto items-center justify-start">
+        <div className="w-full">
           <SearchBar isAdmin={true} IconBefore={GoSearch} />
           {/* <div className="flex items-center justify-start">Nav Bar</div> */}
         </div>
       </div>
-      <div className="flex">
+      <div className="flex w-2/12">
         <AdminNav user={user} />
       </div>
     </div>

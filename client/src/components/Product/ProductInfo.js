@@ -23,8 +23,8 @@ const ProductInfo = ({ product }) => {
         <img src={image2} className="w-28" alt="Product Info 2" />
       </div>
       <h1 className="text-justify text-xl font-semibold">{product.name}</h1>
-      <div className="flex items-center justify-start font-semibold">
-        {product.rating}{" "}
+      <div className="gap flex items-center justify-start text-lg font-semibold">
+        {product.rating ? product.rating : 0}
         <Rating
           className="ml-2"
           name="half-rating-read"

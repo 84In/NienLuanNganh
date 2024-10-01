@@ -17,7 +17,7 @@ const Review = () => {
   return (
     <Grid2 container direction="column" sx={{ gap: 1, width: "100%" }}>
       <Grid2 item container sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-        <Grid2 item xs={12} md={4} className="flex flex-col gap-2">
+        <Grid2 item xs={12} md={4} className="flex flex-col gap-2 p-2">
           <h1 className="text-lg font-semibold">Tổng quan</h1>
           <div className="flex w-full items-center gap-2">
             <p className="text-5xl font-bold">{averageRating ? averageRating : 0}</p>
@@ -35,6 +35,7 @@ const Review = () => {
             justifyContent: "space-between",
             alignItems: { xs: "normal", md: "end" },
             width: "100%",
+            p: 1,
           }}
         >
           <div className="w-full">

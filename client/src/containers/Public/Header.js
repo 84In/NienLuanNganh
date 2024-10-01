@@ -38,7 +38,7 @@ const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
             <img className="h-[40px] w-[150px] max-w-none object-contain" src={logo} alt="logo" />
           </Link>
         </Grid2>
-        <Grid2 item xs={12} md={5} lg={6} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Grid2 item xs={12} md={7} lg={7} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <div className="w-full px-2">
             <SearchBar IconBefore={GoSearch} TextContent={"Tìm kiếm"} Name={"search"} />
           </div>
@@ -47,24 +47,15 @@ const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
           item
           container
           xs={12}
-          md={5}
-          lg={4}
+          md={3}
+          lg={3}
           sx={{ display: "flex", justifyContent: "space-around", alignItems: "center", textWrap: "nowrap" }}
         >
-          <Grid2 item xs={9} className="flex items-center justify-around gap-1 sm:px-3">
-            <ButtonCustom
-              TypeButton={"button"}
-              TextColor={"text-blue-600"}
-              TextTitle={"Trang chủ"}
-              FontWeight={"font-medium"}
-              HoverColor={"hover:bg-blue-100"}
-              IconBefore={GoHomeFill}
-              ClickButton={() => navigate(path.HOME)}
-            />
+          <Grid2 item xs={6} md={7} className="flex items-center justify-around gap-1 sm:px-3">
             {isLoggedIn ? (
               <ButtonCustom
                 Avatar={User?.avatar ? User?.avatar : defaultAvatar}
-                TextTitle={User?.lastName && User?.lastName}
+                TextTitle={User?.lastName}
                 User={User}
               />
             ) : (
@@ -80,7 +71,7 @@ const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
           <Grid2 item xs={1} className="flex items-center justify-center">
             <span className="p-2 text-gray-200">|</span>
           </Grid2>
-          <Grid2 item xs={2} className="flex w-1/4 items-center justify-center">
+          <Grid2 item xs={5} md={4} className="flex w-1/4 items-center justify-center">
             <ButtonCustom
               TypeButton={"button"}
               IconBefore={FaCartShopping}

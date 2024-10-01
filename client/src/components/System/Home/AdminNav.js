@@ -6,12 +6,17 @@ import ButtonCustom from "../../ButtonCustom";
 const { IoNotificationsOutline } = icons;
 const AdminNav = ({ user }) => {
   return (
-    <div className="flex w-full items-center justify-end gap-2">
+    <div className="flex w-full items-center justify-center gap-2">
       <div className="flex w-full items-center justify-center">
-        <ButtonCustom HoverColor={"hover:bg-white "} FontWeight={"font-medium"} IconBefore={IoNotificationsOutline} />
+        <ButtonCustom
+          User={user}
+          TextTitle={user?.lastName}
+          TextColor={"text-black"}
+          Avatar={user?.avatar ? user?.avatar : DefaultAvatar}
+        />
       </div>
       <div className="flex w-full items-center justify-center">
-        <ButtonCustom User={user} TextColor="text-white" Avatar={user?.Avatar ? user?.Avatar : DefaultAvatar} />
+        <ButtonCustom HoverColor={"hover:bg-white"} FontWeight={"font-medium"} IconBefore={IoNotificationsOutline} />
       </div>
     </div>
   );
