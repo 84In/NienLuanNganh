@@ -35,6 +35,11 @@ public class Product {
     @JoinColumn(name = "brand_id", nullable = false)
     Brand brand;
 
-    @ManyToMany
-    Set<Promotion> promotions;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "t_products_promotions",
+            joinColumns = @JoinColumn(name = "products_id"),
+            inverseJoinColumns = @JoinColumn(name = "promotions_id")
+    )
+    Set<Promotion> promotions = new HashSet<>();
 }

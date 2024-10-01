@@ -109,6 +109,7 @@ CREATE TABLE `t_products`(
     PRIMARY KEY (`id`)
 );
 
+
 CREATE TABLE `t_payment_methods`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL,

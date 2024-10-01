@@ -1,5 +1,6 @@
 package com.nienluan.webshop.dto.response;
 
+import com.nienluan.webshop.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,4 +23,6 @@ public class PromotionResponse {
     LocalDate startDate;
     LocalDate endDate;
     BigDecimal stock_quantity;
+
+    Set<ProductResponse> products;
 }
