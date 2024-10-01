@@ -1,9 +1,12 @@
 import { React, memo } from "react";
 import { BannerCarousel, Widget, SideBar, Product, Resolution } from "..";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { banner, products } from "../../utils/constant";
+import { banner } from "../../utils/constant";
+import { usePaginationMore } from "../../hooks";
 
 const MainContainer = () => {
+  const { data, totalElements, loading, loadMore, hasMore } = usePaginationMore(`api/v1/search/category/balo`, 10, 10);
+
   return (
     <Grid2
       container
@@ -23,7 +26,7 @@ const MainContainer = () => {
             <Widget />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
-            <Product products={products} title={"Danh mục sản phẩm"} />
+            <Product products={data} title={"Danh mục sản phẩm"} />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Resolution />

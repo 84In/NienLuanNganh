@@ -11,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -49,7 +48,7 @@ public class CategoryController {
     public ApiResponse<CategoryResponse> updateCategory(@PathVariable String categoryId, @RequestBody CategoryUpdateRequest request) {
         return ApiResponse.<CategoryResponse>builder()
                 .message("Success!")
-                .result(categoryService.updateCategory(request,categoryId))
+                .result(categoryService.updateCategory(request, categoryId))
                 .build();
     }
 

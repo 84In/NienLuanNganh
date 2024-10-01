@@ -1,5 +1,7 @@
 package com.nienluan.webshop.dto.response;
 
+import com.nienluan.webshop.entity.Brand;
+import com.nienluan.webshop.entity.Category;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,10 +18,9 @@ public class ProductResponse {
     String name;
     String description;
     BigDecimal price;
-    BigDecimal stock_quantity;
-    String category_id;
-    String brand_id;
+    BigDecimal stockQuantity;
+    CategoryResponse category;
+    BrandResponse brand;
     String images;
-
     Set<PromotionResponse> promotions;
 }

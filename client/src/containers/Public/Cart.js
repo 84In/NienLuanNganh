@@ -1,5 +1,5 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useState } from "react";
+import React, { Fragment, memo, useState } from "react";
 import { useSelector } from "react-redux";
 import { CartItem, CartSideBar } from "../../components";
 
@@ -75,12 +75,12 @@ const Cart = () => {
           className="custom-scrollbar"
         >
           {carts.map((item, index) => (
-            <>
-              <CartItem key={index} />
+            <Fragment key={index}>
+              <CartItem />
               {carts.length - 1 !== index && (
                 <hr className="flex h-[2px] w-full items-center justify-center bg-gray-400 px-4" />
               )}
-            </>
+            </Fragment>
           ))}
         </Grid2>
       </Grid2>

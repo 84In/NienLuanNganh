@@ -19,8 +19,10 @@ import {
 import { PrivateAdminFilterRouter, PrivateRoute } from "./router";
 import * as action from "./store/actions";
 import { path } from "./utils/constant";
+import { useScrollToTop } from "./hooks";
 
 function App() {
+  useScrollToTop();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn, username } = useSelector((state) => state.auth);

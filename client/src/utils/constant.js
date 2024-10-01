@@ -49,7 +49,7 @@ export const path = {
   EDIT_PASSWORD: "edit/password/",
   EDIT_ADDRESS: "edit/address/",
   PRODUCT_DETAIL: "product/id/:productId/",
-  PRODUCT_SEARCH: "product/search/:name",
+  PRODUCT_SEARCH: "search/:type/:name",
   ORDER_HISTORY: "order/history/",
   ADMIN_HOME: "/manager/",
   ADMIN_USER: "user/",
@@ -228,68 +228,5 @@ export const widgetIcon = [
     icon: widget8,
     text: "Thế giới công nghệ",
     url: "/product/search/cong-nghe",
-  },
-];
-
-export const products = [
-  {
-    id: "03adf-12sad-nasd0",
-    image: product1,
-    description:
-      "Là sản phẩm thuộc dòng S cao cấp nhất của hãng Samsung. Chắc chắn rằng sẽ mang đến cho người dùng một trải nghiệm tốt nhất với tấm nền Oled sắc nét, sống động từng khung hình. Bên cạnh đó còn có con chip SnapDragon 1000 mang đến hiệu năng vượt trội trong tầm giá, kết hợp với hệ điều hành được tùy biến bởi nhà sản xuất giúp sản phẩm luôn đáp ứng tối đa trong công việc, tác vụ hằng nhày",
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "23",
-    origin: "Poland",
-    rating: 4.5,
-  },
-  {
-    id: "03adf-12sad-nasd0",
-    image: product1,
-    description:
-      "Là sản phẩm thuộc dòng S cao cấp nhất của hãng Samsung. Chắc chắn rằng sẽ mang đến cho người dùng một trải nghiệm tốt nhất với tấm nền Oled sắc nét, sống động từng khung hình. Bên cạnh đó còn có con chip SnapDragon 1000 mang đến hiệu năng vượt trội trong tầm giá, kết hợp với hệ điều hành được tùy biến bởi nhà sản xuất giúp sản phẩm luôn đáp ứng tối đa trong công việc, tác vụ hằng nhày",
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "23",
-    origin: "Poland",
-    rating: 4.5,
-  },
-  {
-    id: "03adf-12sad-nasd0",
-    image: product1,
-    description:
-      "Là sản phẩm thuộc dòng S cao cấp nhất của hãng Samsung. Chắc chắn rằng sẽ mang đến cho người dùng một trải nghiệm tốt nhất với tấm nền Oled sắc nét, sống động từng khung hình. Bên cạnh đó còn có con chip SnapDragon 1000 mang đến hiệu năng vượt trội trong tầm giá, kết hợp với hệ điều hành được tùy biến bởi nhà sản xuất giúp sản phẩm luôn đáp ứng tối đa trong công việc, tác vụ hằng nhày",
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "",
-    origin: "Poland",
-    rating: 4.5,
-  },
-  {
-    id: "03adf-12sad-nasd0",
-    image: product1,
-    description:
-      "Là sản phẩm thuộc dòng S cao cấp nhất của hãng Samsung. Chắc chắn rằng sẽ mang đến cho người dùng một trải nghiệm tốt nhất với tấm nền Oled sắc nét, sống động từng khung hình. Bên cạnh đó còn có con chip SnapDragon 1000 mang đến hiệu năng vượt trội trong tầm giá, kết hợp với hệ điều hành được tùy biến bởi nhà sản xuất giúp sản phẩm luôn đáp ứng tối đa trong công việc, tác vụ hằng nhày",
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "",
-    origin: "Poland",
-    rating: 4.5,
-  },
-  {
-    id: "03adf-12sad-nasd0",
-    image: product1,
-    description:
-      "Là sản phẩm thuộc dòng S cao cấp nhất của hãng Samsung. Chắc chắn rằng sẽ mang đến cho người dùng một trải nghiệm tốt nhất với tấm nền Oled sắc nét, sống động từng khung hình. Bên cạnh đó còn có con chip SnapDragon 1000 mang đến hiệu năng vượt trội trong tầm giá, kết hợp với hệ điều hành được tùy biến bởi nhà sản xuất giúp sản phẩm luôn đáp ứng tối đa trong công việc, tác vụ hằng nhày",
-    name: "Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng",
-    price: "102000",
-    originalPrice: "132000",
-    discount: "23",
-    origin: "Poland",
-    rating: 4.5,
   },
 ];

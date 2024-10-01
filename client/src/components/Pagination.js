@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const Pagination = ({ currentPage, setCurrentPage, totalPages, nextPage, prevPage, hasNextPage, hasPrevPage }) => {
@@ -49,4 +49,4 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages, nextPage, prevPag
   );
 };
 
-export default Pagination;
+export default memo(Pagination);

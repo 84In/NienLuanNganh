@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const { categories } = useSelector((state) => state.app);
-  console.log(categories);
+  console.log(categories.content);
 
   return (
     <Box
@@ -24,9 +24,9 @@ const SideBar = () => {
       <div className="custom-scrollbar max-h-80 overflow-y-auto scroll-smooth grid-md:max-h-screen grid-md:scrollbar-hide">
         <h1 className="p-1 text-center text-lg font-semibold">Danh mục</h1>
         <div className="flex flex-col space-y-2">
-          {categories &&
-            categories.map((item, index) => (
-              <Link to={`product/search/${item.codeName}`} key={index}>
+          {categories.content &&
+            categories.content.map((item, index) => (
+              <Link to={`search/category/${item.codeName}`} key={index}>
                 <div>
                   <ButtonCustom
                     ImageSize={10}

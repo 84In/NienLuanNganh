@@ -23,7 +23,6 @@ export { default as Purchase } from "./Product/Purchase";
 export { default as Review } from "./Product/Review";
 export { default as ReviewItem } from "./Product/ReviewItem";
 export { default as SearchBar } from "./SearchBar";
-export { default as AdminLogo } from "./System/Home/AdminLogo";
 export { default as AdminNav } from "./System/Home/AdminNav";
 export { default as AdminSideBar } from "./System/Home/AdminSideBar";
 export { default as AdminUserEdit } from "./System/Home/AdminUserEdit";

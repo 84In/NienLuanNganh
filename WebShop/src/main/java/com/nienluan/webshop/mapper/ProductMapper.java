@@ -11,12 +11,10 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
-    @Mapping(source = "category_id", target = "category.id")
-    @Mapping(source = "brand_id", target = "brand.id")
+    @Mapping(source = "categoryId", target = "category.id")
+    @Mapping(source = "brandId", target = "brand.id")
     Product toProduct(ProductRequest productRequest);
 
-    @Mapping(source = "category.id", target = "category_id")
-    @Mapping(source = "brand.id", target = "brand_id")
     ProductResponse toProductResponse(Product product);
 
     @Mapping(target = "promotions", ignore = true)

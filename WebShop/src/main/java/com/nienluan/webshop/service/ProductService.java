@@ -50,11 +50,11 @@ public class ProductService {
         }
 
         // Tìm Category và Brand theo ID từ request
-        Category category = categoryRepository.findById(request.getCategory_id())
-                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        Category category = categoryRepository.findById(request.getCategoryId())
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
 
-        Brand brand = brandRepository.findById(request.getBrand_id())
-                .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
+        Brand brand = brandRepository.findById(request.getBrandId())
+                .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
 
         Product product = productMapper.toProduct(request);
         product.setCategory(category);
@@ -73,20 +73,31 @@ public class ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
+    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String categoryCodeName) {
+        if(!categoryRepository.existsByCodeName(categoryCodeName)){
+            throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
+        }
+        Category category = categoryRepository.findByCodeName(categoryCodeName);
+        log.info(category.getName());
+        Page<Product> products = productRepository.findByCategory(pageable, category);
+        log.info("{} products", products.getTotalElements());
+        return products.map(productMapper::toProductResponse);
+    }
+
     public ProductResponse updateProduct(ProductUpdateRequest request, String id) throws AppException {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         // Cập nhật Category và Brand nếu cần
-        if (request.getCategory_id() != null) {
-            Category category = categoryRepository.findById(request.getCategory_id())
-                    .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+        if (request.getCategoryId() != null) {
+            Category category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
             product.setCategory(category);
         }
 
-        if (request.getBrand_id() != null) {
-            Brand brand = brandRepository.findById(request.getBrand_id())
-                    .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
+        if (request.getBrandId() != null) {
+            Brand brand = brandRepository.findById(request.getBrandId())
+                    .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
             product.setBrand(brand);
         }
 
@@ -111,7 +122,7 @@ public class ProductService {
     public void saveProductsFromCsv(List<ProductCsvDTO> products, String categoryId) {
         // Kiểm tra danh mục tồn tại
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         Set<String> existingProductNames = new HashSet<>();
 
         for (ProductCsvDTO product : products) {
@@ -124,12 +135,12 @@ public class ProductService {
             if (existingProductNames.contains(product.getName()) || productRepository.existsByName(product.getName())) {
                 continue; // Nếu sản phẩm đã tồn tại, bỏ qua
             }
-            Brand brand = brandRepository.findByName(product.getBrandName()).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_FOUND));
+            Brand brand = brandRepository.findByName(product.getBrandName()).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
             Product pr = Product.builder()
                     .name(product.getName())
                     .description(product.getDescription())
                     .price(product.getPrice())
-                    .stock_quantity(product.getStock_quantity())
+                    .stockQuantity(product.getStock_quantity())
                     .images(product.getImages())
                     .category(category)
                     .brand(brand) // Sử dụng thương hiệu đã kiểm tra

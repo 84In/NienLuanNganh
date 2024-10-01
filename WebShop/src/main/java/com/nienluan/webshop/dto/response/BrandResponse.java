@@ -14,5 +14,4 @@ import java.util.Set;
 public class BrandResponse {
     String id;
     String name;
-    Set<Product> products;
 }

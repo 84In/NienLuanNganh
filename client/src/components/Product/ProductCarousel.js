@@ -9,11 +9,22 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-const ProductCarousel = ({ images }) => {
+const ProductCarousel = ({ product }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const imagesUrl = JSON.parse(product.images.replace(/'/g, '"'));
 
   return (
-    <Box sx={{ padding: 1, width: "100%", height: "100%", minHeight: "420px" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        padding: 1,
+        gap: 1,
+        width: "100%",
+        height: "100%",
+        minHeight: "420px",
+      }}
+    >
       <Swiper
         style={{
           "--swiper-navigation-color": "var(--primary-color)",
@@ -25,11 +36,15 @@ const ProductCarousel = ({ images }) => {
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2 flex items-center justify-center rounded-md border border-gray-400 grid-xs:h-[300px] grid-md:h-[80%] grid-md:max-h-full grid-md:min-h-[330px]"
+        className="mySwiper2 flex items-center rounded-md border border-black grid-xs:h-[300px] grid-md:h-[80%] grid-md:max-h-full grid-md:min-h-[330px]"
       >
-        {images.slice(0, 4).map((image) => (
-          <SwiperSlide className="h-full" key={image.id}>
-            <img className="h-full object-contain px-8" src={image.imageSrc} alt={`Nature ${image.id}`} />
+        {imagesUrl.slice(0, 4).map((image, index) => (
+          <SwiperSlide className="h-full" key={index}>
+            <img
+              className="h-full max-h-[400px] object-contain px-8"
+              src={image.startsWith("https://") ? image : process.env.REACT_APP_SERVER_URL + image}
+              alt={`Ảnh ${product.name}  ${index}`}
+            />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -41,11 +56,15 @@ const ProductCarousel = ({ images }) => {
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper grid-xs:h-[100px] grid-md:h-[100%] grid-md:max-h-full grid-md:min-h-[120px]"
+        className="mySwiper grid-xs:h-[100px] grid-md:max-h-full grid-md:min-h-[120px]"
       >
-        {images.slice(0, 4).map((image) => (
-          <SwiperSlide className="h-full rounded-md border border-gray-400" key={image.id}>
-            <img className="h-full min-h-[78px] object-contain px-2" src={image.imageSrc} alt={`Nature ${image.id}`} />
+        {imagesUrl.slice(0, 4).map((image, index) => (
+          <SwiperSlide className="h-ful rounded-md border border-black" key={index}>
+            <img
+              className="h-full max-h-[100px] object-contain px-2"
+              src={image.startsWith("https://") ? image : process.env.REACT_APP_SERVER_URL + image}
+              alt={`Ảnh ${product.name}  ${index}`}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

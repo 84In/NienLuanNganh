@@ -3,20 +3,12 @@ import React, { memo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
 
-import product1 from "../../assets/images/product/product1.png";
-
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const location = useLocation();
   const product = location.state?.product;
 
   const price = product ? product.price : 0;
-  const images = [
-    { id: 1, imageSrc: product1 },
-    { id: 2, imageSrc: product1 },
-    { id: 3, imageSrc: product1 },
-    { id: 4, imageSrc: "https://swiperjs.com/demos/images/nature-3.jpg" },
-  ];
 
   return (
     <Grid2
@@ -40,7 +32,7 @@ const ProductDetail = () => {
           }}
         >
           <Grid2 item xs={12} md={6} sx={{ p: 1, height: "100%", width: "100%" }}>
-            <ProductCarousel images={images} />
+            <ProductCarousel product={product} />
           </Grid2>
           <Grid2 item xs={12} md={6} sx={{ p: 1, width: "100%" }}>
             <ProductInfo product={product} />

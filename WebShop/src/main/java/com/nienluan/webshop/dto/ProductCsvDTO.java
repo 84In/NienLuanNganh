@@ -11,12 +11,10 @@ import java.math.BigDecimal;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCsvDTO {
-
     String name;
     String description;
     BigDecimal price;
     BigDecimal stock_quantity;
     String images;
     String brandName;
-
 }

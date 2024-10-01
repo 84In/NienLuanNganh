@@ -1,7 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import { Button } from "@mui/material";
 
-const PaginationMore = (loadMore, hasMore) => {
+const PaginationMore = ({ loadMore, hasMore }) => {
   return (
     <div>
       {hasMore && (
@@ -13,4 +13,4 @@ const PaginationMore = (loadMore, hasMore) => {
   );
 };
 
-export default PaginationMore;
+export default memo(PaginationMore);

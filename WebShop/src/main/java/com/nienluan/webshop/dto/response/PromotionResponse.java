@@ -23,6 +23,4 @@ public class PromotionResponse {
     LocalDate startDate;
     LocalDate endDate;
     BigDecimal stock_quantity;
-
-    Set<ProductResponse> products;
 }

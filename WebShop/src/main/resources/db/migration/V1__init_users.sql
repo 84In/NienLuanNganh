@@ -86,7 +86,7 @@ CREATE TABLE `t_brands` (
 CREATE TABLE `t_categories`(
     `id` varchar(255) NOT NULL,
     `name` varchar(255) NOT NULL UNIQUE,
-    `code_name` text DEFAULT NULL,
+    `code_name` varchar(255) NOT NULL UNIQUE,
     `images` text DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -144,20 +144,26 @@ CREATE TABLE `t_orders`(
     `status_id` varchar(255) NOT NULL,
     `payment_method_id` varchar(255) NOT NULL,
     `payment_id` varchar(255) DEFAULT NULL,
+    `user_id` varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_payment_method FOREIGN KEY(`payment_method_id`) REFERENCES t_payment_methods(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_status_order FOREIGN KEY(`status_id`) REFERENCES t_status_order(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_payment_id FOREIGN KEY (`payment_id`) REFERENCES t_payments(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_user_id FOREIGN KEY (`user_id`) REFERENCES t_users(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `t_order_items`(
+CREATE TABLE `t_order_details`(
     `id` varchar(255) NOT NULL,
     `quantity` bigint(20) NOT NULL,
     `price_at_time` bigint(20) NOT NULL,
+    `order_id` varchar(255) NOT NULL,
+    `product_id` varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_order_id FOREIGN KEY (`order_id`) REFERENCES t_orders(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_product_id FOREIGN KEY (`product_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 
@@ -218,9 +224,9 @@ CREATE TABLE `t_banner`(
 
 CREATE TABLE `t_products_promotions`
 (
-    `products_id` varchar(255) NOT NULL,
-    `promotions_id` varchar(255) NOT NULL,
-    CONSTRAINT fk_productP FOREIGN KEY(`products_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_promotionP FOREIGN KEY(`promotions_id`) REFERENCES t_promotions(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`products_id`, `promotions_id`)
+    `product_id` varchar(255) NOT NULL,
+    `promotion_id` varchar(255) NOT NULL,
+    CONSTRAINT fk_productP FOREIGN KEY(`product_id`) REFERENCES t_products(`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_promotionP FOREIGN KEY(`promotion_id`) REFERENCES t_promotions(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`product_id`, `promotion_id`)
 );
