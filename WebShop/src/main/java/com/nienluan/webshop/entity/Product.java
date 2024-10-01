@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.Set;
 
 @Entity
@@ -37,8 +36,11 @@ public class Product {
     @JoinColumn(name = "brand_id", nullable = false)
     Brand brand;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "t_products_promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "t_products_promotions",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "promotion_id")
+    )
     Set<Promotion> promotions = new HashSet<>();
     @OneToMany(mappedBy = "product")
     List<OrderDetail> orderDetails;

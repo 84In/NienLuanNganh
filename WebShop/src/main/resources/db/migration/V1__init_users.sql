@@ -169,7 +169,7 @@ CREATE TABLE `t_order_details`(
 
 CREATE TABLE `t_reviews`(
     `id` varchar(255) NOT NULL,
-    `ratting` int DEFAULT 1,
+    `rating` int DEFAULT 0,
     `comment` text default null,
     `user_id` varchar(255) not null ,
     `product_id` varchar(255) not null,
