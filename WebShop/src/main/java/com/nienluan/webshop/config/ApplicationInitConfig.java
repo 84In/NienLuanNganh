@@ -13,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,13 +31,13 @@ public class ApplicationInitConfig {
     ApplicationRunner addDefaultUserAndRole(UserRepository userRepository, RoleRepository roleRepository) {
         return args -> {
 
-            if(roleRepository.findById("ADMIN").isEmpty()) {
+            if (roleRepository.findById("ADMIN").isEmpty()) {
                 Role adminRole = new Role();
                 adminRole.setName("ADMIN");
                 adminRole.setDescription("Admin");
                 roleRepository.save(adminRole);
             }
-            if(roleRepository.findById("USER").isEmpty()) {
+            if (roleRepository.findById("USER").isEmpty()) {
                 Role adminRole = new Role();
                 adminRole.setName("USER");
                 adminRole.setDescription("Customer");
@@ -70,10 +69,10 @@ public class ApplicationInitConfig {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("dataProvinces.json");
             if (inputStream != null) {
                 dataLoaderService.loadDataFromJson(inputStream);
-                log.warn("Data VietNam location is successfully loaded!");
             } else {
                 System.err.println("File dataProvinces.json không tồn tại trong classpath.");
             }
+            log.warn("Data VietNam location is successfully loaded!");
         };
     }
 }

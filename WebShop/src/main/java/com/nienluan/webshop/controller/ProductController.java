@@ -13,7 +13,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,9 +38,21 @@ public class ProductController {
     }
 
     @GetMapping
-    public ApiResponse<Page<ProductResponse>> getAllProducts(Pageable pageable) {
+    public ApiResponse<Page<ProductResponse>> getAllProducts(
+            Pageable pageable,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection
+    ) {
+        if(sortBy == null || sortDirection == null) {
+            return ApiResponse.<Page<ProductResponse>>builder()
+                    .result(productService.getAllProducts(pageable))
+                    .build();
+        }
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        PageRequest sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+
         return ApiResponse.<Page<ProductResponse>>builder()
-                .result(productService.getAllProducts(pageable))
+                .result(productService.getAllProducts(sortedPageable))
                 .build();
     }
 

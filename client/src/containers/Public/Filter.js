@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
@@ -9,36 +9,23 @@ import { banner_filter } from "../../utils/constant";
 const Filter = () => {
   const type = window.location.pathname.split("/")[2];
   const name = window.location.pathname.split("/")[3];
-  const { data, totalElements, loading, loadMore, hasMore } = usePaginationMore(
-    `api/v1/search/${type}/${name}`,
-    15,
-    10,
-  );
 
-  const [sort, setSort] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [sortDirection, setSortDirection] = useState("");
+  const [urlApi, setUrlApi] = useState(`api/v1/search/${type}/${name}`);
 
-  // const [priceFilter, setPriceFilter] = useState([]);
-  // const [brandFilter, setBrandFilter] = useState([]);
+  const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 15, 10);
 
-  // const handlePriceFilterChange = (value) => {
-  //   setPriceFilter((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
-  // };
-
-  // const handleBrandFilterChange = (value) => {
-  //   setBrandFilter((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
-  // };
-
-  // const filteredMotorcycles = motorcycleData.filter((motorcycle) => {
-  //   const priceMatch =
-  //     priceFilter.length === 0 ||
-  //     priceFilter.some((range) => {
-  //       const [min, max] = range.split("-").map(Number);
-  //       return motorcycle.price >= min && (max ? motorcycle.price < max : true);
-  //     });
-  //   const brandMatch = brandFilter.length === 0 || brandFilter.includes(motorcycle.brand);
-  //   const colorMatch = colorFilter.length === 0 || colorFilter.includes(motorcycle.color);
-  //   return priceMatch && brandMatch && colorMatch;
-  // });
+  useEffect(() => {
+    let newUrl = `api/v1/search/${type}/${name}`;
+    if (sortBy) {
+      newUrl += `?sortBy=${sortBy}`;
+      if (sortDirection) {
+        newUrl += `&sortDirection=${sortDirection}`;
+      }
+    }
+    setUrlApi(newUrl);
+  }, [sortBy, sortDirection, type, name]);
 
   return (
     <Grid2
@@ -72,15 +59,17 @@ const Filter = () => {
               <div className="relative">
                 <select
                   className="w-[180px] rounded-md border p-2"
-                  value={sort}
+                  value={sortBy + "-" + sortDirection}
                   onChange={(e) => {
-                    setSort(e.target.value);
+                    const [newSortBy, newSortDirection] = e.target.value.split("-");
+                    setSortBy(newSortBy);
+                    setSortDirection(newSortDirection);
                   }}
                 >
-                  <option className="hidden" selected disabled>
+                  <option value="" className="hidden" selected>
                     Sắp xếp
                   </option>
-                  <option value="popular">Phổ biến</option>
+                  <option value="popular-desc">Phổ biến</option>
                   <option value="price-asc">Giá tăng dần</option>
                   <option value="price-desc">Giá giảm dần</option>
                 </select>
@@ -90,8 +79,8 @@ const Filter = () => {
             {/* Product grid */}
             <div className="grid grid-cols-2 gap-2 grid-sm:grid-cols-3 grid-md:grid-cols-4 grid-lg:grid-cols-5">
               {data.map((product, index) => (
-                <Link to={`/product/id/${product.id}`} state={{ product }}>
-                  <ProductCard {...product} key={index} />
+                <Link to={`/product/id/${product.id}`} state={{ product }} key={index}>
+                  <ProductCard {...product} />
                 </Link>
               ))}
             </div>

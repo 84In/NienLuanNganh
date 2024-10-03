@@ -7,14 +7,14 @@ const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {
   const [loading, setLoading] = useState(false);
   const [totalElements, setTotalElements] = useState(0);
 
-  const fetchMoreData = async (size) => {
+  const fetchMoreData = async (currentSize) => {
     setLoading(true);
     try {
       const response = await axiosConfig({
         method: "GET",
         url: url,
         params: {
-          size: size,
+          size: currentSize,
         },
       });
       const result = response.result;
@@ -29,7 +29,7 @@ const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {
 
   useEffect(() => {
     fetchMoreData(currentSize);
-  }, [currentSize]);
+  }, [url, currentSize]);
 
   const loadMore = () => {
     setCurrentSize((prev) => prev + addPageSize);
@@ -37,7 +37,7 @@ const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {
 
   const hasMore = currentSize < totalElements; // Check if there are more items to load
 
-  return { data, totalElements, loading, loadMore, hasMore };
+  return { data, setData, totalElements, loading, loadMore, hasMore };
 };
 
 export default usePaginationMore;
