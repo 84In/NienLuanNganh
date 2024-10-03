@@ -28,7 +28,7 @@ const AdminHome = ({ user }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 876) {
+      if (window.innerWidth < 900) {
         setIsOpen(false);
       } else {
         setIsOpen(true);

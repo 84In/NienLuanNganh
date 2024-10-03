@@ -7,13 +7,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Nếu là URL không cần token hoặc là yêu cầu tạo mới user (POST)
-    if (
-      !(
-        (config.url.startsWith("/api/v1/categories") && (config.method === "get" || config.method === "GET")) ||
-        config.url.startsWith("/api/v1/auth") ||
-        (config.url.startsWith("/api/v1/users") && (config.method === "post" || config.method === "POST"))
-      )
-    ) {
+    const isGetCategoriesRequest = config.url.startsWith("/api/v1/categories") && config.method.toLowerCase() === "GET";
+    const isPostUserRequest = config.url.startsWith("/api/v1/users") && config.method.toLowerCase() === "POST";
+    const isAuthRequest = config.url.startsWith("/api/v1/auth");
+    if (!(isGetCategoriesRequest || isPostUserRequest || isAuthRequest)) {
       // Lấy token từ localStorage
       let authData = window.localStorage.getItem("persist:auth");
       let token = authData && JSON.parse(authData)?.token;
