@@ -5,7 +5,6 @@ import com.nienluan.webshop.dto.request.CategoryUpdateRequest;
 import com.nienluan.webshop.dto.response.CategoryResponse;
 import com.nienluan.webshop.entity.Category;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
