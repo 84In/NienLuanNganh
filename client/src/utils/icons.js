@@ -12,6 +12,8 @@ import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
 import { GoHomeFill, GoSearch } from "react-icons/go";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { BiSolidLeftArrowSquare } from "react-icons/bi";
+import { BiSolidRightArrowSquare } from "react-icons/bi";
 const icons = {
   GoHomeFill,
   FaRegCircleUser,
@@ -27,5 +29,7 @@ const icons = {
   BiCreditCard,
   BiSync,
   BiEdit,
+  BiSolidLeftArrowSquare,
+  BiSolidRightArrowSquare,
 };
 export default icons;

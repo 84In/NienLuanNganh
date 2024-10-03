@@ -12,6 +12,7 @@ import {
 import React from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
+import { capitalizeFirstLetterIfNeeded } from "../../../utils/format";
 
 const AdminTable = ({ data, pagination }) => {
   const { BiEdit } = icons;
@@ -56,7 +57,7 @@ const AdminTable = ({ data, pagination }) => {
                 .filter((key) => key !== "promotions") // Exclude the "id" column
                 .map((key, index) => (
                   <StyledTableCell align="center" key={index}>
-                    {key}
+                    {capitalizeFirstLetterIfNeeded(key)}
                   </StyledTableCell>
                 ))}
               <StyledTableCell>Edit</StyledTableCell>

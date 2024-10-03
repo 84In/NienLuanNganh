@@ -4,7 +4,7 @@ import { Loading, Pagination } from "../../components";
 import { usePagination } from "../../hooks";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
-const AdminUserContent = () => {
+const AdminProductContent = () => {
   const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
     usePagination("/api/v1/products", 0);
 
@@ -32,4 +32,4 @@ const AdminUserContent = () => {
   );
 };
 
-export default AdminUserContent;
+export default AdminProductContent;

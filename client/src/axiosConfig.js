@@ -9,6 +9,7 @@ instance.interceptors.request.use(
     // Nếu là URL không cần token hoặc là yêu cầu tạo mới user (POST)
     if (
       !(
+        (config.url.startsWith("/api/v1/categories") && (config.method === "get" || config.method === "GET")) ||
         config.url.startsWith("/api/v1/auth") ||
         (config.url.startsWith("/api/v1/users") && (config.method === "post" || config.method === "POST"))
       )

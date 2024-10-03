@@ -42,12 +42,15 @@ export const base64ToBlob = (imageObject) => {
 
   return new Blob([byteArray], { type: mimeType });
 };
+export const capitalizeFirstLetterIfNeeded = (string) => {
+  // Lấy ký tự đầu tiên
+  const firstChar = string.charAt(0);
 
-/*const base64String = "iVBORw0KGgoAAAANSUhEUgAAAA..."; // Chuỗi Base64 của bạn
-const mimeType = "image/png"; // Loại MIME của hình ảnh
-const blob = base64ToBlob(base64String, mimeType);
+  // Kiểm tra xem ký tự đó có phải là chữ in hoa không
+  if (firstChar === firstChar.toUpperCase()) {
+    return string; // Nếu đã in hoa, trả về chuỗi gốc
+  }
 
-// Tạo một URL đối tượng để hiển thị hình ảnh
-const imageUrl = URL.createObjectURL(blob);
-document.getElementById('image').src = imageUrl;
- */
+  // Nếu chưa in hoa, chuyển ký tự đầu thành chữ in hoa
+  return firstChar.toUpperCase() + string.slice(1);
+};
