@@ -48,7 +48,7 @@ const AccountInfo = () => {
 
   const handleUploadAvatar = async (file) => {
     if (!file) {
-      console.warn("No file provided, avatar will not be changed.");
+      setAlert("Không có tập tin nào được cung cấp");
       return;
     }
     const formData = new FormData();
@@ -61,25 +61,28 @@ const AccountInfo = () => {
       console.log("Avatar uploaded successfully: ", avatarPath);
       return avatarPath;
     } else {
-      console.error("Failed to upload avatar.");
+      setAlert("Lỗi tải ảnh lên");
     }
+    setTimeout(() => setAlert(""), 5000);
   };
 
   const handleSaveChange = async (event) => {
     event.preventDefault();
     try {
-      const avatarPath = await handleUploadAvatar(avatarFile); // Upload avatar first
+      const avatarPath = await handleUploadAvatar(avatarFile);
+      const updatedPayload = {
+        ...payload,
+        avatar: avatarPath || payload.avatar,
+      };
 
       // Check if there are any changes
-      if (Object.keys(payload).some((key) => payload[key] !== userData[key])) {
+      if (Object.keys(updatedPayload).some((key) => updatedPayload[key] !== userData[key])) {
         const response = await apiChangePersonalInfomation({
-          ...payload,
-          username: userData.username || username,
-          avatar: avatarPath,
+          ...updatedPayload,
         });
         dispatch(action.getUserInfo(username)); // Dispatch action to update user info in Redux store
-        setAvatarFile();
         setAlert("Thay đổi thành công!");
+        setAvatarFile();
       } else {
         setAlert("Không có thay đổi nào!");
       }
