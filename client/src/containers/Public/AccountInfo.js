@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Alert, AlertTitle, Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
@@ -18,6 +18,7 @@ const AccountInfo = () => {
   const { userData } = useSelector((state) => state.user);
 
   const [avatarFile, setAvatarFile] = useState();
+  const [alert, setAlert] = useState("");
   const [payload, setPayload] = useState({
     username: "",
     firstName: "",
@@ -68,8 +69,21 @@ const AccountInfo = () => {
     event.preventDefault();
     try {
       const avatarPath = await handleUploadAvatar(avatarFile); // Upload avatar first
-      const response = await apiChangePersonalInfomation({ ...payload, avatar: avatarPath }); // Update personal information
-      dispatch(action.getUserInfo(username)); // Dispatch action to update user info in Redux store
+
+      // Check if there are any changes
+      if (Object.keys(payload).some((key) => payload[key] !== userData[key])) {
+        const response = await apiChangePersonalInfomation({
+          ...payload,
+          username: userData.username || username,
+          avatar: avatarPath,
+        });
+        dispatch(action.getUserInfo(username)); // Dispatch action to update user info in Redux store
+        setAvatarFile();
+        setAlert("Thay đổi thành công!");
+      } else {
+        setAlert("Không có thay đổi nào!");
+      }
+      setTimeout(() => setAlert(""), 5000);
     } catch (error) {
       console.error(error.message);
     }
@@ -80,8 +94,21 @@ const AccountInfo = () => {
       container
       rowGap={2}
       columnGap={"none"}
-      sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        width: "100%",
+        paddingX: "1rem",
+        height: "100%",
+        position: "relative",
+      }}
     >
+      {alert && (
+        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
+          <AlertTitle>Thông báo</AlertTitle>
+          {alert}
+        </Alert>
+      )}
       <Grid2
         container
         sx={{
