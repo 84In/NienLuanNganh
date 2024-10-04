@@ -40,6 +40,7 @@ const AccountInfo = () => {
   }, [userData, username]);
 
   console.log(payload);
+  console.log(avatarFile);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -47,10 +48,16 @@ const AccountInfo = () => {
   };
 
   const handleUploadAvatar = async (file) => {
+    const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
     if (!file) {
       setAlert("Không có tập tin nào được cung cấp");
       return;
     }
+    if (!validImageTypes.includes(file.type)) {
+      setAlert("Tập tin hình ảnh không hợp lệ! (JPEG, JPG, PNG & GIF)");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("files", file);
     const avatarResponse = await apiUploadAvatar(userData.username, formData);
@@ -59,6 +66,7 @@ const AccountInfo = () => {
       const avatarPath = avatarResponse.result[0];
       setPayload((prev) => ({ ...prev, avatar: avatarPath }));
       console.log("Avatar uploaded successfully: ", avatarPath);
+      setAvatarFile(undefined);
       return avatarPath;
     } else {
       setAlert("Lỗi tải ảnh lên");
@@ -82,7 +90,6 @@ const AccountInfo = () => {
         });
         dispatch(action.getUserInfo(username)); // Dispatch action to update user info in Redux store
         setAlert("Thay đổi thành công!");
-        setAvatarFile();
       } else {
         setAlert("Không có thay đổi nào!");
       }
