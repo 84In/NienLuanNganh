@@ -34,3 +34,6 @@ build/
 
 ### MySQL ###
 /mysql/
+
+### Upload ###
+/uploads/avatar/
