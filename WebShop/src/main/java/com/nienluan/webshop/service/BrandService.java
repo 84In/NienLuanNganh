@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -42,6 +44,10 @@ public class BrandService {
 
     public void deleteBrand(String id) {
         brandRepository.deleteById(id);
+    }
+
+    public List<BrandResponse> searchBrandByName(String name) {
+        return  brandRepository.findByNameContaining(name).stream().map(brandMapper::toBrandResponse).toList();
     }
 
 }
