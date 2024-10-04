@@ -55,7 +55,7 @@ export const apiChangePersonalInfomation = (payload) =>
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: `api/v1/users/change-personal-information`,
+        url: `api/v1/users/change/personal-information`,
         data: payload,
       });
       resolve(response);

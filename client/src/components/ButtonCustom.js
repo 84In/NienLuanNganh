@@ -65,7 +65,7 @@ const ButtonCustom = ({
             <img
               src={Avatar}
               alt={TextTitle}
-              className={`${ImageSize ? `w-${ImageSize}` : "w-8"} ${ImageSize ? `h-${ImageSize}` : "h-8"} rounded-full object-cover`}
+              className={`${ImageSize ? `w-${ImageSize}` : "w-8"} ${ImageSize ? `h-${ImageSize}` : "h-8"} rounded-full border border-black bg-white object-cover`}
             />
             {User?.roles.some((role) => role.name === "ADMIN") ? (
               <>

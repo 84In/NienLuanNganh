@@ -5,8 +5,7 @@ import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from 
 import { useLocation, useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
 import { path } from "../../utils/constant";
-import axiosConfig from "../../axiosConfig";
-import { apiChangePersonalInfomation } from "../../services";
+import { apiChangePersonalInfomation, apiUploadAvatar } from "../../services";
 import { useDispatch, useSelector } from "react-redux";
 import * as action from "../../store/actions";
 
@@ -14,7 +13,6 @@ const defaultAvatar = require("../../assets/images/profile.png");
 
 const AccountInfo = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
   const { username } = useSelector((state) => state.auth);
   const { userData } = useSelector((state) => state.user);
@@ -54,11 +52,8 @@ const AccountInfo = () => {
     }
     const formData = new FormData();
     formData.append("files", file);
-    const avatarResponse = await axiosConfig({
-      method: "POST",
-      url: `/api/v1/upload/avatar/${userData.username}`,
-      data: formData,
-    });
+    const avatarResponse = await apiUploadAvatar(userData.username, formData);
+
     if (avatarResponse && avatarResponse.result && avatarResponse.result.length > 0) {
       const avatarPath = avatarResponse.result[0];
       setPayload((prev) => ({ ...prev, avatar: avatarPath }));
@@ -74,8 +69,7 @@ const AccountInfo = () => {
     try {
       const avatarPath = await handleUploadAvatar(avatarFile); // Upload avatar first
       const response = await apiChangePersonalInfomation({ ...payload, avatar: avatarPath }); // Update personal information
-      // Dispatch action to update user info in Redux store
-      dispatch(action.getUserInfo(username));
+      dispatch(action.getUserInfo(username)); // Dispatch action to update user info in Redux store
     } catch (error) {
       console.error(error.message);
     }

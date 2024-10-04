@@ -73,7 +73,7 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/change/password")
     public ApiResponse<UserResponse> changePassword(@RequestBody ChangePasswordRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .message("Change Password Successful")
@@ -81,7 +81,7 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/change-personal-information")
+    @PutMapping("/change/personal-information")
     public ApiResponse<UserResponse> changePersonalInformation(@RequestBody ChangePersonalInformationRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .message("Change Personal Information Successful")
