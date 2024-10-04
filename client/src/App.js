@@ -33,7 +33,7 @@ function App() {
     if (isLoggedIn && username) {
       setTimeout(() => {
         dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
-      }, 500);
+      }, 100);
     }
   }, [isLoggedIn, username, dispatch]);
 

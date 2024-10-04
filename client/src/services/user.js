@@ -50,3 +50,16 @@ export const apiGetUserById = (userId) =>
       reject(error);
     }
   });
+export const apiChangePersonalInfomation = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `api/v1/users/change-personal-information`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

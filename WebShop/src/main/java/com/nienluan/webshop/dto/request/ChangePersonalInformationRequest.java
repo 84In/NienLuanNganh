@@ -3,17 +3,15 @@ package com.nienluan.webshop.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChangePasswordRequest {
+public class ChangePersonalInformationRequest {
     String username;
-    String oldPassword;
-    String newPassword;
-    String reNewPassword;
+    String firstName;
+    String lastName;
+    String dob;
+    String avatar;
 }

@@ -1,6 +1,7 @@
 package com.nienluan.webshop.service;
 
 import com.nienluan.webshop.dto.request.ChangePasswordRequest;
+import com.nienluan.webshop.dto.request.ChangePersonalInformationRequest;
 import com.nienluan.webshop.dto.request.UserCreationRequest;
 import com.nienluan.webshop.dto.request.UserUpdateRequest;
 import com.nienluan.webshop.entity.Role;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
+import static com.nienluan.webshop.utils.DateUtils.formatStringToLocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -94,8 +97,8 @@ public class UserService {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
-    public UserResponse changePassword(String id, ChangePasswordRequest request){
-        var user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    public UserResponse changePassword(ChangePasswordRequest request){
+        var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         boolean authentication = passwordEncoder.matches(request.getOldPassword(), user.getPassword());
         if(!authentication){
             throw new AppException(ErrorCode.UNAUTHENTICATED);
@@ -104,6 +107,16 @@ public class UserService {
             throw new AppException(ErrorCode.PASSWORD_INCORRECT);
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public UserResponse changePersonalInformation(ChangePersonalInformationRequest request) {
+        var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setDob(formatStringToLocalDate(request.getDob()));
+        user.setAvatar(request.getAvatar());
         return userMapper.toUserResponse(userRepository.save(user));
     }
 }

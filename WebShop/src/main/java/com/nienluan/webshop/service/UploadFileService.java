@@ -24,7 +24,8 @@ public class UploadFileService {
     @Value("${file.upload-path}")
     String UPLOAD_DIR;
 
-    public List<String> uploadFile(String type, String name, List<MultipartFile> files) {
+
+    public List<String> uploadFiles(String type, String name, List<MultipartFile> files) {
         File uploadDir = new File(UPLOAD_DIR + type + "/" + name);
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
@@ -36,12 +37,12 @@ public class UploadFileService {
             File uploadedFile = new File(uploadDir, file.getOriginalFilename());
             System.out.println("Original filename: " + file.getOriginalFilename());
 
-            try(InputStream inputStream = file.getInputStream()) {
+            try (InputStream inputStream = file.getInputStream()) {
 //                file.transferTo(uploadedFile);
                 Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 String filePath = "/images/" + type + "/" + name + "/" + file.getOriginalFilename();
                 filePaths.add(filePath);
-            }catch (IOException e) {
+            } catch (IOException e) {
                 System.err.println("Error uploading file: " + file.getOriginalFilename());
                 System.err.println("Target path: " + uploadedFile.getAbsolutePath());
                 System.err.println("Error: " + e.getMessage());
@@ -52,4 +53,26 @@ public class UploadFileService {
         return filePaths;
     }
 
+    public String uploadFile(String type, String name, MultipartFile file) {
+        File uploadDir = new File(UPLOAD_DIR + type + "/" + name);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        String filePath;
+        File uploadedFile = new File(uploadDir, file.getOriginalFilename());
+        System.out.println("Original filename: " + file.getOriginalFilename());
+
+        try (InputStream inputStream = file.getInputStream()) {
+//                file.transferTo(uploadedFile);
+            Files.copy(inputStream, uploadedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            filePath = "/images/" + type + "/" + name + "/" + file.getOriginalFilename();
+        } catch (IOException e) {
+            System.err.println("Error uploading file: " + file.getOriginalFilename());
+            System.err.println("Target path: " + uploadedFile.getAbsolutePath());
+            System.err.println("Error: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return filePath;
+    }
 }

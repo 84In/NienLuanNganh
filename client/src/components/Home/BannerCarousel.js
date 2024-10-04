@@ -66,21 +66,21 @@ function BannerCarousel({ data, slide }) {
     prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1200,
+        breakpoint: 900,
         settings: {
           slidesToShow: slide && slide > 0 ? slide : 2,
           slidesToScroll: slide && slide > 0 ? slide : 2,
         },
       },
       {
-        breakpoint: 900,
+        breakpoint: 600,
         settings: {
-          slidesToShow: slide && slide > 1 ? slide - 1 : 1,
-          slidesToScroll: slide && slide > 1 ? slide - 1 : 1,
+          slidesToShow: slide && slide > 2 ? slide - 1 : 1,
+          slidesToScroll: slide && slide > 2 ? slide - 1 : 1,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 0,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,

@@ -44,7 +44,7 @@ const ButtonCustom = ({
       >
         {IconBefore && (
           <>
-            <span>
+            <span className="flex h-8 w-8 items-center justify-center">
               <IconBefore size={IconSize || "24"} />
             </span>
             <span className="text-left">{TextTitle}</span>
@@ -65,7 +65,7 @@ const ButtonCustom = ({
             <img
               src={Avatar}
               alt={TextTitle}
-              className={`${ImageSize ? `w-${ImageSize}` : "w-full"} ${ImageSize ? `h-${ImageSize}` : "h-6"} rounded-full object-cover`}
+              className={`${ImageSize ? `w-${ImageSize}` : "w-8"} ${ImageSize ? `h-${ImageSize}` : "h-8"} rounded-full object-cover`}
             />
             {User?.roles.some((role) => role.name === "ADMIN") ? (
               <>

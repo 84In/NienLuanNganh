@@ -21,28 +21,28 @@ public class UploadFileController {
     @PostMapping("/banner/{name}")
     public ApiResponse<List<String>> uploadBanner(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
         return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFile("banner", name, files))
+                .result(uploadFileService.uploadFiles("banner", name, files))
                 .build();
     }
 
     @PostMapping("/product/{name}")
     public ApiResponse<List<String>> uploadProduct(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
         return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFile("product", name, files))
+                .result(uploadFileService.uploadFiles("product", name, files))
                 .build();
     }
 
     @PostMapping("/avatar/{name}")
     public ApiResponse<List<String>> uploadAvatar(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
         return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFile("avatar", name, files))
+                .result(uploadFileService.uploadFiles("avatar", name, files))
                 .build();
     }
 
     @PostMapping("/category/{name}")
     public ApiResponse<List<String>> uploadCategory(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
         return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFile("category", name, files))
+                .result(uploadFileService.uploadFiles("category", name, files))
                 .build();
     }
 
