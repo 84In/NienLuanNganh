@@ -42,23 +42,23 @@ const product1 = require("../assets/images/product/product1.png");
 
 export const path = {
   HOME: "/",
-  CART: "cart/",
-  ACCOUNT: "account/",
-  EDIT_PHONE: "edit/phone/",
-  EDIT_EMAIL: "edit/email/",
-  EDIT_PASSWORD: "edit/password/",
-  EDIT_ADDRESS: "edit/address/",
-  PRODUCT_DETAIL: "product/id/:productId/",
+  CART: "cart",
+  ACCOUNT: "account",
+  EDIT_PHONE: "edit/phone",
+  EDIT_EMAIL: "edit/email",
+  EDIT_PASSWORD: "edit/password",
+  EDIT_ADDRESS: "edit/address",
+  PRODUCT_DETAIL: "product/id/:productId",
   PRODUCT_SEARCH: "search/:type/:name",
-  ORDER_HISTORY: "order/history/",
-  ADMIN_HOME: "/manager/",
-  ADMIN_USER: "user/",
-  ADMIN_PRODUCT: "product/",
-  ADMIN_USER_CREATE: "create-user/",
-  ADMIN_USER_EDIT: "edit/:id/",
-  ADMIN_PRODUCT_CREATE: "create-product/",
+  ORDER_HISTORY: "order/history",
+  ADMIN_HOME: "/manager",
+  ADMIN_USER: "user",
+  ADMIN_PRODUCT: "product",
+  ADMIN_USER_CREATE: "create-user",
+  ADMIN_USER_EDIT: "edit/:id",
+  ADMIN_PRODUCT_CREATE: "create-product",
   ADMIN_PRODUCT_EDIT: "edit/:id",
-  ADMIN_PRODUCT_IMPORT_CSV: "upload-product/",
+  ADMIN_PRODUCT_IMPORT_CSV: "upload-product",
 };
 
 export const adminSideBar = [
@@ -152,39 +152,6 @@ export const banner_filter = [
     id: 4,
     image: banner10,
     title: "Banner 4",
-  },
-];
-
-export const iconSideBar = [
-  {
-    image: icon1,
-    title: "Sách",
-    url: "/product/search?name=book",
-  },
-  {
-    image: icon2,
-    title: "Điện thoại",
-    url: "/product/search?name=smartphone",
-  },
-  {
-    image: icon3,
-    title: "Thiết bị số - Phụ kiện điện tử",
-    url: "/product/search?name=digital-device",
-  },
-  {
-    image: icon4,
-    title: "Ô tô - Xe máy",
-    url: "/product/search?name=motobyte",
-  },
-  {
-    image: icon5,
-    title: "Máy tính - Lap top",
-    url: "/product/search?name=computer",
-  },
-  {
-    image: icon6,
-    title: "Giày - Dép",
-    url: "/product/search?name=shoe",
   },
 ];
 

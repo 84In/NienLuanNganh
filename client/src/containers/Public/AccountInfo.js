@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Button, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
 import { path } from "../../utils/constant";
 import { apiChangePersonalInfomation, apiUploadAvatar } from "../../services";

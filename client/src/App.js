@@ -58,25 +58,25 @@ function App() {
             }
           />
           <Route
-            path={path.ACCOUNT + path.EDIT_PHONE}
+            path={path.ACCOUNT + "/" + path.EDIT_PHONE}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route
-            path={path.ACCOUNT + path.EDIT_EMAIL}
+            path={path.ACCOUNT + "/" + path.EDIT_EMAIL}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route
-            path={path.ACCOUNT + path.EDIT_ADDRESS}
+            path={path.ACCOUNT + "/" + path.EDIT_ADDRESS}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route
-            path={path.ACCOUNT + path.EDIT_PASSWORD}
+            path={path.ACCOUNT + "/" + path.EDIT_PASSWORD}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
