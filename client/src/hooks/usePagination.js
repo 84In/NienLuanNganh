@@ -15,7 +15,10 @@ const usePagination = (url, initialPage = 0) => {
     try {
       const response = await axiosConfig({
         method: "GET",
-        url: `${url}?page=${page}`,
+        url: url,
+        params: {
+          size: page,
+        },
       });
       const result = response.result;
       setData(result.content);

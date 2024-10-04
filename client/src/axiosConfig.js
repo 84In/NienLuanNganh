@@ -9,8 +9,10 @@ instance.interceptors.request.use(
     // Nếu là URL không cần token hoặc là yêu cầu tạo mới user (POST)
     const isGetCategoriesRequest = config.url.startsWith("/api/v1/categories") && config.method.toLowerCase() === "get";
     const isPostUserRequest = config.url.startsWith("/api/v1/users") && config.method.toLowerCase() === "post";
+    const isGetProductRequest = config.url.startsWith("/api/v1/products") && config.method.toLowerCase() === "get";
     const isAuthRequest = config.url.startsWith("/api/v1/auth");
-    if (!(isGetCategoriesRequest || isPostUserRequest || isAuthRequest)) {
+    const isGetSearchRequest = config.url.startsWith("/api/v1/search/") && config.method.toLowerCase() === "get";
+    if (!(isGetCategoriesRequest || isPostUserRequest || isAuthRequest || isGetProductRequest || isGetSearchRequest)) {
       // Lấy token từ localStorage
       let authData = window.localStorage.getItem("persist:auth");
       let token = authData && JSON.parse(authData)?.token;

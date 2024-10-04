@@ -27,3 +27,4 @@ export { default as AdminNav } from "./System/Home/AdminNav";
 export { default as AdminSideBar } from "./System/Home/AdminSideBar";
 export { default as AdminUserEdit } from "./System/Home/AdminUserEdit";
 export { default as AdminNavButton } from "./System/Items/AdminNavButton";
+export { default as AdminProductEdit } from "./System/Home/AdminProductEdit";

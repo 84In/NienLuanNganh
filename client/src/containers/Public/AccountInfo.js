@@ -39,9 +39,6 @@ const AccountInfo = () => {
     }
   }, [userData, username]);
 
-  console.log(payload);
-  console.log(avatarFile);
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setPayload({ ...payload, [name]: value });

@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const { categories } = useSelector((state) => state.app);
-  console.log(categories.content);
 
   return (
     <Box
@@ -26,7 +25,7 @@ const SideBar = () => {
         <div className="flex flex-col space-y-2">
           {categories.content &&
             categories.content.map((item, index) => (
-              <Link to={`search/category/${item.codeName}`} key={index}>
+              <Link to={`/search/category/${item.codeName}`} key={index}>
                 <div>
                   <ButtonCustom
                     ImageSize={10}

@@ -12,12 +12,12 @@ const Filter = () => {
 
   const [sortBy, setSortBy] = useState("");
   const [sortDirection, setSortDirection] = useState("");
-  const [urlApi, setUrlApi] = useState(`api/v1/search/${type}/${name}`);
+  const [urlApi, setUrlApi] = useState(`/api/v1/search/${type}/${name}`);
 
   const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 15, 10);
 
   useEffect(() => {
-    let newUrl = `api/v1/search/${type}/${name}`;
+    let newUrl = `/api/v1/search/${type}/${name}`;
     if (sortBy) {
       newUrl += `?sortBy=${sortBy}`;
       if (sortDirection) {

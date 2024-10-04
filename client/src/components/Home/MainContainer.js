@@ -5,7 +5,7 @@ import { banner } from "../../utils/constant";
 import { usePaginationMore } from "../../hooks";
 
 const MainContainer = () => {
-  const { data, totalElements, loading, loadMore, hasMore } = usePaginationMore(`api/v1/products`, 10, 10);
+  const { data, totalElements, loading, loadMore, hasMore } = usePaginationMore(`/api/v1/products`, 10, 10);
 
   return (
     <Grid2
