@@ -16,28 +16,31 @@ const AccountInfo = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { username } = useSelector((state) => state.auth);
   const { userData } = useSelector((state) => state.user);
 
   const [avatarFile, setAvatarFile] = useState();
   const [payload, setPayload] = useState({
-    username: userData?.username || "", // Use optional chaining and default value
-    firstName: userData?.firstName || "",
-    lastName: userData?.lastName || "",
-    dob: userData?.dob || "",
-    avatar: userData?.avatar || "",
+    username: "",
+    firstName: "",
+    lastName: "",
+    dob: "",
+    avatar: "",
   });
 
   useEffect(() => {
-    if (userData) {
+    if (userData && username) {
       setPayload({
-        username: userData.username,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        dob: userData.dob,
-        avatar: userData.avatar,
+        username: userData.username || username,
+        firstName: userData.firstName || "",
+        lastName: userData.lastName || "",
+        dob: userData.dob ? userData.dob.split("T")[0] : "",
+        avatar: userData.avatar || "",
       });
     }
-  }, [userData]);
+  }, [userData, username]);
+
+  console.log(payload);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -45,6 +48,10 @@ const AccountInfo = () => {
   };
 
   const handleUploadAvatar = async (file) => {
+    if (!file) {
+      console.warn("No file provided, avatar will not be changed.");
+      return;
+    }
     const formData = new FormData();
     formData.append("files", file);
     const avatarResponse = await axiosConfig({
@@ -68,7 +75,7 @@ const AccountInfo = () => {
       const avatarPath = await handleUploadAvatar(avatarFile); // Upload avatar first
       const response = await apiChangePersonalInfomation({ ...payload, avatar: avatarPath }); // Update personal information
       // Dispatch action to update user info in Redux store
-      dispatch(action.getUserInfo(response.username));
+      dispatch(action.getUserInfo(username));
     } catch (error) {
       console.error(error.message);
     }
@@ -133,7 +140,7 @@ const AccountInfo = () => {
                   <TextField
                     name="firstName"
                     type="text"
-                    defaultValue={userData?.firstName ? userData.firstName : ""}
+                    value={payload.firstName}
                     variant="outlined"
                     size="small"
                     onChange={handleInputChange}
@@ -147,7 +154,7 @@ const AccountInfo = () => {
                   <TextField
                     name="lastName"
                     type="text"
-                    defaultValue={userData?.lastName ? userData.lastName : ""}
+                    value={payload.lastName}
                     variant="outlined"
                     size="small"
                     onChange={handleInputChange}
@@ -161,7 +168,7 @@ const AccountInfo = () => {
                   <TextField
                     name="dob"
                     type="date"
-                    defaultValue={userData?.dob ? userData.dob.split("T")[0] : ""}
+                    value={payload.dob}
                     variant="outlined"
                     size="small"
                     onChange={handleInputChange}
@@ -201,7 +208,6 @@ const AccountInfo = () => {
             <ContactButton
               icon={BiCurrentLocation}
               title={"Địa chỉ"}
-              // info={user?.address}
               nameButton={"Cập nhật"}
               onClick={() => navigate(path.EDIT_ADDRESS, { state: { address: userData?.address } })}
             />

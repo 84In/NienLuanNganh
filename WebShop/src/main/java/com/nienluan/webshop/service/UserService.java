@@ -113,10 +113,18 @@ public class UserService {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public UserResponse changePersonalInformation(ChangePersonalInformationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        user.setFirstName(request.getFirstName());
+        if(request.getFirstName() != null && !request.getFirstName().isEmpty()) {
+            user.setFirstName(request.getFirstName());
+        }
+        if(request.getLastName() != null && !request.getLastName().isEmpty()){
         user.setLastName(request.getLastName());
-        user.setDob(formatStringToLocalDate(request.getDob()));
-        user.setAvatar(request.getAvatar());
+        }
+        if(request.getDob() != null && !request.getDob().isEmpty()) {
+            user.setDob(formatStringToLocalDate(request.getDob()));
+        }
+        if(request.getAvatar() != null && !request.getAvatar().isEmpty()){
+            user.setAvatar(request.getAvatar());
+        }
         return userMapper.toUserResponse(userRepository.save(user));
     }
 }

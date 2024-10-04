@@ -33,7 +33,7 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold">Giá:</h1> <span className="text-xl font-semibold">{formatCurrency(price)}</span>
+        <h1 className="font-semibold">Giá:</h1> <span className="text-lg font-semibold">{formatCurrency(price)}</span>
       </div>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Số Lượng</h1>
@@ -76,7 +76,7 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       <hr className="mx-4 mb-4 border-gray-400" />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Tạm tính:</h1>{" "}
-        <span className="text-xl font-semibold text-error-color">{formatCurrency(price * quantity)}</span>
+        <span className="text-xl font-bold text-error-color">{formatCurrency(price * quantity)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
         <Button onClick={handleBuyNow} variant="contained" color="error" size="large" fullWidth className="mb-2">

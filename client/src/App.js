@@ -30,16 +30,13 @@ function App() {
   const [isModelLogin, setIsModelLogin] = useState(false);
 
   useEffect(() => {
+    dispatch(action.getCategories());
     if (isLoggedIn && username) {
       setTimeout(() => {
         dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
       }, 100);
     }
   }, [isLoggedIn, username, dispatch]);
-
-  useEffect(() => {
-    dispatch(action.getCategories());
-  }, [dispatch]);
 
   const handleAccessDenied = () => {
     setIsModelLogin(true);
