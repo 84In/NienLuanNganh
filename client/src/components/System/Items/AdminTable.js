@@ -14,6 +14,8 @@ import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
 import { capitalizeFirstLetterIfNeeded } from "../../../utils/format";
 
+const defaultAvatar = require("../../../assets/images/profile.png");
+
 const AdminTable = ({ data, pagination }) => {
   const { BiEdit } = icons;
 
@@ -84,6 +86,16 @@ const AdminTable = ({ data, pagination }) => {
                               </div>
                             ))}
                         </div>
+                      ) : key === "avatar" ? (
+                        user[key] && (
+                          <div className="flex items-center justify-center">
+                            <img
+                              src={user[key] ? process.env.REACT_APP_SERVER_URL + user[key] : defaultAvatar}
+                              alt={`Avatar`}
+                              className="h-10 w-10 rounded-full bg-white"
+                            />
+                          </div>
+                        )
                       ) : key === "category" || key === "brand" ? (
                         user[key].name
                       ) : user[key] != null ? (

@@ -134,7 +134,7 @@ const AdminUserEdit = ({ user }) => {
                 <div className="flex flex-col items-center justify-end gap-4">
                   <img
                     className="avatar h-28 w-28 rounded-full border border-black bg-white p-2"
-                    src={data?.avatar ? data?.avatar : defaultAvatar}
+                    src={data?.avatar ? process.env.REACT_APP_SERVER_URL + data?.avatar : defaultAvatar}
                     alt="avatar"
                   />
                   <Button
