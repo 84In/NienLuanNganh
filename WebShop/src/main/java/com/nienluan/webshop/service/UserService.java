@@ -1,13 +1,13 @@
 package com.nienluan.webshop.service;
 
 import com.nienluan.webshop.dto.request.*;
+import com.nienluan.webshop.entity.Address;
 import com.nienluan.webshop.entity.Role;
 import com.nienluan.webshop.entity.User;
 import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.UserMapper;
-import com.nienluan.webshop.repository.RoleRepository;
-import com.nienluan.webshop.repository.UserRepository;
+import com.nienluan.webshop.repository.*;
 import com.nienluan.webshop.dto.response.UserResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +35,10 @@ public class UserService {
     UserMapper userMapper;
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
+    private final ProvinceRepository provinceRepository;
+    private final DistrictRepository districtRepository;
+    private final WardRepository wardRepository;
+    private final AddressRepository addressRepository;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())){
@@ -136,4 +140,42 @@ public class UserService {
         }
         return userMapper.toUserResponse(userRepository.save(user));
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public UserResponse changeAddressInformation(ChangeAddressRequest request) {
+        var user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        Address address = user.getAddress() != null ? user.getAddress() : new Address();
+        if(request.getFullName() != null && !request.getFullName().isEmpty()) {
+            address.setFullName(request.getFullName());
+        }
+        if(request.getProvince() != null) {
+            var province = provinceRepository.findById(request.getProvince())
+                    .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_FOUND));
+            address.setProvince(province);
+        }
+        if(request.getDistrict() != null) {
+            var district = districtRepository.findById(request.getDistrict())
+                    .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_FOUND));
+            address.setDistrict(district);
+        }
+        if(request.getWard() != null) {
+            var ward = wardRepository.findById(request.getWard())
+                    .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_FOUND));
+            address.setWard(ward);
+        }
+        if(request.getStreet() != null && !request.getStreet().isEmpty()) {
+            address.setStreet(request.getStreet());
+        }
+
+        if (user.getAddress() == null) {
+            address = addressRepository.save(address);
+        }
+
+        user.setAddress(address);
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+
 }

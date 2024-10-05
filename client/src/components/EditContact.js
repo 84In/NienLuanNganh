@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Button, InputAdornment, TextField } from "@mui/material";
+import { Alert, AlertTitle, Button, FormControl, InputAdornment, MenuItem, Select, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPhone } from "react-icons/bi";
@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../utils/constant";
 import ButtonCustom from "./ButtonCustom";
-import { apiChangeContactInfomation, apiChangePassword } from "../services";
-import * as action from "../store/actions/";
+import { apiChangeAddress, apiChangeContactInfomation, apiChangePassword } from "../services";
+import * as actions from "../store/actions/";
 
 const EditContact = () => {
   const location = useLocation();
@@ -16,6 +16,7 @@ const EditContact = () => {
   const dispatch = useDispatch();
   const { username } = useSelector((state) => state.auth);
   const { userData } = useSelector((state) => state.user);
+  const { provinces, districts, wards } = useSelector((state) => state.app);
 
   const isEditPhone = location.pathname.includes(path.EDIT_PHONE);
   const isEditEmail = location.pathname.includes(path.EDIT_EMAIL);
@@ -23,14 +24,18 @@ const EditContact = () => {
   const isEditPassword = location.pathname.includes(path.EDIT_PASSWORD);
 
   const [alert, setAlert] = useState("");
+  // User information
   const [payload, setPayload] = useState({
     username: username || "",
     phone: "",
     email: "",
-    address: "",
-    province: "",
-    district: "",
-    ward: "",
+    address: {
+      fullName: "",
+      province: "",
+      district: "",
+      ward: "",
+      street: "",
+    },
     oldPassword: "",
     newPassword: "",
     reNewPassword: "",
@@ -41,15 +46,66 @@ const EditContact = () => {
       setPayload((prev) => ({
         ...prev,
         username: username,
-        phone: userData.phone,
-        email: userData.email,
-        address: userData.address,
-        province: userData.province,
-        district: userData.district,
-        ward: userData.ward,
+        phone: userData.phone || "",
+        email: userData.email || "",
+        address: {
+          fullName: userData.address?.fullName || "",
+          province: userData.address?.province?.id || "",
+          district: userData.address?.district?.id || "",
+          ward: userData.address?.ward?.id || "",
+          street: userData.address?.street || "",
+        },
       }));
+      setProvince(userData.address?.province?.id || ""); // Explicit state set
+      setDistrict(userData.address?.district?.id || "");
+      setWard(userData.address?.ward?.id || "");
+      setStreet(userData.address?.street || "");
     }
   }, [userData, username]);
+
+  // Address information
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
+  const [ward, setWard] = useState("");
+  const [street, setStreet] = useState("");
+
+  useEffect(() => {
+    dispatch(actions.getProvinces());
+  }, []);
+
+  useEffect(() => {
+    if (province !== "") {
+      dispatch(actions.getDistrictsByProvince(province));
+    }
+  }, [province]);
+
+  useEffect(() => {
+    if (district !== "") {
+      dispatch(actions.getWardsByDistrict(district));
+    }
+  }, [district]);
+
+  useEffect(() => {
+    const provinceObj = provinces.find((item) => item.id === province);
+    const districtObj = district && districts && districts.find((item) => item.id === district);
+    const wardObj = ward && wards && wards.find((item) => item.id === ward);
+
+    const fullName =
+      (street ? street.trim() + ", " : "") +
+      (wardObj ? wardObj?.name + ", " : "") +
+      (districtObj ? districtObj?.name + ", " : "") +
+      (provinceObj ? provinceObj?.name : "");
+    setPayload((prev) => ({
+      ...prev,
+      address: {
+        fullName: fullName,
+        province: provinceObj ? provinceObj?.id : "",
+        district: districtObj ? districtObj?.id : "",
+        ward: wardObj ? wardObj?.id : "",
+        street: street,
+      },
+    }));
+  }, [province, district, ward, street]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -67,9 +123,9 @@ const EditContact = () => {
         });
         if (response.code === 0) {
           setAlert("Thay đổi thành công!");
-          dispatch(action.getUserInfo(username));
+          dispatch(actions.getUserInfo(username));
         }
-        if (response.code === 304) {
+        if (response?.code === 304) {
           setAlert("Số điện thoại đã tồn tại!");
         }
       } else {
@@ -90,20 +146,16 @@ const EditContact = () => {
         setAlert("Mật khẩu mới và xác nhận không khớp!");
         return;
       }
-      console.log(payload.oldPassword);
       const response = await apiChangePassword({
         username: payload.username.trim(),
         oldPassword: payload.oldPassword.trim(),
         newPassword: payload.newPassword.trim(),
       });
-      console.log(response);
       if (response?.code === 0) {
         setAlert("Đổi mật khẩu thành công!");
-        dispatch(action.getUserInfo(username));
+        dispatch(actions.getUserInfo(username));
       }
     } catch (error) {
-      console.log(error);
-      console.log(error.response.data?.code);
       if (error.response.data?.code === 102) {
         setAlert("Mật khẩu không đúng!");
       }
@@ -112,6 +164,24 @@ const EditContact = () => {
 
   const handleChangeAddress = async (e) => {
     e.preventDefault();
+    try {
+      const response = await apiChangeAddress({
+        username: username,
+        fullName: payload.address.fullName.trim(),
+        province: payload.address.province,
+        district: payload.address.district,
+        ward: payload.address.ward,
+        street: payload.address.street.trim(),
+      });
+      if (response?.code === 0) {
+        setAlert("Thay đổi thành công!");
+      }
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    } catch (error) {
+      setAlert("Lỗi!");
+    }
   };
 
   const handleKeyDown = (event) => {
@@ -245,19 +315,167 @@ const EditContact = () => {
             <div className="flex flex-col gap-2">
               <h1 className="text-left">Địa chỉ</h1>
               <TextField
-                name="address"
+                name="fullName"
                 size="small"
-                defaultValue={location.state?.address ? location.state?.address : ""}
+                value={payload.address.fullName}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <BiCurrentLocation className="h-6 w-6 text-gray-500" />
                     </InputAdornment>
                   ),
+                  readOnly: true,
+                  style: {
+                    color: "black",
+                  },
                 }}
                 variant="outlined"
                 fullWidth
                 onKeyDown={handleKeyDown}
+              />
+              <FormControl className="relative" fullWidth>
+                {!province && <div className="absolute left-3 top-2 z-20">Tỉnh/Thành phố:</div>}
+                <Select
+                  labelId="provinceId"
+                  id="province-select"
+                  value={province}
+                  size="small"
+                  variant="outlined"
+                  onChange={(e) => {
+                    setProvince(e.target.value);
+                    setDistrict("");
+                    setWard("");
+                  }}
+                >
+                  <MenuItem
+                    value={""}
+                    sx={{
+                      fontSize: "16px",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    ---------
+                  </MenuItem>
+                  {provinces &&
+                    provinces?.map((item, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={item?.id}
+                          sx={{
+                            fontSize: "16px",
+                            textAlign: "center",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {item?.name}
+                        </MenuItem>
+                      );
+                    })}
+                </Select>
+              </FormControl>
+              <FormControl className="relative" fullWidth>
+                {!district && <div className="absolute left-3 top-2 z-20">Quận/Huyện:</div>}
+                <Select
+                  labelId="districtId"
+                  id="district-select"
+                  value={district}
+                  size="small"
+                  variant="outlined"
+                  onChange={(e) => {
+                    const selectedDistrict = e.target.value;
+                    setDistrict(selectedDistrict);
+                    setWard("");
+                  }}
+                >
+                  <MenuItem
+                    value={""}
+                    sx={{
+                      fontSize: "16px",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    ---------
+                  </MenuItem>
+                  {province &&
+                    districts &&
+                    districts?.map((item, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={item?.id}
+                          sx={{
+                            fontSize: "16px",
+                            textAlign: "center",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {item?.name}
+                        </MenuItem>
+                      );
+                    })}
+                </Select>
+              </FormControl>
+              <FormControl className="relative" fullWidth>
+                {!ward && <div className="absolute left-3 top-2 z-20">Phường/Xã:</div>}
+                <Select
+                  labelId="wardId"
+                  id="ward-select"
+                  value={ward}
+                  size="small"
+                  variant="outlined"
+                  onChange={(e) => setWard(e.target.value)}
+                >
+                  <MenuItem
+                    value={""}
+                    sx={{
+                      fontSize: "16px",
+                      textAlign: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    ---------
+                  </MenuItem>
+                  {province &&
+                    district &&
+                    wards &&
+                    wards?.map((item, index) => {
+                      return (
+                        <MenuItem
+                          key={index}
+                          value={item?.id}
+                          sx={{
+                            fontSize: "16px",
+                            textAlign: "center",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {item?.name}
+                        </MenuItem>
+                      );
+                    })}
+                </Select>
+              </FormControl>
+              <TextField
+                name="street"
+                size="small"
+                value={street}
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">Số nhà:</InputAdornment>,
+                }}
+                variant="outlined"
+                fullWidth
+                onChange={(e) => setStreet(e.target.value)}
+                onKeyDown={handleKeyDown}
+                sx={{ "& .css-1pnmrwp-MuiTypography-root": { color: "black" } }}
               />
             </div>
             <Button

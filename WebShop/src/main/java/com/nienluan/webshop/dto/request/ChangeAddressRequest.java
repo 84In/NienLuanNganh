@@ -1,8 +1,5 @@
 package com.nienluan.webshop.dto.request;
 
-import com.nienluan.webshop.entity.District;
-import com.nienluan.webshop.entity.Province;
-import com.nienluan.webshop.entity.Ward;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,10 +8,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AddressRequest {
+public class ChangeAddressRequest {
+    String username;
     String fullName;
-    Province province;
-    District district;
-    Ward ward;
+    Integer province;
+    Integer district;
+    Integer ward;
     String street;
 }
