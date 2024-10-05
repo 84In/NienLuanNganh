@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiGetUserById } from "../../services";
+import { apiGetProductById } from "../../services";
 import { path } from "../../utils/constant";
-import { AdminUserEdit } from "../../components";
+import { AdminProductEdit } from "../../components";
 
 const AdminProductEditByID = () => {
   const { id } = useParams();
@@ -13,10 +13,12 @@ const AdminProductEditByID = () => {
   useEffect(() => {
     const fetchData = async (id) => {
       try {
-        const response = await apiGetUserById(id);
+        const response = await apiGetProductById(id);
+        console.log(response);
+
         setData(response?.result);
       } catch (error) {
-        navigate(path.ADMIN_USER);
+        navigate(path.ADMIN_PRODUCT);
       }
     };
     fetchData(id);
@@ -27,7 +29,7 @@ const AdminProductEditByID = () => {
     return <div>Loading...</div>; // Or return null;
   }
 
-  return <AdminUserEdit user={data} />;
+  return <AdminProductEdit product={data} />;
 };
 
 export default AdminProductEditByID;
