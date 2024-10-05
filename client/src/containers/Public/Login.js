@@ -4,7 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { useLogin } from "../../hooks";
 
 const Login = ({ setIsModelLogin }) => {
-  const { isLogin, error, handleInputChange, handleSubmit, setIsLogin } = useLogin(setIsModelLogin);
+  const { isLogin, error, handleInputChange, handleKeyDown, handleSubmit, setIsLogin } = useLogin(setIsModelLogin);
 
   return (
     <Box
@@ -37,7 +37,7 @@ const Login = ({ setIsModelLogin }) => {
             width: "90%",
             height: "fit-content",
             maxHeight: "fit-content",
-            minheight: "30rem",
+            minHeight: "25rem",
             maxWidth: "30rem",
             minWidth: "20rem",
             borderRadius: "28px",
@@ -69,6 +69,7 @@ const Login = ({ setIsModelLogin }) => {
                 name="username"
                 required
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               ></TextField>
               <TextField
                 type="password"
@@ -79,6 +80,7 @@ const Login = ({ setIsModelLogin }) => {
                 name="password"
                 required
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               ></TextField>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>
                 Đăng Nhập
@@ -123,7 +125,6 @@ const Login = ({ setIsModelLogin }) => {
               <IoMdClose color="white" fontSize={25} width={30} height={30} />
             </div>
             <h1 className="pb-4 text-center text-3xl font-bold text-primary-color">ĐĂNG KÝ</h1>
-
             <div className="flex flex-col items-center justify-center gap-2 align-middle">
               {error && (
                 <Alert className="w-[80%]" severity="error">
@@ -138,6 +139,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="firstName"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
                 <TextField
                   className="w-full"
@@ -146,6 +148,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="lastName"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -156,6 +159,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="email"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="flex w-[80%] gap-2">
@@ -166,6 +170,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="phone"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
                 <TextField
                   className="w-full"
@@ -176,6 +181,7 @@ const Login = ({ setIsModelLogin }) => {
                   InputLabelProps={{ shrink: true }}
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -186,6 +192,7 @@ const Login = ({ setIsModelLogin }) => {
                   name="username"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -198,6 +205,7 @@ const Login = ({ setIsModelLogin }) => {
                   type="password"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <div className="w-[80%]">
@@ -210,6 +218,7 @@ const Login = ({ setIsModelLogin }) => {
                   type="password"
                   required
                   onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
                 ></TextField>
               </div>
               <Button className="h-12 w-[80%]" type="submit" size="large" variant="contained" onClick={handleSubmit}>

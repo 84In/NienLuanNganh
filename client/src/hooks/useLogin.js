@@ -23,6 +23,12 @@ const useLogin = (setIsModelLogin) => {
     setPayload({ ...payload, [name]: value });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   const handleSubmit = async () => {
     const requiredFields = isLogin
       ? ["username", "password"]
@@ -74,11 +80,26 @@ const useLogin = (setIsModelLogin) => {
     setError("");
   }, [isLogin]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const boxContainer = document.getElementById("box-container");
+      if (boxContainer && !boxContainer.contains(event.target)) {
+        setIsModelLogin(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsModelLogin]);
+
   return {
     isLogin,
     error,
     payload,
     handleInputChange,
+    handleKeyDown,
     handleSubmit,
     setIsLogin,
   };

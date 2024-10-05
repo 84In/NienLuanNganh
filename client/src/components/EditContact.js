@@ -12,6 +12,11 @@ const EditContact = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isEditPhone = location.pathname.includes(path.EDIT_PHONE);
+  const isEditEmail = location.pathname.includes(path.EDIT_EMAIL);
+  const isEditAddress = location.pathname.includes(path.EDIT_ADDRESS);
+  const isEditPassword = location.pathname.includes(path.EDIT_PASSWORD);
+
   return (
     <Grid2
       container
@@ -52,7 +57,7 @@ const EditContact = () => {
           height: "fit-content",
         }}
       >
-        {location.pathname.includes(path.EDIT_PHONE) && (
+        {isEditPhone && (
           <div className="flex w-[400px] flex-col gap-6 rounded-lg border border-gray-400 p-4">
             <div className="flex flex-col gap-2">
               <h1 className="text-left">Số điện thoại</h1>
@@ -76,7 +81,7 @@ const EditContact = () => {
             </Button>
           </div>
         )}
-        {location.pathname.includes(path.EDIT_EMAIL) && (
+        {isEditEmail && (
           <div className="flex w-[400px] flex-col gap-4 rounded-lg border border-gray-400 p-4">
             <div className="flex flex-col gap-2">
               <h1 className="text-left">Email</h1>
@@ -100,7 +105,7 @@ const EditContact = () => {
             </Button>
           </div>
         )}
-        {location.pathname.includes(path.EDIT_ADDRESS) && (
+        {isEditAddress && (
           <div className="flex w-[400px] flex-col gap-4 rounded-lg border border-gray-400 p-4">
             <div className="flex flex-col gap-2">
               <h1 className="text-left">Địa chỉ</h1>
@@ -124,7 +129,7 @@ const EditContact = () => {
             </Button>
           </div>
         )}
-        {location.pathname.includes(path.EDIT_PASSWORD) && (
+        {isEditPassword && (
           <div className="flex w-[400px] flex-col gap-4 rounded-lg border border-gray-400 p-4">
             <div className="flex flex-col gap-2">
               <h1 className="text-left">Mật khẩu cũ</h1>
@@ -142,7 +147,7 @@ const EditContact = () => {
                 variant="outlined"
                 fullWidth
                 defaultValue=""
-                autoComplete="off"
+                autoComplete="new-password"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -161,7 +166,7 @@ const EditContact = () => {
                 variant="outlined"
                 fullWidth
                 defaultValue=""
-                autoComplete="off"
+                autoComplete="new-password"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -180,7 +185,7 @@ const EditContact = () => {
                 variant="outlined"
                 fullWidth
                 defaultValue=""
-                autoComplete="off"
+                autoComplete="new-password"
               />
             </div>
             <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">
