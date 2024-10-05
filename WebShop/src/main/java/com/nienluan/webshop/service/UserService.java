@@ -1,6 +1,7 @@
 package com.nienluan.webshop.service;
 
 import com.nienluan.webshop.dto.request.*;
+import com.nienluan.webshop.dto.response.UserResponse;
 import com.nienluan.webshop.entity.Address;
 import com.nienluan.webshop.entity.Role;
 import com.nienluan.webshop.entity.User;
@@ -8,7 +9,6 @@ import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.UserMapper;
 import com.nienluan.webshop.repository.*;
-import com.nienluan.webshop.dto.response.UserResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -41,10 +42,10 @@ public class UserService {
     private final AddressRepository addressRepository;
 
     public UserResponse createUser(UserCreationRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())){
+        if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-        if (userRepository.existsByPhone(request.getPhone())){
+        if (userRepository.existsByPhone(request.getPhone())) {
             throw new AppException(ErrorCode.PHONE_EXISTED);
         }
         User user = userMapper.toUser(request);
@@ -83,7 +84,7 @@ public class UserService {
     public UserResponse updateUser(String id, UserUpdateRequest request) {
         var user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         var authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
-        if (!authenticated){
+        if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         userMapper.updateUser(user, request);
@@ -98,10 +99,10 @@ public class UserService {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
-    public UserResponse changePassword(ChangePasswordRequest request){
+    public UserResponse changePassword(ChangePasswordRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         boolean authentication = passwordEncoder.matches(request.getOldPassword(), user.getPassword());
-        if(!authentication){
+        if (!authentication) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
@@ -111,16 +112,16 @@ public class UserService {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public UserResponse changePersonalInformation(ChangePersonalInformationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        if(request.getFirstName() != null && !request.getFirstName().isEmpty()) {
+        if (request.getFirstName() != null && !request.getFirstName().isEmpty()) {
             user.setFirstName(request.getFirstName());
         }
-        if(request.getLastName() != null && !request.getLastName().isEmpty()){
-        user.setLastName(request.getLastName());
+        if (request.getLastName() != null && !request.getLastName().isEmpty()) {
+            user.setLastName(request.getLastName());
         }
-        if(request.getDob() != null && !request.getDob().isEmpty()) {
+        if (request.getDob() != null && !request.getDob().isEmpty()) {
             user.setDob(formatStringToLocalDate(request.getDob()));
         }
-        if(request.getAvatar() != null && !request.getAvatar().isEmpty()){
+        if (request.getAvatar() != null && !request.getAvatar().isEmpty()) {
             user.setAvatar(request.getAvatar());
         }
         return userMapper.toUserResponse(userRepository.save(user));
@@ -129,13 +130,13 @@ public class UserService {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public UserResponse changeContactInformation(ChangeContactInformationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        if(request.getPhone() != null && !request.getPhone().isEmpty()){
-            if(userRepository.existsByPhone(request.getPhone())  && !user.getPhone().equals(request.getPhone())){
+        if (request.getPhone() != null && !request.getPhone().isEmpty()) {
+            if (userRepository.existsByPhone(request.getPhone()) && !user.getPhone().equals(request.getPhone())) {
                 throw new AppException(ErrorCode.PHONE_EXISTED);
             }
             user.setPhone(request.getPhone());
         }
-        if(request.getEmail() != null && !request.getEmail().isEmpty()) {
+        if (request.getEmail() != null && !request.getEmail().isEmpty()) {
             user.setEmail(request.getEmail());
         }
         return userMapper.toUserResponse(userRepository.save(user));
@@ -147,15 +148,15 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Address address = user.getAddress() != null ? user.getAddress() : new Address();
-        if(request.getFullName() != null && !request.getFullName().isEmpty()) {
+        if (request.getFullName() != null && !request.getFullName().isEmpty()) {
             address.setFullName(request.getFullName());
         }
-        if(request.getProvince() != null) {
+        if (request.getProvince() != null) {
             var province = provinceRepository.findById(request.getProvince())
                     .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_FOUND));
             address.setProvince(province);
         }
-        if(request.getDistrict() != null) {
+        if (request.getDistrict() != null) {
             var district = districtRepository.findById(request.getDistrict())
                     .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_FOUND));
             address.setDistrict(district);
@@ -165,9 +166,10 @@ public class UserService {
                     .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_FOUND));
             address.setWard(ward);
         }
-        if(request.getStreet() != null && !request.getStreet().isEmpty()) {
-            address.setStreet(request.getStreet());
+        else {
+            address.setWard(null);
         }
+        address.setStreet(request.getStreet());
 
         if (user.getAddress() == null) {
             address = addressRepository.save(address);

@@ -174,6 +174,7 @@ const EditContact = () => {
         street: payload.address.street.trim(),
       });
       if (response?.code === 0) {
+        dispatch(actions.getUserInfo(username));
         setAlert("Thay đổi thành công!");
       }
       setTimeout(() => {
