@@ -1,21 +1,111 @@
-import { Button, InputAdornment, TextField } from "@mui/material";
+import { Alert, AlertTitle, Button, InputAdornment, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPhone } from "react-icons/bi";
 import { IoIosArrowBack } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../utils/constant";
 import ButtonCustom from "./ButtonCustom";
+import { apiChangeContactInfomation } from "../services";
+import * as action from "../store/actions/";
 
 const EditContact = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { username } = useSelector((state) => state.auth);
+  const { userData } = useSelector((state) => state.user);
 
   const isEditPhone = location.pathname.includes(path.EDIT_PHONE);
   const isEditEmail = location.pathname.includes(path.EDIT_EMAIL);
   const isEditAddress = location.pathname.includes(path.EDIT_ADDRESS);
   const isEditPassword = location.pathname.includes(path.EDIT_PASSWORD);
+
+  const [alert, setAlert] = useState("");
+  const [payload, setPayload] = useState({
+    username: username || "",
+    phone: "",
+    email: "",
+    address: "",
+    province: "",
+    district: "",
+    ward: "",
+  });
+
+  useEffect(() => {
+    if (userData && username) {
+      setPayload((prev) => ({
+        ...prev,
+        username: username,
+        phone: userData.phone,
+        email: userData.email,
+        address: userData.address,
+        province: userData.province,
+        district: userData.district,
+        ward: userData.ward,
+      }));
+    }
+  }, [userData, username]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setPayload({ ...payload, [name]: value });
+  };
+
+  const handleSubmitChangeContact = async (e) => {
+    e.preventDefault();
+    try {
+      if ((payload.phone !== userData.phone && payload.phone) || (payload.email !== userData.email && payload.email)) {
+        const response = await apiChangeContactInfomation({
+          username: payload.username.trim(),
+          phone: payload.phone.trim(),
+          email: payload.email.trim(),
+        });
+        console.log(response);
+        if (response.code === 0) {
+          setAlert("Thay đổi thành công!");
+          dispatch(action.getUserInfo(username));
+        }
+        if (response.code === 304) {
+          setAlert("Số điện thoại đã tồn tại!");
+        }
+      } else {
+        setAlert("Không có thay đổi nào!");
+      }
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleSubmitChangePassword = async (e) => {
+    e.preventDefault();
+  };
+
+  const handleChangeAddress = async (e) => {
+    e.preventDefault();
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      if (event.target.name === "phone" || event.target.name === "email") {
+        handleSubmitChangeContact(event);
+      } else if (
+        event.target.name === "oldPassword" ||
+        event.target.name === "newPassword" ||
+        event.target.name === "reNewPassword"
+      ) {
+        handleSubmitChangePassword(event);
+      } else if (event.target.name === "address") {
+        handleChangeAddress(event);
+      }
+    }
+  };
+
+  console.log(payload);
 
   return (
     <Grid2
@@ -31,6 +121,12 @@ const EditContact = () => {
         position: "relative",
       }}
     >
+      {alert && (
+        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
+          <AlertTitle>Thông báo</AlertTitle>
+          {alert}
+        </Alert>
+      )}
       <div className="absolute flex items-center gap-1 p-2 text-lg">
         <ButtonCustom
           TypeButton={"button"}
@@ -64,7 +160,7 @@ const EditContact = () => {
               <TextField
                 name="phone"
                 size="small"
-                defaultValue={location.state?.phone ? location.state?.phone : ""}
+                value={payload.phone}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -74,9 +170,17 @@ const EditContact = () => {
                 }}
                 variant="outlined"
                 fullWidth
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               />
             </div>
-            <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">
+            <Button
+              onClick={handleSubmitChangeContact}
+              variant="contained"
+              color="primary"
+              size="large"
+              className="mb-2 w-full"
+            >
               Lưu thay đổi
             </Button>
           </div>
@@ -88,7 +192,7 @@ const EditContact = () => {
               <TextField
                 name="email"
                 size="small"
-                defaultValue={location.state?.email ? location.state?.email : ""}
+                value={payload.email}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -98,9 +202,17 @@ const EditContact = () => {
                 }}
                 variant="outlined"
                 fullWidth
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
               />
             </div>
-            <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">
+            <Button
+              onClick={handleSubmitChangeContact}
+              variant="contained"
+              color="primary"
+              size="large"
+              className="mb-2 w-full"
+            >
               Lưu thay đổi
             </Button>
           </div>
@@ -122,6 +234,7 @@ const EditContact = () => {
                 }}
                 variant="outlined"
                 fullWidth
+                onKeyDown={handleKeyDown}
               />
             </div>
             <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">
@@ -148,6 +261,7 @@ const EditContact = () => {
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
+                onKeyDown={handleKeyDown}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -167,6 +281,7 @@ const EditContact = () => {
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
+                onKeyDown={handleKeyDown}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -186,6 +301,7 @@ const EditContact = () => {
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
+                onKeyDown={handleKeyDown}
               />
             </div>
             <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">

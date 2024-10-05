@@ -44,6 +44,12 @@ const AccountInfo = () => {
     setPayload({ ...payload, [name]: value });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSaveChange(event);
+    }
+  };
+
   const handleUploadAvatar = async (file) => {
     const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
     if (!file) {
@@ -71,13 +77,17 @@ const AccountInfo = () => {
     setTimeout(() => setAlert(""), 5000);
   };
 
-  const handleSaveChange = async (event) => {
-    event.preventDefault();
+  const handleSaveChange = async (e) => {
+    e.preventDefault();
     try {
       const avatarPath = await handleUploadAvatar(avatarFile);
       const updatedPayload = {
         ...payload,
         avatar: avatarPath || payload.avatar,
+        username: payload.username.trim(),
+        firstName: payload.firstName.trim(),
+        lastName: payload.lastName.trim(),
+        dob: payload.dob.trim(),
       };
 
       // Check if there are any changes
@@ -172,6 +182,7 @@ const AccountInfo = () => {
                     variant="outlined"
                     size="small"
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
                     fullWidth
                   />
                 </div>
@@ -186,6 +197,7 @@ const AccountInfo = () => {
                     variant="outlined"
                     size="small"
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
                     fullWidth
                   />
                 </div>
@@ -200,6 +212,7 @@ const AccountInfo = () => {
                     variant="outlined"
                     size="small"
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
                     fullWidth
                   />
                 </div>
