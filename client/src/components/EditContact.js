@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../utils/constant";
 import ButtonCustom from "./ButtonCustom";
-import { apiChangeContactInfomation } from "../services";
+import { apiChangeContactInfomation, apiChangePassword } from "../services";
 import * as action from "../store/actions/";
 
 const EditContact = () => {
@@ -31,6 +31,9 @@ const EditContact = () => {
     province: "",
     district: "",
     ward: "",
+    oldPassword: "",
+    newPassword: "",
+    reNewPassword: "",
   });
 
   useEffect(() => {
@@ -62,7 +65,6 @@ const EditContact = () => {
           phone: payload.phone.trim(),
           email: payload.email.trim(),
         });
-        console.log(response);
         if (response.code === 0) {
           setAlert("Thay đổi thành công!");
           dispatch(action.getUserInfo(username));
@@ -83,6 +85,29 @@ const EditContact = () => {
 
   const handleSubmitChangePassword = async (e) => {
     e.preventDefault();
+    try {
+      if (payload.newPassword !== payload.reNewPassword) {
+        setAlert("Mật khẩu mới và xác nhận không khớp!");
+        return;
+      }
+      console.log(payload.oldPassword);
+      const response = await apiChangePassword({
+        username: payload.username.trim(),
+        oldPassword: payload.oldPassword.trim(),
+        newPassword: payload.newPassword.trim(),
+      });
+      console.log(response);
+      if (response?.code === 0) {
+        setAlert("Đổi mật khẩu thành công!");
+        dispatch(action.getUserInfo(username));
+      }
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data?.code);
+      if (error.response.data?.code === 102) {
+        setAlert("Mật khẩu không đúng!");
+      }
+    }
   };
 
   const handleChangeAddress = async (e) => {
@@ -104,8 +129,6 @@ const EditContact = () => {
       }
     }
   };
-
-  console.log(payload);
 
   return (
     <Grid2
@@ -237,7 +260,13 @@ const EditContact = () => {
                 onKeyDown={handleKeyDown}
               />
             </div>
-            <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">
+            <Button
+              onClick={handleChangeAddress}
+              variant="contained"
+              color="primary"
+              size="large"
+              className="mb-2 w-full"
+            >
               Lưu thay đổi
             </Button>
           </div>
@@ -261,6 +290,7 @@ const EditContact = () => {
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
+                onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
               />
             </div>
@@ -281,6 +311,7 @@ const EditContact = () => {
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
+                onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
               />
             </div>
@@ -301,10 +332,17 @@ const EditContact = () => {
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
+                onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
               />
             </div>
-            <Button onClick={""} variant="contained" color="primary" size="large" className="mb-2 w-full">
+            <Button
+              onClick={handleSubmitChangePassword}
+              variant="contained"
+              color="primary"
+              size="large"
+              className="mb-2 w-full"
+            >
               Lưu thay đổi
             </Button>
           </div>

@@ -34,7 +34,7 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())){
@@ -99,9 +99,6 @@ public class UserService {
         boolean authentication = passwordEncoder.matches(request.getOldPassword(), user.getPassword());
         if(!authentication){
             throw new AppException(ErrorCode.UNAUTHENTICATED);
-        }
-        if(!request.getNewPassword().equals(request.getReNewPassword())){
-            throw new AppException(ErrorCode.PASSWORD_INCORRECT);
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         return userMapper.toUserResponse(userRepository.save(user));
