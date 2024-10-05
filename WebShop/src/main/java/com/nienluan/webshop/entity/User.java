@@ -31,7 +31,7 @@ public class User {
     LocalDate dob;
     @ManyToMany
     Set<Role> roles;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address", nullable = true)
     Address address;
     @OneToMany(mappedBy = "user")

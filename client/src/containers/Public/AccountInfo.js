@@ -249,6 +249,7 @@ const AccountInfo = () => {
             <ContactButton
               icon={BiCurrentLocation}
               title={"Địa chỉ"}
+              info={userData?.address?.fullName}
               nameButton={"Cập nhật"}
               onClick={() => navigate(path.EDIT_ADDRESS, { state: { address: userData?.address } })}
             />

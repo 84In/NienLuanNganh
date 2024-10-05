@@ -13,9 +13,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressResponse {
     String id;
-   
     String fullName;
-    Province province;
-    District district;
-    Ward ward;
+    ProvinceResponse province;
+    DistrictResponse district;
+    WardResponse ward;
+    String street;
 }

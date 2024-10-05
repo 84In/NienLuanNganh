@@ -10,7 +10,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProvinceResponse {
     Integer id;
-
     String codeName;
     String name;
     String divisionType;

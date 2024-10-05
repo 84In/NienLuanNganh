@@ -31,4 +31,5 @@ public class Address {
     @JoinColumn(name = "ward")
     Ward ward;
 
+    String street;
 }

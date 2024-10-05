@@ -89,3 +89,16 @@ export const apiChangePassword = (payload) =>
       reject(error);
     }
   });
+export const apiChangeAddress = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `api/v1/users/change/address`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

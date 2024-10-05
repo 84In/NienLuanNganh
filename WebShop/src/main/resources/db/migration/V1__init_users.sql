@@ -34,6 +34,7 @@ CREATE TABLE `t_addresses`(
     `province` int NOT NULL,
     `district` int NOT NULL,
     `ward` int DEFAULT NULL,
+    `street` text DEFAULT NULL,
     CONSTRAINT fk_province_code FOREIGN KEY (`province`) REFERENCES t_provinces(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_district_code FOREIGN KEY (`district`) REFERENCES t_districts(`id`) ON DELETE CASCADE,
     CONSTRAINT fk_ward_code FOREIGN KEY (`ward`) REFERENCES t_wards(`id`) ON DELETE CASCADE,

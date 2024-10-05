@@ -38,7 +38,7 @@ const ProductCarousel = ({ product }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2 flex items-center rounded-md border border-black grid-xs:h-[300px] grid-md:h-[80%] grid-md:max-h-full grid-md:min-h-[330px]"
       >
-        {imagesUrl.slice(0, 4).map((image, index) => (
+        {imagesUrl.map((image, index) => (
           <SwiperSlide className="h-full" key={index}>
             <img
               className="h-full max-h-[400px] object-contain px-8"
@@ -58,7 +58,7 @@ const ProductCarousel = ({ product }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper grid-xs:h-[100px] grid-md:max-h-full grid-md:min-h-[120px]"
       >
-        {imagesUrl.slice(0, 4).map((image, index) => (
+        {imagesUrl.map((image, index) => (
           <SwiperSlide className="h-ful rounded-md border border-black" key={index}>
             <img
               className="h-full max-h-[100px] object-contain px-2"

@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+=======
+import {
+  BiCreditCard,
+  BiFile,
+  BiGift,
+  BiLogoProductHunt,
+  BiSolidDashboard,
+  BiSolidUserAccount,
+  BiSync,
+  BiBarChartSquare,
+  BiBookHeart,
+  BiDockTop,
+  BiImage,
+} from "react-icons/bi";
+>>>>>>> eea8572c10a94c4c0e51be28e7e4e3b20845ebf4
 import banner1 from "../assets/images/banner/banner1.png.webp";
 import banner2 from "../assets/images/banner/banner2.png.webp";
 import banner3 from "../assets/images/banner/banner3.png.webp";
@@ -66,17 +82,17 @@ export const adminSideBar = [
   {
     name: "Product",
     path: "product",
-    icon: BiLogoProductHunt,
+    icon: BiGift,
   },
   {
     name: "Order",
     path: "order",
-    icon: BiGift,
+    icon: BiFile,
   },
   {
-    name: "Preview",
-    path: "preview",
-    icon: BiFile,
+    name: "Review",
+    path: "review",
+    icon: BiBookHeart,
   },
   {
     name: "Payment",
@@ -84,9 +100,9 @@ export const adminSideBar = [
     icon: BiCreditCard,
   },
   {
-    name: "Convert Image",
-    path: "convert-image",
-    icon: BiSync,
+    name: "Banner",
+    path: "banner",
+    icon: BiImage,
   },
 ];
 

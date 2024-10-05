@@ -15,5 +15,4 @@ public class ChangePasswordRequest {
     String username;
     String oldPassword;
     String newPassword;
-    String reNewPassword;
 }

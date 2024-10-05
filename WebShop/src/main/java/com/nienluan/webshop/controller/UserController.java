@@ -89,8 +89,16 @@ public class UserController {
     @PutMapping("/change/contact-information")
     public ApiResponse<UserResponse> changeContactInformation(@RequestBody ChangeContactInformationRequest request) {
         return ApiResponse.<UserResponse>builder()
-                .message("Change Personal Information Successful")
+                .message("Change Contact Information Successful")
                 .result(userService.changeContactInformation(request))
+                .build();
+    }
+
+    @PutMapping("/change/address")
+    public ApiResponse<UserResponse> changeAddressInformation(@RequestBody ChangeAddressRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Change Address Successful")
+                .result(userService.changeAddressInformation(request))
                 .build();
     }
 }
