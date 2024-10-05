@@ -28,6 +28,7 @@ public enum ErrorCode {
     PRODUCT_OUT_OF_STOCK(16, "Product out of stock", HttpStatus.BAD_REQUEST ),
     ORDER_EXISTED(17,"Order already existed", HttpStatus.BAD_REQUEST),
     ORDER_NOT_EXISTED(18,"Order not existed",HttpStatus.BAD_REQUEST),
+
     //System
     UNAUTHORIZED(101,"You do not have permission",HttpStatus.FORBIDDEN),
     UNAUTHENTICATED(102,"Unauthenticated",HttpStatus.UNAUTHORIZED),

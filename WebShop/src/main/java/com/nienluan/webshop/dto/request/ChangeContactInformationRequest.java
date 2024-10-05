@@ -8,10 +8,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ChangePersonalInformationRequest {
+public class ChangeContactInformationRequest {
     String username;
-    String firstName;
-    String lastName;
-    String dob;
-    String avatar;
+    String phone;
+    String email;
 }

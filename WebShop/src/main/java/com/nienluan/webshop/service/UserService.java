@@ -1,9 +1,6 @@
 package com.nienluan.webshop.service;
 
-import com.nienluan.webshop.dto.request.ChangePasswordRequest;
-import com.nienluan.webshop.dto.request.ChangePersonalInformationRequest;
-import com.nienluan.webshop.dto.request.UserCreationRequest;
-import com.nienluan.webshop.dto.request.UserUpdateRequest;
+import com.nienluan.webshop.dto.request.*;
 import com.nienluan.webshop.entity.Role;
 import com.nienluan.webshop.entity.User;
 import com.nienluan.webshop.exception.AppException;
@@ -124,6 +121,21 @@ public class UserService {
         }
         if(request.getAvatar() != null && !request.getAvatar().isEmpty()){
             user.setAvatar(request.getAvatar());
+        }
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public UserResponse changeContactInformation(ChangeContactInformationRequest request) {
+        var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        if(request.getPhone() != null && !request.getPhone().isEmpty()){
+            if(userRepository.existsByPhone(request.getPhone())  && !user.getPhone().equals(request.getPhone())){
+                throw new AppException(ErrorCode.PHONE_EXISTED);
+            }
+            user.setPhone(request.getPhone());
+        }
+        if(request.getEmail() != null && !request.getEmail().isEmpty()) {
+            user.setEmail(request.getEmail());
         }
         return userMapper.toUserResponse(userRepository.save(user));
     }

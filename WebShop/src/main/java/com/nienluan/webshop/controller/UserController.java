@@ -1,9 +1,6 @@
 package com.nienluan.webshop.controller;
 
-import com.nienluan.webshop.dto.request.ChangePasswordRequest;
-import com.nienluan.webshop.dto.request.ChangePersonalInformationRequest;
-import com.nienluan.webshop.dto.request.UserCreationRequest;
-import com.nienluan.webshop.dto.request.UserUpdateRequest;
+import com.nienluan.webshop.dto.request.*;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.UserResponse;
 import com.nienluan.webshop.service.UserService;
@@ -86,6 +83,14 @@ public class UserController {
         return ApiResponse.<UserResponse>builder()
                 .message("Change Personal Information Successful")
                 .result(userService.changePersonalInformation(request))
+                .build();
+    }
+
+    @PutMapping("/change/contact-information")
+    public ApiResponse<UserResponse> changeContactInformation(@RequestBody ChangeContactInformationRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Change Personal Information Successful")
+                .result(userService.changeContactInformation(request))
                 .build();
     }
 }
