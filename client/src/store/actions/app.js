@@ -100,7 +100,7 @@ export const getCategories = () => async (dispatch) => {
     if (response?.code === 0) {
       dispatch({
         type: actionTypes.GET_CATEGORIES,
-        categories: response.result,
+        categories: response.result.content,
       });
     } else {
       dispatch({

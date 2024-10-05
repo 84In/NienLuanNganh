@@ -14,3 +14,17 @@ export const apiSearchBrandByName = (name) =>
       reject(error);
     }
   });
+export const apiSearchPromotionsByName = (name) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/search/promotion/${name}`,
+      });
+      console.log(response);
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

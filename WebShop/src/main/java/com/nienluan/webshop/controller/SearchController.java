@@ -3,8 +3,10 @@ package com.nienluan.webshop.controller;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.BrandResponse;
 import com.nienluan.webshop.dto.response.ProductResponse;
+import com.nienluan.webshop.dto.response.PromotionResponse;
 import com.nienluan.webshop.service.BrandService;
 import com.nienluan.webshop.service.ProductService;
+import com.nienluan.webshop.service.PromotionService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +25,7 @@ import java.util.List;
 public class SearchController {
     ProductService productService;
     BrandService brandService;
+    PromotionService promotionService;
 
     @GetMapping("/category/{codeName}")
     public ApiResponse<?> searchProductsByCategory(Pageable pageable,
@@ -49,6 +52,13 @@ public class SearchController {
     public ApiResponse<List<BrandResponse>> getBrandsByName(@PathVariable("name") String name){
         return ApiResponse.<List<BrandResponse>>builder()
                 .result(brandService.searchBrandByName(name))
+                .build();
+    }
+
+    @GetMapping("/promotion/{name}")
+    public ApiResponse<List<PromotionResponse>> getPromotionsByName(@PathVariable("name") String name){
+        return ApiResponse.<List<PromotionResponse>>builder()
+                .result(promotionService.searchPromotion(name))
                 .build();
     }
 }

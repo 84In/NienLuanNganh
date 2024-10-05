@@ -1,12 +1,3 @@
-import {
-  BiCreditCard,
-  BiFile,
-  BiGift,
-  BiLogoProductHunt,
-  BiSolidDashboard,
-  BiSolidUserAccount,
-  BiSync,
-} from "react-icons/bi";
 import banner1 from "../assets/images/banner/banner1.png.webp";
 import banner2 from "../assets/images/banner/banner2.png.webp";
 import banner3 from "../assets/images/banner/banner3.png.webp";
@@ -20,14 +11,14 @@ import banner10 from "../assets/images/banner/banner10.png.webp";
 
 import icons from "./icons";
 
-const {} = icons;
+const { BiCreditCard, BiFile, BiGift, BiLogoProductHunt, BiSolidDashboard, BiSolidUserAccount, BiSync } = icons;
 
-const icon1 = require("../assets/images/icons/left-bar-icon1.png.webp");
-const icon2 = require("../assets/images/icons/left-bar-icon2.png.webp");
-const icon3 = require("../assets/images/icons/left-bar-icon3.png.webp");
-const icon4 = require("../assets/images/icons/left-bar-icon4.png.webp");
-const icon5 = require("../assets/images/icons/left-bar-icon5.png.webp");
-const icon6 = require("../assets/images/icons/left-bar-icon6.png.webp");
+// const icon1 = require("../assets/images/icons/left-bar-icon1.png.webp");
+// const icon2 = require("../assets/images/icons/left-bar-icon2.png.webp");
+// const icon3 = require("../assets/images/icons/left-bar-icon3.png.webp");
+// const icon4 = require("../assets/images/icons/left-bar-icon4.png.webp");
+// const icon5 = require("../assets/images/icons/left-bar-icon5.png.webp");
+// const icon6 = require("../assets/images/icons/left-bar-icon6.png.webp");
 
 const widget1 = require("../assets/images/widget/widget1.png");
 const widget2 = require("../assets/images/widget/widget2.png");
@@ -38,7 +29,7 @@ const widget6 = require("../assets/images/widget/widget6.png");
 const widget7 = require("../assets/images/widget/widget7.png");
 const widget8 = require("../assets/images/widget/widget8.png");
 
-const product1 = require("../assets/images/product/product1.png");
+// const product1 = require("../assets/images/product/product1.png");
 
 export const path = {
   HOME: "/",

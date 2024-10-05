@@ -13,6 +13,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +53,10 @@ public class PromotionService {
 
     public void deletePromotion(String id) {
         promotionRepository.deleteById(id);
+    }
+
+    public List<PromotionResponse> searchPromotion(String name) {
+        return promotionRepository.findByNameContaining(name).stream().map(promotionMapper::toPromotionResponse).toList();
     }
 
 }
