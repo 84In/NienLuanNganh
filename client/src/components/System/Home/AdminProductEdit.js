@@ -1,9 +1,6 @@
 import {
   Autocomplete,
   Button,
-  Card,
-  CardActions,
-  CardMedia,
   FormControl,
   FormHelperText,
   IconButton,
@@ -21,7 +18,9 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { apiSearchBrandByName, apiSearchPromotionsByName } from "../../../services";
 import { useSelector } from "react-redux";
-import { Box, CloudUploadIcon, DeleteIcon, Grid } from "lucide-react";
+import icons from "../../../utils/icons";
+
+const { AiFillCloseSquare } = icons;
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -60,7 +59,6 @@ const AdminProductEdit = ({ product }) => {
     category_id: null,
     brand_id: null,
   });
-  const [files, setFiles] = useState(null);
   const [errorPrice, setErrorPrice] = useState(false);
   const [errorStockQuantity, setErrorStockQuantity] = useState(false);
   const [valueBrand, setValueBrand] = useState("");
@@ -544,7 +542,7 @@ const AdminProductEdit = ({ product }) => {
                     }}
                     onClick={() => handleDeleteImage(index)}
                   >
-                    <DeleteIcon fontSize="small" />
+                    <AiFillCloseSquare fontSize="small" size={24} color="red" />
                   </IconButton>
                 </div>
               ))}

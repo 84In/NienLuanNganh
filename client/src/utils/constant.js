@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-=======
-import {
-  BiCreditCard,
-  BiFile,
-  BiGift,
-  BiLogoProductHunt,
-  BiSolidDashboard,
-  BiSolidUserAccount,
-  BiSync,
-  BiBarChartSquare,
-  BiBookHeart,
-  BiDockTop,
-  BiImage,
-} from "react-icons/bi";
->>>>>>> eea8572c10a94c4c0e51be28e7e4e3b20845ebf4
 import banner1 from "../assets/images/banner/banner1.png.webp";
 import banner2 from "../assets/images/banner/banner2.png.webp";
 import banner3 from "../assets/images/banner/banner3.png.webp";
@@ -27,7 +11,7 @@ import banner10 from "../assets/images/banner/banner10.png.webp";
 
 import icons from "./icons";
 
-const { BiCreditCard, BiFile, BiGift, BiLogoProductHunt, BiSolidDashboard, BiSolidUserAccount, BiSync } = icons;
+const { BiCreditCard, BiFile, BiGift, BiImage, BiSolidDashboard, BiSolidUserAccount, BiBookHeart } = icons;
 
 // const icon1 = require("../assets/images/icons/left-bar-icon1.png.webp");
 // const icon2 = require("../assets/images/icons/left-bar-icon2.png.webp");
