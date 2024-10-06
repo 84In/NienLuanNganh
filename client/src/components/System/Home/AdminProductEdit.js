@@ -71,8 +71,6 @@ const AdminProductEdit = ({ product }) => {
   const [isOpenPromotion, setIsOpenPromotion] = useState(false);
   const { categories } = useSelector((state) => state.app);
 
-  console.log(categories);
-
   useEffect(() => {
     if (product) {
       setData(product);
@@ -370,8 +368,8 @@ const AdminProductEdit = ({ product }) => {
                       >
                         ---------
                       </MenuItem>
-                      {categories &&
-                        categories?.map((item, index) => {
+                      {categories?.content &&
+                        categories?.content.map((item, index) => {
                           return (
                             <MenuItem
                               key={index}

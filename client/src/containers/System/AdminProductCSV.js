@@ -71,8 +71,8 @@ const AdminProductCSV = () => {
             onChange={handleSetCategory}
           >
             <MenuItem value="">------Select------</MenuItem>
-            {categories.content &&
-              categories.content.map((item, index) => (
+            {categories?.content &&
+              categories?.content.map((item, index) => (
                 <MenuItem key={index} value={item.id}>
                   {item?.name}
                 </MenuItem>
