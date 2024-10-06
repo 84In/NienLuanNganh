@@ -233,7 +233,17 @@ const AdminProductEdit = ({ product }) => {
                 <div className="flex w-full gap-4">
                   <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col items-center justify-center gap-4">
-                      <FormControl className="relative" fullWidth variant="outlined">
+                      <FormControl
+                        className="relative"
+                        sx={{
+                          "& .MuiInputLabel-root": {
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                          },
+                        }}
+                        fullWidth
+                        variant="outlined"
+                      >
                         <InputLabel id="categories-label" shrink>
                           Loại sản phẩm
                         </InputLabel>

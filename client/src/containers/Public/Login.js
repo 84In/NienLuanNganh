@@ -4,7 +4,8 @@ import { IoMdClose } from "react-icons/io";
 import { useLogin } from "../../hooks";
 
 const Login = ({ setIsModelLogin }) => {
-  const { isLogin, error, handleInputChange, handleKeyDown, handleSubmit, setIsLogin } = useLogin(setIsModelLogin);
+  const { isLogin, error, invalidKeys, handleInputChange, handleKeyDown, handleSubmit, setIsLogin } =
+    useLogin(setIsModelLogin);
 
   return (
     <Box
@@ -137,6 +138,8 @@ const Login = ({ setIsModelLogin }) => {
                   label="Họ"
                   variant="filled"
                   name="firstName"
+                  helperText={invalidKeys?.firstName}
+                  error={invalidKeys?.firstName}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
@@ -146,6 +149,8 @@ const Login = ({ setIsModelLogin }) => {
                   label="Tên"
                   variant="filled"
                   name="lastName"
+                  helperText={invalidKeys?.lastName}
+                  error={invalidKeys?.lastName}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
@@ -157,6 +162,8 @@ const Login = ({ setIsModelLogin }) => {
                   label="Email"
                   variant="filled"
                   name="email"
+                  helperText={invalidKeys?.email}
+                  error={invalidKeys?.email}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
@@ -168,6 +175,8 @@ const Login = ({ setIsModelLogin }) => {
                   label="Số điện thoại"
                   variant="filled"
                   name="phone"
+                  helperText={invalidKeys?.phone}
+                  error={invalidKeys?.phone}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
@@ -179,6 +188,8 @@ const Login = ({ setIsModelLogin }) => {
                   type="date"
                   name="dob"
                   InputLabelProps={{ shrink: true }}
+                  helperText={invalidKeys?.dob}
+                  error={invalidKeys?.dob}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
@@ -190,6 +201,8 @@ const Login = ({ setIsModelLogin }) => {
                   label="Tài khoản"
                   variant="filled"
                   name="username"
+                  helperText={invalidKeys?.username}
+                  error={invalidKeys?.username}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
@@ -203,6 +216,8 @@ const Login = ({ setIsModelLogin }) => {
                   variant="filled"
                   name="password"
                   type="password"
+                  helperText={invalidKeys?.password}
+                  error={invalidKeys?.password}
                   required
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}

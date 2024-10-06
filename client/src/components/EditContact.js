@@ -130,6 +130,7 @@ const EditContact = () => {
         }
       } else {
         setAlert("Không có thay đổi nào!");
+        return;
       }
       setTimeout(() => {
         setAlert("");

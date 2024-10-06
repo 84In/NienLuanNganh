@@ -5,8 +5,9 @@ import * as actions from "../store/actions";
 const useLogin = (setIsModelLogin) => {
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
+  const [invalidKeys, setInvalidKeys] = useState("");
   const dispatch = useDispatch();
-  const { isLoggedIn, code } = useSelector((state) => state.auth);
+  const { isLoggedIn, code, result } = useSelector((state) => state.auth);
   const [payload, setPayload] = useState({
     username: "",
     password: "",
@@ -56,6 +57,7 @@ const useLogin = (setIsModelLogin) => {
 
   useEffect(() => {
     setError("");
+    setInvalidKeys("");
     if (!isLogin && code === 0) {
       setIsLogin(true);
     }
@@ -78,7 +80,14 @@ const useLogin = (setIsModelLogin) => {
 
   useEffect(() => {
     setError("");
+    setInvalidKeys("");
   }, [isLogin]);
+
+  useEffect(() => {
+    if (result) {
+      setInvalidKeys(result);
+    }
+  }, [result]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -97,6 +106,7 @@ const useLogin = (setIsModelLogin) => {
   return {
     isLogin,
     error,
+    invalidKeys,
     payload,
     handleInputChange,
     handleKeyDown,

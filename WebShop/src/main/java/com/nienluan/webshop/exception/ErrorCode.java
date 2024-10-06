@@ -37,8 +37,7 @@ public enum ErrorCode {
     UNAUTHENTICATED(102,"Unauthenticated",HttpStatus.UNAUTHORIZED),
 
     //Validation
-    INVALID_KEY(201, "Invalid message Key",HttpStatus.BAD_REQUEST),
-    PASSWORD_INCORRECT(201, "Password incorrect",HttpStatus.BAD_REQUEST),
+    INVALID_KEY(201, "Invalid message key",HttpStatus.BAD_REQUEST),
     FILE_EMPTY(202, "File is empty",HttpStatus.BAD_REQUEST),
     PARSE_ERROR(203, "Parse error", HttpStatus.BAD_REQUEST),
 

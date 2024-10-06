@@ -20,21 +20,21 @@ const AccountInfo = () => {
   const [avatarFile, setAvatarFile] = useState();
   const [alert, setAlert] = useState("");
   const [payload, setPayload] = useState({
-    username: "",
+    username: username || "",
     firstName: "",
     lastName: "",
     dob: "",
-    avatar: "",
+    avatar: null,
   });
 
   useEffect(() => {
     if (userData && username) {
       setPayload({
-        username: userData.username || username,
+        username: username,
         firstName: userData.firstName || "",
         lastName: userData.lastName || "",
         dob: userData.dob ? userData.dob.split("T")[0] : "",
-        avatar: userData.avatar || "",
+        avatar: userData.avatar || null,
       });
     }
   }, [userData, username]);
@@ -50,15 +50,34 @@ const AccountInfo = () => {
     }
   };
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+      if (!validImageTypes.includes(file.type)) {
+        setAlert("Tập tin hình ảnh không hợp lệ! (JPEG, JPG, PNG & GIF)");
+        setTimeout(() => setAlert(""), 5000);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const avatarImage = document.querySelector(".avatarShow");
+        avatarImage.src = e.target.result;
+        setAvatarFile(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleUploadAvatar = async (file) => {
     const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
     if (!file) {
       setAlert("Không có tập tin nào được cung cấp");
-      return;
+      return null;
     }
     if (!validImageTypes.includes(file.type)) {
       setAlert("Tập tin hình ảnh không hợp lệ! (JPEG, JPG, PNG & GIF)");
-      return;
+      return null;
     }
 
     const formData = new FormData();
@@ -68,8 +87,7 @@ const AccountInfo = () => {
     if (avatarResponse && avatarResponse.result && avatarResponse.result.length > 0) {
       const avatarPath = avatarResponse.result[0];
       setPayload((prev) => ({ ...prev, avatar: avatarPath }));
-      console.log("Avatar uploaded successfully: ", avatarPath);
-      setAvatarFile(undefined);
+      setAvatarFile();
       return avatarPath;
     } else {
       setAlert("Lỗi tải ảnh lên");
@@ -83,19 +101,18 @@ const AccountInfo = () => {
       const avatarPath = await handleUploadAvatar(avatarFile);
       const updatedPayload = {
         ...payload,
+        username: username,
         avatar: avatarPath || payload.avatar,
-        username: payload.username.trim(),
         firstName: payload.firstName.trim(),
         lastName: payload.lastName.trim(),
         dob: payload.dob.trim(),
       };
 
-      // Check if there are any changes
-      if (Object.keys(updatedPayload).some((key) => updatedPayload[key] !== userData[key])) {
-        const response = await apiChangePersonalInfomation({
-          ...updatedPayload,
-        });
-        dispatch(action.getUserInfo(username)); // Dispatch action to update user info in Redux store
+      // Compare the updatedPayload with the original userData
+      const hasChanges = Object.keys(updatedPayload).some((key) => updatedPayload[key] !== userData[key]);
+      if (hasChanges) {
+        const response = await apiChangePersonalInfomation(updatedPayload);
+        dispatch(action.getUserInfo(username));
         setAlert("Thay đổi thành công!");
       } else {
         setAlert("Không có thay đổi nào!");
@@ -153,18 +170,8 @@ const AccountInfo = () => {
                   style={{ display: "none" }}
                   id="avatarInput"
                   name="avatar"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onload = (e) => {
-                        const avatarImage = document.querySelector(".avatarShow");
-                        avatarImage.src = e.target.result;
-                        setAvatarFile(file);
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
+                  accept="image/jpeg, image/jpg, image/png, image/gif"
+                  onChange={handleAvatarChange}
                 />
                 <label htmlFor="avatarInput" className="cursor-pointer">
                   <BiPencil />
