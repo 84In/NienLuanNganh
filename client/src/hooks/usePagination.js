@@ -17,7 +17,7 @@ const usePagination = (url, initialPage = 0) => {
         method: "GET",
         url: url,
         params: {
-          size: page,
+          page: page,
         },
       });
       const result = response.result;

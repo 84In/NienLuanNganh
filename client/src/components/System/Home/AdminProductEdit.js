@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { apiSearchBrandByName, apiSearchPromotionsByName } from "../../../services";
 import { useSelector } from "react-redux";
 import icons from "../../../utils/icons";
+import { BiX } from "react-icons/bi";
 
 const { AiFillCloseSquare } = icons;
 
@@ -201,15 +202,15 @@ const AdminProductEdit = ({ product }) => {
       <div className="mt-2 flex flex-col items-center justify-center p-2">
         <div className="m-2 w-full rounded-md bg-gray-200 p-2 pb-2">
           <span className="mb-2 text-xl font-semibold">Thông tin sản phẩm</span>
-          <div className="mt-2">
+          <div className="mt-4">
             <Grid2 container className="pb-6">
               <Grid2
                 padding={"10px"}
                 justifyContent={"center"}
                 alignItems={"center"}
                 item
-                xs={6}
-                className="flex flex-col gap-3"
+                xs={12}
+                className="flex flex-col gap-4"
               >
                 <div className="flex w-full flex-col items-center justify-end gap-4">
                   <TextField
@@ -229,12 +230,131 @@ const AdminProductEdit = ({ product }) => {
                     sx={{ backgroundColor: "white", ...cssField }} // Đảm bảo CSS tương ứng
                   />
                 </div>
-                <div className="flex items-center justify-end gap-4">
-                  <div className="flex items-center justify-center">
+                <div className="flex w-full gap-4">
+                  <div className="flex w-full flex-col gap-4">
+                    <div className="flex w-full flex-col items-center justify-center gap-4">
+                      <FormControl className="relative" fullWidth variant="outlined">
+                        <InputLabel id="categories-label" shrink>
+                          Loại sản phẩm
+                        </InputLabel>
+                        <Select
+                          labelId="categories-label"
+                          id="category-select"
+                          value={data.category_id ? data.category_id : ""}
+                          size="small"
+                          variant="outlined"
+                          onChange={handleChangeCategory}
+                          label="Loại sản phẩm"
+                          notched // Phải thêm label này để kết nối với InputLabel
+                          sx={{
+                            ...cssField,
+                            fontSize: "14px",
+                            padding: "8px",
+                            height: "40px",
+                            borderRadius: "6px",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#115293", // Màu khi hover
+                            },
+                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#1976d2", // Màu khi focus
+                            },
+                          }}
+                        >
+                          <MenuItem
+                            value=""
+                            sx={{
+                              fontSize: "16px", // Kích thước chữ cho các item
+                              textAlign: "center", // Căn giữa chữ trong MenuItem
+                              display: "flex",
+                              alignItems: "center", // Căn giữa theo chiều dọc
+                            }}
+                          >
+                            ---------
+                          </MenuItem>
+                          {categories?.content &&
+                            categories?.content.map((item, index) => {
+                              return (
+                                <MenuItem
+                                  key={index}
+                                  value={item?.id}
+                                  sx={{
+                                    fontSize: "16px", // Kích thước chữ cho các item
+                                    textAlign: "center", // Căn giữa chữ trong MenuItem
+                                    display: "flex",
+                                    alignItems: "center", // Căn giữa theo chiều dọc
+                                  }}
+                                >
+                                  {item?.name}
+                                </MenuItem>
+                              );
+                            })}
+                        </Select>
+                      </FormControl>
+                    </div>
+                    <div className="flex w-full items-center justify-center gap-4">
+                      <Autocomplete
+                        options={options}
+                        getOptionLabel={(option) => option.name}
+                        fullWidth
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Nhập thương hiệu"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            sx={{
+                              borderRadius: "8px",
+                              backgroundColor: "#f5f5f5", // Màu nền
+                              "& .MuiOutlinedInput-root": {
+                                "& fieldset": {
+                                  borderColor: "#E2E8F0",
+                                },
+                                "&:hover fieldset": {
+                                  borderColor: "#3182CE",
+                                },
+                                "&.Mui-focused fieldset": {
+                                  borderColor: "#3182CE",
+                                },
+                              },
+                            }}
+                          />
+                        )}
+                        renderOption={(props, option) => (
+                          <li
+                            {...props}
+                            style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}
+                          >
+                            {option.name}
+                          </li>
+                        )}
+                        PaperComponent={CustomPaper}
+                        onInputChange={(event, newInputValue) => {
+                          setValueBrand(newInputValue);
+                          setIsOpen(true); // Mở dropdown khi có input
+                        }}
+                        onFocus={() => {
+                          // Mở dropdown khi người dùng focus vào TextField
+                          if (options.length > 0) {
+                            setIsOpen(true);
+                          }
+                        }}
+                        onChange={(event, newValue) => {
+                          setValueBrand(newValue?.name || ""); // Cập nhật giá trị khi chọn
+                          setIsOpen(false); // Đóng dropdown khi chọn
+                        }}
+                        open={isOpen && options.length > 0} // Mở dropdown khi isOpen là true và có options
+                      />
+                    </div>
+                  </div>
+                  <div className="flex w-full flex-col items-center justify-end gap-4">
                     <FormControl
                       fullWidth
+                      size="small"
                       sx={{
-                        m: 1,
                         backgroundColor: "white",
                         "& .MuiOutlinedInput-root": {
                           backgroundColor: "white",
@@ -258,44 +378,97 @@ const AdminProductEdit = ({ product }) => {
                       />
                       {errorPrice && <FormHelperText>Lỗi: Chỉ được nhập số.</FormHelperText>}
                     </FormControl>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <FormControl
-                      fullWidth
-                      sx={{
-                        m: 1,
-                        backgroundColor: "white",
-                        "& .MuiOutlinedInput-root": {
+                    <div className="flex w-full gap-4">
+                      <FormControl
+                        fullWidth
+                        sx={{
                           backgroundColor: "white",
-                          borderRadius: "4px", // Tùy chọn làm tròn góc
-                          padding: "8px 14px", // Điều chỉnh padding giống TextField
-                        },
-                        "& .MuiInputLabel-root": {
-                          fontSize: "18px",
-                          fontWeight: "bold",
-                        },
-                        "& .MuiInputLabel-shrink": {
-                          fontSize: "18px",
-                          fontWeight: "bold",
-                        },
-                      }}
-                      error={errorStockQuantity}
-                    >
-                      <InputLabel htmlFor="outlined-adornment-amount" shrink>
-                        Số lượng sản phẩm
-                      </InputLabel>
-                      <OutlinedInput
-                        id="outlined-adornment-amount"
-                        label="Số lượng sản phẩm"
-                        value={data?.stockQuantity}
-                        size="small"
-                        onChange={validStockQuantity}
-                        notched // Tạo khoảng trống cho label khi ở trạng thái thu nhỏ
-                        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                        required
-                      />
-                      {errorStockQuantity && <FormHelperText>Lỗi: Chỉ được nhập số.</FormHelperText>}
-                    </FormControl>
+                          "& .MuiOutlinedInput-root": {
+                            backgroundColor: "white",
+                            borderRadius: "4px", // Tùy chọn làm tròn góc
+                          },
+                          "& .MuiInputLabel-root": {
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                          },
+                          "& .MuiInputLabel-shrink": {
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                          },
+                        }}
+                        error={errorStockQuantity}
+                      >
+                        <InputLabel htmlFor="outlined-adornment-amount" shrink>
+                          Số lượng sản phẩm
+                        </InputLabel>
+                        <OutlinedInput
+                          id="outlined-adornment-amount"
+                          label="Số lượng sản phẩm"
+                          value={data?.stockQuantity}
+                          size="small"
+                          onChange={validStockQuantity}
+                          notched // Tạo khoảng trống cho label khi ở trạng thái thu nhỏ
+                          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                          required
+                        />
+                        {errorStockQuantity && <FormHelperText>Lỗi: Chỉ được nhập số.</FormHelperText>}
+                      </FormControl>
+                      <div className="flex w-full flex-col items-center justify-center gap-4">
+                        <Autocomplete
+                          options={optionsPromotion}
+                          getOptionLabel={(option) => option.name}
+                          fullWidth
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Nhập mã giảm giá"
+                              variant="outlined"
+                              size="small"
+                              fullWidth
+                              sx={{
+                                borderRadius: "8px",
+                                backgroundColor: "#f5f5f5", // Màu nền
+                                "& .MuiOutlinedInput-root": {
+                                  "& fieldset": {
+                                    borderColor: "#E2E8F0",
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: "#3182CE",
+                                  },
+                                  "&.Mui-focused fieldset": {
+                                    borderColor: "#3182CE",
+                                  },
+                                },
+                              }}
+                            />
+                          )}
+                          renderOption={(props, option) => (
+                            <li
+                              {...props}
+                              style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}
+                            >
+                              {option.name}
+                            </li>
+                          )}
+                          PaperComponent={CustomPaper}
+                          onInputChange={(event, newInputValue) => {
+                            setValuePromotion(newInputValue);
+                            setIsOpenPromotion(true); // Mở dropdown khi có input
+                          }}
+                          onFocus={() => {
+                            // Mở dropdown khi người dùng focus vào TextField
+                            if (optionsPromotion.length > 0) {
+                              setIsOpenPromotion(true);
+                            }
+                          }}
+                          onChange={(event, newValue) => {
+                            setValuePromotion(newValue?.name || ""); // Cập nhật giá trị khi chọn
+                            setIsOpenPromotion(false); // Đóng dropdown khi chọn
+                          }}
+                          open={isOpenPromotion && optionsPromotion.length > 0} // Mở dropdown khi isOpen là true và có options
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="flex w-full flex-col items-center justify-end gap-4">
@@ -307,7 +480,7 @@ const AdminProductEdit = ({ product }) => {
                     size="small"
                     fullWidth
                     className="bg-white"
-                    label="Description" // Tên trường
+                    label="Thông tin mô tả" // Tên trường
                     multiline // Cho phép nhập nhiều dòng
                     rows={4} // Số dòng hiển thị
                     InputLabelProps={{
@@ -318,193 +491,12 @@ const AdminProductEdit = ({ product }) => {
                   />
                 </div>
               </Grid2>
-              <Grid2
-                display={"flex"}
-                className="flex-col items-center justify-center gap-4 pb-2 pt-2"
-                justifyContent={"start"}
-                alignItems={"center"}
-                item
-                xs={6}
-              >
-                <div className="mt-5 flex w-2/3 flex-col items-center justify-center gap-4">
-                  <FormControl className="relative" fullWidth variant="outlined">
-                    <InputLabel id="categories-label" shrink>
-                      Loại sản phẩm
-                    </InputLabel>
-                    <Select
-                      labelId="categories-label"
-                      id="category-select"
-                      value={data.category_id ? data.category_id : ""}
-                      size="small"
-                      variant="outlined"
-                      onChange={handleChangeCategory}
-                      label="Loại sản phẩm"
-                      notched // Phải thêm label này để kết nối với InputLabel
-                      sx={{
-                        ...cssField,
-                        fontSize: "14px",
-                        padding: "8px",
-                        height: "40px",
-                        borderRadius: "6px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        textAlign: "center",
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#115293", // Màu khi hover
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "#1976d2", // Màu khi focus
-                        },
-                      }}
-                    >
-                      <MenuItem
-                        value=""
-                        sx={{
-                          fontSize: "16px", // Kích thước chữ cho các item
-                          textAlign: "center", // Căn giữa chữ trong MenuItem
-                          display: "flex",
-                          alignItems: "center", // Căn giữa theo chiều dọc
-                        }}
-                      >
-                        ---------
-                      </MenuItem>
-                      {categories?.content &&
-                        categories?.content.map((item, index) => {
-                          return (
-                            <MenuItem
-                              key={index}
-                              value={item?.id}
-                              sx={{
-                                fontSize: "16px", // Kích thước chữ cho các item
-                                textAlign: "center", // Căn giữa chữ trong MenuItem
-                                display: "flex",
-                                alignItems: "center", // Căn giữa theo chiều dọc
-                              }}
-                            >
-                              {item?.name}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="flex w-2/3 items-center justify-center gap-4">
-                  <Autocomplete
-                    options={options}
-                    getOptionLabel={(option) => option.name}
-                    fullWidth
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Nhập thương hiệu"
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        sx={{
-                          borderRadius: "8px",
-                          backgroundColor: "#f5f5f5", // Màu nền
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "#E2E8F0",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "#3182CE",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#3182CE",
-                            },
-                          },
-                        }}
-                      />
-                    )}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}
-                      >
-                        {option.name}
-                      </li>
-                    )}
-                    PaperComponent={CustomPaper}
-                    onInputChange={(event, newInputValue) => {
-                      setValueBrand(newInputValue);
-                      setIsOpen(true); // Mở dropdown khi có input
-                    }}
-                    onFocus={() => {
-                      // Mở dropdown khi người dùng focus vào TextField
-                      if (options.length > 0) {
-                        setIsOpen(true);
-                      }
-                    }}
-                    onChange={(event, newValue) => {
-                      setValueBrand(newValue?.name || ""); // Cập nhật giá trị khi chọn
-                      setIsOpen(false); // Đóng dropdown khi chọn
-                    }}
-                    open={isOpen && options.length > 0} // Mở dropdown khi isOpen là true và có options
-                  />
-                </div>
-                <div className="flex w-2/3 flex-col items-center justify-center gap-4">
-                  <Autocomplete
-                    options={optionsPromotion}
-                    getOptionLabel={(option) => option.name}
-                    fullWidth
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Nhập mã giảm giá"
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        sx={{
-                          borderRadius: "8px",
-                          backgroundColor: "#f5f5f5", // Màu nền
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "#E2E8F0",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "#3182CE",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "#3182CE",
-                            },
-                          },
-                        }}
-                      />
-                    )}
-                    renderOption={(props, option) => (
-                      <li
-                        {...props}
-                        style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}
-                      >
-                        {option.name}
-                      </li>
-                    )}
-                    PaperComponent={CustomPaper}
-                    onInputChange={(event, newInputValue) => {
-                      setValuePromotion(newInputValue);
-                      setIsOpenPromotion(true); // Mở dropdown khi có input
-                    }}
-                    onFocus={() => {
-                      // Mở dropdown khi người dùng focus vào TextField
-                      if (optionsPromotion.length > 0) {
-                        setIsOpenPromotion(true);
-                      }
-                    }}
-                    onChange={(event, newValue) => {
-                      setValuePromotion(newValue?.name || ""); // Cập nhật giá trị khi chọn
-                      setIsOpenPromotion(false); // Đóng dropdown khi chọn
-                    }}
-                    open={isOpenPromotion && optionsPromotion.length > 0} // Mở dropdown khi isOpen là true và có options
-                  />
-                </div>
-              </Grid2>
             </Grid2>
           </div>
         </div>
         <div className="m-2 w-full rounded-md bg-gray-200 p-2">
           <span className="mb-2 text-xl font-semibold">
-            Hình ảnh minh hoạ sản phẩm <strong>(*)</strong>
+            Hình ảnh minh hoạ sản phẩm <span className="text-rose-500">(*)</span>
           </span>
           <div>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
@@ -536,11 +528,11 @@ const AdminProductEdit = ({ product }) => {
                       position: "absolute",
                       top: "5px", // Đặt biểu tượng gần góc trên
                       right: "5px", // Đặt biểu tượng gần góc bên phải
-                      backgroundColor: "rgba(255, 255, 255, 0.7)",
+                      backgroundColor: "rgba(255, 255, 255, 0.8)",
                     }}
                     onClick={() => handleDeleteImage(index)}
                   >
-                    <AiFillCloseSquare fontSize="small" size={24} color="red" />
+                    <BiX fontSize="small" size={24} color="red" />
                   </IconButton>
                 </div>
               ))}
