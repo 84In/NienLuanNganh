@@ -77,15 +77,6 @@ const AdminTable = ({ data, pagination }) => {
                     <StyledTableCell key={index} align="left">
                       {key === "roles" ? (
                         user[key].map((role) => role.name).join(", ")
-                      ) : key === "images" ? (
-                        <div className="flex w-28 flex-wrap justify-around gap-1">
-                          {JSON.parse(user[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
-                            .map((item, idx) => (
-                              <div key={idx}>
-                                <img src={item} alt={`Image ${idx}`} style={{ width: "50px", height: "50px" }} />
-                              </div>
-                            ))}
-                        </div>
                       ) : key === "avatar" ? (
                         user[key] && (
                           <div className="flex items-center justify-center">
@@ -96,6 +87,17 @@ const AdminTable = ({ data, pagination }) => {
                             />
                           </div>
                         )
+                      ) : key === "address" ? (
+                        user[key]?.fullName
+                      ) : key === "images" ? (
+                        <div className="flex w-28 flex-wrap justify-around gap-1">
+                          {JSON.parse(user[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                            .map((item, idx) => (
+                              <div key={idx}>
+                                <img src={item} alt={`Image ${idx}`} style={{ width: "50px", height: "50px" }} />
+                              </div>
+                            ))}
+                        </div>
                       ) : key === "category" || key === "brand" ? (
                         user[key].name
                       ) : user[key] != null ? (
