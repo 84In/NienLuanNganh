@@ -53,6 +53,7 @@ CREATE TABLE `t_users`
     `avatar` text DEFAULT NULL,
     `dob` Date NOT NULL,
     `address` varchar(255) DEFAULT NULL,
+    `status` INT DEFAULT 0,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_address FOREIGN KEY(`address`) REFERENCES t_addresses(`id`) ON DELETE CASCADE,

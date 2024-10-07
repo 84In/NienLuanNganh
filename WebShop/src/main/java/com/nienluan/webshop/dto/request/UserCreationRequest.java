@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -16,7 +17,13 @@ public class UserCreationRequest {
 
     @NotBlank(message = "Tài khoản là bắt buộc")
     @Size(min = 4, max = 50, message = "Tài khoản phải từ 4-50 ký tự")
+
+    @NotBlank(message = "Tài khoản là bắt buộc")
+    @Size(min = 4, max = 50, message = "Tài khoản phải từ 4-50 ký tự")
     String username;
+
+    @NotBlank(message = "Mật khẩu là bắt buộc")
+    @Size(min = 6, message = "Mật khẩu phải ít nhất 6 ký tự")
 
     @NotBlank(message = "Mật khẩu là bắt buộc")
     @Size(min = 6, message = "Mật khẩu phải ít nhất 6 ký tự")
@@ -24,7 +31,13 @@ public class UserCreationRequest {
 
     @NotBlank(message = "Họ là bắt buộc")
     @Size(max = 50, message = "Họ phải tối đa 50 ký tự")
+
+    @NotBlank(message = "Họ là bắt buộc")
+    @Size(max = 50, message = "Họ phải tối đa 50 ký tự")
     String firstName;
+
+    @NotBlank(message = "Last name là bắt buộc")
+    @Size(max = 50, message = "Tên phải tối đa 50 ký tự")
 
     @NotBlank(message = "Last name là bắt buộc")
     @Size(max = 50, message = "Tên phải tối đa 50 ký tự")
@@ -32,7 +45,13 @@ public class UserCreationRequest {
 
     @NotBlank(message = "Email là bắt buộc")
     @Email(message = "Email không hợp lệ")
+
+    @NotBlank(message = "Email là bắt buộc")
+    @Email(message = "Email không hợp lệ")
     String email;
+
+    @NotBlank(message = "Số điện thoại là bắt buộc")
+    @Pattern(regexp = "^\\+?[0-9]{10}$", message = "Số điện thoại phải đủ 10 chữ số")
 
     @NotBlank(message = "Số điện thoại là bắt buộc")
     @Pattern(regexp = "^\\+?[0-9]{10}$", message = "Số điện thoại phải đủ 10 chữ số")

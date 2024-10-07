@@ -3,6 +3,7 @@ package com.nienluan.webshop.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class User {
     String email;
     String phone;
     LocalDate dob;
+    Integer status = 0;
     @ManyToMany
     Set<Role> roles;
     @OneToOne(cascade = CascadeType.PERSIST)
