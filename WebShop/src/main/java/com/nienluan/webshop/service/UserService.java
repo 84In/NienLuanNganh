@@ -161,12 +161,11 @@ public class UserService {
                     .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_FOUND));
             address.setDistrict(district);
         }
-        if(request.getWard() != null) {
+        if (request.getWard() != null) {
             var ward = wardRepository.findById(request.getWard())
                     .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_FOUND));
             address.setWard(ward);
-        }
-        else {
+        } else {
             address.setWard(null);
         }
         address.setStreet(request.getStreet());

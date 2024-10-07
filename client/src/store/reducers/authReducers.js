@@ -5,6 +5,7 @@ const initState = {
   code: null,
   token: null,
   username: null,
+  result: null,
 };
 
 const authReducer = (state = initState, action) => {
@@ -30,6 +31,16 @@ const authReducer = (state = initState, action) => {
         update: false,
       };
     case actionTypes.REGISTER_FAIL:
+      return {
+        ...state,
+        isLoggedIn: false,
+        message: action.data.message,
+        token: null,
+        code: action.data.code,
+        username: null,
+        update: !state.update,
+        result: action.data.result,
+      };
     case actionTypes.LOGIN_FAIL:
       return {
         ...state,

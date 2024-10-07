@@ -46,18 +46,19 @@ CREATE TABLE `t_users`
     `id` varchar(255) NOT NULL,
     `username` varchar(255) NOT NULL UNIQUE,
     `password` varchar(255) NOT NULL,
-    `first_name` varchar(255) DEFAULT NULL,
-    `last_name` varchar(255) DEFAULT NULL,
+    `first_name` varchar(255) NOT NULL,
+    `last_name` varchar(255) NOT NULL,
     `email` varchar(255) DEFAULT NULL,
     `phone` varchar(255) NOT NULL UNIQUE,
     `avatar` text DEFAULT NULL,
-    `dob` Date DEFAULT NULL,
+    `dob` Date NOT NULL,
     `address` varchar(255) DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_address FOREIGN KEY(`address`) REFERENCES t_addresses(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
+
 
 CREATE TABLE `t_roles`
 (
