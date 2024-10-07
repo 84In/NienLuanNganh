@@ -24,6 +24,7 @@ const EditContact = () => {
   const isEditPassword = location.pathname.includes(path.EDIT_PASSWORD);
 
   const [alert, setAlert] = useState("");
+  const [invalidKeys, setInvalidKeys] = useState({});
   // User information
   const [payload, setPayload] = useState({
     username: username || "",
@@ -56,7 +57,7 @@ const EditContact = () => {
           street: userData.address?.street || "",
         },
       }));
-      setProvince(userData.address?.province?.id || ""); // Explicit state set
+      setProvince(userData.address?.province?.id || "");
       setDistrict(userData.address?.district?.id || "");
       setWard(userData.address?.ward?.id || "");
       setStreet(userData.address?.street || "");
@@ -122,15 +123,20 @@ const EditContact = () => {
           email: payload.email.trim(),
         });
         if (response.code === 0) {
+          setInvalidKeys({});
           setAlert("Thay đổi thành công!");
           dispatch(actions.getUserInfo(username));
         }
         if (response?.code === 304) {
           setAlert("Số điện thoại đã tồn tại!");
         }
+        if (response?.code === 201) {
+          setInvalidKeys(response?.result);
+          return;
+        }
       } else {
         setAlert("Không có thay đổi nào!");
-        return;
+        setInvalidKeys({});
       }
       setTimeout(() => {
         setAlert("");
@@ -145,6 +151,7 @@ const EditContact = () => {
     try {
       if (payload.newPassword !== payload.reNewPassword) {
         setAlert("Mật khẩu mới và xác nhận không khớp!");
+        setTimeout(() => setAlert(""), 5000);
         return;
       }
       const response = await apiChangePassword({
@@ -153,30 +160,46 @@ const EditContact = () => {
         newPassword: payload.newPassword.trim(),
       });
       if (response?.code === 0) {
+        setInvalidKeys();
         setAlert("Đổi mật khẩu thành công!");
         dispatch(actions.getUserInfo(username));
       }
+      if (response?.code === 201) {
+        setInvalidKeys(response?.result);
+        return;
+      }
     } catch (error) {
       if (error.response.data?.code === 102) {
+        setInvalidKeys({});
         setAlert("Mật khẩu không đúng!");
       }
     }
+    setTimeout(() => setAlert(""), 5000);
   };
 
   const handleChangeAddress = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiChangeAddress({
-        username: username,
-        fullName: payload.address.fullName.trim(),
-        province: payload.address.province,
-        district: payload.address.district,
-        ward: payload.address.ward,
-        street: payload.address.street.trim(),
-      });
-      if (response?.code === 0) {
-        dispatch(actions.getUserInfo(username));
-        setAlert("Thay đổi thành công!");
+      if (
+        payload.address.province !== userData.address.province.id ||
+        payload.address.district !== userData.address.district.id ||
+        payload.address.ward !== userData.address.ward.id ||
+        payload.address.street !== userData.address.street
+      ) {
+        const response = await apiChangeAddress({
+          username: username,
+          fullName: payload.address.fullName.trim(),
+          province: payload.address.province,
+          district: payload.address.district,
+          ward: payload.address.ward,
+          street: payload.address.street.trim(),
+        });
+        if (response?.code === 0) {
+          dispatch(actions.getUserInfo(username));
+          setAlert("Thay đổi thành công!");
+        }
+      } else {
+        setAlert("Không có thay đổi nào!");
       }
       setTimeout(() => {
         setAlert("");
@@ -264,6 +287,8 @@ const EditContact = () => {
                   ),
                 }}
                 variant="outlined"
+                helperText={invalidKeys?.phone}
+                FormHelperTextProps={{ style: { color: "red" } }}
                 fullWidth
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
@@ -296,6 +321,8 @@ const EditContact = () => {
                   ),
                 }}
                 variant="outlined"
+                helperText={invalidKeys?.email}
+                FormHelperTextProps={{ style: { color: "red" } }}
                 fullWidth
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
@@ -507,6 +534,8 @@ const EditContact = () => {
                   ),
                 }}
                 variant="outlined"
+                helperText={invalidKeys?.oldPassword}
+                FormHelperTextProps={{ style: { color: "red" } }}
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"
@@ -528,6 +557,8 @@ const EditContact = () => {
                   ),
                 }}
                 variant="outlined"
+                helperText={invalidKeys?.newPassword}
+                FormHelperTextProps={{ style: { color: "red" } }}
                 fullWidth
                 defaultValue=""
                 autoComplete="new-password"

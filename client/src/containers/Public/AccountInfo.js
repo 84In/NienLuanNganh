@@ -1,13 +1,13 @@
-import { Alert, AlertTitle, Button, TextField } from "@mui/material";
+import { Alert, AlertTitle, Button, FormControl, FormHelperText, OutlinedInput } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ContactButton } from "../../components";
-import { path } from "../../utils/constant";
 import { apiChangePersonalInfomation, apiUploadAvatar } from "../../services";
-import { useDispatch, useSelector } from "react-redux";
 import * as action from "../../store/actions";
+import { path } from "../../utils/constant";
 
 const defaultAvatar = require("../../assets/images/profile.png");
 
@@ -19,6 +19,7 @@ const AccountInfo = () => {
 
   const [avatarFile, setAvatarFile] = useState();
   const [alert, setAlert] = useState("");
+  const [invalidKeys, setInvalidKeys] = useState("");
   const [payload, setPayload] = useState({
     username: username || "",
     firstName: "",
@@ -72,7 +73,6 @@ const AccountInfo = () => {
   const handleUploadAvatar = async (file) => {
     const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
     if (!file) {
-      setAlert("Không có tập tin nào được cung cấp");
       return null;
     }
     if (!validImageTypes.includes(file.type)) {
@@ -108,13 +108,25 @@ const AccountInfo = () => {
         dob: payload.dob.trim(),
       };
 
+      if (!payload.firstName.trim() || !payload.lastName.trim() || !payload.dob.trim()) {
+        setAlert("Các trường thông tin không được để trống");
+        setTimeout(() => setAlert(""), 5000);
+        return;
+      }
+
       // Compare the updatedPayload with the original userData
       const hasChanges = Object.keys(updatedPayload).some((key) => updatedPayload[key] !== userData[key]);
       if (hasChanges) {
         const response = await apiChangePersonalInfomation(updatedPayload);
+        if (response?.code === 201) {
+          setInvalidKeys(response.result);
+          return;
+        }
+        setInvalidKeys({});
         dispatch(action.getUserInfo(username));
         setAlert("Thay đổi thành công!");
       } else {
+        setInvalidKeys({});
         setAlert("Không có thay đổi nào!");
       }
       setTimeout(() => setAlert(""), 5000);
@@ -182,46 +194,48 @@ const AccountInfo = () => {
               <div className="flex">
                 <h1 className="w-3/12 text-gray-500">Họ</h1>
                 <div className="w-9/12">
-                  <TextField
-                    name="firstName"
-                    type="text"
-                    value={payload.firstName}
-                    variant="outlined"
-                    size="small"
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    fullWidth
-                  />
+                  <FormControl fullWidth variant="outlined" size="small">
+                    <OutlinedInput
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      value={payload.firstName}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                    {invalidKeys?.firstName && <FormHelperText error>{invalidKeys?.firstName}</FormHelperText>}
+                  </FormControl>
                 </div>
               </div>
               <div className="flex">
                 <h1 className="w-3/12 text-gray-500">Tên</h1>
                 <div className="w-9/12">
-                  <TextField
-                    name="lastName"
-                    type="text"
-                    value={payload.lastName}
-                    variant="outlined"
-                    size="small"
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    fullWidth
-                  />
+                  <FormControl fullWidth variant="outlined" size="small">
+                    <OutlinedInput
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      value={payload.lastName}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                    {invalidKeys?.lastName && <FormHelperText error>{invalidKeys?.lastName}</FormHelperText>}
+                  </FormControl>
                 </div>
               </div>
               <div className="flex">
                 <h1 className="w-3/12 text-gray-500">Ngày sinh</h1>
                 <div className="w-9/12">
-                  <TextField
-                    name="dob"
-                    type="date"
-                    value={payload.dob}
-                    variant="outlined"
-                    size="small"
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    fullWidth
-                  />
+                  <FormControl fullWidth variant="outlined" size="small">
+                    <OutlinedInput
+                      name="dob"
+                      type="date"
+                      value={payload.dob}
+                      onChange={handleInputChange}
+                      onKeyDown={handleKeyDown}
+                    />
+                    {invalidKeys?.dob && <FormHelperText error>{invalidKeys?.dob}</FormHelperText>}
+                  </FormControl>
                 </div>
               </div>
               <Button

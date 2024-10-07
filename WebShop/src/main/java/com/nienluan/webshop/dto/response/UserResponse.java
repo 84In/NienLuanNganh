@@ -24,7 +24,6 @@ public class UserResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate dob;
     String avatar;
-    Integer status;
 
     AddressResponse address;
 

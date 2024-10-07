@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/change/password")
-    public ApiResponse<UserResponse> changePassword(@RequestBody ChangePasswordRequest request) {
+    public ApiResponse<UserResponse> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .message("Change Password Successful")
                 .result(userService.changePassword(request))
@@ -80,7 +80,7 @@ public class UserController {
     }
 
     @PutMapping("/change/personal-information")
-    public ApiResponse<UserResponse> changePersonalInformation(@RequestBody ChangePersonalInformationRequest request) {
+    public ApiResponse<UserResponse> changePersonalInformation(@Valid @RequestBody ChangePersonalInformationRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .message("Change Personal Information Successful")
                 .result(userService.changePersonalInformation(request))
@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @PutMapping("/change/contact-information")
-    public ApiResponse<UserResponse> changeContactInformation(@RequestBody ChangeContactInformationRequest request) {
+    public ApiResponse<UserResponse> changeContactInformation(@Valid @RequestBody ChangeContactInformationRequest request) {
         return ApiResponse.<UserResponse>builder()
                 .message("Change Contact Information Successful")
                 .result(userService.changeContactInformation(request))

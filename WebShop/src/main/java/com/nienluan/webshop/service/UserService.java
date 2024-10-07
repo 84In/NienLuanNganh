@@ -118,8 +118,8 @@ public class UserService {
         if (request.getLastName() != null && !request.getLastName().isEmpty()) {
             user.setLastName(request.getLastName());
         }
-        if (request.getDob() != null && !request.getDob().isEmpty()) {
-            user.setDob(formatStringToLocalDate(request.getDob()));
+        if (request.getDob() != null) {
+            user.setDob(request.getDob());
         }
         if (request.getAvatar() != null && !request.getAvatar().isEmpty()) {
             user.setAvatar(request.getAvatar());
