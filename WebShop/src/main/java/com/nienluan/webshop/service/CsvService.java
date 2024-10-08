@@ -30,13 +30,18 @@ public class CsvService {
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
+
             for (CSVRecord record : csvRecords) {
+
+                String[] imagesArray = record.get("images").split(","); // Giả định rằng URL cách nhau bằng dấu phẩy
+                String images = String.join(",", imagesArray);
+
                 ProductCsvDTO product = ProductCsvDTO.builder()
                         .name(record.get("product_name"))
                         .description(record.get("description"))
                         .price(new BigDecimal(record.get("original_price")))
                         .stock_quantity(new BigDecimal(record.get("stock_item_qty")))
-                        .images(record.get("images"))
+                        .images(images)
                         .brandName(record.get("brand_name"))
                         .build();
                 productList.add(product);

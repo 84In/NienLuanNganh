@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import {
   Paper,
   styled,
@@ -66,9 +67,9 @@ const AdminTable = ({ data, pagination }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((user, index) => (
+            {data.map((dataItem, index) => (
               <StyledTableRow key={index}>
-                {Object.keys(user)
+                {Object.keys(dataItem)
                   .filter((key) => key !== "id")
                   .filter((key) => key !== "category_id")
                   .filter((key) => key !== "brand_id")
@@ -76,39 +77,43 @@ const AdminTable = ({ data, pagination }) => {
                   .map((key, index) => (
                     <StyledTableCell key={index} align="left">
                       {key === "roles" ? (
-                        user[key].map((role) => role.name).join(", ")
+                        dataItem[key].map((role) => role.name).join(", ")
                       ) : key === "avatar" ? (
-                        user[key] && (
+                        dataItem[key] && (
                           <div className="flex items-center justify-center">
                             <img
-                              src={user[key] ? process.env.REACT_APP_SERVER_URL + user[key] : defaultAvatar}
+                              src={dataItem[key] ? process.env.REACT_APP_SERVER_URL + dataItem[key] : defaultAvatar}
                               alt={`Avatar`}
                               className="h-10 w-10 rounded-full bg-white"
                             />
                           </div>
                         )
                       ) : key === "address" ? (
-                        user[key]?.fullName
+                        dataItem[key]?.fullName
                       ) : key === "images" ? (
                         <div className="flex w-28 flex-wrap justify-around gap-1">
-                          {JSON.parse(user[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                          {JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
                             .map((item, idx) => (
                               <div key={idx}>
-                                <img src={item} alt={`Image ${idx}`} style={{ width: "50px", height: "50px" }} />
+                                <img
+                                  src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                                  alt={`Image ${idx}`}
+                                  style={{ width: "50px", height: "50px" }}
+                                />
                               </div>
                             ))}
                         </div>
                       ) : key === "category" || key === "brand" ? (
-                        user[key].name
-                      ) : user[key] != null ? (
-                        user[key]
+                        dataItem[key].name
+                      ) : dataItem[key] != null ? (
+                        dataItem[key]
                       ) : (
                         ""
                       )}
                     </StyledTableCell>
                   ))}
                 <StyledTableCell align="center">
-                  <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${user.id}`}>
+                  <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${dataItem.id}`}>
                     <BiEdit size={24} />
                   </NavLink>
                 </StyledTableCell>

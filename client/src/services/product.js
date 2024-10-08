@@ -36,3 +36,18 @@ export const apiGetProductById = (productId) =>
       reject(error);
     }
   });
+
+export const apiCreateProduct = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: `/api/v1/products`,
+        data: payload,
+      });
+      console.log(response);
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

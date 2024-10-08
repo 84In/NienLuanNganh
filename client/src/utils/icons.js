@@ -9,6 +9,7 @@ import {
   BiSolidDashboard,
   BiSolidUserAccount,
   BiSync,
+  BiX,
 } from "react-icons/bi";
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
 import { GoHomeFill, GoSearch } from "react-icons/go";
@@ -18,6 +19,7 @@ import { BiSolidLeftArrowSquare } from "react-icons/bi";
 import { BiSolidRightArrowSquare } from "react-icons/bi";
 import { AiFillCloseSquare } from "react-icons/ai";
 const icons = {
+  BiX,
   GoHomeFill,
   FaRegCircleUser,
   FaCartShopping,
