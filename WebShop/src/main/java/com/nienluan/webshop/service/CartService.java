@@ -73,7 +73,7 @@ public class CartService {
                 .findFirst();
         if (existingCartDetail.isPresent()) {
             CartDetail cartDetail = existingCartDetail.get();
-            cartDetail.setQuantity(request.getCartDetail().getQuantity());
+            cartDetail.setQuantity(cartDetail.getQuantity().add(request.getCartDetail().getQuantity()));
         }else {
             CartDetail newCartDetail = CartDetail.builder()
                     .cart(cart)
