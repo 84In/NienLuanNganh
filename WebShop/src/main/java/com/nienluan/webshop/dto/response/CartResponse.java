@@ -1,11 +1,9 @@
 package com.nienluan.webshop.dto.response;
 
-import com.nienluan.webshop.entity.Product;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +12,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartResponse {
     String id;
-    List<CartDetailResponse> cartDetails;
+    Set<CartDetailResponse> cartDetails;
 }

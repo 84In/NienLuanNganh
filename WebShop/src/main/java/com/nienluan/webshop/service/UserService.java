@@ -3,6 +3,7 @@ package com.nienluan.webshop.service;
 import com.nienluan.webshop.dto.request.*;
 import com.nienluan.webshop.dto.response.UserResponse;
 import com.nienluan.webshop.entity.Address;
+import com.nienluan.webshop.entity.Cart;
 import com.nienluan.webshop.entity.Role;
 import com.nienluan.webshop.entity.User;
 import com.nienluan.webshop.exception.AppException;
@@ -36,10 +37,11 @@ public class UserService {
     UserMapper userMapper;
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
-    private final ProvinceRepository provinceRepository;
-    private final DistrictRepository districtRepository;
-    private final WardRepository wardRepository;
-    private final AddressRepository addressRepository;
+    ProvinceRepository provinceRepository;
+    DistrictRepository districtRepository;
+    WardRepository wardRepository;
+    AddressRepository addressRepository;
+    CartRepository cartRepository;
 
     public UserResponse createUser(UserCreationRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -51,11 +53,11 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        log.info("User created: {}", user);
         Optional<Role> role = roleRepository.findById("USER");
         Set<Role> roles = new HashSet<>();
         roles.add(role.stream().findFirst().get());
         user.setRoles(roles);
+        var cart = cartRepository.existsByUser(user) ? cartRepository.findByUser(user) : Cart.builder().user(user).build();
         log.info("User created: {}", user);
 
         return userMapper.toUserResponse(userRepository.save(user));

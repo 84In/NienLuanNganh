@@ -45,7 +45,7 @@ public class CartController {
                 .build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ApiResponse<CartResponse> updateCart(@RequestBody CartRequest request) {
         return ApiResponse.<CartResponse>builder()
                 .message("Success")
