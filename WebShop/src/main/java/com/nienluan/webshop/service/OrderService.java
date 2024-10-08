@@ -65,7 +65,7 @@ public class OrderService {
         order = orderRepository.save(order);
         List<OrderDetail> products = new ArrayList<>();
         //Tạo và lưu chi tiết đơn hàng
-        for (OrderDetailRequest productRequest : request.getProducts()) {
+        for (OrderDetailRequest productRequest : request.getOrderDetails()) {
             Product product = productRepository.findById(productRequest.getProduct())
                     .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
@@ -133,7 +133,7 @@ public class OrderService {
                 .payment(paymentMapper.toPaymentResponse(order.getPayment()))
                 .paymentMethod(paymentMethodMapper.toPaymentMethodResponse(order.getPaymentMethod()))
                 .user(userMapper.toUserResponse(order.getUser()))
-                .products(orderDetailResponses)
+                .orderDetails(orderDetailResponses)
                 .build();
     }
 

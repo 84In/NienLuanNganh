@@ -8,22 +8,21 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 
 @Entity
-@Setter
-@Getter
-@Table(name = "t_order_details")
+@Data
+@Table(name = "t_cart_details")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderDetail {
+public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     BigDecimal quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    Order order;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
+    Cart cart;
+    @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     Product product;
 }

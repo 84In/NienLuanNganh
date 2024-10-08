@@ -192,7 +192,7 @@ CREATE TABLE `t_carts`(
     primary key (`id`)
 );
 
-CREATE TABLE `t_cart_items`(
+CREATE TABLE `t_cart_details`(
     `id` varchar(255) not null,
     `quantity` bigint(20) not null,
     `cart_id` varchar(255) not null,

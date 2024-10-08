@@ -19,5 +19,5 @@ public class OrderResponse {
     PaymentMethodResponse paymentMethod;
     PaymentResponse payment;
     UserResponse user;
-    List<OrderDetailResponse> products;
+    List<OrderDetailResponse> orderDetails;
 }

@@ -25,5 +25,5 @@ public class OrderRequest {
     String paymentMethod;
     String payment;
     String user;
-    List<OrderDetailRequest> products;
+    List<OrderDetailRequest> orderDetails;
 }

@@ -30,7 +30,6 @@ public class User {
     String email;
     String phone;
     LocalDate dob;
-    Integer status = 0;
     @ManyToMany
     Set<Role> roles;
     @OneToOne(cascade = CascadeType.PERSIST)
@@ -38,4 +37,6 @@ public class User {
     Address address;
     @OneToMany(mappedBy = "user")
     Set<Order> orders;
+    @OneToOne(mappedBy = "user")
+    Cart cart;
 }
