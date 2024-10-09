@@ -14,46 +14,46 @@ const StyledCard = styled(Card)({
     "0px 0px 2px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
 });
 
-const ProductCard = ({ images, name, price, discount, rating, category, brand }) => {
-  const imagesUrl = JSON.parse(images.replace(/'/g, '"'));
-  const firstImageUrl = imagesUrl[0];
+const ProductCard = ({ product }) => {
+  const imageArray = product?.images ? JSON.parse(product.images.replace(/'/g, '"')) : [];
+  const firstImage = imageArray[0] ? imageArray[0] : null;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" height="100%" width="100%">
       <StyledCard className="product-hover">
-        <div className="min-h-[280px]">
+        <div className="h-[280px]">
           <CardMedia
             component="img"
             sx={{ objectFit: "contain", height: "100%" }}
             image={
-              firstImageUrl && firstImageUrl.startsWith("https://")
-                ? firstImageUrl
-                : process.env.REACT_APP_SERVER_URL + firstImageUrl
+              firstImage && firstImage.startsWith("https://")
+                ? firstImage
+                : process.env.REACT_APP_SERVER_URL + firstImage
             }
-            alt={name}
+            alt={product?.name}
           />
         </div>
         <CardContent className="flex h-[220px] min-h-[190px] flex-col justify-between gap-2 p-3">
           <div className="flex flex-col gap-1">
-            <p className="line-clamp-2 min-h-10 text-sm">{name}</p>
-            <Rating name="half-rating-read" precision={0.5} value={rating} readOnly size="small" />
-            {discount > 0 ? (
+            <p className="line-clamp-2 min-h-10 text-sm">{product?.name}</p>
+            <Rating name="half-rating-read" precision={0.5} value={product?.rating} readOnly size="small" />
+            {product?.discount > 0 ? (
               <>
                 <p className="text-lg font-bold text-red-500 grid-sm:text-xl">
-                  {formatCurrency(price - price * (5 / 100))}
+                  {formatCurrency(product?.price - product?.price * (product?.discount / 100))}
                 </p>
                 <Box sx={{ display: "flex", alignItems: "baseline", mt: 1, gap: 1 }}>
-                  <p className="text-sm text-gray-500 line-through">{formatCurrency(price)}</p>
-                  <p className="rounded bg-red-100 p-1 text-xs font-semibold text-red-500">-{discount}%</p>
+                  <p className="text-sm text-gray-500 line-through">{formatCurrency(product?.price)}</p>
+                  <p className="rounded bg-red-100 p-1 text-xs font-semibold text-red-500">-{product?.discount}%</p>
                 </Box>
               </>
             ) : (
               <>
-                <p className="text-lg font-bold grid-sm:text-xl">{formatCurrency(price - price * (5 / 100))}</p>
+                <p className="text-lg font-bold grid-sm:text-xl">{formatCurrency(product?.price)}</p>
               </>
             )}
           </div>
-          {category && <p className="mt-2 h-10 text-sm text-gray-500">Thương hiệu {brand.name}</p>}
+          {product?.category && <p className="mt-2 h-10 text-sm text-gray-500">Thương hiệu {product?.brand.name}</p>}
         </CardContent>
       </StyledCard>
     </Box>

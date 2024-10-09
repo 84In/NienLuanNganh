@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,9 +54,9 @@ public class CartController {
                 .build();
     }
 
-    @DeleteMapping("/{cartName}")
-    public ApiResponse<Void> deleteCart(@PathVariable String cartName) {
-        cartService.deleteCart(cartName);
+    @DeleteMapping("/{username}")
+    public ApiResponse<Void> deleteCart(@PathVariable("username") String username) {
+        cartService.deleteCart(username);
         return ApiResponse.<Void>builder()
                 .message("Delete successful")
                 .build();

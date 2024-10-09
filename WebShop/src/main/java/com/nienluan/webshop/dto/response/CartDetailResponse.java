@@ -12,6 +12,6 @@ import java.math.BigDecimal;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartDetailResponse {
-    Product product;
+    ProductResponse product;
     BigDecimal quantity;
 }

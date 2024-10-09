@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -32,11 +33,11 @@ public class User {
     LocalDate dob;
     @ManyToMany
     Set<Role> roles;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address", nullable = true)
     Address address;
     @OneToMany(mappedBy = "user")
-    Set<Order> orders;
+    Set<Order> orders = new HashSet<>();
     @OneToOne(mappedBy = "user")
     Cart cart;
 }

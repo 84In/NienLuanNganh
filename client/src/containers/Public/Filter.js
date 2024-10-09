@@ -4,7 +4,7 @@ import React, { memo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
-import { banner_filter } from "../../utils/constant";
+import { bannerFilter } from "../../utils/constant";
 
 const Filter = () => {
   const type = window.location.pathname.split("/")[2];
@@ -35,7 +35,7 @@ const Filter = () => {
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
       <Grid2 item xs={12}>
-        <BannerCarousel data={banner_filter} slide={3} />
+        <BannerCarousel data={bannerFilter} slide={3} />
       </Grid2>
       <Grid2 item xs={12} md={3}>
         <FilterSideBar />
@@ -80,7 +80,7 @@ const Filter = () => {
             <div className="grid grid-cols-2 gap-2 grid-sm:grid-cols-3 grid-md:grid-cols-4 grid-lg:grid-cols-5">
               {data.map((product, index) => (
                 <Link to={`/product/id/${product.id}`} state={{ product }} key={index}>
-                  <ProductCard {...product} />
+                  <ProductCard product={product} />
                 </Link>
               ))}
             </div>

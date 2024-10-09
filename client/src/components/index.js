@@ -3,7 +3,6 @@ export { default as CartItem } from "./CartItem";
 export { default as CartSideBar } from "./CartSideBar";
 export { default as ContactButton } from "./ContactButton";
 export { default as DotAlert } from "./DotAlert";
-export { default as EditContact } from "./EditContact";
 export { default as Pagination } from "./Pagination";
 export { default as PaginationMore } from "./PaginationMore";
 export { default as BannerCarousel } from "./Home/BannerCarousel";

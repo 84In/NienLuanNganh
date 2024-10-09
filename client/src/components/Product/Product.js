@@ -22,7 +22,7 @@ const Product = ({ title, products }) => {
         {products.slice(0, 6 * 2).map((product, index) => (
           <Grid2 item xs={6} sm={4} md={3} lg={2.4} key={index}>
             <Link to={`/product/id/${product.id}`} state={{ product }}>
-              <ProductCard {...product} />
+              <ProductCard product={product} />
             </Link>
           </Grid2>
         ))}

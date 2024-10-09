@@ -129,10 +129,10 @@ const AccountInfo = () => {
         setInvalidKeys({});
         setAlert("Không có thay đổi nào!");
       }
-      setTimeout(() => setAlert(""), 5000);
     } catch (error) {
-      console.error(error.message);
+      setAlert("Lỗi!");
     }
+    setTimeout(() => setAlert(""), 5000);
   };
 
   return (

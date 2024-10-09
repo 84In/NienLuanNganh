@@ -1,15 +1,17 @@
 package com.nienluan.webshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
 @Entity
-@Data
 @Table(name = "t_cart_details")
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,11 +20,14 @@ public class CartDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+
     BigDecimal quantity;
+
     @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
+    @JoinColumn(name = "cart_id")
     Cart cart;
+
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     Product product;
 }

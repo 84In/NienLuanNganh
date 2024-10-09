@@ -1,16 +1,15 @@
 package com.nienluan.webshop.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "t_payment_methods")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +20,5 @@ public class PaymentMethod {
     String id;
     String name;
     @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Order> orders;
+    Set<Order> orders = new HashSet<>();
 }

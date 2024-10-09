@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -118,12 +119,12 @@ public class OrderService {
     }
 
     private OrderResponse toOrderResponse(Order order, List<OrderDetail> orderDetails) {
-        List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
+        Set<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
                 .map(orderDetail -> OrderDetailResponse.builder()
                         .product(productMapper.toProductResponse(orderDetail.getProduct()))
                         .quantity(orderDetail.getQuantity())
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         return OrderResponse.builder()
                 .id(order.getId())

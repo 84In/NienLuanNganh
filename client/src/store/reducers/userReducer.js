@@ -2,7 +2,8 @@ import actionTypes from "../actions/actionType";
 
 const initState = {
   userData: null,
-  currentData: {},
+  msg: "",
+  cart: {},
 };
 const userReducer = (state = initState, action) => {
   switch (action.type) {
@@ -15,6 +16,12 @@ const userReducer = (state = initState, action) => {
       return {
         ...state,
         userData: null,
+      };
+    case actionTypes.GET_CART:
+      return {
+        ...state,
+        cart: action.cart || {},
+        msg: action.msg || "",
       };
     default:
       return state;

@@ -4,7 +4,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +21,5 @@ public class OrderResponse {
     PaymentMethodResponse paymentMethod;
     PaymentResponse payment;
     UserResponse user;
-    List<OrderDetailResponse> orderDetails;
+    Set<OrderDetailResponse> orderDetails;
 }

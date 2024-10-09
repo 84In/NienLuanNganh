@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { EditContact, MainContainer } from "./components";
-import { AccountInfo, Cart, Filter, Home, OrderHistory, Page404, ProductDetail } from "./containers/Public";
+import { MainContainer } from "./components";
+import {
+  AccountInfo,
+  Cart,
+  EditContact,
+  Filter,
+  Home,
+  OrderHistory,
+  Page404,
+  ProductDetail,
+} from "./containers/Public";
 import {
   AdminBase,
   AdminHome,
@@ -26,7 +35,7 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn, username } = useSelector((state) => state.auth);
-  const { userData } = useSelector((state) => state.user);
+  const { userData, cart } = useSelector((state) => state.user);
   const [isModelLogin, setIsModelLogin] = useState(false);
 
   useEffect(() => {
@@ -34,6 +43,7 @@ function App() {
     if (isLoggedIn && username) {
       setTimeout(() => {
         dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
+        dispatch(action.getCart(username));
       }, 100);
     }
   }, [isLoggedIn, username, dispatch]);
@@ -48,7 +58,7 @@ function App() {
       <Routes>
         <Route
           path={path.HOME}
-          element={<Home User={userData} isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
+          element={<Home User={userData} cart={cart} isModelLogin={isModelLogin} setIsModelLogin={setIsModelLogin} />}
         >
           <Route index element={<MainContainer />} />
           <Route
@@ -91,7 +101,7 @@ function App() {
               <PrivateRoute element={<OrderHistory />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
-          <Route path={path.PRODUCT_DETAIL} element={<ProductDetail />} />
+          <Route path={path.PRODUCT_DETAIL} element={<ProductDetail setIsModelLogin={setIsModelLogin} />} />
           <Route path={path.PRODUCT_SEARCH} element={<Filter />} />
           <Route path="*" element={<Page404 />} />
         </Route>

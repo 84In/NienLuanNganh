@@ -93,7 +93,9 @@ const Cart = () => {
               <div key={index}>
                 <CartItem />
                 {index !== carts.length - 1 && (
-                  <hr className="mt-2 flex h-[1px] w-full items-center justify-center bg-gray-500 px-4" />
+                  <div className="mx-auto h-[1px] w-[95%]">
+                    <hr className="mt-2 h-[1px] bg-gray-500" />
+                  </div>
                 )}
               </div>
             ))}

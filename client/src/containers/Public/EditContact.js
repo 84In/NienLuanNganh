@@ -5,10 +5,10 @@ import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPhone } from "react-ico
 import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { path } from "../utils/constant";
-import ButtonCustom from "./ButtonCustom";
-import { apiChangeAddress, apiChangeContactInfomation, apiChangePassword } from "../services";
-import * as actions from "../store/actions/";
+import { path } from "../../utils/constant";
+import ButtonCustom from "../../components/ButtonCustom";
+import { apiChangeAddress, apiChangeContactInfomation, apiChangePassword } from "../../services";
+import * as actions from "../../store/actions/";
 
 const EditContact = () => {
   const location = useLocation();
@@ -72,19 +72,19 @@ const EditContact = () => {
 
   useEffect(() => {
     dispatch(actions.getProvinces());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (province !== "") {
       dispatch(actions.getDistrictsByProvince(province));
     }
-  }, [province]);
+  }, [province, dispatch]);
 
   useEffect(() => {
     if (district !== "") {
       dispatch(actions.getWardsByDistrict(district));
     }
-  }, [district]);
+  }, [district, dispatch]);
 
   useEffect(() => {
     const provinceObj = provinces.find((item) => item.id === province);
@@ -138,12 +138,12 @@ const EditContact = () => {
         setAlert("Không có thay đổi nào!");
         setInvalidKeys({});
       }
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     } catch (error) {
-      console.error(error.message);
+      setAlert("Lỗi!");
     }
+    setTimeout(() => {
+      setAlert("");
+    }, 5000);
   };
 
   const handleSubmitChangePassword = async (e) => {
@@ -160,9 +160,10 @@ const EditContact = () => {
         newPassword: payload.newPassword.trim(),
       });
       if (response?.code === 0) {
+        dispatch(actions.getUserInfo(username));
         setInvalidKeys();
         setAlert("Đổi mật khẩu thành công!");
-        dispatch(actions.getUserInfo(username));
+        setTimeout(() => setAlert(""), 5000);
       }
       if (response?.code === 201) {
         setInvalidKeys(response?.result);
@@ -172,19 +173,24 @@ const EditContact = () => {
       if (error.response.data?.code === 102) {
         setInvalidKeys({});
         setAlert("Mật khẩu không đúng!");
+        setTimeout(() => setAlert(""), 5000);
       }
     }
-    setTimeout(() => setAlert(""), 5000);
   };
 
   const handleChangeAddress = async (e) => {
     e.preventDefault();
     try {
+      if (!payload.address.province || !payload.address.district) {
+        setAlert("Tỉnh/Thành phố & Quận/Huyện không được để trống!");
+        setTimeout(() => setAlert(""), 5000);
+        return;
+      }
       if (
-        payload.address.province !== userData.address.province.id ||
-        payload.address.district !== userData.address.district.id ||
-        payload.address.ward !== userData.address.ward.id ||
-        payload.address.street !== userData.address.street
+        payload.address.province !== userData.address?.province?.id ||
+        payload.address.district !== userData.address?.district?.id ||
+        payload.address.ward !== userData.address?.ward?.id ||
+        payload.address.street !== userData.address?.street
       ) {
         const response = await apiChangeAddress({
           username: username,
@@ -201,12 +207,13 @@ const EditContact = () => {
       } else {
         setAlert("Không có thay đổi nào!");
       }
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     } catch (error) {
       setAlert("Lỗi!");
+      console.log(error);
     }
+    setTimeout(() => {
+      setAlert("");
+    }, 5000);
   };
 
   const handleKeyDown = (event) => {
