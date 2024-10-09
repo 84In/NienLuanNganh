@@ -10,7 +10,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartResponse {
+public class SingleCartResponse {
     String id;
-    Set<CartDetailResponse> cartDetails;
+    CartDetailResponse cartDetails;
 }

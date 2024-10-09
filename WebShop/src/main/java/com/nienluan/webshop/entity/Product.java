@@ -21,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Product implements Serializable {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -50,6 +50,6 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     Set<OrderDetail> orderDetails = new HashSet<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     Set<CartDetail> cartDetails = new HashSet<>();
 }

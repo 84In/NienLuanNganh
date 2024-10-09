@@ -3,6 +3,7 @@ package com.nienluan.webshop.controller;
 import com.nienluan.webshop.dto.request.CartRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.CartResponse;
+import com.nienluan.webshop.dto.response.SingleCartResponse;
 import com.nienluan.webshop.service.CartService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class CartController {
     CartService cartService;
 
     @PostMapping
-    public ApiResponse<CartResponse> createCart(@RequestBody CartRequest request) {
+    public ApiResponse<?> createCart(@RequestBody CartRequest request) {
         return ApiResponse.<CartResponse>builder()
                 .message("Create success!")
                 .result(cartService.createCart(request))
@@ -31,7 +32,7 @@ public class CartController {
     }
 
     @GetMapping
-    public ApiResponse<Page<CartResponse>> getAllCart(Pageable pageable) {
+    public ApiResponse<?> getAllCart(Pageable pageable) {
         return ApiResponse.<Page<CartResponse>>builder()
                 .message("Success")
                 .result(cartService.getAllCarts(pageable))
@@ -39,7 +40,7 @@ public class CartController {
     }
 
     @GetMapping("/{username}")
-    public ApiResponse<CartResponse> getCart(@PathVariable("username") String username) {
+    public ApiResponse<?> getCart(@PathVariable("username") String username) {
         return ApiResponse.<CartResponse>builder()
                 .message("Success")
                 .result(cartService.getCart(username))
@@ -47,15 +48,15 @@ public class CartController {
     }
 
     @PutMapping
-    public ApiResponse<CartResponse> updateCart(@RequestBody CartRequest request) {
-        return ApiResponse.<CartResponse>builder()
+    public ApiResponse<?> updateCart(@RequestBody CartRequest request) {
+        return ApiResponse.<SingleCartResponse>builder()
                 .message("Success")
                 .result(cartService.updateCart(request))
                 .build();
     }
 
     @DeleteMapping("/{username}")
-    public ApiResponse<Void> deleteCart(@PathVariable("username") String username) {
+    public ApiResponse<?> deleteCart(@PathVariable("username") String username) {
         cartService.deleteCart(username);
         return ApiResponse.<Void>builder()
                 .message("Delete successful")

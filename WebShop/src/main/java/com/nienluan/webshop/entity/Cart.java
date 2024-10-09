@@ -25,6 +25,6 @@ public class Cart {
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     Set<CartDetail> cartDetails = new HashSet<>();
 }
