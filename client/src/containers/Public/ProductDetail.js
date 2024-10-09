@@ -1,14 +1,27 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { memo, useEffect, useState } from "react";
 import { ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
+import { apiGetProductById } from "../../services";
+import { Alert, AlertTitle } from "@mui/material";
 
-const ProductDetail = () => {
-  const [quantity, setQuantity] = useState(1);
-  const location = useLocation();
-  const product = location.state?.product;
+const ProductDetail = ({ setIsModelLogin }) => {
+  const [quantity, setQuantity] = useState(0);
+  const [product, setProduct] = useState(null);
+  const [alert, setAlert] = useState("");
+  const productId = window.location.pathname.split("/").pop();
 
-  const price = product ? product.price : 0;
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await apiGetProductById(productId);
+        setProduct(response.result);
+      } catch (error) {
+        console.error("Failed to fetch product", error);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
 
   return (
     <Grid2
@@ -17,6 +30,12 @@ const ProductDetail = () => {
       columnGap={"none"}
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
+      {alert && (
+        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
+          <AlertTitle>Thông báo</AlertTitle>
+          {alert}
+        </Alert>
+      )}
       <Grid2 item container xs={12} md={8.8} sx={{ width: "100%", gap: 2 }}>
         <Grid2
           item
@@ -55,7 +74,13 @@ const ProductDetail = () => {
         </Grid2>
       </Grid2>
       <Grid2 item xs={12} md={3} sx={{ width: "100%" }}>
-        <Purchase price={price} quantity={quantity} setQuantity={setQuantity} />
+        <Purchase
+          product={product}
+          quantity={quantity}
+          setAlert={setAlert}
+          setQuantity={setQuantity}
+          setIsModelLogin={setIsModelLogin}
+        />
       </Grid2>
     </Grid2>
   );

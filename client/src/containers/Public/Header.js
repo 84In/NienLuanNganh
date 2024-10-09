@@ -10,7 +10,7 @@ import { path } from "../../utils/constant";
 const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 const defaultAvatar = require("../../assets/images/profile.png");
 
-const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
+const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
   const navigate = useNavigate();
 
   return (
@@ -78,7 +78,7 @@ const Header = ({ User, setIsModelLogin, isLoggedIn }) => {
               TextColor={"text-blue-600"}
               FontWeight={"font-medium"}
               HoverColor={"hover:bg-blue-100"}
-              TextTitle={<DotAlert />}
+              TextTitle={<DotAlert number={cart?.cartDetails?.length ? cart?.cartDetails?.length : 0} />}
               ClickButton={() => navigate(path.CART)}
             />
           </Grid2>

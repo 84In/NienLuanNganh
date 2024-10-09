@@ -57,7 +57,6 @@ public class UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(role.stream().findFirst().get());
         user.setRoles(roles);
-        var cart = cartRepository.existsByUser(user) ? cartRepository.findByUser(user) : Cart.builder().user(user).build();
         log.info("User created: {}", user);
 
         return userMapper.toUserResponse(userRepository.save(user));

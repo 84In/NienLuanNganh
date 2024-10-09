@@ -2,10 +2,16 @@ import React, { memo } from "react";
 import { Button, Box, IconButton, TextField } from "@mui/material";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import { formatCurrency } from "../../utils/format";
+import { useDispatch, useSelector } from "react-redux";
+import { apiUpdateCart } from "../../services";
+import * as actions from "../../store/actions";
 
-const Purchase = ({ price, quantity, setQuantity }) => {
-  const minQuantity = 1;
-  const maxQuantity = 50;
+const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin }) => {
+  const { isLoggedIn, username } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const minQuantity = 0;
+  const maxQuantity = product?.stockQuantity ? product.stockQuantity : 0;
 
   const handleIncrease = () => {
     setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
@@ -15,9 +21,40 @@ const Purchase = ({ price, quantity, setQuantity }) => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, minQuantity));
   };
 
-  const handleAddToCart = () => {};
+  const handleBuyNow = async () => {
+    if (!isLoggedIn) {
+      setIsModelLogin(true);
+      return;
+    }
+  };
 
-  const handleBuyNow = () => {};
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      setIsModelLogin(true);
+      return;
+    }
+    if (quantity <= 0) {
+      setAlert("Vui lòng thêm số lượng");
+      setTimeout(() => setAlert(""), 5000);
+      return;
+    }
+    try {
+      const response = await apiUpdateCart({
+        username: username,
+        cartDetail: {
+          quantity: quantity,
+          productId: product?.id,
+        },
+      });
+      console.log(response);
+      if (response?.code === 0) {
+        dispatch(actions.getCart(username));
+      }
+    } catch (error) {
+      setAlert("Lỗi!");
+      setTimeout(() => setAlert(""), 5000);
+    }
+  };
 
   return (
     <Box
@@ -33,7 +70,8 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold">Giá:</h1> <span className="text-lg font-semibold">{formatCurrency(price)}</span>
+        <h1 className="font-semibold">Giá:</h1>{" "}
+        <span className="text-lg font-semibold">{formatCurrency(product?.price)}</span>
       </div>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Số Lượng</h1>
@@ -76,7 +114,7 @@ const Purchase = ({ price, quantity, setQuantity }) => {
       <hr className="mx-4 mb-4 border-gray-400" />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Tạm tính:</h1>{" "}
-        <span className="text-xl font-bold text-error-color">{formatCurrency(price * quantity)}</span>
+        <span className="text-xl font-bold text-error-color">{formatCurrency(product?.price * quantity)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
         <Button onClick={handleBuyNow} variant="contained" color="error" size="large" fullWidth className="mb-2">

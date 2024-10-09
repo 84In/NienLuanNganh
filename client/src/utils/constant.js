@@ -123,7 +123,7 @@ export const banner = [
   },
 ];
 
-export const banner_filter = [
+export const bannerFilter = [
   {
     id: 1,
     image: banner7,

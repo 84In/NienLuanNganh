@@ -1,9 +1,11 @@
 package com.nienluan.webshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Table(name = "t_products")
 @Getter
 @Setter
+@EqualsAndHashCode
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,23 +32,24 @@ public class Product {
     BigDecimal stockQuantity;
     String images;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     Category category;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
     Brand brand;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "t_products_promotions",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "promotion_id")
     )
     Set<Promotion> promotions = new HashSet<>();
-    @OneToMany(mappedBy = "product")
-    List<OrderDetail> orderDetails;
 
     @OneToMany(mappedBy = "product")
-    List<CartDetail> cartDetails;
+    Set<OrderDetail> orderDetails = new HashSet<>();
+
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    Set<CartDetail> cartDetails = new HashSet<>();
 }

@@ -7,7 +7,9 @@ import org.hibernate.query.sqm.FetchClauseType;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -36,6 +38,6 @@ public class Order {
     @JoinColumn(name = "user_id")
     User user;
     @OneToMany(mappedBy = "order")
-    List<OrderDetail> orderDetails;
+    Set<OrderDetail> orderDetails = new HashSet<>();
 
 }

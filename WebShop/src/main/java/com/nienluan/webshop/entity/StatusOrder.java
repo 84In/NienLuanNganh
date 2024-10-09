@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "t_status_order")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,5 +20,5 @@ public class StatusOrder {
     String id;
     String name;
     @OneToMany(mappedBy = "status", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<Order> orders;
+    Set<Order> orders = new HashSet<>();
 }

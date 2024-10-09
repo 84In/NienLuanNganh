@@ -8,7 +8,8 @@ import java.math.BigInteger;
 import java.sql.Date;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name= "t_payments")
 @AllArgsConstructor
 @NoArgsConstructor

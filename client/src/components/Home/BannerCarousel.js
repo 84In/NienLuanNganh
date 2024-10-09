@@ -68,15 +68,15 @@ function BannerCarousel({ data, slide }) {
       {
         breakpoint: 900,
         settings: {
-          slidesToShow: slide && slide > 0 ? slide : 2,
-          slidesToScroll: slide && slide > 0 ? slide : 2,
+          slidesToShow: slide && slide > 0 ? slide - 1 : 2,
+          slidesToScroll: slide && slide > 0 ? slide - 1 : 2,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: slide && slide > 2 ? slide - 1 : 1,
-          slidesToScroll: slide && slide > 2 ? slide - 1 : 1,
+          slidesToShow: slide && slide > 2 ? slide - 2 : 1,
+          slidesToScroll: slide && slide > 2 ? slide - 2 : 1,
         },
       },
       {
