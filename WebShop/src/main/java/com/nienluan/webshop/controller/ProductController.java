@@ -31,7 +31,7 @@ public class ProductController {
     private final CsvService csvService;
 
     @PostMapping
-    public ApiResponse<ProductResponse> createProduct(@RequestBody ProductRequest request, @RequestPart MultipartFile[] files) {
+    public ApiResponse<ProductResponse> createProduct(@RequestBody ProductRequest request) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.createProduct(request))
                 .build();

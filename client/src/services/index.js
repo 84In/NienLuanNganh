@@ -9,3 +9,4 @@ export * from "./role";
 export * from "./search";
 export * from "./user";
 export * from "./ward";
+export * from "./brand";

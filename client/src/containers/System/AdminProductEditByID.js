@@ -29,7 +29,7 @@ const AdminProductEditByID = () => {
     return <div>Loading...</div>; // Or return null;
   }
 
-  return <AdminProductEdit product={data} />;
+  return <AdminProductEdit isEdit={true} product={data} />;
 };
 
 export default AdminProductEditByID;

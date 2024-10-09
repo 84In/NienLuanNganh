@@ -1,56 +1,22 @@
-import {
-  Autocomplete,
-  Button,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { apiSearchBrandByName, apiSearchPromotionsByName } from "../../../services";
 import { useSelector } from "react-redux";
 import icons from "../../../utils/icons";
-import { BiX } from "react-icons/bi";
+import * as apis from "../../../services";
+import AdminItemName from "../Items/AdminItemName";
+import AdminItemCategory from "../Items/AdminItemCategory";
+import AdminItemAutoSelect from "../Items/AdminItemAutoSelect";
+import AdminItemDescription from "../Items/AdminItemDescription";
+import AdminItemInputStock from "../Items/AdminItemInputStock";
+import AdminItemInputPrice from "../Items/AdminItemInputPrice";
+import Swal from "sweetalert2";
 
-const { AiFillCloseSquare } = icons;
+const { BiX } = icons;
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-const cssField = {
-  backgroundColor: "#fff", // Màu nền của Select
-  borderRadius: "8px", // Bo góc
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#E2E8F0", // Màu viền mặc định
-    },
-    "&:hover fieldset": {
-      borderColor: "#3182CE", // Màu viền khi hover
-    },
-    "&.Mui-focused fieldset": {
-      borderColor: "#3182CE", // Màu viền khi focus
-    },
-  },
-};
-
-const AdminProductEdit = ({ product }) => {
+const AdminProductEdit = ({ product, isEdit }) => {
   const [data, setData] = useState({
     name: null,
     description: null,
@@ -64,19 +30,32 @@ const AdminProductEdit = ({ product }) => {
   const [errorStockQuantity, setErrorStockQuantity] = useState(false);
   const [valueBrand, setValueBrand] = useState("");
   const [valuePromotion, setValuePromotion] = useState("");
+  const [inputValueBrand, setInputValueBrand] = useState("");
+  const [inputValuePromotion, setInputValuePromotion] = useState("");
   const [options, setOptions] = useState([]);
   const [optionsPromotion, setOptionsPromotion] = useState("");
   const [prevValueBrand, setPrevValueBrand] = useState("");
   const [prevValuePromotion, setPrevValuePromotion] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenPromotion, setIsOpenPromotion] = useState(false);
+
+  // const [isOpenPromotion, setIsOpenPromotion] = useState(false);
   const { categories } = useSelector((state) => state.app);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     if (product) {
       setData(product);
+      setValueBrand(product?.brand || "");
+      setValuePromotion(product?.promotions || "");
     }
   }, [product]);
+
+  const handleName = (e) => {
+    setData((prev) => ({
+      ...prev,
+      name: e.target.value,
+    }));
+  };
+
   const validPrice = (e) => {
     const inputValue = e.target.value;
     if (/^\d*$/.test(inputValue)) {
@@ -102,34 +81,37 @@ const AdminProductEdit = ({ product }) => {
     }
   };
 
+  const handleDescription = (e) => {
+    const inputValue = e.target.value;
+    setData((prev) => ({
+      ...prev,
+      description: inputValue,
+    }));
+  };
+
   useEffect(() => {
-    if (valueBrand && valueBrand !== prevValueBrand) {
+    if (inputValueBrand && inputValueBrand !== prevValueBrand) {
       const fetchBrands = async () => {
-        const response = await apiSearchBrandByName(valueBrand);
+        const response = await apiSearchBrandByName(inputValueBrand);
         if (response?.code === 0) {
           setOptions(response?.result);
         } else {
           setOptions([]); // Xóa danh sách khi không có kết quả
         }
       };
-
       fetchBrands();
-      setPrevValueBrand(valueBrand); // Cập nhật giá trị trước đó
+      setPrevValueBrand(inputValueBrand); // Cập nhật giá trị trước đó
     } else if (!valueBrand) {
       setOptions([]); // Xóa kết quả khi không có giá trị tìm kiếm
     }
-  }, [valueBrand]); // Gọi lại khi valueBrand thay đổi
+  }, [inputValueBrand]); // Gọi lại khi valueBrand thay đổi
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-  useEffect(() => {
-    if (valuePromotion && valuePromotion !== prevValuePromotion) {
+    if (inputValuePromotion && inputValuePromotion !== prevValuePromotion) {
       const fetchPromotions = async () => {
-        const response = await apiSearchPromotionsByName(valuePromotion);
+        const response = await apiSearchPromotionsByName(inputValuePromotion);
         if (response?.code === 0) {
           setOptionsPromotion(response?.result);
-          console.log(response);
         } else {
           setOptionsPromotion([]); // Xóa danh sách khi không có kết quả
         }
@@ -140,11 +122,7 @@ const AdminProductEdit = ({ product }) => {
     } else if (!valuePromotion) {
       setOptionsPromotion([]); // Xóa kết quả khi không có giá trị tìm kiếm
     }
-  }, [valuePromotion]); // Gọi lại khi valueBrand thay đổi
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  }, [inputValuePromotion]); // Gọi lại khi valueBrand thay đổi
 
   const handleChangeCategory = (e) => {
     setData((prev) => ({
@@ -153,15 +131,32 @@ const AdminProductEdit = ({ product }) => {
     }));
     console.log(data.category_id);
   };
-  const [images, setImages] = useState([]);
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
-    setImages((prevImages) => [...prevImages, ...files]); // Lưu file vào state
+    const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+    const validFiles = files.filter((file) => validImageTypes.includes(file.type));
+
+    if (validFiles.length > 0) {
+      setImages((prevImages) => [...prevImages, ...validFiles]);
+    } else {
+      alert("Vui lòng chỉ tải lên các tệp hình ảnh hợp lệ (jpeg, jpg, png, gif).");
+    }
   };
 
   const handleDeleteImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+  const handleDeleteImageText = (index) => {
+    setData((prev) => {
+      const imagesArray = JSON.parse(prev.images.replace(/'/g, '"'));
+      const updatedImagesArray = imagesArray.filter((_, i) => i !== index);
+      const updatedImagesJson = JSON.stringify(updatedImagesArray);
+      return {
+        ...prev,
+        images: updatedImagesJson,
+      };
+    });
   };
 
   const handleClearAllImages = () => {
@@ -182,14 +177,87 @@ const AdminProductEdit = ({ product }) => {
     event.dataTransfer.setData("text/plain", index);
   };
 
-  console.log(images);
+  valueBrand && console.log(valueBrand);
+  inputValueBrand && console.log(inputValueBrand);
 
+  const handleSubmit = async () => {
+    const name = data?.name;
+    const category_id = data?.category?.id || data?.category_id;
+    const price = data?.price;
+    const stockQuantity = data?.stockQuantity;
+    const description = data?.description;
+    var brand_id = data?.brand?.id || valueBrand?.id;
+    var promotions = data?.promotions;
+
+    console.log(name && category_id);
+
+    if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity) {
+      if (!isEdit) {
+        // Upload ảnh
+        if (images && images.length > 0) {
+          const formData = new FormData();
+          images.forEach((image) => {
+            formData.append("files", image); // Thêm từng hình ảnh vào FormData
+          });
+          const response = await apis.apiUploadProductImages(data.name, formData);
+          if (response.code === 0 && response.result && response.result.length > 0) {
+            console.log(response);
+
+            setData((prev) => {
+              const imagesArray = prev.images ? JSON.parse(prev.images.replace(/'/g, '"')) : [];
+              const resultImage = [...imagesArray, ...response.result];
+              return {
+                ...prev,
+                images: JSON.stringify(resultImage),
+              };
+            });
+          }
+        }
+
+        // Tạo brand nếu chưa có
+        if (!valueBrand && inputValueBrand) {
+          const response = await apis.apiCreateBrand({ name: inputValueBrand });
+          if (response?.code === 0) {
+            brand_id = response?.result?.id;
+          }
+        }
+
+        // Tạo sản phẩm
+
+        const response = await apis.apiCreateProduct({
+          name,
+          description,
+          price,
+          stockQuantity,
+          categoryId: category_id,
+          brandId: brand_id,
+          images: data?.images,
+        });
+        if (response?.code === 0) {
+          Swal.fire({
+            title: "Good job!",
+            text: response?.message,
+            icon: "success",
+          });
+        }
+      } else {
+        console.log("khac submit");
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    console.log(valueBrand);
+  }, [valueBrand]);
+
+  useEffect(() => {
+    console.log(valuePromotion);
+  }, [valuePromotion]);
   const CSS_HEADING = "font-bold text-2xl";
-
-  const CustomPaper = (props) => (
-    <Paper {...props} sx={{ borderRadius: "8px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", ...props.sx }} />
-  );
-
   return (
     <div className="flex flex-col">
       <div className="flex w-full items-center justify-center">
@@ -212,294 +280,44 @@ const AdminProductEdit = ({ product }) => {
                 xs={12}
                 className="flex flex-col gap-4"
               >
-                <div className="flex w-full flex-col items-center justify-end gap-4">
-                  <TextField
-                    name="nameProduct"
-                    type="text"
-                    value={data?.name}
-                    variant="outlined"
-                    size="small" // Đặt kích thước thành small
-                    fullWidth
-                    className="bg-white"
-                    label="Tên sản phẩm"
-                    InputLabelProps={{
-                      shrink: true,
-                      style: { fontSize: "18px", fontWeight: "bold" }, // Chữ lớn và đậm
-                    }}
-                    required
-                    sx={{ backgroundColor: "white", ...cssField }} // Đảm bảo CSS tương ứng
-                  />
-                </div>
+                <AdminItemName name={data?.name} handleName={handleName} />
                 <div className="flex w-full gap-4">
                   <div className="flex w-full flex-col gap-4">
-                    <div className="flex w-full flex-col items-center justify-center gap-4">
-                      <FormControl
-                        className="relative"
-                        sx={{
-                          "& .MuiInputLabel-root": {
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                          },
-                        }}
-                        fullWidth
-                        variant="outlined"
-                      >
-                        <InputLabel id="categories-label" shrink>
-                          Loại sản phẩm
-                        </InputLabel>
-                        <Select
-                          labelId="categories-label"
-                          id="category-select"
-                          value={data.category_id ? data.category_id : ""}
-                          size="small"
-                          variant="outlined"
-                          onChange={handleChangeCategory}
-                          label="Loại sản phẩm"
-                          notched // Phải thêm label này để kết nối với InputLabel
-                          sx={{
-                            ...cssField,
-                            fontSize: "14px",
-                            padding: "8px",
-                            height: "40px",
-                            borderRadius: "6px",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            textAlign: "center",
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#115293", // Màu khi hover
-                            },
-                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#1976d2", // Màu khi focus
-                            },
-                          }}
-                        >
-                          <MenuItem
-                            value=""
-                            sx={{
-                              fontSize: "16px", // Kích thước chữ cho các item
-                              textAlign: "center", // Căn giữa chữ trong MenuItem
-                              display: "flex",
-                              alignItems: "center", // Căn giữa theo chiều dọc
-                            }}
-                          >
-                            ---------
-                          </MenuItem>
-                          {categories?.content &&
-                            categories?.content.map((item, index) => {
-                              return (
-                                <MenuItem
-                                  key={index}
-                                  value={item?.id}
-                                  sx={{
-                                    fontSize: "16px", // Kích thước chữ cho các item
-                                    textAlign: "center", // Căn giữa chữ trong MenuItem
-                                    display: "flex",
-                                    alignItems: "center", // Căn giữa theo chiều dọc
-                                  }}
-                                >
-                                  {item?.name}
-                                </MenuItem>
-                              );
-                            })}
-                        </Select>
-                      </FormControl>
-                    </div>
-                    <div className="flex w-full items-center justify-center gap-4">
-                      <Autocomplete
-                        options={options}
-                        getOptionLabel={(option) => option.name}
-                        fullWidth
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Nhập thương hiệu"
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                            sx={{
-                              borderRadius: "8px",
-                              backgroundColor: "#f5f5f5", // Màu nền
-                              "& .MuiOutlinedInput-root": {
-                                "& fieldset": {
-                                  borderColor: "#E2E8F0",
-                                },
-                                "&:hover fieldset": {
-                                  borderColor: "#3182CE",
-                                },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "#3182CE",
-                                },
-                              },
-                            }}
-                          />
-                        )}
-                        renderOption={(props, option) => (
-                          <li
-                            {...props}
-                            style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}
-                          >
-                            {option.name}
-                          </li>
-                        )}
-                        PaperComponent={CustomPaper}
-                        onInputChange={(event, newInputValue) => {
-                          setValueBrand(newInputValue);
-                          setIsOpen(true); // Mở dropdown khi có input
-                        }}
-                        onFocus={() => {
-                          // Mở dropdown khi người dùng focus vào TextField
-                          if (options.length > 0) {
-                            setIsOpen(true);
-                          }
-                        }}
-                        onChange={(event, newValue) => {
-                          setValueBrand(newValue?.name || ""); // Cập nhật giá trị khi chọn
-                          setIsOpen(false); // Đóng dropdown khi chọn
-                        }}
-                        open={isOpen && options.length > 0} // Mở dropdown khi isOpen là true và có options
-                      />
-                    </div>
+                    <AdminItemCategory
+                      categories={categories}
+                      category_id={isEdit ? data?.category?.id : data?.category_id}
+                      handleChangeCategory={handleChangeCategory}
+                    />
+                    <AdminItemAutoSelect
+                      label={"Nhập thương thiệu"}
+                      value={valueBrand}
+                      options={options}
+                      setValue={setValueBrand}
+                      inputValue={inputValueBrand}
+                      setInputValue={setInputValueBrand}
+                    />
                   </div>
                   <div className="flex w-full flex-col items-center justify-end gap-4">
-                    <FormControl
-                      fullWidth
-                      size="small"
-                      sx={{
-                        backgroundColor: "white",
-                        "& .MuiOutlinedInput-root": {
-                          backgroundColor: "white",
-                        },
-                        "& .MuiInputLabel-root": {
-                          fontSize: "18px",
-                          fontWeight: "bold",
-                        },
-                      }}
-                      error={errorPrice} // Đánh dấu trường input bị lỗi
-                    >
-                      <InputLabel htmlFor="outlined-adornment-amount">Giá</InputLabel>
-                      <OutlinedInput
-                        id="outlined-adornment-amount"
-                        startAdornment={<InputAdornment position="start">VNĐ</InputAdornment>}
-                        label="Giá"
-                        value={data?.price}
-                        onChange={validPrice}
-                        inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                        required
-                      />
-                      {errorPrice && <FormHelperText>Lỗi: Chỉ được nhập số.</FormHelperText>}
-                    </FormControl>
+                    <AdminItemInputPrice errorPrice={errorPrice} price={data?.price} validPrice={validPrice} />
+
                     <div className="flex w-full gap-4">
-                      <FormControl
-                        fullWidth
-                        sx={{
-                          backgroundColor: "white",
-                          "& .MuiOutlinedInput-root": {
-                            backgroundColor: "white",
-                            borderRadius: "4px", // Tùy chọn làm tròn góc
-                          },
-                          "& .MuiInputLabel-root": {
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                          },
-                          "& .MuiInputLabel-shrink": {
-                            fontSize: "18px",
-                            fontWeight: "bold",
-                          },
-                        }}
-                        error={errorStockQuantity}
-                      >
-                        <InputLabel htmlFor="outlined-adornment-amount" shrink>
-                          Số lượng sản phẩm
-                        </InputLabel>
-                        <OutlinedInput
-                          id="outlined-adornment-amount"
-                          label="Số lượng sản phẩm"
-                          value={data?.stockQuantity}
-                          size="small"
-                          onChange={validStockQuantity}
-                          notched // Tạo khoảng trống cho label khi ở trạng thái thu nhỏ
-                          inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                          required
-                        />
-                        {errorStockQuantity && <FormHelperText>Lỗi: Chỉ được nhập số.</FormHelperText>}
-                      </FormControl>
-                      <div className="flex w-full flex-col items-center justify-center gap-4">
-                        <Autocomplete
-                          options={optionsPromotion}
-                          getOptionLabel={(option) => option.name}
-                          fullWidth
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Nhập mã giảm giá"
-                              variant="outlined"
-                              size="small"
-                              fullWidth
-                              sx={{
-                                borderRadius: "8px",
-                                backgroundColor: "#f5f5f5", // Màu nền
-                                "& .MuiOutlinedInput-root": {
-                                  "& fieldset": {
-                                    borderColor: "#E2E8F0",
-                                  },
-                                  "&:hover fieldset": {
-                                    borderColor: "#3182CE",
-                                  },
-                                  "&.Mui-focused fieldset": {
-                                    borderColor: "#3182CE",
-                                  },
-                                },
-                              }}
-                            />
-                          )}
-                          renderOption={(props, option) => (
-                            <li
-                              {...props}
-                              style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}
-                            >
-                              {option.name}
-                            </li>
-                          )}
-                          PaperComponent={CustomPaper}
-                          onInputChange={(event, newInputValue) => {
-                            setValuePromotion(newInputValue);
-                            setIsOpenPromotion(true); // Mở dropdown khi có input
-                          }}
-                          onFocus={() => {
-                            // Mở dropdown khi người dùng focus vào TextField
-                            if (optionsPromotion.length > 0) {
-                              setIsOpenPromotion(true);
-                            }
-                          }}
-                          onChange={(event, newValue) => {
-                            setValuePromotion(newValue?.name || ""); // Cập nhật giá trị khi chọn
-                            setIsOpenPromotion(false); // Đóng dropdown khi chọn
-                          }}
-                          open={isOpenPromotion && optionsPromotion.length > 0} // Mở dropdown khi isOpen là true và có options
-                        />
-                      </div>
+                      <AdminItemInputStock
+                        errorStockQuantity={errorStockQuantity}
+                        validStockQuantity={validStockQuantity}
+                        stockQuantity={data?.stockQuantity}
+                      />
+                      <AdminItemAutoSelect
+                        label={"Nhập mã giảm giá"}
+                        options={optionsPromotion}
+                        value={valuePromotion}
+                        setValue={setValuePromotion}
+                        inputValue={inputValuePromotion}
+                        setInputValue={setInputValuePromotion}
+                      />
                     </div>
                   </div>
                 </div>
-                <div className="flex w-full flex-col items-center justify-end gap-4">
-                  <TextField
-                    name="description"
-                    type="text"
-                    value={data?.description}
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    className="bg-white"
-                    label="Thông tin mô tả" // Tên trường
-                    multiline // Cho phép nhập nhiều dòng
-                    rows={4} // Số dòng hiển thị
-                    InputLabelProps={{
-                      shrink: true,
-                      style: { fontSize: "18px", fontWeight: "bold" },
-                    }}
-                    required
-                  />
-                </div>
+                <AdminItemDescription description={data?.description} handleDescription={handleDescription} />
               </Grid2>
             </Grid2>
           </div>
@@ -510,7 +328,44 @@ const AdminProductEdit = ({ product }) => {
           </span>
           <div>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
-              {" "}
+              {isEdit &&
+                data?.images?.length > 0 &&
+                JSON.parse(data?.images.replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                  .map((item, index) => (
+                    <div
+                      key={index}
+                      // draggable
+                      // onDragStart={(event) => handleDragStart(event, index)}
+                      onDragOver={(event) => event.preventDefault()} // Ngăn chặn hành vi mặc định
+                      // onDrop={(event) => handleDrop(event, index)} // Xử lý thả
+                      style={{ position: "relative", margin: "10px" }} // Đảm bảo mỗi hình ảnh có khoảng cách
+                    >
+                      <img
+                        src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                        // Tạo URL tạm thời từ file
+                        alt={`Uploaded ${index}`}
+                        style={{
+                          maxWidth: "300px", // Giới hạn chiều rộng tối đa
+                          maxHeight: "200px", // Giới hạn chiều cao tối đa
+                          width: "100%", // Chiều rộng sẽ là 100% trong giới hạn tối đa
+                          borderRadius: "10px", // Bo góc
+                          objectFit: "cover", // Đảm bảo hình ảnh không bị méo
+                        }}
+                      />
+                      <IconButton
+                        size="small"
+                        sx={{
+                          position: "absolute",
+                          top: "5px", // Đặt biểu tượng gần góc trên
+                          right: "5px", // Đặt biểu tượng gần góc bên phải
+                          backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        }}
+                        onClick={() => handleDeleteImageText(index)}
+                      >
+                        <BiX fontSize="small" size={24} color="red" />
+                      </IconButton>
+                    </div>
+                  ))}
               {/* Để sắp xếp các hình ảnh theo hàng */}
               {images.map((file, index) => (
                 <div
@@ -568,6 +423,27 @@ const AdminProductEdit = ({ product }) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex w-full items-center justify-center">
+        <Button
+          type="button" // Đặt thành button, hoặc submit nếu cần submit form
+          variant="contained"
+          tabIndex={-1}
+          onClick={handleSubmit} // Gọi hàm handleSubmit khi click
+          sx={{
+            backgroundColor: "#5951da", // Màu tùy chỉnh
+            color: "#fff", // Màu chữ
+            fontSize: "14px", // Kích thước chữ
+            padding: "4px", // Tùy chỉnh padding
+            width: 250,
+            height: 40,
+            "&:hover": {
+              backgroundColor: "#d32f2f", // Màu khi hover
+            },
+          }}
+        >
+          {isEdit ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}
+        </Button>
       </div>
     </div>
   );
