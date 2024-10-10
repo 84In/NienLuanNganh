@@ -49,12 +49,15 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       console.log(response);
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
+        setAlert("Đã thêm sản phẩm vào giỏ hàng");
+        setTimeout(() => setAlert(""), 5000);
       }
     } catch (error) {
       setAlert("Lỗi!");
       setTimeout(() => setAlert(""), 5000);
     }
   };
+  console.log(quantity);
 
   return (
     <Box

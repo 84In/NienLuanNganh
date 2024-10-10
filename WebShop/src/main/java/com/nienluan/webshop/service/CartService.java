@@ -24,7 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -90,20 +91,20 @@ public class CartService {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         var cart = cartRepository.existsByUser(user)
                 ? cartRepository.findByUser(user)
-                : Cart.builder().user(user).cartDetails(new HashSet<>()).build();
+                : Cart.builder().user(user).cartDetails(new ArrayList<>()).build();
         var product = productRepository.findById(request.getCartDetail().getProductId())
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         if (cart.getCartDetails() == null) {
-            cart.setCartDetails(new HashSet<CartDetail>());
+            cart.setCartDetails(new ArrayList<>());
         }
 
         boolean productExists = false;
         CartDetail cartDetail = new CartDetail();
         for (CartDetail item : cart.getCartDetails()) {
             if (item.getProduct().getId().equals(product.getId())) {
-                // Sản phẩm đã tồn tại, tăng số lượng
-                item.setQuantity(item.getQuantity().add(request.getCartDetail().getQuantity()));
+                // Sản phẩm đã tồn tại, sửa thành số lượng nhập
+                item.setQuantity(request.getCartDetail().getQuantity());
                 cartDetail = item;
                 productExists = true;
                 break;
@@ -138,7 +139,7 @@ public class CartService {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         var cart = cartRepository.existsByUser(user)
                 ? cartRepository.findByUser(user)
-                : Cart.builder().user(user).cartDetails(new HashSet<>()).build();
+                : Cart.builder().user(user).cartDetails(new ArrayList<>()).build();
         return cartMapper.toCartResponse(cart);
     }
 
@@ -147,20 +148,23 @@ public class CartService {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         var cart = cartRepository.existsByUser(user)
                 ? cartRepository.findByUser(user)
-                : Cart.builder().user(user).cartDetails(new HashSet<>()).build();
+                : Cart.builder().user(user).cartDetails(new ArrayList<>()).build();
         var product = productRepository.findById(request.getCartDetail().getProductId())
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
         if (cart.getCartDetails() == null) {
-            cart.setCartDetails(new HashSet<CartDetail>());
+            cart.setCartDetails(new ArrayList<>());
         }
 
+        var stockQuantity = product.getStockQuantity();
+        var requestQuantity = request.getCartDetail().getQuantity();
         boolean productExists = false;
         CartDetail cartDetail = new CartDetail();
         for (CartDetail item : cart.getCartDetails()) {
             if (item.getProduct().getId().equals(product.getId())) {
                 // Sản phẩm đã tồn tại, tăng số lượng
-                item.setQuantity(item.getQuantity().add(request.getCartDetail().getQuantity()));
+                BigDecimal updateQuantity = item.getQuantity().add(requestQuantity);
+                item.setQuantity(updateQuantity.compareTo(stockQuantity) > 0 ? stockQuantity : updateQuantity);
                 cartDetail = item;
                 productExists = true;
                 break;
@@ -169,10 +173,13 @@ public class CartService {
 
         // Nếu sản phẩm chưa tồn tại, tạo CartDetail mới
         if (!productExists) {
+            BigDecimal quantity = requestQuantity.compareTo(stockQuantity) > 0
+                    ? stockQuantity
+                    : requestQuantity;
             cartDetail = CartDetail.builder()
                     .cart(cart)
                     .product(product)
-                    .quantity(request.getCartDetail().getQuantity())
+                    .quantity(quantity)
                     .build();
             cart.getCartDetails().add(cartDetail);
         }

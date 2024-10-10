@@ -44,7 +44,7 @@ function App() {
       setTimeout(() => {
         dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
         dispatch(action.getCart(username));
-      }, 100);
+      }, 200);
     }
   }, [isLoggedIn, username, dispatch]);
 
@@ -93,7 +93,14 @@ function App() {
           />
           <Route
             path={path.CART}
-            element={<PrivateRoute element={<Cart />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />}
+            element={
+              <PrivateRoute
+                element={<Cart />}
+                setIsModelLogin={setIsModelLogin}
+                isLoggedIn={isLoggedIn}
+                onAccessDenied={handleAccessDenied}
+              />
+            }
           />
           <Route
             path={path.ORDER_HISTORY}

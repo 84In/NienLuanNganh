@@ -25,7 +25,7 @@ public class CartController {
 
     @PostMapping
     public ApiResponse<?> createCart(@RequestBody CartRequest request) {
-        return ApiResponse.<CartResponse>builder()
+        return ApiResponse.<SingleCartResponse>builder()
                 .message("Create success!")
                 .result(cartService.createCart(request))
                 .build();

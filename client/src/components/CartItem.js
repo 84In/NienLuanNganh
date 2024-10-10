@@ -1,26 +1,63 @@
 import { IconButton, TextField } from "@mui/material";
-import React, { memo, useState } from "react";
+import React, { memo, useState, useEffect } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BiX } from "react-icons/bi";
 import { formatCurrency } from "../utils/format";
 import { Link } from "react-router-dom";
+import { apiCreateCart, apiUpdateCart } from "../services";
+import * as actions from "../store/actions";
+import { useDispatch, useSelector } from "react-redux";
 
-const product1 = require("../assets/images/product/product1.png");
+const CartItem = ({ data, setAlert, setTotalAmount, setProductSelect }) => {
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.user);
+  const { username } = useSelector((state) => state.auth);
+  const [quantity, setQuantity] = useState(data?.quantity);
+  const [total, setTotal] = useState(data?.product?.price * quantity);
 
-const CartItem = () => {
-  const [quantity, setQuantity] = useState(1);
+  const imageArray = data?.product?.images ? JSON.parse(data?.product?.images.replace(/'/g, '"')) : [];
+  const firstImage = imageArray[0] ? imageArray[0] : null;
 
   const minQuantity = 1;
-  const maxQuantity = 50;
-  const price = 180000;
+  const maxQuantity = data?.product.stockQuantity;
+
+  useEffect(() => {
+    if (quantity !== data?.quantity) {
+      handleCreateCart(quantity, data?.product?.id);
+    }
+  }, [quantity]);
+
+  useEffect(() => {
+    setTotal(data?.product?.price * quantity);
+  }, [quantity, data?.product?.price]);
+
+  const handleCreateCart = async (quantity) => {
+    try {
+      const response = await apiCreateCart({
+        username: username,
+        cartDetail: {
+          quantity: quantity,
+          productId: data?.product?.id,
+        },
+      });
+      console.log(response);
+      if (response?.code === 0) {
+        dispatch(actions.getCart(username));
+      }
+    } catch (error) {
+      setAlert("Lỗi!");
+      setTimeout(() => setAlert(""), 5000);
+    }
+  };
 
   const handleIncrease = () => {
-    setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
+    setQuantity((prev) => Math.min(prev + 1, maxQuantity));
   };
 
   const handleDecrease = () => {
-    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, minQuantity));
+    setQuantity((prev) => Math.max(prev - 1, minQuantity));
   };
+  console.log(quantity);
 
   return (
     <div className="flex">
@@ -30,31 +67,28 @@ const CartItem = () => {
           name=""
           className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
         />
-        <Link /*to={`/product/id/${product.id}`} state={{ product }*/>
-          <div className="flex w-full flex-col items-center justify-start gap-1 grid-md:flex-row">
+        <Link to={`/product/id/${data?.product?.id}`}>
+          <div className="flex w-full flex-col items-center justify-start gap-2 grid-md:flex-row">
             <img
-              src={product1}
-              alt="Điện thoại AI Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng"
+              src={
+                firstImage && firstImage.startsWith("https://")
+                  ? firstImage
+                  : process.env.REACT_APP_SERVER_URL + firstImage
+              }
+              alt={data?.product?.name}
               className="h-full min-h-20 w-3/12 min-w-20 object-cover"
             />
-            <p
-              className="line-clamp-4 w-8/12 text-sm grid-md:line-clamp-2 grid-md:text-base"
-              // style={{
-              //   display: "-webkit-box",
-              //   WebkitLineClamp: window.innerWidth < 900 ? 4 : 2,
-              //   WebkitBoxOrient: "vertical",
-              //   overflow: "hidden",
-              //   textOverflow: "ellipsis",
-              // }}
-            >
-              Điện thoại Samsung Galaxy S24 Ultra, Camera 200MP Zoom 100x, S Pen - Hàng Chính Hãng
+            <p className="line-clamp-4 w-8/12 text-xs grid-md:line-clamp-2 grid-md:text-sm grid-lg:text-base">
+              {data?.product?.name}
             </p>
           </div>
         </Link>
       </div>
       <div className="flex w-6/12 flex-col items-center justify-center gap-y-4 grid-md:flex-row">
         <div className="flex w-full items-center justify-center">
-          <p className="text-base font-semibold grid-md:text-base">{formatCurrency(price)}</p>
+          <p className="text-xs font-semibold grid-md:text-sm grid-lg:text-base">
+            {formatCurrency(data?.product?.price)}
+          </p>
         </div>
         <div className="flex w-full items-center justify-center">
           <div className="flex items-center gap-1">
@@ -64,8 +98,11 @@ const CartItem = () => {
             <TextField
               value={quantity}
               onChange={(e) => {
-                const value = Math.min(Math.max(minQuantity, parseInt(e.target.value) || minQuantity), maxQuantity);
-                setQuantity(value);
+                const newQuantity = Math.min(
+                  Math.max(minQuantity, parseInt(e.target.value) || minQuantity),
+                  maxQuantity,
+                );
+                setQuantity(newQuantity);
               }}
               type="number"
               size="small"
@@ -86,7 +123,6 @@ const CartItem = () => {
                   width: "60px",
                   height: "15px",
                   boxSizing: "unset",
-                  // padding: "8.5px 14px",
                 },
               }}
             />
@@ -96,7 +132,9 @@ const CartItem = () => {
           </div>
         </div>
         <div className="flex w-full items-center justify-center">
-          <p className="text-lg font-semibold text-red-500">{formatCurrency(price * quantity)}</p>
+          <p className="text-sm font-semibold text-red-500 grid-md:text-base grid-lg:text-lg">
+            {formatCurrency(total)}
+          </p>
         </div>
       </div>
       <div className="flex w-1/12 items-center justify-center">
