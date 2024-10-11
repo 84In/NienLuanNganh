@@ -182,17 +182,17 @@ const EditContact = () => {
   const handleChangeAddress = async (e) => {
     e.preventDefault();
     try {
-      if (!payload.address.province || !payload.address.district || !payload.address.ward) {
-        setAlert("Tỉnh/Thành phố, Quận/Huyện, Phường/Xã không được để trống!");
-        setTimeout(() => setAlert(""), 5000);
-        return;
-      }
       if (
         payload.address.province !== userData.address?.province?.id ||
         payload.address.district !== userData.address?.district?.id ||
         payload.address.ward !== userData.address?.ward?.id ||
         payload.address.street !== userData.address?.street
       ) {
+        if (!payload.address.province || !payload.address.district || !payload.address.ward) {
+          setAlert("Tỉnh/Thành phố, Quận/Huyện, Phường/Xã không được để trống!");
+          setTimeout(() => setAlert(""), 5000);
+          return;
+        }
         const response = await apiChangeAddress({
           username: username,
           fullName: payload.address.fullName.trim(),

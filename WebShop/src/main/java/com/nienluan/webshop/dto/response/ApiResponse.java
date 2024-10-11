@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponse<T> {

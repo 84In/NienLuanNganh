@@ -1,8 +1,10 @@
 package com.nienluan.webshop.entity;
 
+import com.nienluan.webshop.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
@@ -15,11 +17,11 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "t_users")
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;

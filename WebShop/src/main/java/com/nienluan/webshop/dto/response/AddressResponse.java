@@ -6,7 +6,8 @@ import com.nienluan.webshop.entity.Ward;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

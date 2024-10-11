@@ -6,7 +6,8 @@ import lombok.experimental.FieldDefaults;
 import java.math.BigInteger;
 import java.sql.Date;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

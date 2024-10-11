@@ -75,30 +75,33 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, setProductSelect }) 
   const handleDecrease = () => {
     setQuantity((prev) => Math.max(prev - 1, minQuantity));
   };
-  console.log(quantity);
 
   return (
     <div className="flex">
-      <div className="flex w-5/12 items-center gap-2 text-black">
+      <div className="flex w-4 items-center justify-center">
         <input
           type="checkbox"
           name=""
           className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
         />
+      </div>
+      <div className="w-5/12 items-center gap-2 px-2 text-black">
         <Link to={`/product/id/${data?.product?.id}`}>
           <div className="flex w-full flex-col items-center justify-start gap-2 grid-md:flex-row">
-            <img
-              src={
-                firstImage && firstImage.startsWith("https://")
-                  ? firstImage
-                  : process.env.REACT_APP_SERVER_URL + firstImage
-              }
-              alt={data?.product?.name}
-              className="h-full min-h-20 w-3/12 min-w-20 object-cover"
-            />
-            <p className="line-clamp-4 w-8/12 text-xs grid-md:line-clamp-2 grid-md:text-sm grid-lg:text-base">
-              {data?.product?.name}
-            </p>
+            <div className="flex w-3/12 items-center justify-center">
+              <img
+                src={
+                  firstImage && firstImage.startsWith("https://")
+                    ? firstImage
+                    : process.env.REACT_APP_SERVER_URL + firstImage
+                }
+                alt={data?.product?.name}
+                className="max-h-20 min-h-20 min-w-20 max-w-20 object-contain grid-md:min-w-16 grid-lg:min-w-20"
+              />
+            </div>
+            <div className="w-9/12 text-center text-xs grid-md:text-left grid-md:text-sm grid-lg:text-base">
+              <p className="line-clamp-4 w-full grid-md:line-clamp-2">{data?.product?.name}</p>
+            </div>
           </div>
         </Link>
       </div>

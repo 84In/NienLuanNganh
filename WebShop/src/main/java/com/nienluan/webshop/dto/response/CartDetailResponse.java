@@ -6,7 +6,8 @@ import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

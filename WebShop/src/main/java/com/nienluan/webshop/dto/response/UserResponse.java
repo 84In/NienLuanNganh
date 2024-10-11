@@ -1,20 +1,24 @@
 package com.nienluan.webshop.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.nienluan.webshop.common.BaseEntity;
+import com.nienluan.webshop.common.BaseResponse;
 import com.nienluan.webshop.entity.Address;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
+public class UserResponse extends BaseResponse {
     String id;
     String username;
     String firstName;

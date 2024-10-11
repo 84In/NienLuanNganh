@@ -57,7 +57,6 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       setTimeout(() => setAlert(""), 5000);
     }
   };
-  console.log(quantity);
 
   return (
     <Box

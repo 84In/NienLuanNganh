@@ -14,7 +14,7 @@ const ProductDetail = ({ setIsModelLogin }) => {
     const fetchProduct = async () => {
       try {
         const response = await apiGetProductById(productId);
-        setProduct(response.result);
+        setProduct(response?.result);
       } catch (error) {
         console.error("Failed to fetch product", error);
       }

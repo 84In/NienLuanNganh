@@ -1,8 +1,10 @@
 package com.nienluan.webshop.entity;
 
+import com.nienluan.webshop.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.query.sqm.FetchClauseType;
 
 import java.math.BigDecimal;
@@ -17,9 +19,9 @@ import java.util.Set;
 @Table(name = "t_orders")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Order {
+public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
