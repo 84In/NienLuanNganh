@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PromotionRequest {
-    String Code;
+    String code;
     String name;
     String description;
     Integer discountPercentage;

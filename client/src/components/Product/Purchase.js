@@ -5,13 +5,17 @@ import { formatCurrency } from "../../utils/format";
 import { useDispatch, useSelector } from "react-redux";
 import { apiUpdateCart } from "../../services";
 import * as actions from "../../store/actions";
+import { validPrice, validPromotion, validTotalPrice } from "../../utils/validator";
 
 const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin }) => {
-  const { isLoggedIn, username } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { isLoggedIn, username } = useSelector((state) => state.auth);
 
   const minQuantity = 0;
   const maxQuantity = product?.stockQuantity ? product.stockQuantity : 0;
+  const promotion = validPromotion(product?.promotions);
+  const price = validPrice(product?.price, promotion);
+  const totalPrice = validTotalPrice(product?.price, promotion, quantity);
 
   const handleIncrease = () => {
     setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
@@ -46,7 +50,6 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
           productId: product?.id,
         },
       });
-      console.log(response);
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
         setAlert("Đã thêm sản phẩm vào giỏ hàng");
@@ -72,8 +75,7 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold">Giá:</h1>{" "}
-        <span className="text-lg font-semibold">{formatCurrency(product?.price)}</span>
+        <h1 className="font-semibold">Giá:</h1> <span className="text-lg font-semibold">{formatCurrency(price)}</span>
       </div>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Số Lượng</h1>
@@ -116,7 +118,7 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       <hr className="mx-4 mb-4 border-gray-400" />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Tạm tính:</h1>{" "}
-        <span className="text-xl font-bold text-error-color">{formatCurrency(product?.price * quantity)}</span>
+        <span className="text-xl font-bold text-error-color">{formatCurrency(totalPrice)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
         <Button onClick={handleBuyNow} variant="contained" color="error" size="large" fullWidth className="mb-2">

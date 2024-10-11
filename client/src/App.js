@@ -48,6 +48,12 @@ function App() {
     }
   }, [isLoggedIn, username, dispatch]);
 
+  useEffect(() => {
+    if (userData?.roles) {
+      navigate(userData?.roles.some((item) => item?.name === "ADMIN") && path.ADMIN_HOME);
+    }
+  }, [userData?.roles]);
+
   const handleAccessDenied = () => {
     setIsModelLogin(true);
     navigate(path.HOME);

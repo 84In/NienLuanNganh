@@ -2,7 +2,6 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
 import { AlertCustom, ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
 import { apiGetProductById } from "../../services";
-import { Alert, AlertTitle } from "@mui/material";
 
 const ProductDetail = ({ setIsModelLogin }) => {
   const [quantity, setQuantity] = useState(0);

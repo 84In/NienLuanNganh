@@ -7,29 +7,26 @@ import { Link } from "react-router-dom";
 import { apiCreateCart, apiDeleteCartDetailInCart } from "../services";
 import * as actions from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
+import { validPrice, validPromotion, validTotalPrice } from "../utils";
 
-const CartItem = ({ cartId, data, setAlert, setTotalAmount, setProductSelect }) => {
+const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelectItem }) => {
   const dispatch = useDispatch();
-  const { userData } = useSelector((state) => state.user);
   const { username } = useSelector((state) => state.auth);
   const [quantity, setQuantity] = useState(data?.quantity);
-  const [total, setTotal] = useState(data?.product?.price * quantity);
 
   const imageArray = data?.product?.images ? JSON.parse(data?.product?.images.replace(/'/g, '"')) : [];
   const firstImage = imageArray[0] ? imageArray[0] : null;
-
   const minQuantity = 1;
   const maxQuantity = data?.product.stockQuantity;
+  const promotion = validPromotion(data?.product?.promotions);
+  const price = validPrice(data?.product?.price, promotion);
+  const totalPrice = validTotalPrice(data?.product?.price, promotion, quantity);
 
   useEffect(() => {
     if (quantity !== data?.quantity) {
       handleCreateCart(quantity, data?.product?.id);
     }
   }, [quantity]);
-
-  useEffect(() => {
-    setTotal(data?.product?.price * quantity);
-  }, [quantity, data?.product?.price]);
 
   const handleCreateCart = async (quantity) => {
     try {
@@ -81,8 +78,10 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, setProductSelect }) 
       <div className="flex w-4 items-center justify-center">
         <input
           type="checkbox"
-          name=""
+          name={data?.product?.id}
           className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
+          checked={isSelected}
+          onChange={(e) => onSelectItem(data?.product?.id, e.target.checked)}
         />
       </div>
       <div className="w-5/12 items-center gap-2 px-2 text-black">
@@ -107,9 +106,7 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, setProductSelect }) 
       </div>
       <div className="flex w-6/12 flex-col items-center justify-center gap-y-4 grid-md:flex-row">
         <div className="flex w-full items-center justify-center">
-          <p className="text-xs font-semibold grid-md:text-sm grid-lg:text-base">
-            {formatCurrency(data?.product?.price)}
-          </p>
+          <p className="text-xs font-semibold grid-md:text-sm grid-lg:text-base">{formatCurrency(price)}</p>
         </div>
         <div className="flex w-full items-center justify-center">
           <div className="flex items-center gap-1">
@@ -154,7 +151,7 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, setProductSelect }) 
         </div>
         <div className="flex w-full items-center justify-center">
           <p className="text-sm font-semibold text-red-500 grid-md:text-base grid-lg:text-lg">
-            {formatCurrency(total)}
+            {formatCurrency(totalPrice)}
           </p>
         </div>
       </div>

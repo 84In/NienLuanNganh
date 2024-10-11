@@ -39,8 +39,8 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
+  // Bất kỳ mã trạng thái 2xx sẽ kích hoạt hàm này
   function (response) {
-    // Bất kỳ mã trạng thái 2xx sẽ kích hoạt hàm này
     // Làm gì đó với dữ liệu response (ví dụ: refresh token)
     return response.data;
   },
@@ -48,7 +48,6 @@ instance.interceptors.response.use(
     // Bất kỳ mã trạng thái nào ngoài 2xx sẽ kích hoạt hàm này
     if (error.response) {
       // Xử lý lỗi 404 và 400
-
       if (error.response.status === 404 || error.response.status === 400) {
         return error.response.data;
       }

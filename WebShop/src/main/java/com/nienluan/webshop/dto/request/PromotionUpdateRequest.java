@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PromotionUpdateRequest {
-    String Code;
+    String code;
     String name;
     String description;
     Integer discountPercentage;

@@ -2,15 +2,15 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useState, useEffect } from "react"; // Thêm useEffect
 import { useSelector } from "react-redux";
 import { AlertCustom, CartItem, CartSideBar } from "../../components";
-import { Alert, AlertTitle } from "@mui/material";
+import { validPrice, validPromotion, validTotalPrice } from "../../utils";
 
 const Cart = ({ setIsModelLogin }) => {
   const { cart } = useSelector((state) => state.user);
 
   const [alert, setAlert] = useState("");
-  const [productSelect, setProductSelect] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,6 +20,44 @@ const Cart = ({ setIsModelLogin }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const calculateTotalAmount = () => {
+      let total = 0;
+      selectedItems?.forEach((productId) => {
+        const item = cart?.cartDetails?.find((item) => item.product.id === productId);
+        if (item) {
+          const quantity = item?.quantity;
+          const promotion = validPromotion(item?.product?.promotions);
+          const price = validPrice(item?.product?.price, promotion);
+          const totalPrice = validTotalPrice(item?.product?.price, promotion, quantity);
+          total += totalPrice;
+        }
+      });
+      setTotalAmount(total);
+    };
+
+    calculateTotalAmount();
+  }, [selectedItems, cart.cartDetails]);
+
+  const handleSelectAll = (isChecked) => {
+    if (isChecked) {
+      const allProductIds = cart.cartDetails.map((item) => item.product.id);
+      setSelectedItems(allProductIds);
+    } else {
+      setSelectedItems([]);
+    }
+  };
+
+  const handleSelectItem = (productId, isChecked) => {
+    if (isChecked) {
+      setSelectedItems((prev) => [...prev, productId]);
+    } else {
+      setSelectedItems((prev) => prev.filter((id) => id !== productId));
+    }
+  };
+
+  console.log(selectedItems);
 
   return (
     <Grid2
@@ -52,8 +90,14 @@ const Cart = ({ setIsModelLogin }) => {
             <div className="flex w-5/12 items-center gap-2 text-black">
               <input
                 type="checkbox"
-                name="selectAllCart"
+                name="selectAll"
                 className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
+                onChange={(e) => handleSelectAll(e.target.checked)}
+                checked={
+                  cart?.cartDetails &&
+                  cart?.cartDetails.length !== 0 &&
+                  selectedItems?.length === cart?.cartDetails?.length
+                }
               />
               <p>Tất cả</p>
             </div>
@@ -90,7 +134,8 @@ const Cart = ({ setIsModelLogin }) => {
                     data={item}
                     setAlert={setAlert}
                     setTotalAmount={setTotalAmount}
-                    setProductSelect={setProductSelect}
+                    isSelected={selectedItems.includes(item.product.id)}
+                    onSelectItem={handleSelectItem}
                   />
                   {index !== cart?.cartDetails?.length - 1 && (
                     <div className="mx-auto h-[1px] w-[95%]">
@@ -104,7 +149,7 @@ const Cart = ({ setIsModelLogin }) => {
         </Grid2>
       </Grid2>
       <Grid2 item container xs={12} md={3} sx={{ width: "100%" }}>
-        <CartSideBar />
+        <CartSideBar totalAmount={totalAmount} />
       </Grid2>
     </Grid2>
   );
