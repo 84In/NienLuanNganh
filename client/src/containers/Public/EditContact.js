@@ -9,6 +9,7 @@ import { path } from "../../utils/constant";
 import ButtonCustom from "../../components/ButtonCustom";
 import { apiChangeAddress, apiChangeContactInfomation, apiChangePassword } from "../../services";
 import * as actions from "../../store/actions/";
+import { AlertCustom } from "../../components";
 
 const EditContact = () => {
   const location = useLocation();
@@ -181,8 +182,8 @@ const EditContact = () => {
   const handleChangeAddress = async (e) => {
     e.preventDefault();
     try {
-      if (!payload.address.province || !payload.address.district) {
-        setAlert("Tỉnh/Thành phố & Quận/Huyện không được để trống!");
+      if (!payload.address.province || !payload.address.district || !payload.address.ward) {
+        setAlert("Tỉnh/Thành phố, Quận/Huyện, Phường/Xã không được để trống!");
         setTimeout(() => setAlert(""), 5000);
         return;
       }
@@ -246,12 +247,7 @@ const EditContact = () => {
         position: "relative",
       }}
     >
-      {alert && (
-        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
-          <AlertTitle>Thông báo</AlertTitle>
-          {alert}
-        </Alert>
-      )}
+      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
       <div className="absolute flex items-center gap-1 p-2 text-lg">
         <ButtonCustom
           TypeButton={"button"}

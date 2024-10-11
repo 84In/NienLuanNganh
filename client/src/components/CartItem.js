@@ -4,11 +4,11 @@ import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BiX } from "react-icons/bi";
 import { formatCurrency } from "../utils/format";
 import { Link } from "react-router-dom";
-import { apiCreateCart, apiUpdateCart } from "../services";
+import { apiCreateCart, apiDeleteCartDetailInCart } from "../services";
 import * as actions from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 
-const CartItem = ({ data, setAlert, setTotalAmount, setProductSelect }) => {
+const CartItem = ({ cartId, data, setAlert, setTotalAmount, setProductSelect }) => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
   const { username } = useSelector((state) => state.auth);
@@ -43,6 +43,24 @@ const CartItem = ({ data, setAlert, setTotalAmount, setProductSelect }) => {
       console.log(response);
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
+      }
+    } catch (error) {
+      setAlert("Lỗi!");
+      setTimeout(() => setAlert(""), 5000);
+    }
+  };
+
+  const handleDeleteCartDetailInCart = async () => {
+    try {
+      const response = await apiDeleteCartDetailInCart({
+        cartId: cartId,
+        productId: data?.product?.id,
+      });
+      console.log(response);
+      if (response?.code === 0) {
+        dispatch(actions.getCart(username));
+        setAlert("Xóa sản phẩm thành công");
+        setTimeout(() => setAlert(""), 5000);
       }
     } catch (error) {
       setAlert("Lỗi!");
@@ -139,8 +157,8 @@ const CartItem = ({ data, setAlert, setTotalAmount, setProductSelect }) => {
       </div>
       <div className="flex w-1/12 items-center justify-center">
         <BiX
-          onClick={""}
-          className="h-6 w-6 cursor-pointer rounded-full ease-in-out hover:bg-gray-200 hover:duration-300"
+          onClick={handleDeleteCartDetailInCart}
+          className="h-7 w-7 cursor-pointer rounded-full ease-in-out hover:bg-gray-200 hover:duration-300"
         />
       </div>
     </div>

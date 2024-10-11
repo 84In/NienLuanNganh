@@ -10,17 +10,20 @@ export const register = (payload) => async (dispatch) => {
         type: actionTypes.REGISTER_SUCCESS,
         data: response,
       });
+      return response;
     } else {
       dispatch({
         type: actionTypes.REGISTER_FAIL,
         data: response,
       });
+      return response;
     }
   } catch (error) {
     dispatch({
       type: actionTypes.REGISTER_FAIL,
       data: response,
     });
+    return response;
   }
 };
 
@@ -34,17 +37,20 @@ export const login = (payload) => async (dispatch) => {
         type: actionTypes.LOGIN_SUCCESS,
         data: response,
       });
+      return response;
     } else {
       dispatch({
         type: actionTypes.LOGIN_FAIL,
         data: response,
       });
+      return response;
     }
   } catch (error) {
     dispatch({
       type: actionTypes.LOGIN_FAIL,
       data: response,
     });
+    return response;
   }
 };
 

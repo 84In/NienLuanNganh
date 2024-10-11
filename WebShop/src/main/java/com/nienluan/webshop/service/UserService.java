@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +81,12 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
+    public UserResponse getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        return userMapper.toUserResponse(user);
+    }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER')")
     public UserResponse updateUser(String id, UserUpdateRequest request) {
@@ -154,20 +161,18 @@ public class UserService {
         }
         if (request.getProvince() != null) {
             var province = provinceRepository.findById(request.getProvince())
-                    .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_FOUND));
+                    .orElseThrow(() -> new AppException(ErrorCode.PROVINCE_NOT_EXISTED));
             address.setProvince(province);
         }
         if (request.getDistrict() != null) {
             var district = districtRepository.findById(request.getDistrict())
-                    .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_FOUND));
+                    .orElseThrow(() -> new AppException(ErrorCode.DISTRICT_NOT_EXISTED));
             address.setDistrict(district);
         }
         if (request.getWard() != null) {
             var ward = wardRepository.findById(request.getWard())
-                    .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_FOUND));
+                    .orElseThrow(() -> new AppException(ErrorCode.WARD_NOT_EXISTED));
             address.setWard(ward);
-        } else {
-            address.setWard(null);
         }
         address.setStreet(request.getStreet());
 

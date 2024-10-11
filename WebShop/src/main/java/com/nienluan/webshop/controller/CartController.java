@@ -1,6 +1,7 @@
 package com.nienluan.webshop.controller;
 
 import com.nienluan.webshop.dto.request.CartRequest;
+import com.nienluan.webshop.dto.request.DeleteCartDetailRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.CartResponse;
 import com.nienluan.webshop.dto.response.SingleCartResponse;
@@ -47,6 +48,14 @@ public class CartController {
                 .build();
     }
 
+    @GetMapping("/current-user")
+    public ApiResponse<?> getCart() {
+        return ApiResponse.<CartResponse>builder()
+                .message("Success")
+                .result(cartService.getCartCurrentUser())
+                .build();
+    }
+
     @PutMapping
     public ApiResponse<?> updateCart(@RequestBody CartRequest request) {
         return ApiResponse.<SingleCartResponse>builder()
@@ -55,12 +64,11 @@ public class CartController {
                 .build();
     }
 
-    @DeleteMapping("/{username}")
-    public ApiResponse<?> deleteCart(@PathVariable("username") String username) {
-        cartService.deleteCart(username);
+    @DeleteMapping
+    public ApiResponse<?> deleteCart(@RequestBody DeleteCartDetailRequest request) {
+        cartService.deleteCart(request);
         return ApiResponse.<Void>builder()
                 .message("Delete successful")
                 .build();
     }
-
 }

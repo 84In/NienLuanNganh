@@ -26,7 +26,7 @@ import {
   AdminUserEditByID,
 } from "./containers/System";
 import { PrivateAdminFilterRouter, PrivateRoute } from "./router";
-import * as action from "./store/actions";
+import * as actions from "./store/actions";
 import { path } from "./utils/constant";
 import { useScrollToTop } from "./hooks";
 
@@ -39,11 +39,11 @@ function App() {
   const [isModelLogin, setIsModelLogin] = useState(false);
 
   useEffect(() => {
-    dispatch(action.getCategories());
+    dispatch(actions.getCategories());
     if (isLoggedIn && username) {
       setTimeout(() => {
-        dispatch(action.getUserInfo(username)); // Dispatch action sau thời gian delay
-        dispatch(action.getCart(username));
+        dispatch(actions.getCurrentUser());
+        dispatch(actions.getCartCurrentUser());
       }, 200);
     }
   }, [isLoggedIn, username, dispatch]);

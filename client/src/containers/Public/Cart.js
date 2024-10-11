@@ -1,7 +1,7 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useState, useEffect } from "react"; // Thêm useEffect
 import { useSelector } from "react-redux";
-import { CartItem, CartSideBar } from "../../components";
+import { AlertCustom, CartItem, CartSideBar } from "../../components";
 import { Alert, AlertTitle } from "@mui/material";
 
 const Cart = ({ setIsModelLogin }) => {
@@ -28,12 +28,7 @@ const Cart = ({ setIsModelLogin }) => {
       columnGap={"none"}
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
-      {alert && (
-        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
-          <AlertTitle>Thông báo</AlertTitle>
-          {alert}
-        </Alert>
-      )}
+      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
       <Grid2 item container xs={12} md={8.8} sx={{ display: "flex", gap: 2, alignContent: "flex-start" }}>
         <Grid2
           item
@@ -91,6 +86,7 @@ const Cart = ({ setIsModelLogin }) => {
                 <div key={index}>
                   <CartItem
                     key={item?.product?.id}
+                    cartId={cart?.id}
                     data={item}
                     setAlert={setAlert}
                     setTotalAmount={setTotalAmount}

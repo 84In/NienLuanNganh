@@ -23,6 +23,18 @@ const userReducer = (state = initState, action) => {
         cart: action.cart || {},
         msg: action.msg || "",
       };
+    case actionTypes.GET_CART_FAIL:
+      return {
+        ...state,
+        cart: action.cart || {},
+        msg: action.msg || "",
+      };
+    case actionTypes.LOGOUT:
+      return {
+        ...state,
+        userData: null,
+        cart: {},
+      };
     default:
       return state;
   }

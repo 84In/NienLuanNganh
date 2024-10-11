@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
 
 const useLogin = (setIsModelLogin) => {
+  const dispatch = useDispatch();
+  const { isLoggedIn, code, result } = useSelector((state) => state.auth);
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState("");
   const [invalidKeys, setInvalidKeys] = useState("");
-  const dispatch = useDispatch();
-  const { isLoggedIn, code, result } = useSelector((state) => state.auth);
   const [payload, setPayload] = useState({
     username: "",
     password: "",

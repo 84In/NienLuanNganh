@@ -1,10 +1,10 @@
-import { Alert, AlertTitle, Button, FormControl, FormHelperText, OutlinedInput } from "@mui/material";
+import { Button, FormControl, FormHelperText, OutlinedInput } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
 import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ContactButton } from "../../components";
+import { AlertCustom, ContactButton } from "../../components";
 import { apiChangePersonalInfomation, apiUploadAvatar } from "../../services";
 import * as action from "../../store/actions";
 import { path } from "../../utils/constant";
@@ -149,12 +149,7 @@ const AccountInfo = () => {
         position: "relative",
       }}
     >
-      {alert && (
-        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
-          <AlertTitle>Thông báo</AlertTitle>
-          {alert}
-        </Alert>
-      )}
+      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
       <Grid2
         container
         sx={{

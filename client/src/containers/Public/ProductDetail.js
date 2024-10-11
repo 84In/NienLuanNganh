@@ -1,6 +1,6 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
-import { ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
+import { AlertCustom, ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
 import { apiGetProductById } from "../../services";
 import { Alert, AlertTitle } from "@mui/material";
 
@@ -30,12 +30,7 @@ const ProductDetail = ({ setIsModelLogin }) => {
       columnGap={"none"}
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
-      {alert && (
-        <Alert severity="info" className="fixed right-2 top-4 z-50 w-[450px] border shadow-md">
-          <AlertTitle>Thông báo</AlertTitle>
-          {alert}
-        </Alert>
-      )}
+      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
       <Grid2 item container xs={12} md={8.8} sx={{ width: "100%", gap: 2 }}>
         <Grid2
           item

@@ -12,7 +12,7 @@ const AdminNav = ({ user }) => {
           User={user}
           TextTitle={user?.lastName}
           TextColor={"text-black"}
-          Avatar={user?.avatar ? user?.avatar : DefaultAvatar}
+          Avatar={user?.avatar ? process.env.REACT_APP_SERVER_URL + user?.avatar : DefaultAvatar}
         />
       </div>
       <div className="flex w-full items-center justify-center">

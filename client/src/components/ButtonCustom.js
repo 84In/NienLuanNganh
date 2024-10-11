@@ -5,6 +5,8 @@ import * as action from "../store/actions";
 import { path } from "../utils/constant";
 import { formatLengthName } from "../utils/format";
 
+const defaultAvatar = require("../assets/images/profile.png");
+
 const ButtonCustom = ({
   TypeButton,
   IconBefore,
@@ -28,6 +30,7 @@ const ButtonCustom = ({
 
   const handleLogout = async () => {
     dispatch(action.logout({ token: token }));
+    dispatch(action.getCart());
     navigate(path.HOME);
   };
 
@@ -63,7 +66,7 @@ const ButtonCustom = ({
         {Avatar && (
           <>
             <img
-              src={Avatar}
+              src={Avatar ? Avatar : defaultAvatar}
               alt={TextTitle}
               className={`${ImageSize ? `w-${ImageSize}` : "w-8"} ${ImageSize ? `h-${ImageSize}` : "h-8"} rounded-full border border-black bg-white object-cover`}
             />

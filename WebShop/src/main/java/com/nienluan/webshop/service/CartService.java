@@ -1,6 +1,7 @@
 package com.nienluan.webshop.service;
 
 import com.nienluan.webshop.dto.request.CartRequest;
+import com.nienluan.webshop.dto.request.DeleteCartDetailRequest;
 import com.nienluan.webshop.dto.response.CartDetailResponse;
 import com.nienluan.webshop.dto.response.CartResponse;
 import com.nienluan.webshop.dto.response.SingleCartResponse;
@@ -11,6 +12,7 @@ import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.CartDetailMapper;
 import com.nienluan.webshop.mapper.CartMapper;
 import com.nienluan.webshop.mapper.ProductMapper;
+import com.nienluan.webshop.repository.CartDetailRepository;
 import com.nienluan.webshop.repository.CartRepository;
 import com.nienluan.webshop.repository.ProductRepository;
 import com.nienluan.webshop.repository.UserRepository;
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,6 +45,7 @@ public class CartService {
     ProductRepository productRepository;
     CartDetailMapper cartDetailMapper;
     ProductMapper productMapper;
+    private final CartDetailRepository cartDetailRepository;
 
 //    Giữ lại
 //    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
@@ -99,12 +103,15 @@ public class CartService {
             cart.setCartDetails(new ArrayList<>());
         }
 
+        var stockQuantity = product.getStockQuantity();
+        var requestQuantity = request.getCartDetail().getQuantity();
+        var quantity = requestQuantity.compareTo(stockQuantity) > 0 ? stockQuantity : requestQuantity;
         boolean productExists = false;
         CartDetail cartDetail = new CartDetail();
         for (CartDetail item : cart.getCartDetails()) {
             if (item.getProduct().getId().equals(product.getId())) {
                 // Sản phẩm đã tồn tại, sửa thành số lượng nhập
-                item.setQuantity(request.getCartDetail().getQuantity());
+                item.setQuantity(quantity);
                 cartDetail = item;
                 productExists = true;
                 break;
@@ -116,7 +123,7 @@ public class CartService {
             cartDetail = CartDetail.builder()
                     .cart(cart)
                     .product(product)
-                    .quantity(request.getCartDetail().getQuantity())
+                    .quantity(quantity)
                     .build();
             cart.getCartDetails().add(cartDetail);
         }
@@ -136,6 +143,16 @@ public class CartService {
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public CartResponse getCart(String username) {
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        var cart = cartRepository.existsByUser(user)
+                ? cartRepository.findByUser(user)
+                : Cart.builder().user(user).cartDetails(new ArrayList<>()).build();
+        return cartMapper.toCartResponse(cart);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    public CartResponse getCartCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         var cart = cartRepository.existsByUser(user)
                 ? cartRepository.findByUser(user)
@@ -192,10 +209,20 @@ public class CartService {
     }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public void deleteCart(String username) {
-        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        cartRepository.existsByUser(user);
+    public void deleteCart(DeleteCartDetailRequest request) {
+        var cart = cartRepository.findById(request.getCartId())
+                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_EXISTED));
+
+        var cartDetail = cart.getCartDetails().stream()
+                .filter(item -> item.getProduct().getId().equals(request.getProductId()))
+                .findFirst()
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+
+        cart.getCartDetails().remove(cartDetail);
+        cartDetailRepository.delete(cartDetail);
+        cartRepository.save(cart);
     }
+
 
     private Set<CartDetailResponse> fromCartToCartDetailResponse(Cart cart) {
         return cart.getCartDetails().stream()

@@ -26,6 +26,20 @@ export const apiGetUserByUsername = (username) =>
       reject(error);
     }
   });
+
+export const apiGetCurrentUser = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/users/current-user`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const apiGetUsers = () =>
   new Promise(async (resolve, reject) => {
     try {
@@ -38,6 +52,7 @@ export const apiGetUsers = () =>
       reject(error);
     }
   });
+
 export const apiGetUserById = (userId) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -50,6 +65,7 @@ export const apiGetUserById = (userId) =>
       reject(error);
     }
   });
+
 export const apiChangePersonalInfomation = (payload) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -63,6 +79,7 @@ export const apiChangePersonalInfomation = (payload) =>
       reject(error);
     }
   });
+
 export const apiChangeContactInfomation = (payload) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -76,6 +93,7 @@ export const apiChangeContactInfomation = (payload) =>
       reject(error);
     }
   });
+
 export const apiChangePassword = (payload) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -89,6 +107,7 @@ export const apiChangePassword = (payload) =>
       reject(error);
     }
   });
+
 export const apiChangeAddress = (payload) =>
   new Promise(async (resolve, reject) => {
     try {

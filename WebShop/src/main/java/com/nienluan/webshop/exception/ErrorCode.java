@@ -28,10 +28,10 @@ public enum ErrorCode {
     PRODUCT_OUT_OF_STOCK(16, "Product out of stock", HttpStatus.BAD_REQUEST ),
     ORDER_EXISTED(17,"Order already existed", HttpStatus.BAD_REQUEST),
     ORDER_NOT_EXISTED(18,"Order not existed",HttpStatus.BAD_REQUEST),
-    PROVINCE_NOT_FOUND(18,"Province not existed",HttpStatus.BAD_REQUEST),
-    DISTRICT_NOT_FOUND(18,"District not existed",HttpStatus.BAD_REQUEST),
-    WARD_NOT_FOUND(18,"Ward not existed",HttpStatus.BAD_REQUEST),
-
+    PROVINCE_NOT_EXISTED(19,"Province not existed",HttpStatus.BAD_REQUEST),
+    DISTRICT_NOT_EXISTED(20,"District not existed",HttpStatus.BAD_REQUEST),
+    WARD_NOT_EXISTED(21,"Ward not existed",HttpStatus.BAD_REQUEST),
+    CART_NOT_EXISTED(22,"Cart not existed",HttpStatus.BAD_REQUEST),
     //System
     UNAUTHORIZED(101,"You do not have permission",HttpStatus.FORBIDDEN),
     UNAUTHENTICATED(102,"Unauthenticated",HttpStatus.UNAUTHORIZED),
