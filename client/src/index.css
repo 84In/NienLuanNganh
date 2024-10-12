@@ -144,4 +144,15 @@
   accent-color: var(--primary-color);
   border: 1px solid #ccc;
   border-radius: 4px;
+  margin-left: 2px;
+  transform: scale(1.1); /* Increase size */
+}
+
+/* Custom radio */
+.custom-radio {
+  accent-color: var(--primary-color);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 2px;
+  transform: scale(1.1); /* Increase size */
 }

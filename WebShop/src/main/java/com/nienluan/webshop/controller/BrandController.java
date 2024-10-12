@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/brands")
 @RequiredArgsConstructor
@@ -56,6 +58,11 @@ public class BrandController {
                 .build();
     }
 
-
+    @GetMapping("/category/{codeName}")
+    public ApiResponse<?> getBrandByCategory(@PathVariable String codeName) {
+        return ApiResponse.<List<BrandResponse>>builder()
+                .result(brandService.getBrandByCategory(codeName))
+                .build();
+    }
 
 }

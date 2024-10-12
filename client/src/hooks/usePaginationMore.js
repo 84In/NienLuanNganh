@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axiosConfig from "../axiosConfig";
 
 const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {

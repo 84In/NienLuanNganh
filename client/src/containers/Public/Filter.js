@@ -1,31 +1,103 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
 import { bannerFilter } from "../../utils/constant";
+import { apiGetBrandByCategory } from "../../services";
+import { minAndMaxPrice } from "../../utils";
 
 const Filter = () => {
-  const type = window.location.pathname.split("/")[2];
-  const name = window.location.pathname.split("/")[3];
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [brands, setBrands] = useState([]);
+  const [path, setPath] = useState("");
+  const [type, setType] = useState("");
+  const [name, setName] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [sortDirection, setSortDirection] = useState("");
   const [urlApi, setUrlApi] = useState(`/api/v1/search/${type}/${name}`);
 
+  const [brandFilter, setBrandFilter] = useState([]);
+  const [priceFilter, setPriceFilter] = useState([]);
+
   const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 15, 10);
 
   useEffect(() => {
+    const handlePathChange = () => {
+      const pathParts = window.location.pathname.split("/");
+      setPath(window.location.pathname);
+      setType(pathParts[2]);
+      setName(pathParts[3]);
+    };
+    handlePathChange();
+
+    window.addEventListener("popstate", handlePathChange);
+    return () => {
+      window.removeEventListener("popstate", handlePathChange);
+    };
+  }, []);
+
+  useEffect(() => {
     let newUrl = `/api/v1/search/${type}/${name}`;
+
+    const queryParams = [];
     if (sortBy) {
-      newUrl += `?sortBy=${sortBy}`;
-      if (sortDirection) {
-        newUrl += `&sortDirection=${sortDirection}`;
-      }
+      queryParams.push(`sortBy=${sortBy}`);
+    }
+    if (sortDirection) {
+      queryParams.push(`sortDirection=${sortDirection}`);
+    }
+
+    if (brandFilter.length > 0) {
+      const brandsParam = brandFilter.join(",");
+      queryParams.push(`brand=${brandsParam}`);
+    }
+
+    if (priceFilter.length > 0) {
+      const price = minAndMaxPrice(priceFilter);
+      const pricesParam = `min=${price.min}&max=${price.max}`;
+      queryParams.push(`${pricesParam}`);
+    }
+
+    // Gộp tất cả query parameters lại
+    if (queryParams.length > 0) {
+      newUrl += `?${queryParams.join("&")}`;
     }
     setUrlApi(newUrl);
-  }, [sortBy, sortDirection, type, name]);
+    console.log(newUrl);
+  }, [urlApi, sortBy, sortDirection, type, name, priceFilter, brandFilter]);
+
+  useEffect(() => {
+    const fetchBrandByCategory = async () => {
+      const response = await apiGetBrandByCategory(name);
+      if (response.code === 0) {
+        setBrands(response.result);
+      }
+    };
+    fetchBrandByCategory();
+  }, [name]);
+
+  useEffect(() => {
+    const params = {};
+    if (brandFilter.length > 0) {
+      params.brand = brandFilter.join(",");
+    }
+    if (priceFilter.length > 0) {
+      const price = minAndMaxPrice(priceFilter);
+      params.min = price.min;
+      params.max = price.max;
+    }
+    setSearchParams(params);
+  }, [brandFilter, priceFilter, setSearchParams]);
+
+  const handleCategoryChange = (type, name) => {
+    setType(type);
+    setName(name);
+  };
+
+  console.log(brandFilter);
+  console.log(priceFilter);
 
   return (
     <Grid2
@@ -38,7 +110,14 @@ const Filter = () => {
         <BannerCarousel data={bannerFilter} slide={3} />
       </Grid2>
       <Grid2 item xs={12} md={3}>
-        <FilterSideBar />
+        <FilterSideBar
+          brands={brands}
+          brandFilter={brandFilter}
+          priceFilter={priceFilter}
+          setBrandFilter={setBrandFilter}
+          setPriceFilter={setPriceFilter}
+          onCategoryChange={handleCategoryChange}
+        />
       </Grid2>
       <Grid2 item container xs={12} md={8.8} gap={2}>
         <Grid2 item xs={12}>
@@ -66,10 +145,10 @@ const Filter = () => {
                     setSortDirection(newSortDirection);
                   }}
                 >
-                  <option value="" className="hidden" selected>
+                  <option value="" className="" selected>
                     Sắp xếp
                   </option>
-                  <option value="popular-desc">Phổ biến</option>
+                  {/* <option value="review-desc">Phổ biến</option> */}
                   <option value="price-asc">Giá tăng dần</option>
                   <option value="price-desc">Giá giảm dần</option>
                 </select>

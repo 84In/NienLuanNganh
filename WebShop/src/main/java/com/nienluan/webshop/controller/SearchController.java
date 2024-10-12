@@ -30,33 +30,29 @@ public class SearchController {
     @GetMapping("/category/{codeName}")
     public ApiResponse<?> searchProductsByCategory(Pageable pageable,
                                                    @PathVariable("codeName") String codeName,
-                                                   @RequestParam(required = false) String sortBy,
-                                                   @RequestParam(required = false) String sortDirection
+                                                   @RequestParam(name = "sortBy", required = false) String sortBy,
+                                                   @RequestParam(name = "sortDirection", required = false) String sortDirection,
+                                                   @RequestParam(name = "brand", required = false) List<String> brands,
+                                                   @RequestParam(name = "min", required = false) String min,
+                                                   @RequestParam(name = "max", required = false) String max
     ) {
-        if(sortBy == null || sortDirection == null) {
-            return ApiResponse.<Page<ProductResponse>>builder()
-                    .message("Get products successfully")
-                    .result(productService.getProductsByCategory(pageable, codeName))
-                    .build();
-        }
-        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
-        PageRequest sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        Page<ProductResponse> products = productService.getProductsByCategory(pageable, codeName, brands, min, max, sortBy, sortDirection);
 
         return ApiResponse.<Page<ProductResponse>>builder()
                 .message("Get products successfully")
-                .result(productService.getProductsByCategory(sortedPageable, codeName))
+                .result(products)
                 .build();
     }
 
     @GetMapping("/brand/{name}")
-    public ApiResponse<List<BrandResponse>> getBrandsByName(@PathVariable("name") String name){
+    public ApiResponse<List<BrandResponse>> getBrandsByName(@PathVariable("name") String name) {
         return ApiResponse.<List<BrandResponse>>builder()
                 .result(brandService.searchBrandByName(name))
                 .build();
     }
 
     @GetMapping("/promotion/{name}")
-    public ApiResponse<List<PromotionResponse>> getPromotionsByName(@PathVariable("name") String name){
+    public ApiResponse<List<PromotionResponse>> getPromotionsByName(@PathVariable("name") String name) {
         return ApiResponse.<List<PromotionResponse>>builder()
                 .result(promotionService.searchPromotion(name))
                 .build();

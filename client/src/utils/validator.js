@@ -33,3 +33,19 @@ export const validTotalPrice = (price, promotion, quantity) => {
       : price * quantity;
   return result;
 };
+
+export const minAndMaxPrice = (priceArray) => {
+  const prices = priceArray.map((range) => {
+    const [min, max] = range.split("-");
+    return {
+      min: parseInt(min),
+      max: max === "infinity" ? Infinity : parseInt(max),
+    };
+  });
+  const minPrice = Math.min(...prices.map((price) => price.min));
+  const maxPrice = Math.max(...prices.map((price) => (price.max === Infinity ? Infinity : price.max)));
+  return {
+    min: minPrice,
+    max: maxPrice === Infinity ? "infinity" : maxPrice,
+  };
+};

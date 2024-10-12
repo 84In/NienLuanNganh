@@ -1,14 +1,11 @@
 package com.nienluan.webshop.dto.response;
 
-import com.nienluan.webshop.common.BaseEntity;
 import com.nienluan.webshop.common.BaseResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigInteger;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter

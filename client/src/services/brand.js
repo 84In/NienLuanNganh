@@ -13,3 +13,16 @@ export const apiCreateBrand = (payload) =>
       reject(error);
     }
   });
+
+export const apiGetBrandByCategory = (codeName) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/brands/category/${codeName}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

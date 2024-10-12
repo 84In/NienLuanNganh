@@ -19,16 +19,7 @@ const authReducer = (state = initState, action) => {
         code: action.data.code,
         username: null,
         update: false,
-      };
-    case actionTypes.LOGIN_SUCCESS:
-      return {
-        ...state,
-        isLoggedIn: action.data.result.authenticated,
-        message: action.data.message,
-        token: action.data.result.token,
-        code: action.data.code,
-        username: action.data.result.username,
-        update: false,
+        result: null,
       };
     case actionTypes.REGISTER_FAIL:
       return {
@@ -41,6 +32,17 @@ const authReducer = (state = initState, action) => {
         update: !state.update,
         result: action.data.result,
       };
+    case actionTypes.LOGIN_SUCCESS:
+      return {
+        ...state,
+        isLoggedIn: action.data.result.authenticated,
+        message: action.data.message,
+        token: action.data.result.token,
+        code: action.data.code,
+        username: action.data.result.username,
+        update: false,
+        result: null,
+      };
     case actionTypes.LOGIN_FAIL:
       return {
         ...state,
@@ -50,6 +52,7 @@ const authReducer = (state = initState, action) => {
         code: action.data.code,
         username: null,
         update: !state.update,
+        result: null,
       };
     case actionTypes.LOGOUT:
       return {
@@ -59,6 +62,7 @@ const authReducer = (state = initState, action) => {
         token: null,
         code: null,
         username: null,
+        result: null,
       };
     default:
       return state;

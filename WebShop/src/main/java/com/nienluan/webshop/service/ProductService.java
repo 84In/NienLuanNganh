@@ -23,10 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -73,14 +76,39 @@ public class ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
-    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String categoryCodeName) {
-        if(!categoryRepository.existsByCodeName(categoryCodeName)){
+    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String codeNameCategory)
+    {
+        if(!categoryRepository.existsByCodeName(codeNameCategory)){
             throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
         }
-        Category category = categoryRepository.findByCodeName(categoryCodeName);
+        Category category = categoryRepository.findByCodeName(codeNameCategory);
         log.info(category.getName());
         Page<Product> products = productRepository.findByCategory(pageable, category);
         log.info("{} products", products.getTotalElements());
+        return products.map(productMapper::toProductResponse);
+    }
+
+    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String codeNameCategory, List<String> brands, String minStr, String maxStr, String sortBy, String sortDirection) {
+        if (!categoryRepository.existsByCodeName(codeNameCategory)) {
+            throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
+        }
+        Category category = categoryRepository.findByCodeName(codeNameCategory);
+
+        if (brands == null || brands.isEmpty()) {
+            brands = null;
+        }
+        BigDecimal min = (minStr != null && !minStr.isEmpty()) ? new BigDecimal(minStr) : null;
+        BigDecimal max = (maxStr != null && !maxStr.isEmpty() && !maxStr.equalsIgnoreCase("infinity")) ? new BigDecimal(maxStr) : null;
+
+        Pageable sortedPageable;
+        if (sortBy != null && !sortBy.isEmpty() && sortDirection != null && !sortDirection.isEmpty()) {
+            Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+            sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        } else {
+            sortedPageable = pageable;
+        }
+
+        Page<Product> products = productRepository.findByCategoryWithFilters(sortedPageable, category, brands, min, max);
         return products.map(productMapper::toProductResponse);
     }
 
