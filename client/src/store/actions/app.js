@@ -116,3 +116,41 @@ export const getCategories = () => async (dispatch) => {
     });
   }
 };
+export const getAdminProducts = (page) => async (dispatch) => {
+  try {
+    const response = await apis.apiGetAdminProduct(page);
+
+    if (response?.code === 0) {
+      console.log(response);
+      dispatch({
+        type: actionTypes.GET_ADMIN_PRODUCTS,
+        msg: "", // Có thể thêm thông điệp nếu cần
+        adminProducts: {
+          currentPage: page,
+          totalPages: response?.result.totalPages,
+          data: response?.result.content,
+        },
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_ADMIN_PRODUCTS,
+        msg: response.message,
+        adminProducts: {
+          currentPage: 0,
+          totalPages: 0,
+          data: [],
+        },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_ADMIN_PRODUCTS,
+      msg: "Có lỗi xảy ra", // Có thể thêm thông điệp lỗi
+      adminProducts: {
+        currentPage: 0,
+        totalPages: 0,
+        data: [],
+      },
+    });
+  }
+};

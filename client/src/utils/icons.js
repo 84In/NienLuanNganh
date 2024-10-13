@@ -12,6 +12,7 @@ import {
   BiX,
 } from "react-icons/bi";
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
+import { BiTrash } from "react-icons/bi";
 import { GoHomeFill, GoSearch } from "react-icons/go";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
@@ -39,5 +40,6 @@ const icons = {
   BiBookHeart,
   BiImage,
   AiFillCloseSquare,
+  BiTrash,
 };
 export default icons;

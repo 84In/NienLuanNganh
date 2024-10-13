@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import {
   Paper,
   styled,
@@ -13,12 +12,15 @@ import {
 import React from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
-import { capitalizeFirstLetterIfNeeded } from "../../../utils/format";
+import { capitalizeFirstLetterIfNeeded, formatDate } from "../../../utils/format";
+import Swal from "sweetalert2";
+import * as apis from "../../../services";
 
 const defaultAvatar = require("../../../assets/images/profile.png");
+const TYPE_REMOVE = ["product"];
 
-const AdminTable = ({ data, pagination }) => {
-  const { BiEdit } = icons;
+const AdminTable = ({ data, pagination, type }) => {
+  const { BiEdit, BiTrash } = icons;
 
   // Check if data exists
   if (data == null || data.length === 0) {
@@ -47,6 +49,34 @@ const AdminTable = ({ data, pagination }) => {
     },
   }));
 
+  const handleRemoveValue = async (id) => {
+    if (TYPE_REMOVE.includes(type)) {
+      Swal.fire({
+        title: "Bạn có chắc chắc không?",
+        html: `Hành động này sẽ không thể hoàn tác!
+        <br />
+        ID: ${id} sẽ bị xoá vĩnh viễn!`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "OK",
+        cancelButtonText: "Hủy",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await apis.apiDeleteProduct(id);
+          if (response?.code === 0) {
+            Swal.fire({
+              title: "Thành công!",
+              text: "Xoá thành công!",
+              icon: "success",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          }
+        }
+      });
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <TableContainer component={Paper}>
@@ -64,6 +94,7 @@ const AdminTable = ({ data, pagination }) => {
                   </StyledTableCell>
                 ))}
               <StyledTableCell>Edit</StyledTableCell>
+              {type !== "user" && <StyledTableCell>Delete</StyledTableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,6 +109,10 @@ const AdminTable = ({ data, pagination }) => {
                     <StyledTableCell key={index} align="left">
                       {key === "roles" ? (
                         dataItem[key].map((role) => role.name).join(", ")
+                      ) : key === "createdAt" || key === "updatedAt" ? (
+                        formatDate(dataItem[key])
+                      ) : key === "dob" ? (
+                        formatDate(dataItem[key])
                       ) : key === "avatar" ? (
                         dataItem[key] && (
                           <div className="flex items-center justify-center">
@@ -117,6 +152,16 @@ const AdminTable = ({ data, pagination }) => {
                     <BiEdit size={24} />
                   </NavLink>
                 </StyledTableCell>
+                {type !== "user" && (
+                  <StyledTableCell align="center">
+                    <button
+                      className={"text-primary-color underline-offset-1"}
+                      onClick={() => handleRemoveValue(dataItem.id)}
+                    >
+                      <BiTrash size={24} />
+                    </button>
+                  </StyledTableCell>
+                )}
               </StyledTableRow>
             ))}
           </TableBody>
