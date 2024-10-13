@@ -5,6 +5,7 @@ import { MainContainer } from "./components";
 import {
   AccountInfo,
   Cart,
+  Checkout,
   EditContact,
   Filter,
   Home,
@@ -71,6 +72,12 @@ function App() {
             path={path.ACCOUNT}
             element={
               <PrivateRoute element={<AccountInfo />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
+          />
+          <Route
+            path={path.CHECKOUT}
+            element={
+              <PrivateRoute element={<Checkout />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route

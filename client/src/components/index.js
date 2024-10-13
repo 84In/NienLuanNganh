@@ -3,6 +3,7 @@ export { default as ButtonCustom } from "./ButtonCustom";
 export { default as CartItem } from "./CartItem";
 export { default as CartSideBar } from "./CartSideBar";
 export { default as ContactButton } from "./ContactButton";
+export { default as CheckoutSideBar } from "./CheckoutSideBar";
 export { default as DotAlert } from "./DotAlert";
 export { default as Pagination } from "./Pagination";
 export { default as PaginationMore } from "./PaginationMore";

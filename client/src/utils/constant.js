@@ -13,13 +13,6 @@ import icons from "./icons";
 
 const { BiCreditCard, BiFile, BiGift, BiImage, BiSolidDashboard, BiSolidUserAccount, BiBookHeart } = icons;
 
-// const icon1 = require("../assets/images/icons/left-bar-icon1.png.webp");
-// const icon2 = require("../assets/images/icons/left-bar-icon2.png.webp");
-// const icon3 = require("../assets/images/icons/left-bar-icon3.png.webp");
-// const icon4 = require("../assets/images/icons/left-bar-icon4.png.webp");
-// const icon5 = require("../assets/images/icons/left-bar-icon5.png.webp");
-// const icon6 = require("../assets/images/icons/left-bar-icon6.png.webp");
-
 const widget1 = require("../assets/images/widget/widget1.png");
 const widget2 = require("../assets/images/widget/widget2.png");
 const widget3 = require("../assets/images/widget/widget3.png");
@@ -29,7 +22,9 @@ const widget6 = require("../assets/images/widget/widget6.png");
 const widget7 = require("../assets/images/widget/widget7.png");
 const widget8 = require("../assets/images/widget/widget8.png");
 
-// const product1 = require("../assets/images/product/product1.png");
+const paymentMethod1 = require("../assets/images/payment/oncash.png");
+const paymentMethod2 = require("../assets/images/payment/vnpay.png");
+const paymentMethod3 = require("../assets/images/payment/zalopay.png");
 
 export const path = {
   HOME: "/",
@@ -42,6 +37,7 @@ export const path = {
   PRODUCT_DETAIL: "product/id/:productId",
   PRODUCT_SEARCH: "search/:type/:name",
   ORDER_HISTORY: "order/history",
+  CHECKOUT: "checkout",
   ADMIN_HOME: "/manager",
   ADMIN_USER: "user",
   ADMIN_PRODUCT: "product",
@@ -186,5 +182,23 @@ export const widgetIcon = [
     icon: widget8,
     text: "Thế giới công nghệ",
     url: "/product/search/cong-nghe",
+  },
+];
+
+export const paymentMethods = [
+  {
+    image: paymentMethod1,
+    title: "Thanh toán tiền mặt",
+    name: "cash",
+  },
+  {
+    image: paymentMethod2,
+    title: "VNPAY",
+    name: "vnpay",
+  },
+  {
+    image: paymentMethod3,
+    title: "ZaloPay",
+    name: "zalopay",
   },
 ];

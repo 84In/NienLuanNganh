@@ -136,9 +136,9 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
                 },
               }}
               sx={{
-                width: "50px",
+                width: "68px",
                 "& .MuiInputBase-input": {
-                  width: "60px",
+                  width: "65px",
                   height: "15px",
                   boxSizing: "unset",
                 },

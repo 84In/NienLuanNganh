@@ -75,10 +75,10 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       }}
     >
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold">Giá:</h1> <span className="text-lg font-semibold">{formatCurrency(price)}</span>
+        <h1>Giá:</h1> <span>{formatCurrency(price)}</span>
       </div>
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="font-semibold">Số Lượng</h1>
+        <h1>Số Lượng</h1>
         <div className="flex items-center gap-1">
           <IconButton onClick={handleDecrease} size="small">
             <AiOutlineMinus />
@@ -102,11 +102,11 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
               },
             }}
             sx={{
-              width: "60px",
-              margin: "0 8px",
+              width: "70px",
               "& .MuiInputBase-input": {
-                width: "60px",
-                padding: "8.5px 14px",
+                width: "65px",
+                height: "20px",
+                boxSizing: "unset",
               },
             }}
           />
@@ -115,7 +115,7 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
           </IconButton>
         </div>
       </div>
-      <hr className="mx-4 mb-4 border-gray-400" />
+      <hr className="mx-1 mb-4 border-gray-400" />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="font-semibold">Tạm tính:</h1>{" "}
         <span className="text-xl font-bold text-error-color">{formatCurrency(totalPrice)}</span>

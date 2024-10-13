@@ -67,7 +67,7 @@ const Cart = ({ setIsModelLogin }) => {
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
       {alert && <AlertCustom title={"Thông báo"} content={alert} />}
-      <Grid2 item container xs={12} md={8.8} sx={{ display: "flex", gap: 2, alignContent: "flex-start" }}>
+      <Grid2 item container xs={12} lg={8.8} sx={{ display: "flex", gap: 2, alignContent: "flex-start" }}>
         <Grid2
           item
           xs={12}
@@ -148,7 +148,7 @@ const Cart = ({ setIsModelLogin }) => {
           )}
         </Grid2>
       </Grid2>
-      <Grid2 item container xs={12} md={3} sx={{ width: "100%" }}>
+      <Grid2 item container xs={12} lg={3} sx={{ width: "100%" }}>
         <CartSideBar totalAmount={totalAmount} />
       </Grid2>
     </Grid2>

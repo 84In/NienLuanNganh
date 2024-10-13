@@ -1,5 +1,6 @@
 export { default as AccountInfo } from "./AccountInfo";
 export { default as Cart } from "./Cart";
+export { default as Checkout } from "./Checkout";
 export { default as EditContact } from "./EditContact";
 export { default as Filter } from "./Filter";
 export { default as Footer } from "./Footer";
