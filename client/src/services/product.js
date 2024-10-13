@@ -51,3 +51,32 @@ export const apiCreateProduct = (payload) =>
       reject(error);
     }
   });
+export const apiDeleteProduct = (productId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "DELETE",
+        url: `/api/v1/products/${productId}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetAdminProduct = (page) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: "/api/v1/products",
+        params: {
+          page: page,
+        },
+      });
+      console.log(response);
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

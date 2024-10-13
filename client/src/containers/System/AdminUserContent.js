@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AdminTable from "../../components/System/Items/AdminTable";
 import { Loading, Pagination } from "../../components";
 import { usePagination } from "../../hooks";
@@ -15,6 +15,7 @@ const AdminUserContent = () => {
   return (
     <AdminTable
       data={data}
+      type={"user"}
       pagination={
         <Grid2 item xs={12}>
           <Pagination
