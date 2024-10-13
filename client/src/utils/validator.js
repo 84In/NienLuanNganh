@@ -20,7 +20,7 @@ export const validPromotion = (promotionArray) => {
   return result;
 };
 
-export const discountPrice = (price, promotion) => {
+export const validDiscountPrice = (price, promotion) => {
   const discount = price * (promotion?.discountPercentage / 100);
   return discount;
 };

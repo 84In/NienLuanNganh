@@ -6,9 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { apiUpdateCart } from "../../services";
 import * as actions from "../../store/actions";
 import { validPrice, validPromotion, validTotalPrice } from "../../utils/validator";
+import actionTypes from "../../store/actions/actionType";
+import { useNavigate } from "react-router-dom";
+import { path } from "../../utils";
 
 const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isLoggedIn, username } = useSelector((state) => state.auth);
 
   const minQuantity = 0;
@@ -30,6 +34,21 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       setIsModelLogin(true);
       return;
     }
+    if (quantity <= 0) {
+      setAlert("Vui lòng thêm số lượng");
+      setTimeout(() => setAlert(""), 5000);
+      return;
+    }
+    dispatch({
+      type: actionTypes.CREATE_CHECKOUT,
+      checkout: [
+        {
+          product: product,
+          quantity: quantity,
+        },
+      ],
+    });
+    navigate(path.HOME + path.CHECKOUT);
   };
 
   const handleAddToCart = async () => {

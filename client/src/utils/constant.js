@@ -146,42 +146,42 @@ export const widgetIcon = [
   {
     icon: widget1,
     text: "TOP DEAL",
-    url: "/product/search/topdeal",
+    url: "/search/topdeal",
   },
   {
     icon: widget2,
     text: "Trading",
-    url: "/product/search/trading",
+    url: "/search/trading",
   },
   {
     icon: widget3,
     text: "Coupon siêu hot",
-    url: "/product/search/coupon",
+    url: "/search/coupon",
   },
   {
     icon: widget4,
     text: "Xả kho nửa giá",
-    url: "/product/search/xa-kho",
+    url: "/search/xa-kho",
   },
   {
     icon: widget5,
     text: "Hàng ngoại giá hot",
-    url: "/product/search/hang-ngoai",
+    url: "/search/hang-ngoai",
   },
   {
     icon: widget6,
     text: "Cùng mẹ chăm bé",
-    url: "/product/search/cham-be",
+    url: "/search/cham-be",
   },
   {
     icon: widget7,
     text: "Một sách",
-    url: "/product/search/mot-sach",
+    url: "/search/mot-sach",
   },
   {
     icon: widget8,
     text: "Thế giới công nghệ",
-    url: "/product/search/cong-nghe",
+    url: "/search/cong-nghe",
   },
 ];
 

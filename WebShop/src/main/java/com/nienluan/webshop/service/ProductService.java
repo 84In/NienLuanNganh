@@ -18,19 +18,14 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.flogger.Flogger;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.ILoggerFactory;
-import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,9 +71,8 @@ public class ProductService {
                 .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
     }
 
-    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String codeNameCategory)
-    {
-        if(!categoryRepository.existsByCodeName(codeNameCategory)){
+    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String codeNameCategory) {
+        if (!categoryRepository.existsByCodeName(codeNameCategory)) {
             throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
         }
         Category category = categoryRepository.findByCodeName(codeNameCategory);
@@ -88,7 +82,11 @@ public class ProductService {
         return products.map(productMapper::toProductResponse);
     }
 
-    public Page<ProductResponse> getProductsByCategory(Pageable pageable, String codeNameCategory, List<String> brands, String minStr, String maxStr, String sortBy, String sortDirection) {
+    public Page<ProductResponse> getProductsByCategory(Pageable pageable,
+                                                       String codeNameCategory, List<String> brands,
+                                                       String minStr, String maxStr,
+                                                       String sortBy, String sortDirection
+    ) {
         if (!categoryRepository.existsByCodeName(codeNameCategory)) {
             throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
         }
@@ -156,14 +154,15 @@ public class ProductService {
         for (ProductCsvDTO product : products) {
 
             if (!brandRepository.existsByName(product.getBrandName())) {
-                brandRepository.save( Brand.builder().name(product.getBrandName()).build());
+                brandRepository.save(Brand.builder().name(product.getBrandName()).build());
             }
         }
         for (ProductCsvDTO product : products) {
             if (existingProductNames.contains(product.getName()) || productRepository.existsByName(product.getName())) {
                 continue; // Nếu sản phẩm đã tồn tại, bỏ qua
             }
-            Brand brand = brandRepository.findByName(product.getBrandName()).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
+            Brand brand = brandRepository.findByName(product.getBrandName())
+                    .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
             Product pr = Product.builder()
                     .name(product.getName())
                     .description(product.getDescription())
@@ -178,7 +177,6 @@ public class ProductService {
         }
 
     }
-
 
 
 }

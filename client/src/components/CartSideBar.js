@@ -1,8 +1,12 @@
 import { Box, Button } from "@mui/material";
 import React, { memo } from "react";
 import { formatCurrency } from "../utils/format";
+import { useNavigate } from "react-router-dom";
+import { path } from "../utils";
 
-const CartSideBar = ({ totalAmount }) => {
+const CartSideBar = ({ selectedItems, totalAmount }) => {
+  const navigate = useNavigate();
+
   return (
     <Box
       className="sticky top-4"
@@ -25,7 +29,15 @@ const CartSideBar = ({ totalAmount }) => {
         <span className="text-xl font-semibold text-error-color">{formatCurrency(totalAmount)}</span>
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
-        <Button onClick={""} variant="contained" color="error" size="large" fullWidth className="mb-2">
+        <Button
+          onClick={() => navigate(path.HOME + path.CHECKOUT)}
+          variant="contained"
+          color="error"
+          size="large"
+          fullWidth
+          className="mb-2"
+          disabled={!selectedItems || selectedItems.length <= 0}
+        >
           Thanh toán
         </Button>
       </div>

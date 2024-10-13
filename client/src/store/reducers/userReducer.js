@@ -4,6 +4,7 @@ const initState = {
   userData: null,
   msg: "",
   cart: {},
+  checkout: [],
 };
 const userReducer = (state = initState, action) => {
   switch (action.type) {
@@ -28,6 +29,11 @@ const userReducer = (state = initState, action) => {
         ...state,
         cart: action.cart || {},
         msg: action.msg || "",
+      };
+    case actionTypes.CREATE_CHECKOUT:
+      return {
+        ...state,
+        checkout: action.checkout || [],
       };
     case actionTypes.LOGOUT:
       return {

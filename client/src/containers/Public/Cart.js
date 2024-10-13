@@ -1,10 +1,12 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useState, useEffect } from "react"; // Thêm useEffect
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AlertCustom, CartItem, CartSideBar } from "../../components";
 import { validPrice, validPromotion, validTotalPrice } from "../../utils";
+import actionTypes from "../../store/actions/actionType";
 
 const Cart = ({ setIsModelLogin }) => {
+  const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.user);
 
   const [alert, setAlert] = useState("");
@@ -24,8 +26,7 @@ const Cart = ({ setIsModelLogin }) => {
   useEffect(() => {
     const calculateTotalAmount = () => {
       let total = 0;
-      selectedItems?.forEach((productId) => {
-        const item = cart?.cartDetails?.find((item) => item.product.id === productId);
+      selectedItems?.forEach((item) => {
         if (item) {
           const quantity = item?.quantity;
           const promotion = validPromotion(item?.product?.promotions);
@@ -42,22 +43,38 @@ const Cart = ({ setIsModelLogin }) => {
 
   const handleSelectAll = (isChecked) => {
     if (isChecked) {
-      const allProductIds = cart.cartDetails.map((item) => item.product.id);
-      setSelectedItems(allProductIds);
+      setSelectedItems((prev) => {
+        const allProduct = cart.cartDetails;
+        dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: allProduct });
+        return allProduct;
+      });
     } else {
-      setSelectedItems([]);
+      setSelectedItems((prev) => {
+        const allProduct = [];
+        dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: allProduct });
+        return allProduct;
+      });
     }
   };
 
   const handleSelectItem = (productId, isChecked) => {
     if (isChecked) {
-      setSelectedItems((prev) => [...prev, productId]);
+      setSelectedItems((prev) => {
+        const item = cart.cartDetails.find((item) => item.product.id === productId);
+        const newSelectedItems = [...prev, item];
+        dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: newSelectedItems });
+        return newSelectedItems;
+      });
     } else {
-      setSelectedItems((prev) => prev.filter((id) => id !== productId));
+      setSelectedItems((prev) => {
+        const newSelectedItems = prev.filter((item) => item.product.id !== productId);
+        dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: newSelectedItems });
+        return newSelectedItems;
+      });
     }
   };
 
-  console.log(selectedItems);
+  console.log(selectedItems.length);
 
   return (
     <Grid2
@@ -134,7 +151,7 @@ const Cart = ({ setIsModelLogin }) => {
                     data={item}
                     setAlert={setAlert}
                     setTotalAmount={setTotalAmount}
-                    isSelected={selectedItems.includes(item.product.id)}
+                    isSelected={selectedItems.includes(item)}
                     onSelectItem={handleSelectItem}
                   />
                   {index !== cart?.cartDetails?.length - 1 && (
@@ -149,7 +166,7 @@ const Cart = ({ setIsModelLogin }) => {
         </Grid2>
       </Grid2>
       <Grid2 item container xs={12} lg={3} sx={{ width: "100%" }}>
-        <CartSideBar totalAmount={totalAmount} />
+        <CartSideBar selectedItems={selectedItems} totalAmount={totalAmount} />
       </Grid2>
     </Grid2>
   );

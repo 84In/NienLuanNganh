@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { apiCreateCart, apiDeleteCartDetailInCart } from "../services";
 import * as actions from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { validPrice, validPromotion, validTotalPrice } from "../utils";
+import { validDiscountPrice, validPrice, validPromotion, validTotalPrice } from "../utils";
 
 const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelectItem }) => {
   const dispatch = useDispatch();
@@ -105,9 +105,16 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
         </Link>
       </div>
       <div className="flex w-6/12 flex-col items-center justify-center gap-y-4 grid-md:flex-row">
-        <div className="flex w-full items-center justify-center">
-          <p className="text-xs font-semibold grid-md:text-sm grid-lg:text-base">{formatCurrency(price)}</p>
-        </div>
+        {promotion ? (
+          <div className="flex w-full flex-col items-center">
+            <p className="text-sm font-semibold text-red-500">{formatCurrency(price)}</p>
+            <p className="text-xs text-gray-500 line-through">{formatCurrency(data?.product?.price)}</p>
+          </div>
+        ) : (
+          <div className="flex w-full items-center justify-center">
+            <p className="text-sm font-semibold">{formatCurrency(price)}</p>
+          </div>
+        )}
         <div className="flex w-full items-center justify-center">
           <div className="flex items-center gap-1">
             <IconButton onClick={handleDecrease} size="small">
@@ -150,7 +157,7 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
           </div>
         </div>
         <div className="flex w-full items-center justify-center">
-          <p className="text-sm font-semibold text-red-500 grid-md:text-base grid-lg:text-lg">
+          <p className="text-sm font-semibold text-red-500 grid-md:text-sm grid-lg:text-base">
             {formatCurrency(totalPrice)}
           </p>
         </div>
