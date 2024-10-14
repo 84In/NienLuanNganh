@@ -31,7 +31,7 @@ const CheckoutInfo = ({ userData }) => {
           </div>
           <div>
             <span className="font-semibold">Địa chỉ: </span>
-            {userData?.address.fullName}
+            {userData?.address?.fullName}
           </div>
         </div>
       )}

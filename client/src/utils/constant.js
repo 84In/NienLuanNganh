@@ -46,6 +46,9 @@ export const path = {
   ADMIN_PRODUCT_CREATE: "create-product",
   ADMIN_PRODUCT_EDIT: "edit/:id",
   ADMIN_PRODUCT_IMPORT_CSV: "upload-product",
+  ADMIN_ORDER: "order",
+  ADMIN_ORDER_STATISTICS: "statistics",
+  ADMIN_ORDER_EXPORT_CSV: "export-order",
 };
 
 export const adminSideBar = [

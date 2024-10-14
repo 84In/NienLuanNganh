@@ -10,3 +10,5 @@ export { default as AdminProductContent } from "./AdminProductContent";
 export { default as AdminProductCreate } from "./AdminProductCreate";
 export { default as AdminProductEditByID } from "./AdminProductEditByID";
 export { default as AdminProductCSV } from "./AdminProductCSV";
+export { default as AdminOrder } from "./AdminOrder";
+export { default as AdminOrderContent } from "./AdminOrderContent";

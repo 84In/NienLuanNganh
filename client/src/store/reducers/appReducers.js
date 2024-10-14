@@ -7,16 +7,6 @@ const initState = {
   districts: [],
   wards: [],
   categories: [],
-  adminProducts: {
-    currentPage: 0,
-    totalPages: 0,
-    data: [],
-  },
-  adminUsers: {
-    currentPage: 0,
-    totalPages: 0,
-    data: [],
-  },
 };
 const appReducer = (state = initState, action) => {
   switch (action.type) {
@@ -48,16 +38,6 @@ const appReducer = (state = initState, action) => {
       return {
         ...state,
         categories: action.categories || [],
-        msg: action.msg || "",
-      };
-    case actionTypes.GET_ADMIN_PRODUCTS:
-      return {
-        ...state,
-        adminProducts: action.adminProducts || {
-          currentPage: 0,
-          totalPages: 0,
-          data: [],
-        },
         msg: action.msg || "",
       };
     default:

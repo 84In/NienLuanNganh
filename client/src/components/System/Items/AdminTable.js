@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import {
   Paper,
   styled,
@@ -9,6 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import axiosConfig from "../../../axiosConfig";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
@@ -19,7 +21,7 @@ import * as apis from "../../../services";
 const defaultAvatar = require("../../../assets/images/profile.png");
 const TYPE_REMOVE = ["product"];
 
-const AdminTable = ({ data, pagination, type, reloadPage }) => {
+const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, setLoading, setTotalPage }) => {
   const { BiEdit, BiTrash } = icons;
 
   // Check if data exists
@@ -64,7 +66,7 @@ const AdminTable = ({ data, pagination, type, reloadPage }) => {
         if (result.isConfirmed) {
           const response = await apis.apiDeleteProduct(id);
           if (response?.code === 0) {
-            reloadPage();
+            reloadDataPage(currentPage);
             Swal.fire({
               title: "Thành công!",
               text: "Xoá thành công!",
@@ -75,6 +77,26 @@ const AdminTable = ({ data, pagination, type, reloadPage }) => {
           }
         }
       });
+    }
+  };
+
+  const reloadDataPage = async (currentPage) => {
+    setLoading(true);
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: url,
+        params: {
+          page: currentPage,
+        },
+      });
+      const result = response.result;
+      setValueData(result.content);
+      setTotalPage(result.totalPages);
+    } catch (error) {
+      console.error("Error fetching more data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
