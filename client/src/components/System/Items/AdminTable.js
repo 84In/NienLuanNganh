@@ -1,5 +1,9 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
+  Box,
+  Checkbox,
+  FormControlLabel,
   Paper,
   styled,
   Table,
@@ -11,7 +15,7 @@ import {
   TableRow,
 } from "@mui/material";
 import axiosConfig from "../../../axiosConfig";
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
 import { capitalizeFirstLetterIfNeeded, formatDate } from "../../../utils/format";
@@ -20,9 +24,12 @@ import * as apis from "../../../services";
 
 const defaultAvatar = require("../../../assets/images/profile.png");
 const TYPE_REMOVE = ["product"];
+const TYPE_CHECK_BOX = ["order", "product"];
 
 const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, setLoading, setTotalPage }) => {
   const { BiEdit, BiTrash } = icons;
+
+  const [selectedRows, setSelectedRows] = useState([]);
 
   // Check if data exists
   if (data == null || data.length === 0) {
@@ -38,6 +45,16 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
     },
     [`&.${tableCellClasses.body}`]: {
       fontSize: 14,
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      maxWidth: "150px",
+      "&:hover": {
+        whiteSpace: "normal",
+        overflow: "visible",
+        textOverflow: "unset",
+        maxWidth: "none",
+      },
     },
   }));
 
@@ -50,6 +67,34 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
       border: 0,
     },
   }));
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = data.map((dataItem) => dataItem.id);
+      setSelectedRows(newSelecteds);
+      return;
+    }
+    setSelectedRows([]);
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selectedRows.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selectedRows, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selectedRows.slice(1));
+    } else if (selectedIndex === selectedRows.length - 1) {
+      newSelected = newSelected.concat(selectedRows.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(selectedRows.slice(0, selectedIndex), selectedRows.slice(selectedIndex + 1));
+    }
+
+    setSelectedRows(newSelected);
+  };
+
+  const isSelected = (id) => selectedRows.indexOf(id) !== -1;
 
   const handleRemoveValue = async (id) => {
     if (TYPE_REMOVE.includes(type)) {
@@ -99,13 +144,34 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
       setLoading(false);
     }
   };
-
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
+              {TYPE_CHECK_BOX.includes(type) && (
+                <StyledTableCell padding="checkbox">
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Checkbox
+                      indeterminate={selectedRows.length > 0 && selectedRows.length < data.length}
+                      checked={data.length > 0 && selectedRows.length === data.length}
+                      onChange={handleSelectAllClick}
+                      sx={{
+                        color: "white",
+                        "&.Mui-checked": {
+                          color: "blue",
+                        },
+                        "&.MuiCheckbox-indeterminate": {
+                          color: "blue",
+                        },
+                        mr: 2,
+                      }}
+                    />
+                    <span style={{ whiteSpace: "nowrap" }}>Select all</span>
+                  </Box>
+                </StyledTableCell>
+              )}
               {Object.keys(sampleData)
                 .filter((key) => key !== "id")
                 .filter((key) => key !== "category_id")
@@ -122,7 +188,12 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
           </TableHead>
           <TableBody>
             {data.map((dataItem, index) => (
-              <StyledTableRow key={index}>
+              <StyledTableRow key={index} selected={isSelected}>
+                {TYPE_CHECK_BOX.includes(type) && (
+                  <StyledTableCell padding="checkbox">
+                    <Checkbox checked={isSelected(dataItem.id)} onChange={(event) => handleClick(event, dataItem.id)} />
+                  </StyledTableCell>
+                )}
                 {Object.keys(dataItem)
                   .filter((key) => key !== "id")
                   .filter((key) => key !== "category_id")
@@ -149,8 +220,10 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       ) : key === "address" ? (
                         dataItem[key]?.fullName
                       ) : key === "images" ? (
-                        <div className="flex w-28 flex-wrap justify-around gap-1">
+                        <div className="group relative flex w-28 flex-wrap justify-around gap-1 overflow-hidden">
+                          {/* Chỉ hiển thị 4 hình ảnh nhỏ */}
                           {JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                            .slice(0, 4) // Hiển thị 4 hình ảnh nhỏ
                             .map((item, idx) => (
                               <div key={idx}>
                                 <img
@@ -160,6 +233,21 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                                 />
                               </div>
                             ))}
+
+                          {/* Danh sách hình ảnh lớn hiện ra khi hover */}
+                          <div className="absolute left-0 top-0 z-10 hidden bg-white p-2 group-hover:block">
+                            <div className="flex flex-wrap gap-1">
+                              {JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                                .map((item, idx) => (
+                                  <img
+                                    key={idx}
+                                    src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                                    alt={`Full Image ${idx}`}
+                                    style={{ width: "100px", height: "100px" }} // Kích thước hình ảnh lớn hơn
+                                  />
+                                ))}
+                            </div>
+                          </div>
                         </div>
                       ) : key === "category" || key === "brand" ? (
                         dataItem[key].name
