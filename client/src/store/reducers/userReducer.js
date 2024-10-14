@@ -35,6 +35,11 @@ const userReducer = (state = initState, action) => {
         ...state,
         checkout: action.checkout || [],
       };
+    case actionTypes.REMOVE_CHECKOUT:
+      return {
+        ...state,
+        checkout: [],
+      };
     case actionTypes.LOGOUT:
       return {
         ...state,

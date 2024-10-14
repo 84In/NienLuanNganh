@@ -5,12 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.query.sqm.FetchClauseType;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +23,7 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String shippingAddress;
-    BigInteger totalAmount;
+    BigDecimal totalAmount;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", nullable = false)
     StatusOrder status;

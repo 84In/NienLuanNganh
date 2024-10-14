@@ -1,8 +1,75 @@
 import { Box, Button } from "@mui/material";
 import React, { memo } from "react";
 import { formatCurrency } from "../utils/format";
+import { apiCreateOrder } from "../services";
+import { path, validPrice, validPromotion } from "../utils";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import actionTypes from "../store/actions/actionType";
+import * as actions from "../store/actions";
 
-const CheckoutSideBar = ({ checkout, totalDiscountPrice, totalAmount }) => {
+const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice, totalAmount, setAlert }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleCheckout = async () => {
+    if (!userData?.address?.fullName || userData?.address?.fullName === "") {
+      setAlert("Vui lòng điền địa chỉ trước khi thanh toán");
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+      return;
+    }
+    if (!paymentMethod) {
+      setAlert("Vui lòng chọn phương thức thanh toán");
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+      return;
+    }
+    try {
+      const orderDetails = checkout.map((item) => {
+        const promotion = validPromotion(item?.product?.promotions);
+        const price = validPrice(item?.product?.price, promotion);
+        return {
+          productId: item?.product?.id,
+          priceAtTime: price,
+          quantity: item?.quantity,
+        };
+      });
+
+      const order = {
+        shippingAddress: userData?.address?.fullName,
+        totalAmount: totalAmount,
+        paymentMethod: paymentMethod,
+        orderDetails: orderDetails,
+      };
+      console.log(order);
+
+      const response = await apiCreateOrder(paymentMethod, order);
+      if (response?.code === 0) {
+        setAlert("Thanh toán thành công");
+        dispatch({ type: actionTypes.REMOVE_CHECKOUT });
+        dispatch(actions.getCartCurrentUser());
+        navigate(path.HOME + path.ORDER_HISTORY);
+      }
+      if (response?.code === 5) {
+        setAlert("Sản phẩm không tồn tại ");
+      }
+      if (response?.code === 16) {
+        setAlert("Sản phẩm đã hết");
+      }
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    } catch (error) {
+      setAlert("Lỗi!");
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -30,7 +97,7 @@ const CheckoutSideBar = ({ checkout, totalDiscountPrice, totalAmount }) => {
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
         <Button
-          onClick={""}
+          onClick={handleCheckout}
           variant="contained"
           color="error"
           size="large"

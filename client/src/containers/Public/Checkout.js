@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 
 const Checkout = () => {
   const { userData, checkout } = useSelector((state) => state.user);
+
   const [totalDiscountPrice, setTotalDiscountPrice] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
-
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [alert, setAlert] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   useEffect(() => {
     const calculateTotalAmount = () => {
@@ -32,9 +33,8 @@ const Checkout = () => {
 
     calculateTotalAmount();
   }, [checkout]);
-  const handleSelectPaymentMethod = () => {};
 
-  console.log(userData);
+  console.log(paymentMethod);
   console.log(checkout);
 
   return (
@@ -44,7 +44,7 @@ const Checkout = () => {
       columnGap={"none"}
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
-      {/* {alert && <AlertCustom title={"Thông báo"} content={alert} />} */}
+      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
       <Grid2 item container xs={12} lg={8.8} sx={{ display: "flex", gap: 2, alignContent: "flex-start" }}>
         <Grid2
           item
@@ -73,7 +73,7 @@ const Checkout = () => {
               <div className="flex items-center justify-center p-4">Không có sản phẩm nào</div>
             ) : (
               <div className="gap-2 rounded-2xl border border-gray-600 p-2">
-                <div className="custom-scrollbar flex max-h-screen flex-col">
+                <div className="custom-scrollbar flex max-h-[55vh] flex-col">
                   {checkout.map((item, index) => (
                     <div key={index} className="flex items-center gap-4 p-4">
                       <CheckoutItem data={item} />
@@ -134,7 +134,14 @@ const Checkout = () => {
           <CheckoutInfo userData={userData} />
         </Grid2>
         <Grid2 item xs={12}>
-          <CheckoutSideBar checkout={checkout} totalDiscountPrice={totalDiscountPrice} totalAmount={totalAmount} />
+          <CheckoutSideBar
+            userData={userData}
+            paymentMethod={paymentMethod}
+            checkout={checkout}
+            totalDiscountPrice={totalDiscountPrice}
+            totalAmount={totalAmount}
+            setAlert={setAlert}
+          />
         </Grid2>
       </Grid2>
     </Grid2>

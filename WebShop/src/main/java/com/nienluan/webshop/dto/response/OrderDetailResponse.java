@@ -13,5 +13,6 @@ import java.math.BigDecimal;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetailResponse {
     ProductResponse product;
+    BigDecimal priceAtTime;
     BigDecimal quantity;
 }

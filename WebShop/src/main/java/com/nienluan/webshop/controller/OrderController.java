@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
     OrderService orderService;
 
-    @PostMapping
+    @PostMapping("/cash")
     public ApiResponse<?> createOrder(@RequestBody OrderRequest request) {
         return ApiResponse.<OrderResponse>builder()
                 .message("Create order successfully")
-                .result(orderService.createOrder(request))
+                .result(orderService.createOrderWithCash(request))
                 .build();
     }
 

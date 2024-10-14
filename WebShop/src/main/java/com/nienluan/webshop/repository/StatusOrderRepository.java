@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StatusOrderRepository extends JpaRepository<StatusOrder, String> {
+    StatusOrder findByName(String name);
+
+    StatusOrder findByNameEquals(String name);
 }

@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { FaCheckCircle, FaInfoCircle, FaShoppingCart, FaTimesCircle } from "react-icons/fa";
 import { formatCurrency } from "../utils/format";
 import { Button } from "@mui/material";
+import { BiInfoCircle } from "react-icons/bi";
 
 const OrderItem = ({ product }) => {
   return (
@@ -37,8 +38,8 @@ const OrderItem = ({ product }) => {
         </div>
         <div className="flex flex-col gap-2 grid-sm:flex-row">
           <Button variant="outlined" size="small" className="whitespace-nowrap">
-            <FaShoppingCart className="mr-2 h-4 w-4" />
-            Mua lại
+            <BiInfoCircle className="mr-2 h-4 w-4" />
+            Chi tiết
           </Button>
         </div>
       </div>

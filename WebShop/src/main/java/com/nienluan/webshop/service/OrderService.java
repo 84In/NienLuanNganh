@@ -16,7 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,59 +44,65 @@ public class OrderService {
     PaymentMapper paymentMapper;
     PaymentMethodMapper paymentMethodMapper;
     ProductMapper productMapper;
+    private final CartRepository cartRepository;
 
-    public OrderResponse createOrder(OrderRequest request) {
-        StatusOrder statusOrder = statusOrderRepository.findById(request.getStatus())
-                .orElseThrow(() -> new AppException(ErrorCode.STATUS_ORDER_NOT_EXISTED));
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(request.getPaymentMethod())
-                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_METHOD_NOT_EXISTED));
-        Payment payment = paymentRepository.findById(request.getPayment())
-                .orElseThrow(() -> new AppException(ErrorCode.PAYMENT_NOT_EXISTED));
-        User user = userRepository.findByUsername(request.getUser())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    @Transactional
+    public OrderResponse createOrderWithCash(OrderRequest request) {
+        String pendingStatusOrder = "pending";
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        StatusOrder statusOrder = statusOrderRepository.findByName(pendingStatusOrder);
+        PaymentMethod paymentMethod = paymentMethodRepository.findByName(request.getPaymentMethod());
+
+        //Kiểm tra OrderDetail trước khi thêm Order
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for (OrderDetailRequest orderDetailRequest : request.getOrderDetails()) {
+            Product product = productRepository.findById(orderDetailRequest.getProductId())
+                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+
+            // Kiểm tra số lượng sản phẩm có đủ tồn kho không
+            BigDecimal orderQuantity = orderDetailRequest.getQuantity();
+            if (product.getStockQuantity().compareTo(orderQuantity) < 0) {
+                throw new AppException(ErrorCode.PRODUCT_OUT_OF_STOCK);
+            }
+
+            orderDetails.add(OrderDetail.builder()
+                    .product(product)
+                    .priceAtTime(orderDetailRequest.getPriceAtTime())
+                    .quantity(orderQuantity)
+                    .build());
+        }
 
         Order order = Order.builder()
                 .shippingAddress(request.getShippingAddress())
                 .totalAmount(request.getTotalAmount())
                 .status(statusOrder)
                 .paymentMethod(paymentMethod)
-                .payment(payment)
                 .user(user)
                 .build();
 
         //Lưu đơn hàng
         order = orderRepository.save(order);
-        List<OrderDetail> products = new ArrayList<>();
-        //Tạo và lưu chi tiết đơn hàng
-        for (OrderDetailRequest productRequest : request.getOrderDetails()) {
-            Product product = productRepository.findById(productRequest.getProduct())
-                    .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
-            // Kiểm tra số lượng sản phẩm có đủ tồn kho không
-            BigDecimal orderQuantity = productRequest.getQuantity();
-            if (product.getStockQuantity().compareTo(orderQuantity) < 0) {
-                throw new AppException(ErrorCode.PRODUCT_OUT_OF_STOCK);
-            }
-
-            // Cập nhật số lượng tồn kho
-            product.setStockQuantity(product.getStockQuantity().subtract(orderQuantity));
+        if (!cartRepository.existsByUser(user)) {
+            throw new AppException(ErrorCode.CART_NOT_EXISTED);
+        }
+        var cart = cartRepository.findByUser(user);
+        for (OrderDetail orderDetail : orderDetails) {
+            Product product = orderDetail.getProduct();
+            //Cập nhật số lượng trong kho
+            product.setStockQuantity(product.getStockQuantity().subtract(orderDetail.getQuantity()));
             productRepository.save(product);
 
-            // Tạo chi tiết đơn hàng
-            OrderDetail orderDetail = OrderDetail.builder()
-                    .order(order)
-                    .product(product)
-                    .quantity(productRequest.getQuantity())
-                    .build();
+            //Liên kết OrderDetail với Order và lưu vào DB
+            orderDetail.setOrder(order);
+            orderDetailRepository.save(orderDetail);
 
-            // Lưu chi tiết đơn hàng
-            OrderDetail orderDetailResponse = orderDetailRepository.save(orderDetail);
-
-            products.add(orderDetailResponse);
+            cart.getCartDetails().removeIf(cartDetail -> cartDetail.getProduct().getId().equals(product.getId()));
         }
-        //Trả về phản hồi cho người dùng
-
-        return toOrderResponse(order, products);
+        cartRepository.save(cart);
+        return toOrderResponse(order, orderDetails);
     }
 
     public OrderResponse getOrder(String orderId) {

@@ -7,6 +7,7 @@ import com.nienluan.webshop.dto.response.ProductResponse;
 import com.nienluan.webshop.entity.Brand;
 import com.nienluan.webshop.entity.Category;
 import com.nienluan.webshop.entity.Product;
+import com.nienluan.webshop.entity.Promotion;
 import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.ProductMapper;
@@ -26,9 +27,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -178,5 +178,11 @@ public class ProductService {
 
     }
 
+    public Optional<Promotion> getHighestDiscountPromotion(Product product) {
+        LocalDate today = LocalDate.now();
 
+        return product.getPromotions().stream()
+                .filter(promotion -> !today.isBefore(promotion.getStartDate()) && !today.isAfter(promotion.getEndDate()))
+                .max(Comparator.comparing(Promotion::getDiscountPercentage));
+    }
 }

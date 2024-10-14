@@ -1,14 +1,11 @@
 package com.nienluan.webshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "t_carts")
@@ -27,6 +24,6 @@ public class Cart {
     @JoinColumn(name = "user_id")
     User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     List<CartDetail> cartDetails = new ArrayList<>();
 }

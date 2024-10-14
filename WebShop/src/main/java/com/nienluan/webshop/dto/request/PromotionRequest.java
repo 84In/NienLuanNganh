@@ -3,9 +3,7 @@ package com.nienluan.webshop.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +17,4 @@ public class PromotionRequest {
     Integer discountPercentage;
     LocalDate startDate;
     LocalDate endDate;
-    BigDecimal stockQuantity;
 }

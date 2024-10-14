@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Getter
@@ -17,7 +17,7 @@ import java.util.Set;
 public class OrderResponse extends BaseResponse {
     String id;
     String shippingAddress;
-    BigInteger totalAmount;
+    BigDecimal totalAmount;
     StatusOrderResponse status;
     PaymentMethodResponse paymentMethod;
     PaymentResponse payment;

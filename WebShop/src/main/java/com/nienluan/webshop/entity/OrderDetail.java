@@ -1,7 +1,6 @@
 package com.nienluan.webshop.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +19,7 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     BigDecimal quantity;
+    BigDecimal priceAtTime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
     Order order;
