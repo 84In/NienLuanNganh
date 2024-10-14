@@ -186,6 +186,7 @@ CREATE TABLE `t_reviews`
     `rating`     int      DEFAULT 0,
     `comment`    text     default null,
     `user_id`    varchar(255) not null,
+    `status`     BOOLEAN  DEFAULT TRUE,
     `product_id` varchar(255) not null,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

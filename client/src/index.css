@@ -156,3 +156,21 @@
   margin-left: 2px;
   transform: scale(1.1); /* Increase size */
 }
+
+
+.relative {
+  position: relative; /* Để chứa hình ảnh lớn hơn */
+}
+
+.group:hover .absolute {
+  display: block; /* Hiện hình ảnh lớn hơn khi hover */
+}
+
+.absolute {
+  display: none; /* Mặc định ẩn hình ảnh lớn hơn */
+  background-color: white; /* Nền cho danh sách hình ảnh */
+  border: 1px solid #ccc; /* Đường viền cho danh sách hình ảnh */
+  border-radius: 4px; /* Bo góc cho danh sách hình ảnh */
+  z-index: 10; /* Để danh sách nằm trên các phần tử khác */
+  padding: 5px; /* Khoảng cách bên trong cho danh sách hình ảnh */
+}
