@@ -8,22 +8,24 @@ const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {
   const [totalElements, setTotalElements] = useState(0);
 
   const fetchMoreData = async (currentSize) => {
-    setLoading(true);
-    try {
-      const response = await axiosConfig({
-        method: "GET",
-        url: url,
-        params: {
-          size: currentSize,
-        },
-      });
-      const result = response.result;
-      setData(result.content);
-      setTotalElements(result.totalElements);
-    } catch (error) {
-      console.error("Error fetching more data:", error);
-    } finally {
-      setLoading(false);
+    if (!url.includes("//")) {
+      setLoading(true);
+      try {
+        const response = await axiosConfig({
+          method: "GET",
+          url: url,
+          params: {
+            size: currentSize,
+          },
+        });
+        const result = response.result;
+        setData(result.content);
+        setTotalElements(result.totalElements);
+      } catch (error) {
+        console.error("Error fetching more data:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
