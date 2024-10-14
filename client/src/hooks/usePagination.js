@@ -36,21 +36,13 @@ const usePagination = (url, initialPage = 0) => {
 
   const nextPage = () => {
     if (currentPage < totalPages - 1) {
-      setCurrentPage((prev) => {
-        const next = prev + 1;
-        setSearchParams({ page: next });
-        return next;
-      });
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage((prev) => {
-        const next = prev - 1;
-        setSearchParams({ page: next });
-        return next;
-      });
+      setCurrentPage((prev) => prev - 1);
     }
   };
 

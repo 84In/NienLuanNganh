@@ -37,3 +37,5 @@ export { default as AdminItemInputPrice } from "./System/Items/AdminItemInputPri
 export { default as AdminItemInputStock } from "./System/Items/AdminItemInputStock";
 export { default as AdminItemName } from "./System/Items/AdminItemName";
 export { default as AdminNavButton } from "./System/Items/AdminNavButton";
+export { default as AdminTable } from "./System/Items/AdminTable";
+export { default as AdminItemPagination } from "./System/Items/AdminItemPagination";

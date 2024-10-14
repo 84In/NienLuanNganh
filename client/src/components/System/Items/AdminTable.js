@@ -19,7 +19,7 @@ import * as apis from "../../../services";
 const defaultAvatar = require("../../../assets/images/profile.png");
 const TYPE_REMOVE = ["product"];
 
-const AdminTable = ({ data, pagination, type }) => {
+const AdminTable = ({ data, pagination, type, reloadPage }) => {
   const { BiEdit, BiTrash } = icons;
 
   // Check if data exists
@@ -64,6 +64,7 @@ const AdminTable = ({ data, pagination, type }) => {
         if (result.isConfirmed) {
           const response = await apis.apiDeleteProduct(id);
           if (response?.code === 0) {
+            reloadPage();
             Swal.fire({
               title: "Thành công!",
               text: "Xoá thành công!",

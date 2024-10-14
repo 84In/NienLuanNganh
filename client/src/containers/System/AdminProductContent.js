@@ -1,48 +1,56 @@
-import React, { useEffect } from "react";
-import AdminTable from "../../components/System/Items/AdminTable";
-import { Loading, Pagination } from "../../components";
-import { usePagination } from "../../hooks";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import React, { useEffect, useState } from "react";
+import { AdminTable, Loading, AdminItemPagination } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 const AdminProductContent = () => {
   const dispatch = useDispatch();
   const { data, currentPage, totalPages } = useSelector((state) => state.app.adminProducts);
+  const [valuCurrentPage, setValueCurrentPage] = useState(currentPage);
+  const [valueData, setValueDate] = useState(data);
+  const [totalPage, setTotalPage] = useState(totalPages || 1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(actions.getAdminProducts(0));
   }, []);
   useEffect(() => {
-    console.log(data);
-    console.log(currentPage);
-    console.log(totalPages);
+    setValueDate(data);
+    setValueCurrentPage(currentPage);
+    setTotalPage(totalPages);
   }, [data, currentPage, totalPages]);
 
-  // const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-  //   usePagination("/api/v1/products", 0);
+  useEffect(() => {
+    dispatch(actions.getAdminProducts(valuCurrentPage));
+  }, [valuCurrentPage]);
 
-  // if (loading) {
-  //   return <Loading />;
-  // }
+  useEffect(() => {
+    if (!data) setLoading(true);
+  }, [data]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const reloadPage = () => {
+    dispatch(actions.getAdminProducts(valuCurrentPage));
+  };
 
   return (
     <AdminTable
-      data={data}
+      reloadPage={reloadPage}
+      data={valueData}
       type={"product"}
-      // pagination={
-      //   <Grid2 item xs={12}>
-      //     <Pagination
-      //       currentPage={currentPage}
-      //       setCurrentPage={setCurrentPage}
-      //       totalPages={totalPages}
-      //       nextPage={nextPage}
-      //       prevPage={prevPage}
-      //       hasNextPage={hasNextPage}
-      //       hasPrevPage={hasPrevPage}
-      //     />
-      //   </Grid2>
-      // }
+      pagination={
+        <Grid2 item xs={12}>
+          <AdminItemPagination
+            currentPage={valuCurrentPage}
+            setCurrentPage={setValueCurrentPage}
+            totalPages={totalPage}
+          />
+        </Grid2>
+      }
     />
   );
 };
