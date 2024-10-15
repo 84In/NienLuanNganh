@@ -17,7 +17,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages, nextPage, prevPag
   }
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex w-full items-center justify-center">
       {!(startPage === 0 && endPage === 0) && (
         <div className="pagination flex items-center gap-2 p-2">
           <button

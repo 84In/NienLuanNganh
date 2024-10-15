@@ -16,7 +16,7 @@ const StyledCard = styled(Card)({
 });
 
 const ProductCard = ({ product }) => {
-  const imageArray = product?.images ? JSON.parse(product.images.replace(/'/g, '"')) : [];
+  const imageArray = product?.images ? JSON.parse(product?.images.replace(/'/g, '"')) : [];
   const firstImage = imageArray[0] ? imageArray[0] : null;
   const promotion = validPromotion(product?.promotions);
   const price = validPrice(product?.price, promotion);
@@ -43,12 +43,10 @@ const ProductCard = ({ product }) => {
               <Rating name="half-rating-read" precision={0.5} value={product?.rating} readOnly size="small" />
               {promotion ? (
                 <>
-                  <p className="text-lg font-bold text-red-500 grid-sm:text-xl">{formatCurrency(price)}</p>
+                  <p className="text-xl font-bold text-red-500 grid-sm:text-lg">{formatCurrency(price)}</p>
                   <Box sx={{ display: "flex", alignItems: "baseline", mt: 1, gap: 1 }}>
-                    <p className="text-sm text-gray-500 line-through">{formatCurrency(product?.price)}</p>
-                    <p className="rounded bg-red-100 p-1 text-xs font-semibold text-red-500">
-                      -{promotion?.discountPercentage}%
-                    </p>
+                    <p className="text-xs text-gray-500 line-through">{formatCurrency(product?.price)}</p>
+                    <p className="rounded bg-red-100 p-1 text-xs text-red-500">-{promotion?.discountPercentage}%</p>
                   </Box>
                 </>
               ) : (

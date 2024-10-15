@@ -7,6 +7,7 @@ export { default as Footer } from "./Footer";
 export { default as Header } from "./Header";
 export { default as Home } from "./Home";
 export { default as Login } from "./Login";
+export { default as OrderDetail } from "./OrderDetail";
 export { default as OrderHistory } from "./OrderHistory";
 export { default as Page404 } from "./Page404";
 export { default as ProductDetail } from "./ProductDetail";

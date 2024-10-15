@@ -14,9 +14,9 @@ import java.util.Set;
 @Setter
 @Getter
 @Table(name = "t_orders")
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order extends BaseEntity {
     @Id

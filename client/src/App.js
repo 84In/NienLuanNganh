@@ -9,6 +9,7 @@ import {
   EditContact,
   Filter,
   Home,
+  OrderDetail,
   OrderHistory,
   Page404,
   ProductDetail,
@@ -47,6 +48,7 @@ function App() {
       setTimeout(() => {
         dispatch(actions.getCurrentUser());
         dispatch(actions.getCartCurrentUser());
+        // dispatch(actions.getOrderCurrentUser());
       }, 200);
     }
   }, [isLoggedIn, username, dispatch]);
@@ -121,6 +123,12 @@ function App() {
             path={path.ORDER_HISTORY}
             element={
               <PrivateRoute element={<OrderHistory />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
+          />
+          <Route
+            path={path.ORDER_DETAIL}
+            element={
+              <PrivateRoute element={<OrderDetail />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail setIsModelLogin={setIsModelLogin} />} />

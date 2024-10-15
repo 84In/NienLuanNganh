@@ -20,7 +20,7 @@ export { default as PaginationMore } from "./PaginationMore";
 export { default as FilterSideBar } from "./Product/FilterSideBar";
 export { default as Product } from "./Product/Product";
 export { default as ProductCard } from "./Product/ProductCard";
-export { default as ProductCarousel } from "./Product/ProductCarousel";
+export { default as ProductImagesCarousel } from "./Product/ProductImagesCarousel";
 export { default as ProductInfo } from "./Product/ProductInfo";
 export { default as Purchase } from "./Product/Purchase";
 export { default as Review } from "./Product/Review";

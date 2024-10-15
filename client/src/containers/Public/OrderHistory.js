@@ -1,27 +1,14 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo } from "react";
 import { GoSearch } from "react-icons/go";
-import { OrderItem, SearchBar } from "../../components";
-
-const product1 = require("../../assets/images/product/product1.png");
+import { OrderItem, Pagination, SearchBar } from "../../components";
+import { usePagination } from "../../hooks";
 
 const OrderHistory = () => {
-  const items = [
-    {
-      name: "Capo Musedo MC-02 - Bạc",
-      price: 109000,
-      quantity: 2,
-      image: product1,
-      status: "delivered",
-    },
-    {
-      name: "Tay Cầm Chơi Game PC Đầu USB Có Rung,Joystick",
-      price: 70999,
-      quantity: 1,
-      image: product1,
-      status: "cancelled",
-    },
-  ];
+  const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
+    usePagination(`api/v1/orders/current-user`, 0, 5);
+
+  console.log(data);
 
   return (
     <Grid2
@@ -44,13 +31,22 @@ const OrderHistory = () => {
       >
         <h1 className="mb-4 text-lg font-semibold">Đơn hàng của tôi</h1>
         <div className="w-full">
-          <SearchBar IconBefore={GoSearch} TextContent={"Tìm đơn hàng"} Name={"order-search"} />
+          <SearchBar IconBefore={GoSearch} TextContent={"Tra cứu"} Name={"order-search"} />
         </div>
         <div className="w-full space-y-6 px-0 py-4 grid-md:px-4 grid-md:py-4">
-          {items.map((item, index) => (
+          {data?.map((item, index) => (
             <OrderItem product={item} key={index} />
           ))}
         </div>
+        <Pagination
+          currentPage={currentPage}
+          hasNextPage={hasNextPage}
+          hasPrevPage={hasPrevPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </Grid2>
     </Grid2>
   );

@@ -47,6 +47,8 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
       console.log(order);
 
       const response = await apiCreateOrder(paymentMethod, order);
+      console.log(response);
+
       if (response?.code === 0) {
         setAlert("Thanh toán thành công");
         dispatch({ type: actionTypes.REMOVE_CHECKOUT });

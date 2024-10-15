@@ -9,23 +9,23 @@ const CheckoutItem = ({ data }) => {
 
   return (
     <div className="flex w-full items-center">
-      <div className="h-20 w-1/12 min-w-20">
+      <div className="h-20 w-1/12 min-w-12 grid-md:min-w-20">
         <img className="h-20 w-16 object-contain" src={firstImage} alt={data?.product?.name}></img>
       </div>
-      <div className="flex w-7/12 flex-col gap-1 text-sm text-gray-500">
-        <p className="line-clamp-1">{data?.product?.name}</p>
+      <div className="flex w-6/12 flex-col gap-1 text-xs text-gray-500 grid-md:w-7/12 grid-md:text-sm">
+        <p className="line-clamp-2 grid-md:line-clamp-1">{data?.product?.name}</p>
         <p>SL: {data?.quantity}</p>
       </div>
-      <div className="flex w-4/12 items-center justify-end gap-2">
-        {promotion ? (
-          <>
-            <p className="text-xs text-gray-500 line-through">{formatCurrency(data?.product?.price)}</p>
-            <p className="text-sm font-semibold text-red-500">{formatCurrency(price)}</p>
-          </>
-        ) : (
-          <p className="text-sm font-semibold">{formatCurrency(price)}</p>
-        )}
-      </div>
+      {promotion ? (
+        <div className="flex w-5/12 flex-col-reverse items-center justify-end gap-2 grid-md:w-4/12 grid-md:flex-row">
+          <p className="text-xs text-gray-500 line-through">{formatCurrency(data?.product?.price)}</p>
+          <p className="text-xs font-semibold text-red-500 grid-md:text-sm">{formatCurrency(price)}</p>
+        </div>
+      ) : (
+        <div className="flex w-5/12 items-center justify-end gap-2 grid-md:w-4/12">
+          <p className="text-xs font-semibold grid-md:text-sm">{formatCurrency(price)}</p>
+        </div>
+      )}
     </div>
   );
 };

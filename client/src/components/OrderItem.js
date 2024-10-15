@@ -1,46 +1,80 @@
-import React, { memo } from "react";
-import { FaCheckCircle, FaInfoCircle, FaShoppingCart, FaTimesCircle } from "react-icons/fa";
-import { formatCurrency } from "../utils/format";
 import { Button } from "@mui/material";
-import { BiInfoCircle } from "react-icons/bi";
+import React, { memo } from "react";
+import { BiBlock, BiCheckDouble, BiInfoCircle, BiSolidPackage } from "react-icons/bi";
+import { FaShippingFast } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { formatCurrency } from "../utils/format";
 
 const OrderItem = ({ product }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col gap-2 rounded-lg bg-white p-2 shadow-md grid-md:p-4">
-      <div className={`flex items-center gap-2 ${product.status === "delivered" ? "text-green-600" : "text-red-600"}`}>
-        {product.status === "delivered" ? (
-          <>
-            <FaCheckCircle className="h-5 w-5" />
-            <span className="font-medium">Giao hàng thành công</span>
-          </>
+      <div className="mb-2 flex flex-col justify-between gap-2 p-2 grid-md:flex-row">
+        {product?.status?.name === "pending" ? (
+          <div className={`flex items-center gap-2 text-zinc-700`}>
+            <BiSolidPackage className="h-5 w-5" />
+            <span className="text-sm font-semibold">Chờ xác nhận</span>
+          </div>
+        ) : product?.status?.name === "shipping" ? (
+          <div className={`flex items-center gap-2 text-blue-600`}>
+            <FaShippingFast className="h-5 w-5" />
+            <span className="text-sm font-semibold">Đang giao hàng</span>
+          </div>
+        ) : product?.status?.name === "canceled" ? (
+          <div className={`flex items-center gap-2 text-red-600`}>
+            <BiBlock className="h-5 w-5" />
+            <span className="text-sm font-semibold">Đã hủy</span>
+          </div>
         ) : (
-          <>
-            <FaTimesCircle className="h-5 w-5" />
-            <span className="font-medium">Đã hủy</span>
-          </>
+          <div className={`flex items-center gap-2 text-green-600`}>
+            <BiCheckDouble className="h-5 w-5" />
+            <span className="text-sm font-semibold">Hoàn tất</span>
+          </div>
         )}
+        <div className="flex items-center text-sm text-gray-500">
+          <p>Mã: {product?.id}</p>
+        </div>
       </div>
-      <div className="flex items-start gap-4">
-        <img src={product.image} alt={product.name} className="h-20 w-20 rounded object-cover" />
-        <div className="flex-grow">
-          <h3 className="line-clamp-3 font-medium">{product.name}</h3>
-        </div>
-        <div className="text-right">
-          <p className="font-medium">{formatCurrency(product.price)}</p>
-          <p className="text-sm text-gray-500">x{product.quantity}</p>
-        </div>
+      <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
+      <div className="custom-scrollbar flex max-h-[21rem] flex-col gap-4 px-2 py-4">
+        {product?.orderDetails?.map((item, index) => (
+          <Link to={`/product/id/${item?.product?.id}`}>
+            <div key={index} className="flex items-start">
+              <div className="h-20 w-1/12 min-w-12 grid-md:min-w-20">
+                <img
+                  src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
+                  alt={item?.product?.name + index}
+                  className="h-20 w-16 object-contain"
+                />
+              </div>
+              <div className="ml-2 flex w-7/12 flex-col gap-1 grid-md:w-8/12">
+                <p className="line-clamp-2">{item?.product?.name}</p>
+              </div>
+              <div className="w-5/12 text-right align-middle grid-md:w-4/12">
+                <p className="text-xs font-medium grid-md:text-sm">{formatCurrency(item?.priceAtTime)}</p>
+                <p className="text-sm text-gray-500">x{item?.quantity}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
       </div>
       <hr className="flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-500">Tổng tiền:</p>
-          <p className="text-xl font-semibold">{formatCurrency(product.price * product.quantity)}</p>
-        </div>
+      <div className="flex w-full items-center justify-between p-2">
         <div className="flex flex-col gap-2 grid-sm:flex-row">
-          <Button variant="outlined" size="small" className="whitespace-nowrap">
+          <Button
+            variant="outlined"
+            size="small"
+            className="whitespace-nowrap"
+            onClick={() => navigate(`/order/id/${product?.id}`)}
+          >
             <BiInfoCircle className="mr-2 h-4 w-4" />
             Chi tiết
           </Button>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Tổng tiền:</p>
+          <p className="text-xl font-semibold">{formatCurrency(product?.totalAmount)}</p>
         </div>
       </div>
     </div>

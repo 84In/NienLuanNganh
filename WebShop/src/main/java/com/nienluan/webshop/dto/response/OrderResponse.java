@@ -10,9 +10,9 @@ import java.util.Set;
 
 @Getter
 @Setter
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse extends BaseResponse {
     String id;

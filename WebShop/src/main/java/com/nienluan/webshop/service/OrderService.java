@@ -13,9 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,7 +97,10 @@ public class OrderService {
             orderDetail.setOrder(order);
             orderDetailRepository.save(orderDetail);
 
-            cart.getCartDetails().removeIf(cartDetail -> cartDetail.getProduct().getId().equals(product.getId()));
+            cart.getCartDetails().removeIf(cartDetail ->
+                    cartDetail.getProduct().getId().equals(product.getId()) &&
+                            cartDetail.getQuantity().compareTo(orderDetail.getQuantity()) == 0
+            );
         }
         cartRepository.save(cart);
         return toOrderResponse(order, orderDetails);
@@ -108,10 +109,21 @@ public class OrderService {
     public OrderResponse getOrder(String orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
-
         List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(order);
-
         return toOrderResponse(order, orderDetails);
+    }
+
+    public Page<OrderResponse> getOrderCurrentUser(Pageable pageable) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        Pageable sortedByDate = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Order> ordersPage = orderRepository.findByUser(user, sortedByDate);
+        return ordersPage.map(order -> {
+            List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(order);
+            return toOrderResponse(order, orderDetails);
+        });
     }
 
     public Page<OrderResponse> getAllOrders(Pageable pageable) {
@@ -129,6 +141,7 @@ public class OrderService {
     private OrderResponse toOrderResponse(Order order, List<OrderDetail> orderDetails) {
         Set<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
                 .map(orderDetail -> OrderDetailResponse.builder()
+                        .priceAtTime(orderDetail.getPriceAtTime())
                         .product(productMapper.toProductResponse(orderDetail.getProduct()))
                         .quantity(orderDetail.getQuantity())
                         .build())
@@ -143,6 +156,8 @@ public class OrderService {
                 .paymentMethod(paymentMethodMapper.toPaymentMethodResponse(order.getPaymentMethod()))
                 .user(userMapper.toUserResponse(order.getUser()))
                 .orderDetails(orderDetailResponses)
+                .createdAt(order.getCreatedAt())
+                .updatedAt(order.getUpdatedAt())
                 .build();
     }
 

@@ -19,7 +19,7 @@ const Product = ({ title, products }) => {
     >
       <h2 className="mb-4 px-2 text-lg font-semibold text-rose-500">{title}</h2>
       <Grid2 container spacing={1}>
-        {products.slice(0, 6 * 2).map((product, index) => (
+        {products?.slice(0, 6 * 2).map((product, index) => (
           <Grid2 item xs={6} sm={4} md={3} lg={2.4} key={index}>
             <Link to={`/product/id/${product.id}`} state={{ product }}>
               <ProductCard product={product} />

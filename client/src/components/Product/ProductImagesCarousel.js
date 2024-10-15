@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 
-const ProductCarousel = ({ product }) => {
+const ProductImagesCarousel = ({ product }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [images, setImages] = useState([]);
 
@@ -81,4 +81,4 @@ const ProductCarousel = ({ product }) => {
   );
 };
 
-export default memo(ProductCarousel);
+export default memo(ProductImagesCarousel);

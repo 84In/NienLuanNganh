@@ -37,7 +37,6 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
           productId: data?.product?.id,
         },
       });
-      console.log(response);
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
       }
@@ -53,7 +52,6 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
         cartId: cartId,
         productId: data?.product?.id,
       });
-      console.log(response);
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
         setAlert("Xóa sản phẩm thành công");

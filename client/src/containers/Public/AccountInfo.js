@@ -1,7 +1,7 @@
 import { Button, FormControl, FormHelperText, OutlinedInput } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
-import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone } from "react-icons/bi";
+import { BiCurrentLocation, BiEnvelope, BiLockOpenAlt, BiPencil, BiPhone, BiSolidPencil } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AlertCustom, ContactButton } from "../../components";
@@ -181,7 +181,7 @@ const AccountInfo = () => {
                   onChange={handleAvatarChange}
                 />
                 <label htmlFor="avatarInput" className="cursor-pointer">
-                  <BiPencil />
+                  <BiSolidPencil />
                 </label>
               </div>
             </div>

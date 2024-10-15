@@ -94,3 +94,27 @@ export const getCartCurrentUser = () => async (dispatch) => {
     });
   }
 };
+
+export const getOrderCurrentUser = () => async (dispatch) => {
+  try {
+    const response = await apis.apiGetOrderCurrentUser();
+
+    if (response?.code === 0) {
+      dispatch({
+        type: actionTypes.GET_ORDER,
+        order: response.result,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_ORDER_FAIL,
+        msg: response.message,
+        order: {},
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_ORDER_FAIL,
+      order: null,
+    });
+  }
+};

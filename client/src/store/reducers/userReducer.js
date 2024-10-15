@@ -4,6 +4,7 @@ const initState = {
   userData: null,
   msg: "",
   cart: {},
+  order: {},
   checkout: [],
 };
 const userReducer = (state = initState, action) => {
@@ -28,6 +29,18 @@ const userReducer = (state = initState, action) => {
       return {
         ...state,
         cart: action.cart || {},
+        msg: action.msg || "",
+      };
+    case actionTypes.GET_ORDER:
+      return {
+        ...state,
+        order: action.order || {},
+        msg: action.msg || "",
+      };
+    case actionTypes.GET_ORDER_FAIL:
+      return {
+        ...state,
+        order: action.order || {},
         msg: action.msg || "",
       };
     case actionTypes.CREATE_CHECKOUT:

@@ -70,12 +70,12 @@ const Checkout = () => {
               </Link>
             </div>
             {!checkout || checkout?.length <= 0 ? (
-              <div className="flex items-center justify-center p-4">Không có sản phẩm nào</div>
+              <div className="flex items-center justify-center px-4 py-10">Không có sản phẩm nào</div>
             ) : (
               <div className="gap-2 rounded-2xl border border-gray-600 p-2">
                 <div className="custom-scrollbar flex max-h-[55vh] flex-col">
                   {checkout.map((item, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4">
+                    <div key={index} className="flex items-center gap-4 p-2 grid-md:p-4">
                       <CheckoutItem data={item} />
                     </div>
                   ))}
@@ -101,8 +101,8 @@ const Checkout = () => {
           }}
         >
           <div>
-            <h1 className="text-lg font-semibold">Hình thức thanh toán</h1>
-            <div className="mt-4 flex flex-col gap-4">
+            <h1 className="mb-4 text-lg font-semibold">Hình thức thanh toán</h1>
+            <div className="flex flex-col gap-4">
               {paymentMethods.map((item, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <input

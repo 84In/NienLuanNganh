@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (url, initialPage = 0) => {
+const usePagination = (url, initialPage = 0, size = 15) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = parseInt(searchParams.get("page")) || initialPage;
   const [currentPage, setCurrentPage] = useState(pageFromUrl);
@@ -12,22 +12,26 @@ const usePagination = (url, initialPage = 0) => {
 
   const fetchPageData = async (page) => {
     setLoading(true);
-    try {
-      const response = await axiosConfig({
-        method: "GET",
-        url: url,
-        params: {
-          page: page,
-        },
-      });
-      const result = response.result;
-      setData(result.content);
-      setTotalPages(result.totalPages);
-    } catch (error) {
-      console.error("Error fetching more data:", error);
-    } finally {
-      setLoading(false);
-    }
+    new Promise(async (resolve, reject) => {
+      try {
+        const response = await axiosConfig({
+          method: "GET",
+          url: url,
+          params: {
+            page: page,
+            size: size,
+          },
+        });
+        resolve(response);
+        const result = response?.result;
+        setData(result?.content);
+        setTotalPages(result?.totalPages);
+      } catch (error) {
+        console.error("Error fetching more data:", error);
+      } finally {
+        setLoading(false);
+      }
+    });
   };
 
   useEffect(() => {

@@ -41,4 +41,12 @@ public class OrderController {
                 .result(orderService.getOrder(id))
                 .build();
     }
+
+    @GetMapping("/current-user")
+    public ApiResponse<?> getOrder(Pageable pageable) {
+        return ApiResponse.<Page<OrderResponse>>builder()
+                .message("Get order successful")
+                .result(orderService.getOrderCurrentUser(pageable))
+                .build();
+    }
 }

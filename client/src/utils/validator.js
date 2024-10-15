@@ -9,8 +9,7 @@ export const validPromotion = (promotionArray) => {
           if (
             item.discountPercentage > (maxPromo?.discountPercentage || 0) &&
             currentDate >= startDate &&
-            currentDate <= endDate &&
-            item.stockQuantity > 0
+            currentDate <= endDate
           ) {
             return item;
           }

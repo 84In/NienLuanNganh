@@ -74,8 +74,6 @@ const Cart = ({ setIsModelLogin }) => {
     }
   };
 
-  console.log(selectedItems.length);
-
   return (
     <Grid2
       container
@@ -140,7 +138,7 @@ const Cart = ({ setIsModelLogin }) => {
             <div className="flex w-1/12 items-center justify-center"></div>
           </div>
           {cart?.cartDetails?.length <= 0 ? (
-            <div className="flex items-center justify-center p-4">Không có sản phẩm nào</div>
+            <div className="flex items-center justify-center px-4 py-10">Không có sản phẩm nào</div>
           ) : (
             <div className="custom-scrollbar flex flex-col gap-4">
               {cart?.cartDetails?.map((item, index) => (

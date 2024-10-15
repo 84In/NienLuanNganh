@@ -1,6 +1,6 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
-import { AlertCustom, ProductCarousel, ProductInfo, Purchase, Review } from "../../components";
+import { AlertCustom, ProductImagesCarousel, ProductInfo, Purchase, Review } from "../../components";
 import { apiGetProductById } from "../../services";
 
 const ProductDetail = ({ setIsModelLogin }) => {
@@ -45,7 +45,7 @@ const ProductDetail = ({ setIsModelLogin }) => {
           }}
         >
           <Grid2 item xs={12} md={6} sx={{ p: 1, height: "100%", width: "100%" }}>
-            <ProductCarousel product={product} />
+            <ProductImagesCarousel product={product} />
           </Grid2>
           <Grid2 item xs={12} md={6} sx={{ p: 1, width: "100%" }}>
             <ProductInfo product={product} />

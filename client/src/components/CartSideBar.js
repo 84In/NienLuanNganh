@@ -17,7 +17,7 @@ const CartSideBar = ({ selectedItems, totalAmount }) => {
         borderRadius: "8px",
         gap: "2rem",
         width: "100%",
-        height: "fit-content",
+        height: "100%",
       }}
     >
       <div className="mb-4 flex items-center justify-between text-gray-600">
@@ -35,7 +35,6 @@ const CartSideBar = ({ selectedItems, totalAmount }) => {
           color="error"
           size="large"
           fullWidth
-          className="mb-2"
           disabled={!selectedItems || selectedItems.length <= 0}
         >
           Thanh toán
