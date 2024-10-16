@@ -19,6 +19,7 @@ public class StatusOrder {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String name;
+    String codeName;
     @OneToMany(mappedBy = "status", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Order> orders = new HashSet<>();
 }

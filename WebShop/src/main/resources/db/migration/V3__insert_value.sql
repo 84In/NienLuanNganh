@@ -25,22 +25,22 @@ VALUES ('e3aabcbf-d7a8-4289-91e9-92afb39acb2f', 'Điện Thoại', 'dien-thoai',
 -- Query: select * from `t_payment_methods`
 -- Date: 2024-10-14 21:44
 */
-INSERT INTO `t_payment_methods` (`id`, `name`)
-VALUES ('35868063-f3c8-415c-9614-fd6b72155857', 'vnpay');
-INSERT INTO `t_payment_methods` (`id`, `name`)
-VALUES ('ae099c17-e2a4-4351-ae9b-07fd4a7e738f', 'cash');
-INSERT INTO `t_payment_methods` (`id`, `name`)
-VALUES ('bb66b1b6-c2ad-4630-95d6-e62fa335640e', 'zalopay');
+INSERT INTO `t_payment_methods` (`id`, `name`, `code_name`)
+VALUES ('35868063-f3c8-415c-9614-fd6b72155857', 'VNPay', 'vnpay');
+INSERT INTO `t_payment_methods` (`id`, `name`, `code_name`)
+VALUES ('ae099c17-e2a4-4351-ae9b-07fd4a7e738f', 'Tiền mặt', 'cash');
+INSERT INTO `t_payment_methods` (`id`, `name`, `code_name`)
+VALUES ('bb66b1b6-c2ad-4630-95d6-e62fa335640e', 'ZaloPay', 'zalopay');
 
 /*
 -- Query: select * from `t_status_order`
 -- Date: 2024-10-14 21:53
 */
-INSERT INTO `t_status_order` (`id`, `name`)
-VALUES ('290ac18c-887b-4a1f-b1bb-9686b40f37d8', 'pending');
-INSERT INTO `t_status_order` (`id`, `name`)
-VALUES ('2f498bfe-b96f-4191-a809-6c0bd606c4c8', 'shipping');
-INSERT INTO `t_status_order` (`id`, `name`)
-VALUES ('ab085525-a5f5-47b0-94a3-3fef2c4ba5fd', 'canceled');
-INSERT INTO `t_status_order` (`id`, `name`)
-VALUES ('c526b8e6-b7d5-46df-91d2-70c00885ff26', 'completed');
+INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+VALUES ('290ac18c-887b-4a1f-b1bb-9686b40f37d8', 'Chờ xác nhận', 'pending');
+INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+VALUES ('2f498bfe-b96f-4191-a809-6c0bd606c4c8', 'Đang giao hàng', 'shipping');
+INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+VALUES ('ab085525-a5f5-47b0-94a3-3fef2c4ba5fd', 'Đã hủy', 'canceled');
+INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+VALUES ('c526b8e6-b7d5-46df-91d2-70c00885ff26', 'Hoàn tất', 'completed');

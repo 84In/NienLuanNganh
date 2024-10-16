@@ -122,6 +122,7 @@ CREATE TABLE `t_payment_methods`
 (
     `id`         varchar(255) NOT NULL,
     `name`       varchar(255) NOT NULL UNIQUE,
+    `code_name`  varchar(255) NOT NULL UNIQUE,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -143,6 +144,7 @@ CREATE TABLE `t_status_order`
 (
     `id`         varchar(255) NOT NULL,
     `name`       varchar(255) NOT NULL UNIQUE,
+    `code_name`  varchar(255) NOT NULL UNIQUE,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)

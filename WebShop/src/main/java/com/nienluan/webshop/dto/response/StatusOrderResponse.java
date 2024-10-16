@@ -1,8 +1,5 @@
 package com.nienluan.webshop.dto.response;
 
-import com.nienluan.webshop.entity.District;
-import com.nienluan.webshop.entity.Province;
-import com.nienluan.webshop.entity.Ward;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,4 +12,5 @@ import lombok.experimental.FieldDefaults;
 public class StatusOrderResponse {
     String id;
     String name;
+    String codeName;
 }

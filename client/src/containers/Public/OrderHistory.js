@@ -48,8 +48,8 @@ const OrderHistory = () => {
           {orderStatusNav.map((item, index) => (
             <button
               key={index}
-              className={`h-full w-full p-2 text-sm grid-md:text-base ${currentStatus === item.status ? `border-b-2 border-blue-600 text-blue-600` : "text-gray-500"}`}
-              onClick={() => setCurrentStatus(item.status)}
+              className={`h-full w-full p-2 text-sm grid-md:text-base ${currentStatus === item.codeName ? `border-b-2 border-blue-600 text-blue-600` : "text-gray-500"}`}
+              onClick={() => setCurrentStatus(item.codeName)}
             >
               {item.name}
             </button>

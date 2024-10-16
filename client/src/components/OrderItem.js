@@ -11,17 +11,17 @@ const OrderItem = ({ product }) => {
   return (
     <div className="flex flex-col gap-2 rounded-lg bg-white p-2 shadow-md grid-md:p-4">
       <div className="mb-2 flex flex-col justify-between gap-2 p-2 grid-md:flex-row">
-        {product?.status?.name === "pending" ? (
+        {product?.status?.codeName === "pending" ? (
           <div className={`flex items-center gap-2 text-zinc-700`}>
             <BiSolidPackage className="h-5 w-5" />
             <span className="text-sm font-semibold">Chờ xác nhận</span>
           </div>
-        ) : product?.status?.name === "shipping" ? (
+        ) : product?.status?.codeName === "shipping" ? (
           <div className={`flex items-center gap-2 text-blue-600`}>
             <FaShippingFast className="h-5 w-5" />
             <span className="text-sm font-semibold">Đang giao hàng</span>
           </div>
-        ) : product?.status?.name === "canceled" ? (
+        ) : product?.status?.codeName === "canceled" ? (
           <div className={`flex items-center gap-2 text-red-600`}>
             <BiBlock className="h-5 w-5" />
             <span className="text-sm font-semibold">Đã hủy</span>
