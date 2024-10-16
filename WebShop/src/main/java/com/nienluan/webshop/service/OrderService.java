@@ -50,8 +50,8 @@ public class OrderService {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        StatusOrder statusOrder = statusOrderRepository.findByName(pendingStatusOrder);
-        PaymentMethod paymentMethod = paymentMethodRepository.findByName(request.getPaymentMethod());
+        StatusOrder statusOrder = statusOrderRepository.findByCodeName(pendingStatusOrder);
+        PaymentMethod paymentMethod = paymentMethodRepository.findByCodeName(request.getPaymentMethod());
 
         //Kiểm tra OrderDetail trước khi thêm Order
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -82,11 +82,9 @@ public class OrderService {
 
         //Lưu đơn hàng
         order = orderRepository.save(order);
-
-        if (!cartRepository.existsByUser(user)) {
-            throw new AppException(ErrorCode.CART_NOT_EXISTED);
-        }
-        var cart = cartRepository.findByUser(user);
+        var cart = cartRepository.existsByUser(user)
+                ? cartRepository.findByUser(user)
+                : Cart.builder().user(user).cartDetails(new ArrayList<>()).build();
         for (OrderDetail orderDetail : orderDetails) {
             Product product = orderDetail.getProduct();
             //Cập nhật số lượng trong kho
@@ -113,13 +111,18 @@ public class OrderService {
         return toOrderResponse(order, orderDetails);
     }
 
-    public Page<OrderResponse> getOrderCurrentUser(Pageable pageable) {
+    public Page<OrderResponse> getOrderCurrentUser(Pageable pageable, String status) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         Pageable sortedByDate = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        Page<Order> ordersPage = orderRepository.findByUser(user, sortedByDate);
+        StatusOrder statusOrder = (status != null && !status.isEmpty())
+                ? statusOrderRepository.findByCodeName(status)
+                : null;
+        Page<Order> ordersPage = statusOrder == null
+                ? orderRepository.findByUser(user, sortedByDate)
+                : orderRepository.findByUserAndStatus(user, statusOrder, sortedByDate);
         return ordersPage.map(order -> {
             List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(order);
             return toOrderResponse(order, orderDetails);

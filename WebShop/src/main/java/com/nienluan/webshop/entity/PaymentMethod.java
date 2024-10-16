@@ -19,6 +19,7 @@ public class PaymentMethod {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String name;
+    String codeName;
     @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Order> orders = new HashSet<>();
 }

@@ -1,8 +1,5 @@
 package com.nienluan.webshop.dto.request;
 
-import com.nienluan.webshop.entity.District;
-import com.nienluan.webshop.entity.Province;
-import com.nienluan.webshop.entity.Ward;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,4 +10,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StatusOrderRequest {
     String name;
+    String codeName;
 }

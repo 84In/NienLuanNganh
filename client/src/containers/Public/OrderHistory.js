@@ -1,14 +1,26 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { GoSearch } from "react-icons/go";
 import { OrderItem, Pagination, SearchBar } from "../../components";
 import { usePagination } from "../../hooks";
+import { orderStatusNav } from "../../utils";
+import { NavLink, useSearchParams } from "react-router-dom";
 
 const OrderHistory = () => {
+  const [searchParams, setSearchParams] = useSearchParams("");
+  const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
+  const [search, setSearch] = useState(`api/v1/orders/current-user`);
   const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(`api/v1/orders/current-user`, 0, 5);
+    usePagination(search, 0, 5);
 
-  console.log(data);
+  useEffect(() => {
+    const newSearch = currentStatus
+      ? `api/v1/orders/current-user?status=${currentStatus}`
+      : `api/v1/orders/current-user`;
+    setSearch(newSearch);
+    currentStatus ? setSearchParams({ status: currentStatus }) : setSearchParams({});
+    setCurrentPage(0);
+  }, [currentStatus]);
 
   return (
     <Grid2
@@ -29,7 +41,20 @@ const OrderHistory = () => {
           height: "fit-content",
         }}
       >
-        <h1 className="mb-4 text-lg font-semibold">Đơn hàng của tôi</h1>
+        <div className="w-full">
+          <h1 className="mb-4 text-lg font-semibold">Đơn hàng của tôi</h1>
+        </div>
+        <div className="mb-4 flex w-full items-center justify-between rounded-lg border">
+          {orderStatusNav.map((item, index) => (
+            <button
+              key={index}
+              className={`h-full w-full p-2 text-sm grid-md:text-base ${currentStatus === item.codeName ? `border-b-2 border-blue-600 text-blue-600` : "text-gray-500"}`}
+              onClick={() => setCurrentStatus(item.codeName)}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
         <div className="w-full">
           <SearchBar IconBefore={GoSearch} TextContent={"Tra cứu"} Name={"order-search"} />
         </div>

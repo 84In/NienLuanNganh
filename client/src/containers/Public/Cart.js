@@ -7,12 +7,12 @@ import actionTypes from "../../store/actions/actionType";
 
 const Cart = ({ setIsModelLogin }) => {
   const dispatch = useDispatch();
-  const { cart } = useSelector((state) => state.user);
+  const { cart, checkout } = useSelector((state) => state.user);
 
   const [alert, setAlert] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(checkout);
 
   useEffect(() => {
     const handleResize = () => {
@@ -51,7 +51,7 @@ const Cart = ({ setIsModelLogin }) => {
     } else {
       setSelectedItems((prev) => {
         const allProduct = [];
-        dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: allProduct });
+        dispatch({ type: actionTypes.REMOVE_CHECKOUT });
         return allProduct;
       });
     }
@@ -61,9 +61,12 @@ const Cart = ({ setIsModelLogin }) => {
     if (isChecked) {
       setSelectedItems((prev) => {
         const item = cart.cartDetails.find((item) => item.product.id === productId);
-        const newSelectedItems = [...prev, item];
-        dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: newSelectedItems });
-        return newSelectedItems;
+        if (!prev.some((selectedItem) => selectedItem.product.id === productId)) {
+          const newSelectedItems = [...prev, item];
+          dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: newSelectedItems });
+          return newSelectedItems;
+        }
+        return prev;
       });
     } else {
       setSelectedItems((prev) => {
@@ -73,6 +76,9 @@ const Cart = ({ setIsModelLogin }) => {
       });
     }
   };
+
+  console.log(checkout);
+  console.log(selectedItems);
 
   return (
     <Grid2
@@ -140,7 +146,7 @@ const Cart = ({ setIsModelLogin }) => {
           {cart?.cartDetails?.length <= 0 ? (
             <div className="flex items-center justify-center px-4 py-10">Không có sản phẩm nào</div>
           ) : (
-            <div className="custom-scrollbar flex flex-col gap-4">
+            <div className="custom-scrollbar flex max-h-[27rem] flex-col gap-4">
               {cart?.cartDetails?.map((item, index) => (
                 <div key={index}>
                   <CartItem
@@ -148,7 +154,9 @@ const Cart = ({ setIsModelLogin }) => {
                     cartId={cart?.id}
                     data={item}
                     setAlert={setAlert}
+                    selectedItems={selectedItems}
                     setTotalAmount={setTotalAmount}
+                    setSelectedItems={setSelectedItems}
                     isSelected={selectedItems.includes(item)}
                     onSelectItem={handleSelectItem}
                   />

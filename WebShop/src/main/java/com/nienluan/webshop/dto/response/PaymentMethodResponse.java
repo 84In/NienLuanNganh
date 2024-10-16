@@ -12,4 +12,5 @@ import lombok.experimental.FieldDefaults;
 public class PaymentMethodResponse {
     String id;
     String name;
+    String codeName;
 }

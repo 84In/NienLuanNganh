@@ -8,8 +8,18 @@ import { apiCreateCart, apiDeleteCartDetailInCart } from "../services";
 import * as actions from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { validDiscountPrice, validPrice, validPromotion, validTotalPrice } from "../utils";
+import actionTypes from "../store/actions/actionType";
 
-const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelectItem }) => {
+const CartItem = ({
+  cartId,
+  data,
+  setAlert,
+  setTotalAmount,
+  selectedItems,
+  setSelectedItems,
+  isSelected,
+  onSelectItem,
+}) => {
   const dispatch = useDispatch();
   const { username } = useSelector((state) => state.auth);
   const [quantity, setQuantity] = useState(data?.quantity);
@@ -28,17 +38,26 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
     }
   }, [quantity]);
 
-  const handleCreateCart = async (quantity) => {
+  const handleCreateCart = async (newQuantity) => {
     try {
       const response = await apiCreateCart({
         username: username,
         cartDetail: {
-          quantity: quantity,
+          quantity: newQuantity,
           productId: data?.product?.id,
         },
       });
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
+
+        // Cập nhật lại số lượng trong selectedItems
+        setSelectedItems((prev) => {
+          const updatedItems = prev.map((item) =>
+            item.product.id === data?.product?.id ? { ...item, quantity: newQuantity } : item,
+          );
+          dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: updatedItems });
+          return updatedItems;
+        });
       }
     } catch (error) {
       setAlert("Lỗi!");
@@ -78,7 +97,7 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
           type="checkbox"
           name={data?.product?.id}
           className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
-          checked={isSelected}
+          checked={isSelected || selectedItems.some((item) => item.product.id === data?.product?.id)}
           onChange={(e) => onSelectItem(data?.product?.id, e.target.checked)}
         />
       </div>
@@ -114,7 +133,7 @@ const CartItem = ({ cartId, data, setAlert, setTotalAmount, isSelected, onSelect
           </div>
         )}
         <div className="flex w-full items-center justify-center">
-          <div className="flex items-center gap-1">
+          <div className="flex h-full items-center gap-1">
             <IconButton onClick={handleDecrease} size="small">
               <AiOutlineMinus />
             </IconButton>
