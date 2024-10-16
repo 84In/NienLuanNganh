@@ -16,6 +16,10 @@ import {
 } from "./containers/Public";
 import {
   AdminBase,
+  AdminCategory,
+  AdminCategoryContent,
+  AdminCategoryCreate,
+  AdminCategoryEditByID,
   AdminHome,
   AdminOrder,
   AdminOrderContent,
@@ -147,6 +151,14 @@ function App() {
             <Route index element={<AdminUserContent />} />
             <Route path={path.ADMIN_USER_CREATE} element={<AdminUserCreate />} />
             <Route path={path.ADMIN_USER_EDIT} element={<AdminUserEditByID />} />
+          </Route>
+          <Route
+            path={path.ADMIN_CATEGORY}
+            element={<PrivateAdminFilterRouter element={AdminCategory} roles={["ADMIN"]} user={userData} />}
+          >
+            <Route index element={<AdminCategoryContent />} />
+            <Route path={path.ADMIN_CATEGORY_CREATE} element={<AdminCategoryCreate />} />
+            <Route path={path.ADMIN_CATEGORY_EDIT} element={<AdminCategoryEditByID />} />
           </Route>
           <Route
             path={path.ADMIN_PRODUCT}

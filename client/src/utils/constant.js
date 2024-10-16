@@ -11,7 +11,7 @@ import banner10 from "../assets/images/banner/banner10.png.webp";
 
 import icons from "./icons";
 
-const { BiCreditCard, BiFile, BiGift, BiImage, BiSolidDashboard, BiSolidUserAccount, BiBookHeart } = icons;
+const { BiCreditCard, BiFile, BiGift, BiImage, BiSolidDashboard, BiSolidUserAccount, BiBookHeart, BiCategory } = icons;
 
 const widget1 = require("../assets/images/widget/widget1.png");
 const widget2 = require("../assets/images/widget/widget2.png");
@@ -50,6 +50,9 @@ export const path = {
   ADMIN_ORDER: "order",
   ADMIN_ORDER_STATISTICS: "statistics",
   ADMIN_ORDER_EXPORT_CSV: "export-order",
+  ADMIN_CATEGORY: "category",
+  ADMIN_CATEGORY_CREATE: "create-category",
+  ADMIN_CATEGORY_EDIT: "edit/:id",
 };
 
 export const adminSideBar = [
@@ -62,6 +65,11 @@ export const adminSideBar = [
     name: "User",
     path: "user",
     icon: BiSolidUserAccount,
+  },
+  {
+    name: "Category",
+    path: "category",
+    icon: BiCategory,
   },
   {
     name: "Product",

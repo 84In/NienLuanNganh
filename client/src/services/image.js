@@ -27,3 +27,17 @@ export const apiUploadProductImages = (productName, formData) =>
       reject(error);
     }
   });
+
+export const apiUploadCategoryImages = (categoryName, formData) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: `/api/v1/upload/category/${categoryName}`,
+        data: formData,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

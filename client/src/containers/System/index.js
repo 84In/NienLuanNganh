@@ -12,3 +12,7 @@ export { default as AdminProductEditByID } from "./AdminProductEditByID";
 export { default as AdminProductCSV } from "./AdminProductCSV";
 export { default as AdminOrder } from "./AdminOrder";
 export { default as AdminOrderContent } from "./AdminOrderContent";
+export { default as AdminCategory } from "./AdminCategory";
+export { default as AdminCategoryContent } from "./AdminCategoryContent";
+export { default as AdminCategoryCreate } from "./AdminCategoryCreate";
+export { default as AdminCategoryEditByID } from "./AdminCategoryEditByID";

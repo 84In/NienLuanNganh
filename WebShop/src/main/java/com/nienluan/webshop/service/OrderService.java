@@ -42,7 +42,7 @@ public class OrderService {
     PaymentMapper paymentMapper;
     PaymentMethodMapper paymentMethodMapper;
     ProductMapper productMapper;
-    private final CartRepository cartRepository;
+    CartRepository cartRepository;
 
     @Transactional
     public OrderResponse createOrderWithCash(OrderRequest request) {

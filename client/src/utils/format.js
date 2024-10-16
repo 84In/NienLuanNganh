@@ -67,3 +67,16 @@ export const capitalizeFirstLetterIfNeeded = (string) => {
   // Nếu chưa in hoa, chuyển ký tự đầu thành chữ in hoa
   return firstChar.toUpperCase() + string.slice(1);
 };
+export const formatString = (str) => {
+  const normalizedStr = str
+    .normalize("NFD") // Chuẩn hóa chuỗi thành dạng tổ hợp ký tự
+    .replace(/[\u0300-\u036f]/g, ""); // Loại bỏ các dấu (dấu sắc, dấu huyền,...)
+
+  const formattedStr = normalizedStr
+    .toLowerCase() // Chuyển thành chữ thường
+    .replace(/[^a-z0-9\s]/g, "") // Loại bỏ tất cả ký tự đặc biệt, chỉ giữ lại chữ cái và số
+    .trim() // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
+    .replace(/\s+/g, "-"); // Thay thế khoảng trắng giữa các từ bằng dấu '-'
+
+  return formattedStr;
+};

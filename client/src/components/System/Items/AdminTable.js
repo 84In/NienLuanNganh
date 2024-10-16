@@ -3,7 +3,6 @@
 import {
   Box,
   Checkbox,
-  FormControlLabel,
   Paper,
   styled,
   Table,
@@ -15,21 +14,25 @@ import {
   TableRow,
 } from "@mui/material";
 import axiosConfig from "../../../axiosConfig";
+import * as actions from "../../../store/actions";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
 import { capitalizeFirstLetterIfNeeded, formatDate } from "../../../utils/format";
 import Swal from "sweetalert2";
 import * as apis from "../../../services";
+import { isJSON } from "../../../utils";
+import { useDispatch } from "react-redux";
 
 const defaultAvatar = require("../../../assets/images/profile.png");
-const TYPE_REMOVE = ["product"];
+const TYPE_REMOVE = ["product", "category"];
 const TYPE_CHECK_BOX = ["order", "product"];
 
 const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, setLoading, setTotalPage }) => {
   const { BiEdit, BiTrash } = icons;
 
   const [selectedRows, setSelectedRows] = useState([]);
+  const dispatch = useDispatch();
 
   // Check if data exists
   if (data == null || data.length === 0) {
@@ -49,6 +52,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
       overflow: "hidden",
       textOverflow: "ellipsis",
       maxWidth: "150px",
+      transition: "all 0.3s ease",
       "&:hover": {
         whiteSpace: "normal",
         overflow: "visible",
@@ -65,6 +69,10 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
     // Hide last border
     "&:last-child td, &:last-child th": {
       border: 0,
+    },
+    transition: "height 0.3s ease", // Smooth height transition
+    "&:hover": {
+      height: "auto", // Expand the row height on hover
     },
   }));
 
@@ -96,6 +104,17 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
 
   const isSelected = (id) => selectedRows.indexOf(id) !== -1;
 
+  const handleRemove = async (value, id) => {
+    switch (value) {
+      case "category":
+        return await apis.apiRemoveCategory(id);
+      case "product":
+        return await apis.apiDeleteProduct(id);
+      default:
+        return;
+    }
+  };
+
   const handleRemoveValue = async (id) => {
     if (TYPE_REMOVE.includes(type)) {
       Swal.fire({
@@ -109,9 +128,10 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
         cancelButtonText: "Hủy",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const response = await apis.apiDeleteProduct(id);
+          const response = await handleRemove(type, id);
           if (response?.code === 0) {
             reloadDataPage(currentPage);
+            if (type === "category") dispatch(actions.getCategories());
             Swal.fire({
               title: "Thành công!",
               text: "Xoá thành công!",
@@ -183,7 +203,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                   </StyledTableCell>
                 ))}
               <StyledTableCell>Edit</StyledTableCell>
-              {type !== "user" && <StyledTableCell>Delete</StyledTableCell>}
+              {TYPE_REMOVE.includes(type) && <StyledTableCell>Delete</StyledTableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -220,32 +240,60 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       ) : key === "address" ? (
                         dataItem[key]?.fullName
                       ) : key === "images" ? (
-                        <div className="group relative flex w-28 flex-wrap justify-around gap-1 overflow-hidden">
+                        <div className="group relative flex w-28 flex-wrap items-center justify-center gap-1 overflow-hidden">
                           {/* Chỉ hiển thị 4 hình ảnh nhỏ */}
-                          {JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
-                            .slice(0, 4) // Hiển thị 4 hình ảnh nhỏ
-                            .map((item, idx) => (
-                              <div key={idx}>
-                                <img
-                                  src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
-                                  alt={`Image ${idx}`}
-                                  style={{ width: "50px", height: "50px" }}
-                                />
-                              </div>
-                            ))}
+                          {dataItem[key] !== null && isJSON(dataItem[key].replace(/'/g, '"')) ? (
+                            JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                              .slice(0, 4) // Hiển thị 4 hình ảnh nhỏ
+                              .map((item, idx) => (
+                                <div key={idx} className="flex items-center justify-center">
+                                  <img
+                                    src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                                    alt={`Image ${idx}`}
+                                    style={{ width: "50px", height: "50px" }}
+                                  />
+                                </div>
+                              ))
+                          ) : (
+                            <div className="flex items-center justify-center">
+                              <img
+                                src={`${process.env.REACT_APP_SERVER_URL}${dataItem[key]}`}
+                                alt={`Image ${dataItem.name}`}
+                                style={{ width: "50px", height: "50px" }}
+                              />
+                            </div>
+                          )}
 
                           {/* Danh sách hình ảnh lớn hiện ra khi hover */}
                           <div className="absolute left-0 top-0 z-10 hidden bg-white p-2 group-hover:block">
-                            <div className="flex flex-wrap gap-1">
-                              {JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
-                                .map((item, idx) => (
-                                  <img
-                                    key={idx}
-                                    src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
-                                    alt={`Full Image ${idx}`}
-                                    style={{ width: "100px", height: "100px" }} // Kích thước hình ảnh lớn hơn
-                                  />
-                                ))}
+                            <div className="flex flex-wrap items-center justify-center gap-1">
+                              {dataItem[key] && isJSON(dataItem[key].replace(/'/g, '"')) ? (
+                                JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
+                                  .map((item, idx) => (
+                                    <img
+                                      key={idx}
+                                      src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                                      alt={`Full Image ${idx}`}
+                                      style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        transition: "transform 0.3s ease", // Mượt mà khi zoom
+                                      }}
+                                      className="hover:scale-150" // Kích thước hình ảnh lớn hơn
+                                    />
+                                  ))
+                              ) : (
+                                <img
+                                  src={`${process.env.REACT_APP_SERVER_URL}${dataItem[key]}`}
+                                  alt={`Image ${dataItem.name}`}
+                                  style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    transition: "transform 0.3s ease", // Mượt mà khi zoom
+                                  }}
+                                  className="hover:scale-150" // Phóng to 1.5 lần khi hover
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
@@ -263,7 +311,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                     <BiEdit size={24} />
                   </NavLink>
                 </StyledTableCell>
-                {type !== "user" && (
+                {TYPE_REMOVE.includes(type) && (
                   <StyledTableCell align="center">
                     <button
                       className={"text-primary-color underline-offset-1"}
