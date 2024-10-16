@@ -206,3 +206,11 @@ export const paymentMethods = [
     name: "zalopay",
   },
 ];
+
+export const orderStatusNav = [
+  { name: "Tất cả", status: "" },
+  { name: "Chờ xác nhận", status: "pending" },
+  { name: "Đang giao hàng", status: "shipping" },
+  { name: "Đã hủy", status: "canceled" },
+  { name: "Hoàn tất", status: "completed" },
+];

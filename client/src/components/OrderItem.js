@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { memo } from "react";
-import { BiBlock, BiCheckDouble, BiInfoCircle, BiSolidPackage } from "react-icons/bi";
+import { BiBlock, BiCheckCircle, BiCheckDouble, BiInfoCircle, BiSolidPackage } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { formatCurrency } from "../utils/format";
@@ -28,35 +28,37 @@ const OrderItem = ({ product }) => {
           </div>
         ) : (
           <div className={`flex items-center gap-2 text-green-600`}>
-            <BiCheckDouble className="h-5 w-5" />
+            <BiCheckCircle className="h-5 w-5" />
             <span className="text-sm font-semibold">Hoàn tất</span>
           </div>
         )}
-        <div className="flex items-center text-sm text-gray-500">
+        <div className="flex flex-col items-start gap-2 text-sm text-gray-500 grid-md:items-end">
           <p>Mã: {product?.id}</p>
+          <p>Ngày đặt hàng: {product?.createdAt.replace("T", " ")}</p>
         </div>
       </div>
       <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
       <div className="custom-scrollbar flex max-h-[21rem] flex-col gap-4 px-2 py-4">
         {product?.orderDetails?.map((item, index) => (
-          <Link to={`/product/id/${item?.product?.id}`}>
-            <div key={index} className="flex items-start">
-              <div className="h-20 w-1/12 min-w-12 grid-md:min-w-20">
-                <img
-                  src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
-                  alt={item?.product?.name + index}
-                  className="h-20 w-16 object-contain"
-                />
-              </div>
-              <div className="ml-2 flex w-7/12 flex-col gap-1 grid-md:w-8/12">
-                <p className="line-clamp-2">{item?.product?.name}</p>
-              </div>
-              <div className="w-5/12 text-right align-middle grid-md:w-4/12">
-                <p className="text-xs font-medium grid-md:text-sm">{formatCurrency(item?.priceAtTime)}</p>
-                <p className="text-sm text-gray-500">x{item?.quantity}</p>
-              </div>
+          <div key={index} className="flex items-start">
+            <div className="h-20 w-1/12 min-w-12 grid-md:min-w-20">
+              <img
+                src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
+                alt={item?.product?.name + index}
+                className="h-20 w-16 object-contain"
+              />
             </div>
-          </Link>
+            <div
+              className="ml-2 flex w-6/12 cursor-pointer flex-col gap-1 grid-md:w-7/12"
+              onClick={() => navigate(`/product/id/${item?.product?.id}`)}
+            >
+              <p className="line-clamp-2 text-sm grid-md:text-base">{item?.product?.name}</p>
+            </div>
+            <div className="w-5/12 text-right align-middle grid-md:w-4/12">
+              <p className="text-xs font-medium grid-md:text-sm">{formatCurrency(item?.priceAtTime)}</p>
+              <p className="text-sm text-gray-500">x{item?.quantity}</p>
+            </div>
+          </div>
         ))}
       </div>
       <hr className="flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />

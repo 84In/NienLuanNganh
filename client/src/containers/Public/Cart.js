@@ -140,7 +140,7 @@ const Cart = ({ setIsModelLogin }) => {
           {cart?.cartDetails?.length <= 0 ? (
             <div className="flex items-center justify-center px-4 py-10">Không có sản phẩm nào</div>
           ) : (
-            <div className="custom-scrollbar flex flex-col gap-4">
+            <div className="custom-scrollbar flex h-[27rem] flex-col gap-4">
               {cart?.cartDetails?.map((item, index) => (
                 <div key={index}>
                   <CartItem

@@ -36,7 +36,7 @@ const usePagination = (url, initialPage = 0, size = 15) => {
 
   useEffect(() => {
     fetchPageData(currentPage);
-  }, [currentPage]);
+  }, [currentPage, url]);
 
   const nextPage = () => {
     if (currentPage < totalPages - 1) {

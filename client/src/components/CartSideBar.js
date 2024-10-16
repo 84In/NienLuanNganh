@@ -17,7 +17,7 @@ const CartSideBar = ({ selectedItems, totalAmount }) => {
         borderRadius: "8px",
         gap: "2rem",
         width: "100%",
-        height: "100%",
+        height: "fit-content",
       }}
     >
       <div className="mb-4 flex items-center justify-between text-gray-600">
