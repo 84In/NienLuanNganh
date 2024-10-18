@@ -14,6 +14,19 @@ export const apiCreateOrder = (paymentMethod, payload) =>
     }
   });
 
+export const apiGetOrderDetailById = (orderId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/orders/${orderId}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const apiGetOrderCurrentUser = () =>
   new Promise(async (resolve, reject) => {
     try {

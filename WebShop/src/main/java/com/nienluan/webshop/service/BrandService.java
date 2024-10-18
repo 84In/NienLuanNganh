@@ -55,8 +55,8 @@ public class BrandService {
         return brandRepository.findByNameContaining(name).stream().map(brandMapper::toBrandResponse).toList();
     }
 
-    public List<BrandResponse> getBrandByCategory(String codeNameCategory){
-        if(!categoryRepository.existsByCodeName(codeNameCategory)){
+    public List<BrandResponse> getBrandByCategory(String codeNameCategory) {
+        if (!categoryRepository.existsByCodeName(codeNameCategory)) {
             throw new AppException(ErrorCode.CATEGORY_NOT_EXISTED);
         }
         Category category = categoryRepository.findByCodeName(codeNameCategory);

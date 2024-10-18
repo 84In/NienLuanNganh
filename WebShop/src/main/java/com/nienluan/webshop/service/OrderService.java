@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -142,13 +141,13 @@ public class OrderService {
     }
 
     private OrderResponse toOrderResponse(Order order, List<OrderDetail> orderDetails) {
-        Set<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
+        List<OrderDetailResponse> orderDetailResponses = orderDetails.stream()
                 .map(orderDetail -> OrderDetailResponse.builder()
                         .priceAtTime(orderDetail.getPriceAtTime())
                         .product(productMapper.toProductResponse(orderDetail.getProduct()))
                         .quantity(orderDetail.getQuantity())
                         .build())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
         return OrderResponse.builder()
                 .id(order.getId())

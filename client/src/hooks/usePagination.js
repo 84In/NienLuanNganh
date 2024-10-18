@@ -1,14 +1,22 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (baseUrl, initialPage = 0, size = 15) => {
+const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get("page")) || initialPage);
+  const [internalPage, setInternalPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const currentParams = useMemo(() => {
+    return useUrlParams ? Object.fromEntries(searchParams) : {};
+  }, [useUrlParams, searchParams]);
+
+  const getCurrentPage = useCallback(() => {
+    return useUrlParams ? parseInt(searchParams.get("page")) || initialPage : internalPage;
+  }, [useUrlParams, searchParams, internalPage, initialPage]);
 
   const fetchPageData = useCallback(
     async (page) => {
@@ -18,7 +26,7 @@ const usePagination = (baseUrl, initialPage = 0, size = 15) => {
           method: "GET",
           url: baseUrl,
           params: {
-            ...Object.fromEntries(searchParams),
+            ...currentParams,
             page: page,
             size: size,
           },
@@ -32,46 +40,79 @@ const usePagination = (baseUrl, initialPage = 0, size = 15) => {
         setLoading(false);
       }
     },
-    [baseUrl, searchParams, size],
+    [baseUrl, currentParams, size],
   );
 
   useEffect(() => {
-    const page = parseInt(searchParams.get("page")) || initialPage;
-    if (page !== currentPage) {
-      setCurrentPage(page);
-    }
-    fetchPageData(page);
-  }, [searchParams, initialPage, fetchPageData]);
+    const currentPage = getCurrentPage();
+    fetchPageData(currentPage);
+  }, [getCurrentPage, fetchPageData, location.search]);
 
-  const updatePage = (newPage) => {
-    setSearchParams((prev) => {
-      prev.set("page", newPage);
-      return prev;
-    });
-  };
+  const updatePage = useCallback(
+    (newPage) => {
+      if (useUrlParams) {
+        setSearchParams((prev) => {
+          const updatedParams = new URLSearchParams(prev);
+          updatedParams.set("page", newPage.toString());
+          return updatedParams;
+        });
+      } else {
+        setInternalPage(newPage);
+        fetchPageData(newPage);
+      }
+    },
+    [useUrlParams, setSearchParams, fetchPageData],
+  );
 
-  const nextPage = () => {
+  const updateParams = useCallback(
+    (newParams) => {
+      if (useUrlParams) {
+        setSearchParams((prev) => {
+          const updatedParams = new URLSearchParams(prev);
+          Object.entries(newParams).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+              updatedParams.set(key, value.toString());
+            } else {
+              updatedParams.delete(key);
+            }
+          });
+          updatedParams.set("page", "0"); // Reset to first page when params change
+          return updatedParams;
+        });
+      } else {
+        setInternalPage(0);
+        fetchPageData(0);
+      }
+    },
+    [useUrlParams, setSearchParams, fetchPageData],
+  );
+
+  const nextPage = useCallback(() => {
+    const currentPage = getCurrentPage();
     if (currentPage < totalPages - 1) {
       updatePage(currentPage + 1);
     }
-  };
+  }, [getCurrentPage, totalPages, updatePage]);
 
-  const prevPage = () => {
+  const prevPage = useCallback(() => {
+    const currentPage = getCurrentPage();
     if (currentPage > 0) {
       updatePage(currentPage - 1);
     }
-  };
+  }, [getCurrentPage, updatePage]);
 
   return {
     data,
-    currentPage,
-    setCurrentPage: updatePage,
+    currentPage: getCurrentPage(),
+    updatePage,
+    currentParams,
+    updateParams,
     totalPages,
     loading,
     nextPage,
     prevPage,
-    hasNextPage: currentPage < totalPages - 1,
-    hasPrevPage: currentPage > 0,
+    hasNextPage: getCurrentPage() < totalPages - 1,
+    hasPrevPage: getCurrentPage() > 0,
   };
 };
 

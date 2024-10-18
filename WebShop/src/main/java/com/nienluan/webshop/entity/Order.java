@@ -7,8 +7,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -37,6 +37,6 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "user_id")
     User user;
     @OneToMany(mappedBy = "order")
-    Set<OrderDetail> orderDetails = new HashSet<>();
+    List<OrderDetail> orderDetails = new ArrayList<>();
 
 }

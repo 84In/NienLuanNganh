@@ -22,7 +22,7 @@ const Checkout = () => {
           const quantity = item?.quantity;
           const promotion = validPromotion(item?.product?.promotions);
           const price = validPrice(item?.product?.price, promotion);
-          const totalPrice = validTotalPrice(item?.product?.price, promotion, quantity);
+          const totalPrice = validTotalPrice(item?.product?.price, quantity, promotion);
           discountPrice += validDiscountPrice(item?.product?.price, promotion) || 0;
           total += totalPrice;
         }

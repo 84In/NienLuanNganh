@@ -3,9 +3,9 @@ import React, { memo } from "react";
 
 const defaultAvatar = require("../../assets/images/profile.png");
 
-const ReviewItem = ({ rating }) => {
+const ReviewItem = ({ review }) => {
   return (
-    <Box className="flex flex-col gap-2 rounded-lg bg-gray-100 p-2">
+    <Box className="flex flex-col gap-2 rounded-md border p-2 shadow-md">
       <div className="flex h-14 w-full items-center justify-between">
         <div className="flex items-center gap-4">
           <img
@@ -13,11 +13,11 @@ const ReviewItem = ({ rating }) => {
             src={defaultAvatar}
             alt="Avatar"
           />
-          <p>{rating.name}</p>
+          <p>{review?.name}</p>
         </div>
-        <Rating value={rating.star} precision={1} size="medium" readOnly />
+        <Rating value={review?.star} precision={1} size="medium" readOnly />
       </div>
-      <div className="rounded-lg border bg-white p-2 text-justify">{rating.comment}</div>
+      <div className="break-words rounded-lg border bg-white p-2">{review?.comment}</div>
     </Box>
   );
 };

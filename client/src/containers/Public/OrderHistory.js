@@ -11,26 +11,29 @@ const OrderHistory = () => {
   const location = useLocation();
   const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
   const baseUrl = `api/v1/orders/current-user`;
-  const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(baseUrl, 0, 5);
+  const {
+    data,
+    currentPage,
+    updatePage,
+    currentParams,
+    updateParams,
+    totalPages,
+    loading,
+    nextPage,
+    prevPage,
+    hasNextPage,
+    hasPrevPage,
+  } = usePagination(baseUrl, 0, 5);
+
+  const handleChangeStatus = (newStatus) => {
+    setCurrentStatus(newStatus);
+    updateParams({ status: newStatus });
+  };
 
   useEffect(() => {
-    const newParams = new URLSearchParams(searchParams);
-    if (currentStatus) {
-      newParams.set("status", currentStatus);
-    } else {
-      newParams.delete("status");
-    }
-    newParams.set("page", "0");
-    setSearchParams(newParams);
-  }, [currentStatus]);
-
-  useEffect(() => {
-    const statusFromUrl = searchParams.get("status");
-    if (statusFromUrl !== currentStatus) {
-      setCurrentStatus(statusFromUrl || "");
-    }
-  }, [location, searchParams]);
+    const newParams = searchParams.get("status") || "";
+    setCurrentStatus(newParams);
+  }, [searchParams]);
 
   return (
     <Grid2
@@ -59,7 +62,7 @@ const OrderHistory = () => {
             <button
               key={index}
               className={`h-full w-full p-2 text-sm grid-md:text-base ${currentStatus === item.codeName ? `border-b-2 border-blue-600 text-blue-600` : "text-gray-500"}`}
-              onClick={() => setCurrentStatus(item.codeName)}
+              onClick={() => handleChangeStatus(item.codeName)}
             >
               {item.name}
             </button>
@@ -79,7 +82,7 @@ const OrderHistory = () => {
           hasPrevPage={hasPrevPage}
           nextPage={nextPage}
           prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={updatePage}
           totalPages={totalPages}
         />
       </Grid2>

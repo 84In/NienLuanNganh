@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
-import { path } from "../utils";
+import { path } from "../../utils";
 import { Link } from "react-router-dom";
 
 const CheckoutInfo = ({ userData }) => {

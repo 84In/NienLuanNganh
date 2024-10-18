@@ -34,7 +34,7 @@ const OrderItem = ({ product }) => {
         )}
         <div className="flex flex-col items-start gap-2 text-sm text-gray-500 grid-md:items-end">
           <p>Mã: {product?.id}</p>
-          <p>Ngày đặt hàng: {product?.createdAt.replace("T", " ")}</p>
+          <p>Ngày đặt hàng: {product?.createdAt?.replace("T", " ")}</p>
         </div>
       </div>
       <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
@@ -74,9 +74,9 @@ const OrderItem = ({ product }) => {
             Chi tiết
           </Button>
         </div>
-        <div>
+        <div className="text-right">
           <p className="text-sm text-gray-500">Tổng tiền:</p>
-          <p className="text-xl font-semibold">{formatCurrency(product?.totalAmount)}</p>
+          <p className="text-lg font-semibold grid-md:text-xl">{formatCurrency(product?.totalAmount)}</p>
         </div>
       </div>
     </div>

@@ -7,10 +7,10 @@ const Review = () => {
   //Assumed value
   const ratings = [59, 14, 1, 0, 0];
   const totalReviews = ratings.reduce((acc, item) => acc + item, 0);
-  const rating = {
+  const reviewer = {
     name: "SANS",
-    star: 5,
-    comment: "Gjob! I am going buy this phone again to give my parent! ",
+    star: 3,
+    comment: "Great! I am going buy this phone again to give my parent! ",
   };
   const averageRating = 4.8;
 
@@ -63,7 +63,7 @@ const Review = () => {
       <hr className="mt-4 flex h-[2px] w-full items-center justify-center bg-gray-400 px-4" />
       <Grid2 item sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}>
         {ratings.map((item, index) => (
-          <ReviewItem rating={rating} key={index} />
+          <ReviewItem review={reviewer} key={index} />
         ))}
       </Grid2>
     </Grid2>

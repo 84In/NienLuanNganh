@@ -30,7 +30,7 @@ export const validPrice = (price, promotion) => {
   return result;
 };
 
-export const validTotalPrice = (price, promotion, quantity) => {
+export const validTotalPrice = (price, quantity, promotion = 0) => {
   const result =
     promotion?.discountPercentage && promotion?.discountPercentage > 0
       ? (price - price * (promotion?.discountPercentage / 100)) * quantity

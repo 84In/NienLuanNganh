@@ -151,6 +151,7 @@ const AccountInfo = () => {
     >
       {alert && <AlertCustom title={"Thông báo"} content={alert} />}
       <Grid2
+        item
         container
         sx={{
           flexGrow: 1,

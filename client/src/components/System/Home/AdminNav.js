@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import DefaultAvatar from "../../../assets/images/profile.png";
 import icons from "../../../utils/icons";
-import ButtonCustom from "../../ButtonCustom";
+import ButtonCustom from "../../Common/ButtonCustom";
 
 const { IoNotificationsOutline } = icons;
 const AdminNav = ({ user }) => {
