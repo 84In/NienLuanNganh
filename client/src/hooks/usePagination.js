@@ -1,66 +1,71 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { useSearchParams, useLocation } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (url, initialPage = 0, size = 15) => {
+const usePagination = (baseUrl, initialPage = 0, size = 15) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageFromUrl = parseInt(searchParams.get("page")) || initialPage;
-  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const location = useLocation();
+  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get("page")) || initialPage);
   const [totalPages, setTotalPages] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchPageData = async (page) => {
-    setLoading(true);
-    new Promise(async (resolve, reject) => {
+  const fetchPageData = useCallback(
+    async (page) => {
+      setLoading(true);
       try {
         const response = await axiosConfig({
           method: "GET",
-          url: url,
+          url: baseUrl,
           params: {
+            ...Object.fromEntries(searchParams),
             page: page,
             size: size,
           },
         });
-        resolve(response);
         const result = response?.result;
         setData(result?.content);
         setTotalPages(result?.totalPages);
       } catch (error) {
-        console.error("Error fetching more data:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
+    },
+    [baseUrl, searchParams, size],
+  );
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page")) || initialPage;
+    if (page !== currentPage) {
+      setCurrentPage(page);
+    }
+    fetchPageData(page);
+  }, [searchParams, initialPage, fetchPageData]);
+
+  const updatePage = (newPage) => {
+    setSearchParams((prev) => {
+      prev.set("page", newPage);
+      return prev;
     });
   };
 
-  useEffect(() => {
-    fetchPageData(currentPage);
-  }, [currentPage, url]);
-
   const nextPage = () => {
     if (currentPage < totalPages - 1) {
-      setCurrentPage((prev) => prev + 1);
+      updatePage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage((prev) => prev - 1);
+      updatePage(currentPage - 1);
     }
   };
-
-  useEffect(() => {
-    // Sync with the URL whenever the page changes
-    if (pageFromUrl !== currentPage) {
-      setSearchParams({ page: currentPage });
-    }
-  }, [currentPage]);
 
   return {
     data,
     currentPage,
-    setCurrentPage,
+    setCurrentPage: updatePage,
     totalPages,
     loading,
     nextPage,

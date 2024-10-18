@@ -77,9 +77,6 @@ const Cart = ({ setIsModelLogin }) => {
     }
   };
 
-  console.log(checkout);
-  console.log(selectedItems);
-
   return (
     <Grid2
       container

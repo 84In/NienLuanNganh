@@ -12,7 +12,17 @@ instance.interceptors.request.use(
     const isGetProductRequest = config.url.startsWith("/api/v1/products") && config.method.toLowerCase() === "get";
     const isAuthRequest = config.url.startsWith("/api/v1/auth");
     const isGetSearchRequest = config.url.startsWith("/api/v1/search/") && config.method.toLowerCase() === "get";
-    if (!(isGetCategoriesRequest || isPostUserRequest || isAuthRequest || isGetProductRequest || isGetSearchRequest)) {
+    const isGetBrandRequest = config.url.startsWith("/api/v1/brands/") && config.method.toLowerCase() === "get";
+    if (
+      !(
+        isGetCategoriesRequest ||
+        isPostUserRequest ||
+        isAuthRequest ||
+        isGetProductRequest ||
+        isGetSearchRequest ||
+        isGetBrandRequest
+      )
+    ) {
       // Lấy token từ localStorage
       let authData = window.localStorage.getItem("persist:auth");
       let token = authData && JSON.parse(authData)?.token;

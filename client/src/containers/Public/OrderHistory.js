@@ -4,23 +4,33 @@ import { GoSearch } from "react-icons/go";
 import { OrderItem, Pagination, SearchBar } from "../../components";
 import { usePagination } from "../../hooks";
 import { orderStatusNav } from "../../utils";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useSearchParams, useLocation } from "react-router-dom";
 
 const OrderHistory = () => {
-  const [searchParams, setSearchParams] = useSearchParams("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
-  const [search, setSearch] = useState(`api/v1/orders/current-user`);
+  const baseUrl = `api/v1/orders/current-user`;
   const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(search, 0, 5);
+    usePagination(baseUrl, 0, 5);
 
   useEffect(() => {
-    const newSearch = currentStatus
-      ? `api/v1/orders/current-user?status=${currentStatus}`
-      : `api/v1/orders/current-user`;
-    setSearch(newSearch);
-    currentStatus ? setSearchParams({ status: currentStatus }) : setSearchParams({});
-    setCurrentPage(0);
+    const newParams = new URLSearchParams(searchParams);
+    if (currentStatus) {
+      newParams.set("status", currentStatus);
+    } else {
+      newParams.delete("status");
+    }
+    newParams.set("page", "0");
+    setSearchParams(newParams);
   }, [currentStatus]);
+
+  useEffect(() => {
+    const statusFromUrl = searchParams.get("status");
+    if (statusFromUrl !== currentStatus) {
+      setCurrentStatus(statusFromUrl || "");
+    }
+  }, [location, searchParams]);
 
   return (
     <Grid2
