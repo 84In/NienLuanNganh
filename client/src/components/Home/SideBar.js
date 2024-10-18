@@ -1,5 +1,5 @@
 import { React, memo } from "react";
-import ButtonCustom from "../ButtonCustom";
+import ButtonCustom from "../Common/ButtonCustom";
 import { Link } from "react-router-dom";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";

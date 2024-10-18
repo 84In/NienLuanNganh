@@ -4,23 +4,36 @@ import { GoSearch } from "react-icons/go";
 import { OrderItem, Pagination, SearchBar } from "../../components";
 import { usePagination } from "../../hooks";
 import { orderStatusNav } from "../../utils";
-import { NavLink, useSearchParams } from "react-router-dom";
+import { NavLink, useSearchParams, useLocation } from "react-router-dom";
 
 const OrderHistory = () => {
-  const [searchParams, setSearchParams] = useSearchParams("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
-  const [search, setSearch] = useState(`api/v1/orders/current-user`);
-  const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(search, 0, 5);
+  const baseUrl = `api/v1/orders/current-user`;
+  const {
+    data,
+    currentPage,
+    updatePage,
+    currentParams,
+    updateParams,
+    totalPages,
+    loading,
+    nextPage,
+    prevPage,
+    hasNextPage,
+    hasPrevPage,
+  } = usePagination(baseUrl, 0, 5);
+
+  const handleChangeStatus = (newStatus) => {
+    setCurrentStatus(newStatus);
+    updateParams({ status: newStatus });
+  };
 
   useEffect(() => {
-    const newSearch = currentStatus
-      ? `api/v1/orders/current-user?status=${currentStatus}`
-      : `api/v1/orders/current-user`;
-    setSearch(newSearch);
-    currentStatus ? setSearchParams({ status: currentStatus }) : setSearchParams({});
-    setCurrentPage(0);
-  }, [currentStatus]);
+    const newParams = searchParams.get("status") || "";
+    setCurrentStatus(newParams);
+  }, [searchParams]);
 
   return (
     <Grid2
@@ -49,7 +62,7 @@ const OrderHistory = () => {
             <button
               key={index}
               className={`h-full w-full p-2 text-sm grid-md:text-base ${currentStatus === item.codeName ? `border-b-2 border-blue-600 text-blue-600` : "text-gray-500"}`}
-              onClick={() => setCurrentStatus(item.codeName)}
+              onClick={() => handleChangeStatus(item.codeName)}
             >
               {item.name}
             </button>
@@ -69,7 +82,7 @@ const OrderHistory = () => {
           hasPrevPage={hasPrevPage}
           nextPage={nextPage}
           prevPage={prevPage}
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={updatePage}
           totalPages={totalPages}
         />
       </Grid2>

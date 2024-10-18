@@ -1,12 +1,12 @@
 import { Box, Button } from "@mui/material";
 import React, { memo } from "react";
-import { formatCurrency } from "../utils/format";
-import { apiCreateOrder } from "../services";
-import { path, validPrice, validPromotion } from "../utils";
+import { formatCurrency } from "../../utils/format";
+import { apiCreateOrder } from "../../services";
+import { path, validPrice, validPromotion } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import actionTypes from "../store/actions/actionType";
-import * as actions from "../store/actions";
+import actionTypes from "../../store/actions/actionType";
+import * as actions from "../../store/actions";
 
 const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice, totalAmount, setAlert }) => {
   const navigate = useNavigate();

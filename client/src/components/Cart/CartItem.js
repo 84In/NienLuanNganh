@@ -2,13 +2,13 @@ import { IconButton, TextField } from "@mui/material";
 import React, { memo, useState, useEffect } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { BiX } from "react-icons/bi";
-import { formatCurrency } from "../utils/format";
+import { formatCurrency } from "../../utils/format";
 import { Link } from "react-router-dom";
-import { apiCreateCart, apiDeleteCartDetailInCart } from "../services";
-import * as actions from "../store/actions";
+import { apiCreateCart, apiDeleteCartDetailInCart } from "../../services";
+import * as actions from "../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
-import { validDiscountPrice, validPrice, validPromotion, validTotalPrice } from "../utils";
-import actionTypes from "../store/actions/actionType";
+import { validDiscountPrice, validPrice, validPromotion, validTotalPrice } from "../../utils";
+import actionTypes from "../../store/actions/actionType";
 
 const CartItem = ({
   cartId,
@@ -30,7 +30,7 @@ const CartItem = ({
   const maxQuantity = data?.product.stockQuantity;
   const promotion = validPromotion(data?.product?.promotions);
   const price = validPrice(data?.product?.price, promotion);
-  const totalPrice = validTotalPrice(data?.product?.price, promotion, quantity);
+  const totalPrice = validTotalPrice(data?.product?.price, quantity, promotion);
 
   useEffect(() => {
     if (quantity !== data?.quantity) {
@@ -115,8 +115,8 @@ const CartItem = ({
                 className="max-h-20 min-h-20 min-w-20 max-w-20 object-contain grid-md:min-w-16 grid-lg:min-w-20"
               />
             </div>
-            <div className="w-9/12 text-center text-xs grid-md:text-left grid-md:text-sm grid-lg:text-base">
-              <p className="line-clamp-4 w-full grid-md:line-clamp-2">{data?.product?.name}</p>
+            <div className="w-9/12 text-center text-xs grid-md:text-sm grid-lg:text-base">
+              <p className="line-clamp-4 w-full grid-md:line-clamp-2 grid-md:text-left">{data?.product?.name}</p>
             </div>
           </div>
         </Link>

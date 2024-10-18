@@ -49,4 +49,12 @@ public class OrderController {
                 .result(orderService.getOrderCurrentUser(pageable, status))
                 .build();
     }
+
+    @PutMapping("/change-status/{id}")
+    public ApiResponse<?> changeOrderStatus(@PathVariable("id") String id, @RequestParam(name = "status", required = false) String status) {
+        return ApiResponse.<OrderResponse>builder()
+                .message("Change order status successfully")
+                .result(orderService.changeOrderStatus(id, status))
+                .build();
+    }
 }

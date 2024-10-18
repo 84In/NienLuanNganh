@@ -1,8 +1,8 @@
 import { Box, Button } from "@mui/material";
 import React, { memo } from "react";
-import { formatCurrency } from "../utils/format";
+import { formatCurrency } from "../../utils/format";
 import { useNavigate } from "react-router-dom";
-import { path } from "../utils";
+import { path } from "../../utils";
 
 const CartSideBar = ({ selectedItems, totalAmount }) => {
   const navigate = useNavigate();

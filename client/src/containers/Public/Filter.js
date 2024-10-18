@@ -39,43 +39,47 @@ const Filter = () => {
   }, []);
 
   useEffect(() => {
-    let newUrl = `/api/v1/search/${type}/${name}`;
+    if (type && name) {
+      let newUrl = `/api/v1/search/${type}/${name}`;
 
-    const queryParams = [];
-    if (sortBy) {
-      queryParams.push(`sortBy=${sortBy}`);
-    }
-    if (sortDirection) {
-      queryParams.push(`sortDirection=${sortDirection}`);
-    }
+      const queryParams = [];
+      if (sortBy) {
+        queryParams.push(`sortBy=${sortBy}`);
+      }
+      if (sortDirection) {
+        queryParams.push(`sortDirection=${sortDirection}`);
+      }
 
-    if (brandFilter.length > 0) {
-      const brandsParam = brandFilter.join(",");
-      queryParams.push(`brand=${brandsParam}`);
-    }
+      if (brandFilter.length > 0) {
+        const brandsParam = brandFilter.join(",");
+        queryParams.push(`brand=${brandsParam}`);
+      }
 
-    if (priceFilter.length > 0) {
-      const price = minAndMaxPrice(priceFilter);
-      const pricesParam = `min=${price.min}&max=${price.max}`;
-      queryParams.push(`${pricesParam}`);
-    }
+      if (priceFilter.length > 0) {
+        const price = minAndMaxPrice(priceFilter);
+        const pricesParam = `min=${price.min}&max=${price.max}`;
+        queryParams.push(`${pricesParam}`);
+      }
 
-    // Gộp tất cả query parameters lại
-    if (queryParams.length > 0) {
-      newUrl += `?${queryParams.join("&")}`;
+      // Gộp tất cả query parameters lại
+      if (queryParams.length > 0) {
+        newUrl += `?${queryParams.join("&")}`;
+      }
+      setUrlApi(newUrl);
+      console.log(newUrl);
     }
-    setUrlApi(newUrl);
-    console.log(newUrl);
   }, [urlApi, sortBy, sortDirection, type, name, priceFilter, brandFilter]);
 
   useEffect(() => {
-    const fetchBrandByCategory = async () => {
-      const response = await apiGetBrandByCategory(name);
-      if (response.code === 0) {
-        setBrands(response.result);
-      }
-    };
-    fetchBrandByCategory();
+    if (name) {
+      const fetchBrandByCategory = async () => {
+        const response = await apiGetBrandByCategory(name);
+        if (response.code === 0) {
+          setBrands(response.result);
+        }
+      };
+      fetchBrandByCategory();
+    }
   }, [name]);
 
   useEffect(() => {

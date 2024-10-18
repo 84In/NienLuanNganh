@@ -19,7 +19,7 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
   const maxQuantity = product?.stockQuantity ? product.stockQuantity : 0;
   const promotion = validPromotion(product?.promotions);
   const price = validPrice(product?.price, promotion);
-  const totalPrice = validTotalPrice(product?.price, promotion, quantity);
+  const totalPrice = validTotalPrice(product?.price, quantity, promotion);
 
   const handleIncrease = () => {
     setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));

@@ -1,11 +1,11 @@
 import React, { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import * as action from "../store/actions";
-import { path } from "../utils/constant";
-import { formatLengthName } from "../utils/format";
+import * as action from "../../store/actions";
+import { path } from "../../utils/constant";
+import { formatLengthName } from "../../utils/format";
 
-const defaultAvatar = require("../assets/images/profile.png");
+const defaultAvatar = require("../../assets/images/profile.png");
 
 const ButtonCustom = ({
   TypeButton,

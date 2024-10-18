@@ -34,18 +34,18 @@ const OrderItem = ({ product }) => {
         )}
         <div className="flex flex-col items-start gap-2 text-sm text-gray-500 grid-md:items-end">
           <p>Mã: {product?.id}</p>
-          <p>Ngày đặt hàng: {product?.createdAt.replace("T", " ")}</p>
+          <p>Ngày đặt hàng: {product?.createdAt?.replace("T", " ")}</p>
         </div>
       </div>
       <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
       <div className="custom-scrollbar flex max-h-[21rem] flex-col gap-4 px-2 py-4">
         {product?.orderDetails?.map((item, index) => (
-          <div key={index} className="flex items-start">
-            <div className="h-20 w-1/12 min-w-12 grid-md:min-w-20">
+          <div key={index} className="flex w-full items-start">
+            <div className="w-1/12 min-w-12 grid-md:min-w-20">
               <img
                 src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
                 alt={item?.product?.name + index}
-                className="h-20 w-16 object-contain"
+                className="h-16 w-16 object-contain"
               />
             </div>
             <div
@@ -55,7 +55,7 @@ const OrderItem = ({ product }) => {
               <p className="line-clamp-2 text-sm grid-md:text-base">{item?.product?.name}</p>
             </div>
             <div className="w-5/12 text-right align-middle grid-md:w-4/12">
-              <p className="text-xs font-medium grid-md:text-sm">{formatCurrency(item?.priceAtTime)}</p>
+              <p className="text-xs font-semibold grid-md:text-sm">{formatCurrency(item?.priceAtTime)}</p>
               <p className="text-sm text-gray-500">x{item?.quantity}</p>
             </div>
           </div>
@@ -74,9 +74,9 @@ const OrderItem = ({ product }) => {
             Chi tiết
           </Button>
         </div>
-        <div>
+        <div className="text-right">
           <p className="text-sm text-gray-500">Tổng tiền:</p>
-          <p className="text-xl font-semibold">{formatCurrency(product?.totalAmount)}</p>
+          <p className="text-lg font-semibold grid-md:text-xl">{formatCurrency(product?.totalAmount)}</p>
         </div>
       </div>
     </div>

@@ -1,72 +1,118 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams, useLocation } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (url, initialPage = 0, size = 15) => {
+const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageFromUrl = parseInt(searchParams.get("page")) || initialPage;
-  const [currentPage, setCurrentPage] = useState(pageFromUrl);
+  const location = useLocation();
+  const [internalPage, setInternalPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(1);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchPageData = async (page) => {
-    setLoading(true);
-    new Promise(async (resolve, reject) => {
+  const currentParams = useMemo(() => {
+    return useUrlParams ? Object.fromEntries(searchParams) : {};
+  }, [useUrlParams, searchParams]);
+
+  const getCurrentPage = useCallback(() => {
+    return useUrlParams ? parseInt(searchParams.get("page")) || initialPage : internalPage;
+  }, [useUrlParams, searchParams, internalPage, initialPage]);
+
+  const fetchPageData = useCallback(
+    async (page) => {
+      setLoading(true);
       try {
         const response = await axiosConfig({
           method: "GET",
-          url: url,
+          url: baseUrl,
           params: {
+            ...currentParams,
             page: page,
             size: size,
           },
         });
-        resolve(response);
         const result = response?.result;
         setData(result?.content);
         setTotalPages(result?.totalPages);
       } catch (error) {
-        console.error("Error fetching more data:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
-    });
-  };
+    },
+    [baseUrl, currentParams, size],
+  );
 
   useEffect(() => {
+    const currentPage = getCurrentPage();
     fetchPageData(currentPage);
-  }, [currentPage, url]);
+  }, [getCurrentPage, fetchPageData, location.search]);
 
-  const nextPage = () => {
+  const updatePage = useCallback(
+    (newPage) => {
+      if (useUrlParams) {
+        setSearchParams((prev) => {
+          const updatedParams = new URLSearchParams(prev);
+          updatedParams.set("page", newPage.toString());
+          return updatedParams;
+        });
+      } else {
+        setInternalPage(newPage);
+        fetchPageData(newPage);
+      }
+    },
+    [useUrlParams, setSearchParams, fetchPageData],
+  );
+
+  const updateParams = useCallback(
+    (newParams) => {
+      if (useUrlParams) {
+        setSearchParams((prev) => {
+          const updatedParams = new URLSearchParams(prev);
+          Object.entries(newParams).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+              updatedParams.set(key, value.toString());
+            } else {
+              updatedParams.delete(key);
+            }
+          });
+          updatedParams.set("page", "0"); // Reset to first page when params change
+          return updatedParams;
+        });
+      } else {
+        setInternalPage(0);
+        fetchPageData(0);
+      }
+    },
+    [useUrlParams, setSearchParams, fetchPageData],
+  );
+
+  const nextPage = useCallback(() => {
+    const currentPage = getCurrentPage();
     if (currentPage < totalPages - 1) {
-      setCurrentPage((prev) => prev + 1);
+      updatePage(currentPage + 1);
     }
-  };
+  }, [getCurrentPage, totalPages, updatePage]);
 
-  const prevPage = () => {
+  const prevPage = useCallback(() => {
+    const currentPage = getCurrentPage();
     if (currentPage > 0) {
-      setCurrentPage((prev) => prev - 1);
+      updatePage(currentPage - 1);
     }
-  };
-
-  useEffect(() => {
-    // Sync with the URL whenever the page changes
-    if (pageFromUrl !== currentPage) {
-      setSearchParams({ page: currentPage });
-    }
-  }, [currentPage]);
+  }, [getCurrentPage, updatePage]);
 
   return {
     data,
-    currentPage,
-    setCurrentPage,
+    currentPage: getCurrentPage(),
+    updatePage,
+    currentParams,
+    updateParams,
     totalPages,
     loading,
     nextPage,
     prevPage,
-    hasNextPage: currentPage < totalPages - 1,
-    hasPrevPage: currentPage > 0,
+    hasNextPage: getCurrentPage() < totalPages - 1,
+    hasPrevPage: getCurrentPage() > 0,
   };
 };
 

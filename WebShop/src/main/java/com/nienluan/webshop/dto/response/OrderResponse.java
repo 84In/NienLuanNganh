@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,5 +22,5 @@ public class OrderResponse extends BaseResponse {
     PaymentMethodResponse paymentMethod;
     PaymentResponse payment;
     UserResponse user;
-    Set<OrderDetailResponse> orderDetails;
+    List<OrderDetailResponse> orderDetails;
 }

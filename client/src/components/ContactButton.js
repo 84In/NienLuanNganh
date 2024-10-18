@@ -13,7 +13,7 @@ const ContactButton = ({ icon, title, info, nameButton, onClick }) => {
           </p>
         </div>
       </div>
-      <div className="flex w-[100px] min-w-20 items-center justify-center">
+      <div className="flex w-[100px] min-w-[100px] items-center justify-center">
         <Button onClick={onClick} variant="outlined" color="primary" size="small" className="mb-2 w-full">
           {nameButton}
         </Button>

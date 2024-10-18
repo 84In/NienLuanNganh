@@ -6,7 +6,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { path } from "../../utils/constant";
-import ButtonCustom from "../../components/ButtonCustom";
+import { ButtonCustom } from "../../components/";
 import { apiChangeAddress, apiChangeContactInfomation, apiChangePassword } from "../../services";
 import * as actions from "../../store/actions/";
 import { AlertCustom } from "../../components";
