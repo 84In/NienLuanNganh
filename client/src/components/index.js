@@ -6,6 +6,7 @@ export { default as CheckoutInfo } from "./Checkout/CheckoutInfo";
 export { default as CheckoutItem } from "./Checkout/CheckoutItem";
 export { default as CheckoutSideBar } from "./Checkout/CheckoutSideBar";
 export { default as ContactButton } from "./ContactButton";
+export { default as ConfirmAlert } from "./Common/ConfirmAlert";
 export { default as DotAlert } from "./Common/DotAlert";
 export { default as BannerCarousel } from "./Home/BannerCarousel";
 export { default as MainContainer } from "./Home/MainContainer";

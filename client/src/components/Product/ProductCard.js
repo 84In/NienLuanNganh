@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
               <Rating name="half-rating-read" precision={0.5} value={product?.rating} readOnly size="small" />
               {promotion ? (
                 <>
-                  <p className="text-xl font-bold text-red-500 grid-sm:text-lg">{formatCurrency(price)}</p>
+                  <p className="text-base font-bold text-red-500 grid-md:text-lg">{formatCurrency(price)}</p>
                   <Box sx={{ display: "flex", alignItems: "baseline", mt: 1, gap: 1 }}>
                     <p className="text-xs text-gray-500 line-through">{formatCurrency(product?.price)}</p>
                     <p className="rounded bg-red-100 p-1 text-xs text-red-500">-{promotion?.discountPercentage}%</p>
@@ -51,7 +51,7 @@ const ProductCard = ({ product }) => {
                 </>
               ) : (
                 <>
-                  <p className="text-lg font-bold grid-sm:text-xl">{formatCurrency(price)}</p>
+                  <p className="text-base font-bold grid-md:text-lg">{formatCurrency(price)}</p>
                 </>
               )}
             </div>

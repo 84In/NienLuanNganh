@@ -39,3 +39,19 @@ export const apiGetOrderCurrentUser = () =>
       reject(error);
     }
   });
+
+export const apiChangeOrderStatus = (orderId, status) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `/api/v1/orders/change-status/${orderId}`,
+        params: {
+          status: status,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

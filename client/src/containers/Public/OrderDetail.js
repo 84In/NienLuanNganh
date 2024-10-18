@@ -1,11 +1,11 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect, useState } from "react";
-import { AlertCustom, ButtonCustom, CheckoutInfo } from "../../components";
-import { apiGetOrderDetailById } from "../../services";
+import { AlertCustom, ButtonCustom, CheckoutInfo, ConfirmAlert } from "../../components";
+import { apiChangeOrderStatus, apiGetOrderDetailById } from "../../services";
 import { BiBlock, BiCheckCircle, BiSolidPackage } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
-import { Button } from "@mui/material";
-import { formatCurrency, validTotalPrice } from "../../utils";
+import { Button, patch } from "@mui/material";
+import { formatCurrency, path, validTotalPrice } from "../../utils";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,7 @@ const OrderDetail = () => {
   const [orderId, setOrderId] = useState(window.location.pathname.split("/").pop() || "");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
   const [alert, setAlert] = useState("");
+  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,9 +46,22 @@ const OrderDetail = () => {
     }
   }, [orderId]);
 
-  const handleReviewProduct = (productId) => {};
+  const handleReviewProduct = async (productId) => {};
 
-  const handleCancle = () => {};
+  const handleCancelOrder = async () => {
+    try {
+      setConfirm(false);
+      const response = await apiChangeOrderStatus(orderId, `canceled`);
+      if (response?.code === 0) {
+        navigate(path.HOME + path.ORDER_HISTORY);
+      }
+    } catch (error) {
+      setAlert("Lỗi!");
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    }
+  };
 
   return (
     <Grid2
@@ -114,7 +128,7 @@ const OrderDetail = () => {
               </div>
             )}
           </div>
-          <div className="mb-2 flex w-full flex-col items-start gap-2 p-2 text-sm grid-md:items-end grid-md:text-base">
+          <div className="flex w-full flex-col items-start gap-2 p-2 text-sm grid-md:items-end grid-md:text-base">
             <p>Ngày đặt hàng: {orderDetail?.createdAt?.replace("T", " ")}</p>
           </div>
         </div>
@@ -163,24 +177,31 @@ const OrderDetail = () => {
         </Grid2>
         <Grid2 item container xs={12} sx={{ width: "100%" }}>
           <div className="w-full rounded-md border shadow-md">
-            <div className="flex w-full border-b p-2">
-              <div className="w-6/12 p-2">Sản phẩm</div>
-              <div className="flex w-6/12 text-right">
-                <div className="w-4/12 p-2">Đơn giá</div>
-                <div className="w-4/12 p-2">Số lượng</div>
-                <div className="w-4/12 p-2">Thành tiền</div>
+            {isMobile ? (
+              <div className="flex w-full border-b p-2 text-sm">
+                <div className="w-6/12 p-2">Sản phẩm</div>
+                <div className="w-6/12 p-2 text-right">Đơn giá</div>
               </div>
-            </div>
+            ) : (
+              <div className="flex w-full border-b p-2">
+                <div className="w-6/12 p-2">Sản phẩm</div>
+                <div className="flex w-6/12 text-right">
+                  <div className="w-4/12 p-2">Đơn giá</div>
+                  <div className="w-4/12 p-2">Số lượng</div>
+                  <div className="w-4/12 p-2">Thành tiền</div>
+                </div>
+              </div>
+            )}
             <div className="flex h-fit w-full flex-col gap-2 border-b p-2">
               {orderDetail?.orderDetails?.map((item, index) => (
                 <div>
                   <div key={index} className="flex items-start">
-                    <div className="flex w-6/12 p-2">
-                      <div className="h-20 w-1/12 min-w-12 grid-md:min-w-20">
+                    <div className="flex w-7/12 p-2 grid-md:w-6/12">
+                      <div className="w-1/12 min-w-12 grid-md:min-w-20">
                         <img
                           src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
                           alt={item?.product?.name + index}
-                          className="h-20 w-16 object-contain"
+                          className="h-16 w-16 object-contain"
                         />
                       </div>
                       <div
@@ -191,12 +212,12 @@ const OrderDetail = () => {
                       </div>
                     </div>
                     {isMobile ? (
-                      <div className="flex w-6/12 flex-col text-right text-xs">
-                        <div className="w-full p-2">{formatCurrency(item?.priceAtTime)}</div>
+                      <div className="flex w-5/12 flex-col text-right text-xs">
+                        <div className="w-full p-2 font-semibold">{formatCurrency(item?.priceAtTime)}</div>
                         <div className="w-full p-2 text-gray-500">x{item?.quantity}</div>
                       </div>
                     ) : (
-                      <div className="flex w-6/12 flex-row text-right">
+                      <div className="flex w-6/12 flex-row text-right text-sm">
                         <div className="w-4/12 p-2">{formatCurrency(item?.priceAtTime)}</div>
                         <div className="w-4/12 p-2">{item?.quantity}</div>
                         <div className="w-4/12 p-2">
@@ -229,7 +250,7 @@ const OrderDetail = () => {
                     size="large"
                     className="whitespace-nowrap"
                     sx={{ width: "100px" }}
-                    onClick={handleCancle}
+                    onClick={() => setConfirm(true)}
                   >
                     Hủy
                   </Button>
@@ -245,6 +266,16 @@ const OrderDetail = () => {
           </div>
         </Grid2>
       </Grid2>
+      {confirm && (
+        <ConfirmAlert
+          title={"Hủy đơn hàng"}
+          content={"Bạn có muốn hủy đơn hàng đang chọn không?"}
+          titleConfirm={"Xác nhận"}
+          titleCancel={"Hủy"}
+          onConfirm={handleCancelOrder}
+          onCancel={() => setConfirm(false)}
+        />
+      )}
     </Grid2>
   );
 };

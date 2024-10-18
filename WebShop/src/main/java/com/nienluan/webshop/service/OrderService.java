@@ -163,5 +163,13 @@ public class OrderService {
                 .build();
     }
 
+    public OrderResponse changeOrderStatus(String id, String statusCodeName) {
+        var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        var status = statusOrderRepository.findByCodeName(statusCodeName);
+        order.setStatus(status);
+        orderRepository.save(order);
+        return toOrderResponse(order, order.getOrderDetails());
+    }
+
 }
 
