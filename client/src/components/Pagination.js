@@ -18,7 +18,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages, nextPage, prevPag
 
   return (
     <div className="flex w-full items-center justify-center">
-      {!(startPage === 0 && endPage === 0) && (
+      {
         <div className="pagination flex items-center gap-2 p-2">
           <button
             className={`flex h-8 w-8 items-center justify-center rounded-full ${hasPrevPage ? `text-primary-color hover:bg-blue-200` : `text-gray-500`}`}
@@ -44,7 +44,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalPages, nextPage, prevPag
             <IoIosArrowForward className={`h-5 w-5`} />
           </button>
         </div>
-      )}
+      }
     </div>
   );
 };
