@@ -10,6 +10,7 @@ import {
   BiSolidUserAccount,
   BiSync,
   BiX,
+  BiCategory,
 } from "react-icons/bi";
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
 import { BiTrash } from "react-icons/bi";
@@ -41,5 +42,6 @@ const icons = {
   BiImage,
   AiFillCloseSquare,
   BiTrash,
+  BiCategory,
 };
 export default icons;

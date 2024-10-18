@@ -8,6 +8,8 @@ instance.interceptors.request.use(
   function (config) {
     // Nếu là URL không cần token hoặc là yêu cầu tạo mới user (POST)
     const isGetCategoriesRequest = config.url.startsWith("/api/v1/categories") && config.method.toLowerCase() === "get";
+    const isGetCategoryIdRequest =
+      config.url.startsWith("/api/v1/categories/") && config.method.toLowerCase() === "get";
     const isPostUserRequest = config.url.startsWith("/api/v1/users") && config.method.toLowerCase() === "post";
     const isGetProductRequest = config.url.startsWith("/api/v1/products") && config.method.toLowerCase() === "get";
     const isAuthRequest = config.url.startsWith("/api/v1/auth");
@@ -21,7 +23,8 @@ instance.interceptors.request.use(
         isGetProductRequest ||
         isGetSearchRequest ||
         isGetBrandRequest
-      )
+      ) ||
+      isGetCategoryIdRequest
     ) {
       // Lấy token từ localStorage
       let authData = window.localStorage.getItem("persist:auth");

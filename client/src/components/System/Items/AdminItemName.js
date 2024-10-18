@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-const AdminItemName = ({ name, handleName }) => {
+const AdminItemName = ({ name, handleName, nameLabel, helpText }) => {
   const cssField = {
     backgroundColor: "#fff", // Màu nền của Select
     borderRadius: "8px", // Bo góc
@@ -28,13 +28,14 @@ const AdminItemName = ({ name, handleName }) => {
         size="small" // Đặt kích thước thành small
         fullWidth
         className="bg-white"
-        label="Tên sản phẩm"
+        label={nameLabel ? nameLabel : "Tên sản phẩm"}
         InputLabelProps={{
           shrink: true,
           style: { fontSize: "18px", fontWeight: "bold" }, // Chữ lớn và đậm
         }}
         required
         sx={{ backgroundColor: "white", ...cssField }} // Đảm bảo CSS tương ứng
+        helperText={helpText ? helpText : ""}
       />
     </div>
   );

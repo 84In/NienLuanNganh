@@ -49,13 +49,13 @@ const AdminUserEdit = ({ user }) => {
     if (province !== "") {
       dispatch(actions.getDistrictsByProvince(province));
     }
-  }, [province]);
+  }, [province, dispatch]);
   useEffect(() => {
     setWard("");
     if (district !== "") {
       dispatch(actions.getWardsByDistrict(district));
     }
-  }, [district]);
+  }, [district, dispatch]);
 
   useEffect(() => {
     var provinceObj = provinces.find((item) => item.id === province);
@@ -68,7 +68,7 @@ const AdminUserEdit = ({ user }) => {
       (districtObj ? districtObj?.name + ", " : "") +
       (provinceObj ? provinceObj?.name : "");
     setDataFullAddress(fullAddress);
-  }, [province, district, ward, dataAddress]);
+  }, [province, district, ward, dataAddress, dispatch, provinces, districts, wards]);
 
   const [data, setData] = useState({
     avatar: null,
