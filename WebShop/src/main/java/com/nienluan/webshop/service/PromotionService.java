@@ -10,20 +10,23 @@ import com.nienluan.webshop.repository.PromotionRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.stylesheets.LinkStyle;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class PromotionService {
 
     PromotionRepository promotionRepository;
-
     PromotionMapper promotionMapper;
 
     public PromotionResponse createPromotion(PromotionRequest request) {
@@ -38,12 +41,12 @@ public class PromotionService {
     }
 
     public PromotionResponse getPromotion(String id) {
-        return promotionRepository.findById(id).map(promotionMapper::toPromotionResponse).orElseThrow(()->new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
+        return promotionRepository.findById(id).map(promotionMapper::toPromotionResponse).orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
     }
 
-    public PromotionResponse updatePromotion(String id,PromotionUpdateRequest request) {
-        var promotion = promotionRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
-        promotionMapper.updatePromotion(promotion,request);
+    public PromotionResponse updatePromotion(String id, PromotionUpdateRequest request) {
+        var promotion = promotionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
+        promotionMapper.updatePromotion(promotion, request);
         return promotionMapper.toPromotionResponse(promotion);
     }
 
@@ -59,4 +62,14 @@ public class PromotionService {
         return promotionRepository.findByNameContaining(name).stream().map(promotionMapper::toPromotionResponse).toList();
     }
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void cleanUpExpiredPromotions() {
+        log.info("Starting cleanup of expired promotions at 00:00 AM...");
+        LocalDate now = LocalDate.now();
+        var expiredPromotions = promotionRepository.findAll().stream()
+                .filter(promotion -> promotion.getEndDate().isBefore(now))
+                .collect(Collectors.toList());
+        promotionRepository.deleteAll(expiredPromotions);
+        log.info("Completed cleanup of expired promotions.");
+    }
 }
