@@ -1,16 +1,15 @@
-package com.nienluan.webshop.dto.response;
+package com.nienluan.webshop.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class StatusOrderResponse {
-    String id;
-    String name;
-    String codeName;
+public class OrderRecipientRequest {
+    String fullName;
+    String phone;
+    String address;
 }

@@ -9,7 +9,7 @@ import { NavLink, useSearchParams, useLocation } from "react-router-dom";
 const OrderHistory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
-  const [valueSearch, setValueSearch] = useState("");
+  const [valueSearch, setValueSearch] = useState(searchParams.get("search") || "");
   const baseUrl = `api/v1/orders/current-user`;
 
   const {
@@ -27,9 +27,8 @@ const OrderHistory = () => {
   } = usePagination(baseUrl, 0, 5);
 
   const handleSearch = () => {
-    const newParams = { ...currentParams, status: currentStatus, search: valueSearch };
+    const newParams = { ...currentParams, status: currentStatus, search: valueSearch.trim() };
     updateParams(newParams);
-    setValueSearch("");
   };
 
   const handleChangeStatus = (newStatus) => {
@@ -42,10 +41,6 @@ const OrderHistory = () => {
     const newParams = searchParams.get("status") || "";
     setCurrentStatus(newParams);
   }, [searchParams]);
-
-  console.log(valueSearch);
-  console.log(currentPage);
-  console.log(currentParams);
 
   return (
     <Grid2
@@ -90,18 +85,18 @@ const OrderHistory = () => {
             onSearch={handleSearch}
           />
         </div>
-        <div className="w-full space-y-6 px-0 py-4 grid-md:px-4 grid-md:py-4">
+        <div id={"pagination"} className="w-full space-y-6 px-0 py-4 grid-md:px-4 grid-md:py-4">
           {data?.map((item, index) => (
             <OrderItem product={item} key={index} />
           ))}
         </div>
         <Pagination
           currentPage={currentPage}
+          setCurrentPage={updatePage}
           hasNextPage={hasNextPage}
           hasPrevPage={hasPrevPage}
           nextPage={nextPage}
           prevPage={prevPage}
-          setCurrentPage={updatePage}
           totalPages={totalPages}
         />
       </Grid2>

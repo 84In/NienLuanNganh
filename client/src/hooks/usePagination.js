@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import axiosConfig from "../axiosConfig";
 
-const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true) => {
+const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true, idPagination = "pagination") => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [internalPage, setInternalPage] = useState(initialPage);
@@ -48,6 +48,13 @@ const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true)
     fetchPageData(currentPage);
   }, [getCurrentPage, fetchPageData, location.search]);
 
+  const scrollToPagination = useCallback(() => {
+    const paginationElement = document.getElementById(idPagination);
+    if (paginationElement) {
+      paginationElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, []);
+
   const updatePage = useCallback(
     (newPage) => {
       if (useUrlParams) {
@@ -60,6 +67,7 @@ const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true)
         setInternalPage(newPage);
         fetchPageData(newPage);
       }
+      scrollToPagination();
     },
     [useUrlParams, setSearchParams, fetchPageData],
   );
@@ -113,6 +121,7 @@ const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true)
     prevPage,
     hasNextPage: getCurrentPage() < totalPages - 1,
     hasPrevPage: getCurrentPage() > 0,
+    scrollToPagination,
   };
 };
 

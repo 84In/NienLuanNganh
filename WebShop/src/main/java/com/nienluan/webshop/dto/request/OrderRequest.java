@@ -12,8 +12,8 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderRequest {
-    String shippingAddress;
     BigDecimal totalAmount;
+    OrderRecipientRequest recipient;
     String paymentMethod;
     String payment;
     List<OrderDetailRequest> orderDetails;

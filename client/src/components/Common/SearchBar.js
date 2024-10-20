@@ -26,7 +26,7 @@ const SearchBar = ({ isAdmin, IconBefore, TextContent, Name, valueSearch, setVal
       {TextContent && (
         <div className="flex w-20 items-center justify-center">
           <button
-            className={`flex h-full flex-1 items-center justify-center rounded-r-md px-2 text-sm font-bold ${isAdmin ? "" : "text-blue-600"} hover:bg-blue-200`}
+            className={`flex h-full flex-1 items-center justify-center rounded-r-md px-2 text-sm ${isAdmin ? "" : "text-blue-600"} hover:bg-blue-200`}
             onClick={onSearch}
           >
             {TextContent}

@@ -139,8 +139,7 @@ CREATE TABLE `t_payments`
     PRIMARY KEY (`id`)
 );
 
-
-CREATE TABLE `t_status_order`
+CREATE TABLE `t_order_status`
 (
     `id`         varchar(255) NOT NULL,
     `name`       varchar(255) NOT NULL UNIQUE,
@@ -150,19 +149,31 @@ CREATE TABLE `t_status_order`
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `t_order_recipient`
+(
+    `id`         varchar(255) NOT NULL,
+    `full_name`  varchar(255) NOT NULL UNIQUE,
+    `phone`      varchar(255) NOT NULL UNIQUE,
+    `address`    text         NOT NULL,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `t_orders`
 (
     `id`                varchar(255) NOT NULL,
-    `shipping_address`  text,
     `total_amount`      bigint(20),
+    `recipient_id`      varchar(255) NOT NULL,
     `status_id`         varchar(255) NOT NULL,
     `payment_method_id` varchar(255) NOT NULL,
     `payment_id`        varchar(255) DEFAULT NULL,
     `user_id`           varchar(255) NOT NULL,
     `created_at`        DATETIME     DEFAULT CURRENT_TIMESTAMP,
     `updated_at`        DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_order_recipient FOREIGN KEY (`recipient_id`) REFERENCES t_order_recipient (`id`) ON DELETE CASCADE,
     CONSTRAINT fk_payment_method FOREIGN KEY (`payment_method_id`) REFERENCES t_payment_methods (`id`) ON DELETE CASCADE,
-    CONSTRAINT fk_status_order FOREIGN KEY (`status_id`) REFERENCES t_status_order (`id`) ON DELETE CASCADE,
+    CONSTRAINT fk_order_status FOREIGN KEY (`status_id`) REFERENCES t_order_status (`id`) ON DELETE CASCADE,
     CONSTRAINT fk_payment_id FOREIGN KEY (`payment_id`) REFERENCES t_payments (`id`) ON DELETE CASCADE,
     CONSTRAINT fk_user_id FOREIGN KEY (`user_id`) REFERENCES t_users (`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)

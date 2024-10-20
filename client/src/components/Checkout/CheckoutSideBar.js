@@ -39,8 +39,12 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
       });
 
       const order = {
-        shippingAddress: userData?.address?.fullName,
         totalAmount: totalAmount,
+        recipient: {
+          fullName: `${userData?.firstName} ${userData?.lastName}`,
+          phone: userData?.phone,
+          address: userData?.address?.fullName,
+        },
         paymentMethod: paymentMethod,
         orderDetails: orderDetails,
       };

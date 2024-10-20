@@ -147,13 +147,13 @@ const OrderDetail = () => {
               {orderDetail && (
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2 font-semibold">
-                    <p>{orderDetail?.user?.firstName + " " + orderDetail?.user?.lastName}</p>
+                    <p>{orderDetail?.recipient?.fullName}</p>
                     <span className="p-2 text-gray-200">|</span>
-                    <p>{orderDetail?.user?.phone}</p>
+                    <p>{orderDetail?.recipient?.phone}</p>
                   </div>
                   <div>
                     <span className="font-semibold">Địa chỉ: </span>
-                    {orderDetail?.user?.address?.fullName}
+                    {orderDetail?.recipient?.address}
                   </div>
                 </div>
               )}

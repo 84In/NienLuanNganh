@@ -29,19 +29,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OrderService {
 
-    StatusOrderRepository statusOrderRepository;
+    OrderStatusRepository statusOrderRepository;
     OrderRepository orderRepository;
     PaymentRepository paymentRepository;
     PaymentMethodRepository paymentMethodRepository;
     ProductRepository productRepository;
     UserRepository userRepository;
     OrderDetailRepository orderDetailRepository;
-    StatusOrderMapper statusOrderMapper;
+    OrderStatusMapper orderStatusMapper;
     UserMapper userMapper;
     PaymentMapper paymentMapper;
     PaymentMethodMapper paymentMethodMapper;
     ProductMapper productMapper;
     CartRepository cartRepository;
+    OrderRecipientRepository orderRecipientRepository;
+    OrderRecipientMapper orderRecipientMapper;
 
     @Transactional
     public OrderResponse createOrderWithCash(OrderRequest request) {
@@ -49,8 +51,11 @@ public class OrderService {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        StatusOrder statusOrder = statusOrderRepository.findByCodeName(pendingStatusOrder);
+        OrderStatus orderStatus = statusOrderRepository.findByCodeName(pendingStatusOrder);
         PaymentMethod paymentMethod = paymentMethodRepository.findByCodeName(request.getPaymentMethod());
+        OrderRecipient recipient = orderRecipientRepository
+                .findByFullNameAndPhoneAndAddress(request.getRecipient().getFullName(), request.getRecipient().getPhone(), request.getRecipient().getAddress())
+                .orElse(orderRecipientRepository.save(orderRecipientMapper.toOrderRecipient(request.getRecipient())));
 
         //Kiểm tra OrderDetail trước khi thêm Order
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -72,9 +77,9 @@ public class OrderService {
         }
 
         Order order = Order.builder()
-                .shippingAddress(request.getShippingAddress())
                 .totalAmount(request.getTotalAmount())
-                .status(statusOrder)
+                .recipient(recipient)
+                .status(orderStatus)
                 .paymentMethod(paymentMethod)
                 .user(user)
                 .build();
@@ -117,12 +122,12 @@ public class OrderService {
         Pageable sortedByDate = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        StatusOrder statusOrder = (status != null && !status.isEmpty())
+        OrderStatus orderStatus = (status != null && !status.isEmpty())
                 ? statusOrderRepository.findByCodeName(status)
                 : null;
         String searchValue = (search != null && !search.isEmpty()) ? search : null;
 
-        Page<Order> ordersPage = orderRepository.findByUserAndStatusAndSearch(user, statusOrder, searchValue, sortedByDate);
+        Page<Order> ordersPage = orderRepository.findByUserAndStatusAndSearch(user, orderStatus, searchValue, sortedByDate);
 
         return ordersPage.map(order -> {
             List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(order);
@@ -162,9 +167,9 @@ public class OrderService {
 
         return OrderResponse.builder()
                 .id(order.getId())
-                .shippingAddress(order.getShippingAddress())
                 .totalAmount(order.getTotalAmount())
-                .status(statusOrderMapper.toStatusOrderResponse(order.getStatus()))
+                .recipient(orderRecipientMapper.toOrderRecipientResponse(order.getRecipient()))
+                .status(orderStatusMapper.toOrderStatusResponse(order.getStatus()))
                 .payment(paymentMapper.toPaymentResponse(order.getPayment()))
                 .paymentMethod(paymentMethodMapper.toPaymentMethodResponse(order.getPaymentMethod()))
                 .user(userMapper.toUserResponse(order.getUser()))

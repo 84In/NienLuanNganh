@@ -36,11 +36,11 @@ VALUES ('bb66b1b6-c2ad-4630-95d6-e62fa335640e', 'ZaloPay', 'zalopay');
 -- Query: select * from `t_status_order`
 -- Date: 2024-10-14 21:53
 */
-INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
 VALUES ('290ac18c-887b-4a1f-b1bb-9686b40f37d8', 'Chờ xác nhận', 'pending');
-INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
 VALUES ('2f498bfe-b96f-4191-a809-6c0bd606c4c8', 'Đang giao hàng', 'shipping');
-INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
 VALUES ('ab085525-a5f5-47b0-94a3-3fef2c4ba5fd', 'Đã hủy', 'canceled');
-INSERT INTO `t_status_order` (`id`, `name`, `code_name`)
+INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
 VALUES ('c526b8e6-b7d5-46df-91d2-70c00885ff26', 'Hoàn tất', 'completed');

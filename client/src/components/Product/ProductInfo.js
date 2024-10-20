@@ -58,7 +58,7 @@ const ProductInfo = ({ product }) => {
               <p className="text-black-500 text-3xl font-bold">{formatCurrency(price)}</p>
             </div>
           )}
-          <div className="w-full text-justify text-gray-600">
+          <div className="w-full text-gray-600">
             <p className="font-medium text-black">Mô tả:</p>
             <p className="line-clamp-4 break-words">{product?.description}</p>
           </div>

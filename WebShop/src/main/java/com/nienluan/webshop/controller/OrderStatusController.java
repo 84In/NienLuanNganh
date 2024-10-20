@@ -1,9 +1,9 @@
 package com.nienluan.webshop.controller;
 
-import com.nienluan.webshop.dto.request.StatusOrderRequest;
+import com.nienluan.webshop.dto.request.OrderStatusRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
-import com.nienluan.webshop.dto.response.StatusOrderResponse;
-import com.nienluan.webshop.service.StatusOrderService;
+import com.nienluan.webshop.dto.response.OrderStatusResponse;
+import com.nienluan.webshop.service.OrderStatusService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/status-order")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class StatusOrderController {
-    StatusOrderService statusOrderService;
+public class OrderStatusController {
+    OrderStatusService orderStatusService;
 
     @PostMapping
-    public ApiResponse<?> createStatusOrder(@RequestBody StatusOrderRequest request) {
-        return ApiResponse.<StatusOrderResponse>builder()
+    public ApiResponse<?> createStatusOrder(@RequestBody OrderStatusRequest request) {
+        return ApiResponse.<OrderStatusResponse>builder()
                 .message("Create status order successfully")
-                .result(statusOrderService.createStatusOrder(request))
+                .result(orderStatusService.createStatusOrder(request))
                 .build();
     }
 
     @GetMapping("/{id}")
     public ApiResponse<?> getStatusOrder(@PathVariable String id) {
-        return ApiResponse.<StatusOrderResponse>builder()
+        return ApiResponse.<OrderStatusResponse>builder()
                 .message("Get status order successfully")
-                .result(statusOrderService.getStatusOrder(id))
+                .result(orderStatusService.getStatusOrder(id))
                 .build();
     }
 
     @GetMapping
     public ApiResponse<?> getAllStatusOrder(Pageable pageable) {
-        return ApiResponse.<Page<StatusOrderResponse>>builder()
+        return ApiResponse.<Page<OrderStatusResponse>>builder()
                 .message("Get all status order successfully")
-                .result(statusOrderService.getAllStatusOrder(pageable))
+                .result(orderStatusService.getAllStatusOrder(pageable))
                 .build();
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<?> updateStatusOrder(@PathVariable String id, StatusOrderRequest request) {
-        return ApiResponse.<StatusOrderResponse>builder()
+    public ApiResponse<?> updateStatusOrder(@PathVariable String id, OrderStatusRequest request) {
+        return ApiResponse.<OrderStatusResponse>builder()
                 .message("Update status order successfully")
-                .result(statusOrderService.updateStatusOrder(id, request))
+                .result(orderStatusService.updateStatusOrder(id, request))
                 .build();
     }
 
     @DeleteMapping("/{id}")
     public ApiResponse<?> deleteStatusOrder(@PathVariable String id) {
-        statusOrderService.deleteStatusOrder(id);
+        orderStatusService.deleteStatusOrder(id);
         return ApiResponse.<Void>builder()
                 .message("Delete status order successfully")
                 .build();

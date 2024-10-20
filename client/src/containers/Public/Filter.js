@@ -154,7 +154,7 @@ const Filter = () => {
                     setSortDirection(newSortDirection);
                   }}
                 >
-                  <option value="" className="" selected={(e) => e.target.value === `${sortBy}-${sortDirection}`}>
+                  <option value="" className="" selected={(e) => e.target.value === ""}>
                     Sắp xếp
                   </option>
                   {/* <option value="review-desc">Phổ biến</option> */}

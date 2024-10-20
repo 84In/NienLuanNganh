@@ -22,11 +22,13 @@ public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    String shippingAddress;
     BigDecimal totalAmount;
+    @OneToOne
+    @JoinColumn(name = "recipient_id")
+    OrderRecipient recipient;
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
-    StatusOrder status;
+    OrderStatus status;
     @ManyToOne
     @JoinColumn(name = "payment_method_id", nullable = false)
     PaymentMethod paymentMethod;

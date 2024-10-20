@@ -16,9 +16,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse extends BaseResponse {
     String id;
-    String shippingAddress;
     BigDecimal totalAmount;
-    StatusOrderResponse status;
+    OrderRecipientResponse recipient;
+    OrderStatusResponse status;
     PaymentMethodResponse paymentMethod;
     PaymentResponse payment;
     UserResponse user;
