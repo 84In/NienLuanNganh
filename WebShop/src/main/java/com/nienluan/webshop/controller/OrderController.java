@@ -43,12 +43,15 @@ public class OrderController {
     }
 
     @GetMapping("/current-user")
-    public ApiResponse<?> getOrder(Pageable pageable, @RequestParam(name = "status", required = false) String status) {
+    public ApiResponse<?> getOrder(Pageable pageable,
+                                   @RequestParam(name = "status", required = false) String status,
+                                   @RequestParam(name = "search", required = false) String search) {
         return ApiResponse.<Page<OrderResponse>>builder()
                 .message("Get order successful")
-                .result(orderService.getOrderCurrentUser(pageable, status))
+                .result(orderService.getOrderCurrentUser(pageable, status, search))
                 .build();
     }
+
 
     @PutMapping("/change-status/{id}")
     public ApiResponse<?> changeOrderStatus(@PathVariable("id") String id, @RequestParam(name = "status", required = false) String status) {

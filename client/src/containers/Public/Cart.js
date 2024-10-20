@@ -1,9 +1,9 @@
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useState, useEffect } from "react"; // Thêm useEffect
+import React, { memo, useEffect, useState } from "react"; // Thêm useEffect
 import { useDispatch, useSelector } from "react-redux";
 import { AlertCustom, CartItem, CartSideBar } from "../../components";
-import { validPrice, validPromotion, validTotalPrice } from "../../utils";
 import actionTypes from "../../store/actions/actionType";
+import { validPrice, validPromotion, validTotalPrice } from "../../utils";
 
 const Cart = ({ setIsModelLogin }) => {
   const dispatch = useDispatch();
@@ -106,18 +106,22 @@ const Cart = ({ setIsModelLogin }) => {
           <h1 className="text-lg font-semibold">Giỏ hàng</h1>
           <div className="text flex font-semibold">
             <div className="flex w-5/12 items-center gap-2 text-black">
-              <input
-                type="checkbox"
-                name="selectAll"
-                className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
-                onChange={(e) => handleSelectAll(e.target.checked)}
-                checked={
-                  cart?.cartDetails &&
-                  cart?.cartDetails.length !== 0 &&
-                  selectedItems?.length === cart?.cartDetails?.length
-                }
-              />
-              <p>Tất cả</p>
+              <div className="flex w-4 items-center justify-center">
+                <input
+                  type="checkbox"
+                  name="selectAll"
+                  className="custom-checkbox h-4 w-4"
+                  onChange={(e) => handleSelectAll(e.target.checked)}
+                  checked={
+                    cart?.cartDetails &&
+                    cart?.cartDetails.length !== 0 &&
+                    selectedItems?.length === cart?.cartDetails?.length
+                  }
+                />
+              </div>
+              <div className="flex w-11/12 justify-center px-2 grid-md:justify-start">
+                <p>Tất cả</p>
+              </div>
             </div>
             {isMobile ? (
               <div className="flex w-6/12 flex-col">

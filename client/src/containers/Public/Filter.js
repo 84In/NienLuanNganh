@@ -1,17 +1,16 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
-import { bannerFilter } from "../../utils/constant";
 import { apiGetBrandByCategory } from "../../services";
 import { minAndMaxPrice } from "../../utils";
+import { bannerFilter } from "../../utils/constant";
 
 const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [brands, setBrands] = useState([]);
-  const [path, setPath] = useState("");
   const [type, setType] = useState("");
   const [name, setName] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -26,7 +25,6 @@ const Filter = () => {
   useEffect(() => {
     const handlePathChange = () => {
       const pathParts = window.location.pathname.split("/");
-      setPath(window.location.pathname);
       setType(pathParts[2]);
       setName(pathParts[3]);
     };
@@ -37,6 +35,13 @@ const Filter = () => {
       window.removeEventListener("popstate", handlePathChange);
     };
   }, []);
+
+  useEffect(() => {
+    setSortBy("");
+    setSortDirection("");
+    setBrandFilter([]);
+    setPriceFilter([]);
+  }, [type, name]);
 
   useEffect(() => {
     if (type && name) {
@@ -149,12 +154,16 @@ const Filter = () => {
                     setSortDirection(newSortDirection);
                   }}
                 >
-                  <option value="" className="" selected>
+                  <option value="" className="" selected={(e) => e.target.value === `${sortBy}-${sortDirection}`}>
                     Sắp xếp
                   </option>
                   {/* <option value="review-desc">Phổ biến</option> */}
-                  <option value="price-asc">Giá tăng dần</option>
-                  <option value="price-desc">Giá giảm dần</option>
+                  <option value="price-asc" selected={(e) => e.target.value === `${sortBy}-${sortDirection}`}>
+                    Giá tăng dần
+                  </option>
+                  <option value="price-desc" selected={(e) => e.target.value === `${sortBy}-${sortDirection}`}>
+                    Giá giảm dần
+                  </option>
                 </select>
               </div>
             </div>

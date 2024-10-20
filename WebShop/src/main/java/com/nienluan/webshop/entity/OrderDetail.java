@@ -20,10 +20,10 @@ public class OrderDetail {
     String id;
     BigDecimal quantity;
     BigDecimal priceAtTime;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     Order order;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     Product product;
 }

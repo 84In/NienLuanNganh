@@ -6,9 +6,29 @@ import com.nienluan.webshop.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface OrderRepository extends JpaRepository<Order, String> {
     Page<Order> findByUser(User user, Pageable pageable);
 
     Page<Order> findByUserAndStatus(User user, StatusOrder status, Pageable pageable);
+
+    @Query("SELECT DISTINCT o FROM Order o " +
+            "LEFT JOIN FETCH o.orderDetails od " +
+            "LEFT JOIN FETCH od.product p " +
+            "LEFT JOIN FETCH o.paymentMethod pm " +
+            "WHERE o.user = :user " +
+            "AND (:status IS NULL OR o.status = :status) " +
+            "AND (:search IS NULL OR " +
+            "LOWER(o.id) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(o.shippingAddress) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(CAST(o.totalAmount AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(CAST(o.createdAt AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(pm.name) LIKE LOWER(CONCAT('%', :search, '%'))) ")
+    Page<Order> findByUserAndStatusAndSearch(@Param("user") User user,
+                                             @Param("status") StatusOrder status,
+                                             @Param("search") String search,
+                                             Pageable pageable);
 }

@@ -1,8 +1,8 @@
 import { Button } from "@mui/material";
 import React, { memo } from "react";
-import { BiBlock, BiCheckCircle, BiCheckDouble, BiInfoCircle, BiSolidPackage } from "react-icons/bi";
+import { BiBlock, BiCheckCircle, BiInfoCircle, BiSolidPackage } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { formatCurrency } from "../utils/format";
 
 const OrderItem = ({ product }) => {
@@ -38,12 +38,16 @@ const OrderItem = ({ product }) => {
         </div>
       </div>
       <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
-      <div className="custom-scrollbar flex max-h-[21rem] flex-col gap-4 px-2 py-4">
+      <div className="custom-scrollbar flex max-h-[24rem] flex-col gap-4 px-2 py-4">
         {product?.orderDetails?.map((item, index) => (
           <div key={index} className="flex w-full items-start">
             <div className="w-1/12 min-w-12 grid-md:min-w-20">
               <img
-                src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
+                src={
+                  JSON.parse(item?.product?.images.replace(/'/g, '"'))[0].startsWith("https://")
+                    ? JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
+                    : process.env.REACT_APP_SERVER_URL + JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
+                }
                 alt={item?.product?.name + index}
                 className="h-16 w-16 object-contain"
               />

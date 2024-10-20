@@ -110,23 +110,26 @@ public class OrderService {
         return toOrderResponse(order, orderDetails);
     }
 
-    public Page<OrderResponse> getOrderCurrentUser(Pageable pageable, String status) {
+    public Page<OrderResponse> getOrderCurrentUser(Pageable pageable, String status, String search) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         Pageable sortedByDate = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "createdAt"));
 
         StatusOrder statusOrder = (status != null && !status.isEmpty())
                 ? statusOrderRepository.findByCodeName(status)
                 : null;
-        Page<Order> ordersPage = statusOrder == null
-                ? orderRepository.findByUser(user, sortedByDate)
-                : orderRepository.findByUserAndStatus(user, statusOrder, sortedByDate);
+        String searchValue = (search != null && !search.isEmpty()) ? search : null;
+
+        Page<Order> ordersPage = orderRepository.findByUserAndStatusAndSearch(user, statusOrder, searchValue, sortedByDate);
+
         return ordersPage.map(order -> {
             List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(order);
             return toOrderResponse(order, orderDetails);
         });
     }
+
 
     public Page<OrderResponse> getAllOrders(Pageable pageable) {
         List<Order> orders = orderRepository.findAll();
@@ -138,6 +141,14 @@ public class OrderService {
                 })
                 .collect(Collectors.toList());
         return new PageImpl<>(orderResponses, pageable, orders.size());
+    }
+
+    public OrderResponse changeOrderStatus(String id, String statusCodeName) {
+        var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        var status = statusOrderRepository.findByCodeName(statusCodeName);
+        order.setStatus(status);
+        orderRepository.save(order);
+        return toOrderResponse(order, order.getOrderDetails());
     }
 
     private OrderResponse toOrderResponse(Order order, List<OrderDetail> orderDetails) {
@@ -161,14 +172,6 @@ public class OrderService {
                 .createdAt(order.getCreatedAt())
                 .updatedAt(order.getUpdatedAt())
                 .build();
-    }
-
-    public OrderResponse changeOrderStatus(String id, String statusCodeName) {
-        var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
-        var status = statusOrderRepository.findByCodeName(statusCodeName);
-        order.setStatus(status);
-        orderRepository.save(order);
-        return toOrderResponse(order, order.getOrderDetails());
     }
 
 }

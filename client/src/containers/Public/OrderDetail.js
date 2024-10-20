@@ -1,13 +1,13 @@
+import { Button } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect, useState } from "react";
-import { AlertCustom, ButtonCustom, CheckoutInfo, ConfirmAlert } from "../../components";
-import { apiChangeOrderStatus, apiGetOrderDetailById } from "../../services";
-import { BiBlock, BiCheckCircle, BiSolidPackage } from "react-icons/bi";
+import { BiBlock, BiCheckCircle, BiError, BiSolidPackage } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
-import { Button, patch } from "@mui/material";
-import { formatCurrency, path, validTotalPrice } from "../../utils";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { AlertCustom, ButtonCustom, ConfirmAlert } from "../../components";
+import { apiChangeOrderStatus, apiGetOrderDetailById } from "../../services";
+import { formatCurrency, path, validTotalPrice } from "../../utils";
 
 const OrderDetail = () => {
   const navigate = useNavigate();
@@ -199,7 +199,12 @@ const OrderDetail = () => {
                     <div className="flex w-7/12 p-2 grid-md:w-6/12">
                       <div className="w-1/12 min-w-12 grid-md:min-w-20">
                         <img
-                          src={JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]}
+                          src={
+                            JSON.parse(item?.product?.images.replace(/'/g, '"'))[0].startsWith("https://")
+                              ? JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
+                              : process.env.REACT_APP_SERVER_URL +
+                                JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
+                          }
                           alt={item?.product?.name + index}
                           className="h-16 w-16 object-contain"
                         />
@@ -268,6 +273,7 @@ const OrderDetail = () => {
       </Grid2>
       {confirm && (
         <ConfirmAlert
+          icon={<BiError className="h-6 w-6 text-red-500" />}
           title={"Hủy đơn hàng"}
           content={"Bạn có muốn hủy đơn hàng đang chọn không?"}
           titleConfirm={"Xác nhận"}

@@ -24,19 +24,18 @@ public class Order extends BaseEntity {
     String id;
     String shippingAddress;
     BigDecimal totalAmount;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     StatusOrder status;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "payment_method_id", nullable = false)
     PaymentMethod paymentMethod;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "payment_id")
     Payment payment;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
     @OneToMany(mappedBy = "order")
     List<OrderDetail> orderDetails = new ArrayList<>();
-
 }

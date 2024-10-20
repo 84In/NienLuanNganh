@@ -8,9 +8,10 @@ import { NavLink, useSearchParams, useLocation } from "react-router-dom";
 
 const OrderHistory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
   const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
+  const [valueSearch, setValueSearch] = useState("");
   const baseUrl = `api/v1/orders/current-user`;
+
   const {
     data,
     currentPage,
@@ -25,15 +26,26 @@ const OrderHistory = () => {
     hasPrevPage,
   } = usePagination(baseUrl, 0, 5);
 
+  const handleSearch = () => {
+    const newParams = { ...currentParams, status: currentStatus, search: valueSearch };
+    updateParams(newParams);
+    setValueSearch("");
+  };
+
   const handleChangeStatus = (newStatus) => {
+    setSearchParams("");
     setCurrentStatus(newStatus);
-    updateParams({ status: newStatus });
+    updateParams({ status: newStatus, search: "" });
   };
 
   useEffect(() => {
     const newParams = searchParams.get("status") || "";
     setCurrentStatus(newParams);
   }, [searchParams]);
+
+  console.log(valueSearch);
+  console.log(currentPage);
+  console.log(currentParams);
 
   return (
     <Grid2
@@ -69,7 +81,14 @@ const OrderHistory = () => {
           ))}
         </div>
         <div className="w-full">
-          <SearchBar IconBefore={GoSearch} TextContent={"Tra cứu"} Name={"order-search"} />
+          <SearchBar
+            IconBefore={GoSearch}
+            TextContent={"Tra cứu"}
+            Name={"order-search"}
+            valueSearch={valueSearch}
+            setValueSearch={setValueSearch}
+            onSearch={handleSearch}
+          />
         </div>
         <div className="w-full space-y-6 px-0 py-4 grid-md:px-4 grid-md:py-4">
           {data?.map((item, index) => (
