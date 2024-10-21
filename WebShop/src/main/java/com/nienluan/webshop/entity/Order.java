@@ -23,7 +23,7 @@ public class Order extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     BigDecimal totalAmount;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "recipient_id")
     OrderRecipient recipient;
     @ManyToOne

@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Entity
 @Setter
 @Getter
@@ -21,6 +23,6 @@ public class OrderRecipient {
     String phone;
     String address;
 
-    @OneToOne(mappedBy = "recipient")
-    Order order;
+    @OneToMany(mappedBy = "recipient")
+    List<Order> order;
 }

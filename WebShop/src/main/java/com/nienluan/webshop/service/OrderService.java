@@ -54,8 +54,14 @@ public class OrderService {
         OrderStatus orderStatus = statusOrderRepository.findByCodeName(pendingStatusOrder);
         PaymentMethod paymentMethod = paymentMethodRepository.findByCodeName(request.getPaymentMethod());
         OrderRecipient recipient = orderRecipientRepository
-                .findByFullNameAndPhoneAndAddress(request.getRecipient().getFullName(), request.getRecipient().getPhone(), request.getRecipient().getAddress())
-                .orElse(orderRecipientRepository.save(orderRecipientMapper.toOrderRecipient(request.getRecipient())));
+                .findByFullNameAndPhoneAndAddress(
+                        request.getRecipient().getFullName().trim(),
+                        request.getRecipient().getPhone(),
+                        request.getRecipient().getAddress().trim()
+                )
+                .orElseGet(() -> {
+                    return orderRecipientRepository.save(orderRecipientMapper.toOrderRecipient(request.getRecipient()));
+                });
 
         //Kiểm tra OrderDetail trước khi thêm Order
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -149,9 +155,20 @@ public class OrderService {
     }
 
     public OrderResponse changeOrderStatus(String id, String statusCodeName) {
+        String canceledStatus = "canceled";
+
         var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         var status = statusOrderRepository.findByCodeName(statusCodeName);
         order.setStatus(status);
+        if (status.getCodeName().equals(canceledStatus)) {
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                Product product = orderDetail.getProduct();
+                //Cập nhật số lượng trong kho
+                product.setStockQuantity(product.getStockQuantity().add(orderDetail.getQuantity()));
+                productRepository.save(product);
+            }
+            //Xử lý refund tiền trên thanh toán điện tử
+        }
         orderRepository.save(order);
         return toOrderResponse(order, order.getOrderDetails());
     }

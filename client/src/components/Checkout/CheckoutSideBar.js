@@ -60,10 +60,10 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
         navigate(path.HOME + path.ORDER_HISTORY);
       }
       if (response?.code === 5) {
-        setAlert("Sản phẩm không tồn tại ");
+        setAlert("Sản phẩm không tồn tại");
       }
       if (response?.code === 16) {
-        setAlert("Sản phẩm đã hết");
+        setAlert("Có sản phẩm đã hết");
       }
       setTimeout(() => {
         setAlert("");

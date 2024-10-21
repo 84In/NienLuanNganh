@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +24,7 @@ public class Province {
     String name;
     String divisionType;
 
-    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL,fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     Set<District> districts = new HashSet<>();
 
 }

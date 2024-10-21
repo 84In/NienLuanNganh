@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "t_banner_images")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

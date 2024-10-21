@@ -17,12 +17,12 @@ const CheckoutItem = ({ data }) => {
         <p className="text-gray-500">SL: {data?.quantity}</p>
       </div>
       {promotion ? (
-        <div className="flex w-5/12 flex-col-reverse items-center justify-end gap-2 grid-md:w-4/12 grid-md:flex-row">
-          <p className="text-xs font-semibold text-red-500 grid-md:text-sm">{formatCurrency(price)}</p>
+        <div className="flex w-5/12 flex-col-reverse justify-end gap-2 text-right grid-md:w-4/12 grid-md:flex-row">
           <p className="text-xs text-gray-500 line-through">{formatCurrency(data?.product?.price)}</p>
+          <p className="text-xs font-semibold text-red-500 grid-md:text-sm">{formatCurrency(price)}</p>
         </div>
       ) : (
-        <div className="flex w-5/12 items-center justify-end gap-2 grid-md:w-4/12">
+        <div className="flex w-5/12 justify-end gap-2 grid-md:w-4/12">
           <p className="text-xs font-semibold grid-md:text-sm">{formatCurrency(price)}</p>
         </div>
       )}

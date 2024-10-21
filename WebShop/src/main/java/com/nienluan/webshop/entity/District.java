@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +28,7 @@ public class District {
     @JoinColumn(name = "province_code", nullable = false)
     Province province;
 
-    @OneToMany(mappedBy = "district", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
-    Set<Ward> wards = new HashSet<>();;
+    @OneToMany(mappedBy = "district", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    Set<Ward> wards = new HashSet<>();
+    ;
 }

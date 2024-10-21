@@ -5,9 +5,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
+@Table(name = "t_addresses")
 @Setter
 @Getter
-@Table(name = "t_addresses")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

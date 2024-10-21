@@ -1,7 +1,10 @@
 package com.nienluan.webshop.entity;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,7 +14,7 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
-@Table(name= "t_roles")
+@Table(name = "t_roles")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
