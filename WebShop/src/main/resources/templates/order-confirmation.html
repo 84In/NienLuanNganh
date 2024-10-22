@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: Arial, sans-serif;">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f3f4f6;">
+    <tr>
+        <td align="center" style="padding: 20px 0;">
+            <table cellpadding="0" cellspacing="0" border="0" width="600"
+                   style="background-color: white; border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3); box-shadow: rgba(59, 130, 246, 0.1) 0px 4px 12px;">
+                <tr>
+                    <td align="center" style="border-bottom: 1px solid rgba(59, 130, 246, 0.3); height: 82px">
+                        <img src="https://res.cloudinary.com/dlsrfklpu/image/upload/v1729606298/zhlnf6guwuj9iniwizv3.png"
+                             alt="Logo" width="130" height="80"
+                             style="display: block;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 20px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">
+                        <p style="margin: 0 0 10px 0;">Xin chào <strong th:text="${recipient.fullName}"></strong>,</p>
+                        <p style="margin: 0 0 10px 0;">Cảm ơn bạn đã đặt hàng tại <strong>VanouS!</strong></p>
+                        <h4 style="margin: 0 0 5px 0; color: #3b82f6;">Thông tin đơn hàng: #<span
+                                th:text="${orderId}"></span></h4>
+                        <p style="margin: 0 0 10px 0; font-size: 13px; color: rgba(0,0,0,0.6);">Ngày đặt: (<span
+                                th:text="${createdAt}"></span>)</p>
+                        <p style="margin: 0 0 5px 0; font-size: 13px;">Tên: <span
+                                th:text="${recipient.fullName}"></span></p>
+                        <p style="margin: 0 0 5px 0; font-size: 13px;">Sđt: <span th:text="${recipient.phone}"></span>
+                        </p>
+                        <p style="margin: 0; font-size: 13px;">Địa chỉ: <span th:text="${recipient.address}"></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 20px; border-bottom: 1px solid rgba(59, 130, 246, 0.3);">
+                        <h4 style="margin: 0 0 15px 0; color: #3b82f6;">Sản phẩm đã mua:</h4>
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                               style="border-collapse: collapse;">
+                            <tr>
+                                <th style="padding: 10px; text-align: left; background-color: #3b82f6; color: white; border-bottom: 1px solid #e0e0ff;">
+                                    Sản phẩm
+                                </th>
+                                <th style="padding: 10px; text-align: center; background-color: #3b82f6; color: white; border-bottom: 1px solid #e0e0ff;">
+                                    Số lượng
+                                </th>
+                                <th style="padding: 10px; text-align: right; background-color: #3b82f6; color: white; border-bottom: 1px solid #e0e0ff;">
+                                    Giá
+                                </th>
+                            </tr>
+                            <tr th:each="detail : ${orderDetails}"
+                                style="background-color: #ffffff; overflow-wrap: break-word">
+                                <td style="padding: 10px; border-bottom: 1px solid #e0e0ff; /* display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;*/"
+                                    th:text="${detail.product.name}"></td>
+                                <td style="padding: 10px; text-align: center; border-bottom: 1px solid #e0e0ff;"
+                                    th:text="${detail.quantity}"></td>
+                                <td style="padding: 10px; text-align: right; border-bottom: 1px solid #e0e0ff;">
+                                    <span th:text="${#numbers.formatInteger(detail.priceAtTime, 0, 'POINT')} + 'VND'"></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 15px;">
+                            <tr>
+                                <td style="color: #3b82f6;"><strong>Tổng giá trị đơn hàng:</strong></td>
+                                <td style="text-align: right; font-weight: bold"><span
+                                        th:text="${#numbers.formatInteger(totalPrice, 0, 'POINT')} + 'VND'"></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 20px;">
+                        <p style="margin: 0 0 5px 0;">Trân trọng,</p>
+                        <strong style="color: #3b82f6;">VanouS</strong>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,7 @@ public class OrderService {
     CartRepository cartRepository;
     OrderRecipientRepository orderRecipientRepository;
     OrderRecipientMapper orderRecipientMapper;
+    MailService mailService;
 
     @Transactional
     public OrderResponse createOrderWithCash(OrderRequest request) {
@@ -88,6 +90,7 @@ public class OrderService {
                 .status(orderStatus)
                 .paymentMethod(paymentMethod)
                 .user(user)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         //Lưu đơn hàng
@@ -110,7 +113,12 @@ public class OrderService {
                             cartDetail.getQuantity().compareTo(orderDetail.getQuantity()) == 0
             );
         }
+        order.setOrderDetails(orderDetails);
+        orderRepository.save(order);
         cartRepository.save(cart);
+        //Gửi mail khi tạo thành công đơn hàng
+        mailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
+
         return toOrderResponse(order, orderDetails);
     }
 

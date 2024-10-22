@@ -73,7 +73,7 @@ const Checkout = () => {
               <div className="flex items-center justify-center px-4 py-10">Không có sản phẩm nào</div>
             ) : (
               <div className="gap-2 rounded-2xl border border-gray-600 p-2">
-                <div className="custom-scrollbar flex max-h-[55vh] flex-col">
+                <div className="custom-scrollbar flex max-h-[57vh] flex-col">
                   {checkout.map((item, index) => (
                     <div key={index} className="flex items-center gap-4 p-2 grid-md:p-4">
                       <CheckoutItem data={item} />

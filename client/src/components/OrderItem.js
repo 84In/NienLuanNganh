@@ -38,7 +38,7 @@ const OrderItem = ({ product }) => {
         </div>
       </div>
       <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
-      <div className="custom-scrollbar flex max-h-[24rem] flex-col gap-4 px-2 py-4">
+      <div className="custom-scrollbar flex max-h-[23rem] flex-col gap-4 px-2 py-4">
         {product?.orderDetails?.map((item, index) => (
           <div key={index} className="flex w-full items-start">
             <div className="w-1/12 min-w-12 grid-md:min-w-20">

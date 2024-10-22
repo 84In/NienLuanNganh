@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { formatCurrency } from "../../utils/format";
 import { apiCreateOrder } from "../../services";
 import { path, validPrice, validPromotion } from "../../utils";
@@ -11,8 +11,12 @@ import * as actions from "../../store/actions";
 const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice, totalAmount, setAlert }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleCheckout = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     if (!userData?.address?.fullName || userData?.address?.fullName === "") {
       setAlert("Vui lòng điền địa chỉ trước khi thanh toán");
       setTimeout(() => {
@@ -73,6 +77,8 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
       setTimeout(() => {
         setAlert("");
       }, 5000);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -103,15 +109,16 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
       </div>
       <div className="flex w-full flex-col gap-2 py-2">
         <Button
+          id="checkoutBtn"
           onClick={handleCheckout}
           variant="contained"
           color="error"
           size="large"
           fullWidth
           className="mb-2"
-          disabled={!checkout || checkout.length <= 0}
+          disabled={!checkout || checkout.length <= 0 || isProcessing}
         >
-          Thanh toán
+          {isProcessing ? "Đang xử lý..." : "Thanh toán"}
         </Button>
       </div>
     </Box>
