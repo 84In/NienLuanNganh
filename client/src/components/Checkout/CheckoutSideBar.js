@@ -15,7 +15,6 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
 
   const handleCheckout = async () => {
     if (isProcessing) return;
-    setIsProcessing(true);
 
     if (!userData?.address?.fullName || userData?.address?.fullName === "") {
       setAlert("Vui lòng điền địa chỉ trước khi thanh toán");
@@ -32,6 +31,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
       return;
     }
     try {
+      setIsProcessing(true);
       const orderDetails = checkout.map((item) => {
         const promotion = validPromotion(item?.product?.promotions);
         const price = validPrice(item?.product?.price, promotion);

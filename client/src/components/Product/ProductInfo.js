@@ -32,16 +32,22 @@ const ProductInfo = ({ product }) => {
             <img src={policyImage2} className="w-28" alt="Product Info 2" />
           </div>
           <h1 className="break-words text-left text-xl font-semibold">{product?.name}</h1>
-          <div className="gap flex items-center justify-start text-lg font-semibold">
-            {product?.rating ? product?.rating : 0}
-            <Rating
-              className="ml-2"
-              name="half-rating-read"
-              precision={0.5}
-              value={product?.rating ? product?.rating : 0}
-              readOnly
-              size="medium"
-            />
+          <div className="flex items-center gap-2">
+            <div className="gap flex items-center justify-start text-lg font-semibold">
+              {product?.rating ? product?.rating : 0}
+              <Rating
+                className="ml-2"
+                name="half-rating-read"
+                precision={0.5}
+                value={product?.rating ? product?.rating : 0}
+                readOnly
+                size="medium"
+              />
+            </div>
+            |
+            <p>
+              Đã bán: <span>{product?.sold ? product?.sold : 0}</span>
+            </p>
           </div>
           {promotion ? (
             <div className="flex flex-col gap-2 text-left grid-lg:flex-row">

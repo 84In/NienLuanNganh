@@ -74,7 +74,7 @@ public class OrderController {
                     .result(orderResponse)
                     .build();
         } else {
-            orderService.changeOrderStatus(order.getId(), "canceled");
+            orderService.changeOrderStatus(order.getId(), "cancelled");
             redirectUrl = clientUrl + "payment-result?status=fail&orderId=" + order.getId();
             response.sendRedirect(redirectUrl);
             throw new AppException(ErrorCode.PAYMENT_FAIL);

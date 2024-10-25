@@ -111,12 +111,12 @@ const OrderDetail = () => {
                 <BiSolidPackage className="h-5 w-5" />
                 <span className="font-semibold">Chờ xác nhận</span>
               </div>
-            ) : orderDetail?.status?.codeName === "shipping" ? (
+            ) : orderDetail?.status?.codeName === "confirmed" ? (
               <div className={`flex items-center gap-2 text-blue-600`}>
                 <FaShippingFast className="h-5 w-5" />
-                <span className="font-semibold">Đang giao hàng</span>
+                <span className="font-semibold">Xác nhận</span>
               </div>
-            ) : orderDetail?.status?.codeName === "canceled" ? (
+            ) : orderDetail?.status?.codeName === "cancelled" ? (
               <div className={`flex items-center gap-2 text-red-600`}>
                 <BiBlock className="h-5 w-5" />
                 <span className="font-semibold">Đã hủy</span>

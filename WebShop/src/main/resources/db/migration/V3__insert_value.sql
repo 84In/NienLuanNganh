@@ -39,8 +39,8 @@ VALUES ('bb66b1b6-c2ad-4630-95d6-e62fa335640e', 'ZaloPay', 'zalopay');
 INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
 VALUES ('290ac18c-887b-4a1f-b1bb-9686b40f37d8', 'Chờ xác nhận', 'pending');
 INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
-VALUES ('2f498bfe-b96f-4191-a809-6c0bd606c4c8', 'Đang giao hàng', 'shipping');
+VALUES ('2f498bfe-b96f-4191-a809-6c0bd606c4c8', 'Xác nhận', 'confirmed');
 INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
-VALUES ('ab085525-a5f5-47b0-94a3-3fef2c4ba5fd', 'Đã hủy', 'canceled');
+VALUES ('ab085525-a5f5-47b0-94a3-3fef2c4ba5fd', 'Đã hủy', 'cancelled');
 INSERT INTO `t_order_status` (`id`, `name`, `code_name`)
 VALUES ('c526b8e6-b7d5-46df-91d2-70c00885ff26', 'Hoàn tất', 'completed');

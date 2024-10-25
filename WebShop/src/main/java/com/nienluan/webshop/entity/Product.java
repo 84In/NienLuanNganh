@@ -1,14 +1,11 @@
 package com.nienluan.webshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,6 +27,8 @@ public class Product {
     String description;
     BigDecimal price;
     BigDecimal stockQuantity;
+    @Builder.Default
+    BigDecimal sold = BigDecimal.valueOf(0);
     String images;
 
     @ManyToOne
