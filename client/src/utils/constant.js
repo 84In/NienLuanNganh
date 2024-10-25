@@ -39,6 +39,7 @@ export const path = {
   ORDER_HISTORY: "order",
   ORDER_DETAIL: "order/id/:orderId",
   CHECKOUT: "checkout",
+  PAYMENT_RESULT: "payment-result",
   ADMIN_HOME: "/manager",
   ADMIN_USER: "user",
   ADMIN_PRODUCT: "product",

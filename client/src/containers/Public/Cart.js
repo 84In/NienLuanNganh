@@ -104,7 +104,7 @@ const Cart = ({ setIsModelLogin }) => {
           className=""
         >
           <h1 className="text-lg font-semibold">Giỏ hàng</h1>
-          <div className="text flex font-semibold">
+          <div className="text flex">
             <div className="flex w-5/12 items-center gap-2 text-black">
               <div className="flex w-4 items-center justify-center">
                 <input

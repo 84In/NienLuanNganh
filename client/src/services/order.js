@@ -1,11 +1,28 @@
 import axiosConfig from "../axiosConfig";
 
-export const apiCreateOrder = (paymentMethod, payload) =>
+export const apiCreateOrderWithCash = (paymentMethod, payload) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "POST",
         url: `/api/v1/orders/${paymentMethod}`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+export const apiCreateOrderWithVNPay = (paymentMethod, payload, params) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: `/api/v1/orders/${paymentMethod}`,
+        params: {
+          ...params,
+        },
         data: payload,
       });
       resolve(response);

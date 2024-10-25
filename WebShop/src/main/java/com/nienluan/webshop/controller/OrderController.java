@@ -3,27 +3,82 @@ package com.nienluan.webshop.controller;
 import com.nienluan.webshop.dto.request.OrderRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.OrderResponse;
+import com.nienluan.webshop.dto.response.VNPayResponse;
+import com.nienluan.webshop.entity.Order;
+import com.nienluan.webshop.exception.AppException;
+import com.nienluan.webshop.exception.ErrorCode;
+import com.nienluan.webshop.repository.OrderRepository;
+import com.nienluan.webshop.repository.OrderStatusRepository;
 import com.nienluan.webshop.service.OrderService;
+import com.nienluan.webshop.service.PaymentService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderController {
+    @Value("${client.url}")
+    @NonFinal
+    String clientUrl;
+
     OrderService orderService;
+    OrderRepository orderRepository;
+    OrderStatusRepository orderStatusRepository;
+    PaymentService paymentService;
+    HttpSession httpSession;
 
     @PostMapping("/cash")
-    public ApiResponse<?> createOrder(@RequestBody OrderRequest request) {
+    public ApiResponse<?> payWithCash(@RequestBody OrderRequest request) {
         return ApiResponse.<OrderResponse>builder()
                 .message("Create order successfully")
                 .result(orderService.createOrderWithCash(request))
                 .build();
+    }
+
+    @PostMapping("/vnpay")
+    public ApiResponse<VNPayResponse> payWithVNPay(HttpServletRequest request, @RequestBody OrderRequest orderRequest) {
+        // Begin payment process with VNPay
+        httpSession.setAttribute("orderRequest", orderRequest);
+        return ApiResponse.<VNPayResponse>builder()
+                .result(orderService.createVNPayPayment(request, orderRequest))
+                .build();
+    }
+
+    @GetMapping("/vnpay-callback")
+    public ApiResponse<?> payCallbackHandler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String vnpResponseCode = request.getParameter("vnp_ResponseCode");
+        String vnpTxnRef = request.getParameter("vnp_TxnRef");
+        Order order = orderRepository.findById(vnpTxnRef)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        String redirectUrl;
+
+
+        if (vnpResponseCode.equals("00")) {
+            OrderResponse orderResponse = orderService.createOrderWithVNPay(order);
+            redirectUrl = clientUrl + "payment-result?status=success&orderId=" + order.getId();
+            response.sendRedirect(redirectUrl);
+            return ApiResponse.<OrderResponse>builder()
+                    .result(orderResponse)
+                    .build();
+        } else {
+            orderService.changeOrderStatus(order.getId(), "canceled");
+            redirectUrl = clientUrl + "payment-result?status=fail&orderId=" + order.getId();
+            response.sendRedirect(redirectUrl);
+            throw new AppException(ErrorCode.PAYMENT_FAIL);
+        }
     }
 
     @GetMapping

@@ -12,6 +12,7 @@ import {
   OrderDetail,
   OrderHistory,
   Page404,
+  PaymentResult,
   ProductDetail,
 } from "./containers/Public";
 import {
@@ -83,12 +84,6 @@ function App() {
             }
           />
           <Route
-            path={path.CHECKOUT}
-            element={
-              <PrivateRoute element={<Checkout />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
-            }
-          />
-          <Route
             path={path.ACCOUNT + "/" + path.EDIT_PHONE}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
@@ -133,6 +128,18 @@ function App() {
             path={path.ORDER_DETAIL}
             element={
               <PrivateRoute element={<OrderDetail />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
+          />
+          <Route
+            path={path.CHECKOUT}
+            element={
+              <PrivateRoute element={<Checkout />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
+            }
+          />
+          <Route
+            path={path.PAYMENT_RESULT}
+            element={
+              <PrivateRoute element={<PaymentResult />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail setIsModelLogin={setIsModelLogin} />} />

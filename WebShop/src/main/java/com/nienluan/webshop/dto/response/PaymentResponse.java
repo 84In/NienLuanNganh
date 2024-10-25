@@ -3,8 +3,8 @@ package com.nienluan.webshop.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigInteger;
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,7 +14,7 @@ import java.sql.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentResponse {
     String id;
-    Date paymentDate;
-    BigInteger amount;
+    LocalDateTime paymentDate;
+    BigDecimal amount;
     String status;
 }

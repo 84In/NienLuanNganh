@@ -104,7 +104,7 @@ const Checkout = () => {
             <h1 className="mb-4 text-lg font-semibold">Hình thức thanh toán</h1>
             <div className="flex flex-col gap-4">
               {paymentMethods.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
+                <div key={index} className="flex items-center gap-2 p-2">
                   <input
                     id={item.name}
                     type="radio"

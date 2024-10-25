@@ -30,8 +30,8 @@ public class SecurityConfig {
     private final CustomJwtDecoder customJwtDecoder;
 
     private final String[] PUBLIC_POST_METHOD_ENDPOINTS = {"/api/v1/users", "/api/v1/auth/login", "/api/v1/auth/logout"};
-    private final String[] PUBLIC_GET_METHOD_ENDPOINTS = {"/images","/images/**","/api/v1/categories", "/api/v1/promotions", "/api/v1/promotions/**", "/api/v1/search/**", "/api/v1/products", "/api/v1/products/**", "/api/v1/brands/**"};
-    private final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**","/favicon.ico"
+    private final String[] PUBLIC_GET_METHOD_ENDPOINTS = {"/images", "/images/**", "/api/v1/categories", "/api/v1/promotions", "/api/v1/promotions/**", "/api/v1/search/**", "/api/v1/products", "/api/v1/products/**", "/api/v1/brands/**", "/api/v1/orders/vnpay-callback"};
+    private final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**", "/favicon.ico"
     };
 
     @Bean
@@ -39,8 +39,8 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.POST,PUBLIC_POST_METHOD_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET,PUBLIC_GET_METHOD_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.POST, PUBLIC_POST_METHOD_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_GET_METHOD_ENDPOINTS).permitAll()
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -64,12 +64,11 @@ public class SecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
 
 
-
         return converter;
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
