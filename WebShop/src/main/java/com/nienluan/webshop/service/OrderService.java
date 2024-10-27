@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,17 +136,26 @@ public class OrderService {
     }
 
 
-    public Page<OrderResponse> getAllOrders(Pageable pageable) {
-        List<Order> orders = orderRepository.findAll();
+    public Page<OrderResponse> getAllOrders(String codeName, Pageable pageable) {
+        Page<Order> orderPage;
 
-        List<OrderResponse> orderResponses = orders.stream()
+        if (codeName == null || codeName.isEmpty()) {
+            // Trả về tất cả nếu codename trống hoặc null
+            orderPage = orderRepository.findAll(pageable);
+        } else {
+            orderPage = orderRepository.findByStatusCodeName(codeName, pageable);
+        }
+
+        List<OrderResponse> orderResponses = orderPage.getContent().stream()
                 .map(order -> {
                     List<OrderDetail> orderDetails = orderDetailRepository.findByOrder(order);
                     return toOrderResponse(order, orderDetails);
                 })
                 .collect(Collectors.toList());
-        return new PageImpl<>(orderResponses, pageable, orders.size());
+
+        return new PageImpl<>(orderResponses, pageable, orderPage.getTotalElements());
     }
+
 
     public OrderResponse changeOrderStatus(String id, String statusCodeName) {
         String canceledStatus = "canceled";
@@ -262,6 +272,15 @@ public class OrderService {
         return order;
     }
 
+    public Long getTotalAmountInDate(LocalDate date) {
+        Long totalAmountByDate =  orderRepository.findTotalAmountByDate(date).longValue();
+        return totalAmountByDate;
+    }
+
+    public Long getTotalAmountCurrentMonth(){
+        Long totalAmountByMonth =  orderRepository.findTotalRevenueForCurrentMonth().longValue();
+        return totalAmountByMonth;
+    }
 
 }
     

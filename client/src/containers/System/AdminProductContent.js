@@ -5,12 +5,11 @@ import { usePagination } from "../../hooks";
 
 const AdminProductContent = () => {
   const url = "/api/v1/products";
-  const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
+  const { data, currentPage, updatePage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
     usePagination(url, 0);
 
   const [valueData, setValueData] = useState("");
   const [isLoading, setIsLoading] = useState(loading);
-  const [totalPage, setTotalPage] = useState(totalPages);
 
   useEffect(() => {
     setValueData(data);
@@ -25,7 +24,6 @@ const AdminProductContent = () => {
       data={valueData}
       setValueData={setValueData}
       setLoading={setIsLoading}
-      setTotalPage={setTotalPage}
       currentPage={currentPage}
       type={"product"}
       url={url}
@@ -33,8 +31,8 @@ const AdminProductContent = () => {
         <Grid2 item xs={12}>
           <Pagination
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalPages={totalPage}
+            totalPages={totalPages}
+            setCurrentPage={updatePage}
             nextPage={nextPage}
             prevPage={prevPage}
             hasNextPage={hasNextPage}

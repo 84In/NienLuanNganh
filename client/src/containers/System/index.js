@@ -16,3 +16,4 @@ export { default as AdminCategory } from "./AdminCategory";
 export { default as AdminCategoryContent } from "./AdminCategoryContent";
 export { default as AdminCategoryCreate } from "./AdminCategoryCreate";
 export { default as AdminCategoryEditByID } from "./AdminCategoryEditByID";
+export { default as AdminOrderAcceptPage } from "./AdminOrderAcceptPage";

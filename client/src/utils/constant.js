@@ -223,3 +223,10 @@ export const orderStatusNav = [
   { name: "Đã hủy", codeName: "canceled" },
   { name: "Hoàn tất", codeName: "completed" },
 ];
+
+export const orderStatus = [
+  { name: "Chờ xác nhận", codeName: "pending", color: "#2DCCFF", status: true, action: "Xác nhận" },
+  { name: "Đang giao hàng", codeName: "shipping", color: "#FFB302", status: true, action: "Đã giao" },
+  { name: "Đã hủy", codeName: "canceled", color: "#FF3838", status: false },
+  { name: "Hoàn tất", codeName: "completed", color: "#56F000", status: false },
+];

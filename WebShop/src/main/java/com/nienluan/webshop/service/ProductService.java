@@ -185,4 +185,11 @@ public class ProductService {
                 .filter(promotion -> !today.isBefore(promotion.getStartDate()) && !today.isAfter(promotion.getEndDate()))
                 .max(Comparator.comparing(Promotion::getDiscountPercentage));
     }
+
+    public Long countAllProducts() {
+        return productRepository.count();
+    }
+    public Long countProductInCurrentMonth(){
+        return productRepository.countProductsCurrentMonth();
+    }
 }
