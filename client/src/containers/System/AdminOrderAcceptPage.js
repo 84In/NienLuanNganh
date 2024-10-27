@@ -1,10 +1,10 @@
-import React, { memo, useEffect, useState } from "react";
-import { AdminTable, Loading, Pagination } from "../../components";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import React, { useEffect, useState } from "react";
 import { usePagination } from "../../hooks";
+import { AdminTableOrder, Loading, Pagination } from "../../components";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
-const AdminProductContent = () => {
-  const url = "/api/v1/products";
+const AdminOrderAcceptPage = () => {
+  const url = "/api/v1/orders";
   const { data, currentPage, updatePage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
     usePagination(url, 0);
 
@@ -18,14 +18,13 @@ const AdminProductContent = () => {
   if (isLoading) {
     return <Loading />;
   }
-
   return (
-    <AdminTable
+    <AdminTableOrder
       data={valueData}
       setValueData={setValueData}
       setLoading={setIsLoading}
       currentPage={currentPage}
-      type={"product"}
+      type={"order"}
       url={url}
       pagination={
         <Grid2 item xs={12}>
@@ -44,4 +43,4 @@ const AdminProductContent = () => {
   );
 };
 
-export default memo(AdminProductContent);
+export default AdminOrderAcceptPage;

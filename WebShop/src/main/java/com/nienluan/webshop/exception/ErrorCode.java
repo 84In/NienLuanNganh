@@ -34,6 +34,7 @@ public enum ErrorCode {
     CART_NOT_EXISTED(22, "Cart not existed", HttpStatus.BAD_REQUEST),
     REVIEW_NOT_EXISTED(23, "Review not existed", HttpStatus.BAD_REQUEST),
     PAYMENT_FAIL(24, "PAYMENT_FAIL", HttpStatus.BAD_REQUEST),
+    REVENUE_NOT_EXISTED(25, "Revenue not existed", HttpStatus.BAD_REQUEST),
 
 
     //System
