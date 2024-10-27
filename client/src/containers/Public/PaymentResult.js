@@ -2,33 +2,36 @@
 import { Button } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { path } from "../../utils";
 
 const PaymentResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [queryParams, setQueryParams] = useState(new URLSearchParams(location.search));
-  const [paymentStatus, setPaymentStatus] = useState(null);
-  const [orderId, setOrderId] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [paymentStatus, setPaymentStatus] = useState(searchParams.get("status") || "");
+  const [orderId, setOrderId] = useState(searchParams.get("orderId") || "");
 
   useEffect(() => {
-    setQueryParams(new URLSearchParams(location.search));
-    const paymentStatus = queryParams.get("status");
-    const orderId = queryParams.get("orderId");
-    setPaymentStatus(paymentStatus);
-    setOrderId(orderId);
+    const status = paymentStatus;
+    const order = orderId;
 
-    // if (paymentStatus === "success") {
-    //   // Optionally, you could verify the order on the server for added security.
-    //   // Example: apiVerifyOrder(orderId);
-    //   // Navigate to order history or success page
-    //   //   navigate("/order-history", { replace: true });
-    // } else {
-    //   // Handle failure scenario, show error message, etc.
-    //   //   setTimeout(() => navigate("/cart"), 5000); // Redirect back to cart after 5 seconds
-    // }
-  }, [location.search]);
+    if (status && order) {
+      setPaymentStatus(status);
+      setOrderId(order);
+      setSearchParams({ status: status, orderId: order });
+    } else {
+      const params = new URLSearchParams(location.search);
+      const newStatus = params.get("status");
+      const newOrderId = params.get("orderId");
+
+      if (newStatus && newOrderId) {
+        setSearchParams({ status: newStatus, orderId: newOrderId });
+        setPaymentStatus(newStatus);
+        setOrderId(newOrderId);
+      }
+    }
+  }, [location.search, searchParams, setSearchParams]);
 
   return (
     <Grid2

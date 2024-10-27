@@ -41,6 +41,9 @@ const ProductCard = ({ product }) => {
             <div className="flex flex-col gap-1">
               <p className="line-clamp-2 min-h-10 text-sm">{product?.name}</p>
               <Rating name="half-rating-read" precision={0.5} value={product?.rating} readOnly size="small" />
+              <div className="text-sm text-gray-600">
+                Đã bán: <span>{product?.sold ? product?.sold : 0}</span>
+              </div>
               {promotion ? (
                 <>
                   <p className="text-base font-bold text-red-500 grid-md:text-lg">{formatCurrency(price)}</p>

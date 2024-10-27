@@ -16,12 +16,12 @@ const OrderItem = ({ product }) => {
             <BiSolidPackage className="h-5 w-5" />
             <span className="text-sm font-semibold">Chờ xác nhận</span>
           </div>
-        ) : product?.status?.codeName === "shipping" ? (
+        ) : product?.status?.codeName === "confirmed" ? (
           <div className={`flex items-center gap-2 text-blue-600`}>
             <FaShippingFast className="h-5 w-5" />
-            <span className="text-sm font-semibold">Đang giao hàng</span>
+            <span className="text-sm font-semibold">Xác nhận</span>
           </div>
-        ) : product?.status?.codeName === "canceled" ? (
+        ) : product?.status?.codeName === "cancelled" ? (
           <div className={`flex items-center gap-2 text-red-600`}>
             <BiBlock className="h-5 w-5" />
             <span className="text-sm font-semibold">Đã hủy</span>

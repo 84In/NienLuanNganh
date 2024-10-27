@@ -107,6 +107,7 @@ CREATE TABLE `t_products`
     `description`    text       DEFAULT NULL,
     `price`          bigint(20),
     `stock_quantity` bigint(20) DEFAULT 0,
+    `sold`           bigint(20) DEFAULT 0,
     `images`         text       DEFAULT NULL,
     `category_id`    varchar(255) NOT NULL,
     `brand_id`       varchar(255) NOT NULL,

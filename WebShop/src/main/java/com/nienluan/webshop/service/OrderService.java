@@ -91,6 +91,8 @@ public class OrderService {
 
     @Transactional
     public OrderResponse createOrderWithVNPay(Order order) {
+        String confirmedStatus = "confirmed";
+
         Payment payment = Payment.builder()
                 .amount(order.getTotalAmount())
                 .paymentDate(order.getCreatedAt())
@@ -99,7 +101,7 @@ public class OrderService {
         payment = paymentRepository.save(payment);
 
         order.setPayment(payment);
-        changeOrderStatus(order.getId(), "shipping");
+        changeOrderStatus(order.getId(), confirmedStatus);
 
         orderRepository.save(order);
         //Gửi mail khi tạo thành công đơn hàng
@@ -158,12 +160,13 @@ public class OrderService {
 
 
     public OrderResponse changeOrderStatus(String id, String statusCodeName) {
-        String canceledStatus = "canceled";
+        String cancelledStatus = "cancelled";
+        String completedStatus = "completed";
 
         var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         var status = statusOrderRepository.findByCodeName(statusCodeName);
         order.setStatus(status);
-        if (status.getCodeName().equals(canceledStatus)) {
+        if (status.getCodeName().equals(cancelledStatus)) {
             for (OrderDetail orderDetail : order.getOrderDetails()) {
                 Product product = orderDetail.getProduct();
                 //Cập nhật số lượng trong kho
@@ -171,6 +174,15 @@ public class OrderService {
                 productRepository.save(product);
             }
             //Xử lý refund tiền trên thanh toán điện tử
+        } else {
+            if (status.getCodeName().equals(completedStatus)) {
+                //Thêm số lượng đã bán cho sản phẩm nếu đơn hàng hoàn tất
+                for (OrderDetail orderDetail : order.getOrderDetails()) {
+                    Product product = orderDetail.getProduct();
+                    product.setSold(product.getSold().add(orderDetail.getQuantity()));
+                    productRepository.save(product);
+                }
+            }
         }
         orderRepository.save(order);
         return toOrderResponse(order, order.getOrderDetails());

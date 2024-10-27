@@ -219,8 +219,8 @@ export const paymentMethods = [
 export const orderStatusNav = [
   { name: "Tất cả", codeName: "" },
   { name: "Chờ xác nhận", codeName: "pending" },
-  { name: "Đang giao hàng", codeName: "shipping" },
-  { name: "Đã hủy", codeName: "canceled" },
+  { name: "Xác nhận", codeName: "confirmed" },
+  { name: "Đã hủy", codeName: "cancelled" },
   { name: "Hoàn tất", codeName: "completed" },
 ];
 
