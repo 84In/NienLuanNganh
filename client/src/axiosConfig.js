@@ -13,8 +13,8 @@ instance.interceptors.request.use(
     const isPostUserRequest = config.url.startsWith("/api/v1/users") && config.method.toLowerCase() === "post";
     const isGetProductRequest = config.url.startsWith("/api/v1/products") && config.method.toLowerCase() === "get";
     const isAuthRequest = config.url.startsWith("/api/v1/auth");
-    const isGetSearchRequest = config.url.startsWith("/api/v1/search/") && config.method.toLowerCase() === "get";
-    const isGetBrandRequest = config.url.startsWith("/api/v1/brands/") && config.method.toLowerCase() === "get";
+    const isGetSearchRequest = config.url.startsWith("/api/v1/search") && config.method.toLowerCase() === "get";
+    const isGetBrandRequest = config.url.startsWith("/api/v1/brands") && config.method.toLowerCase() === "get";
     if (
       !(
         isGetCategoriesRequest ||

@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from "react";
 import { GoSearch } from "react-icons/go";
 import { OrderItem, Pagination, SearchBar } from "../../components";
 import { usePagination } from "../../hooks";
-import { orderStatusNav } from "../../utils";
+import { orderStatus } from "../../utils";
 import { NavLink, useSearchParams, useLocation } from "react-router-dom";
 
 const OrderHistory = () => {
@@ -65,7 +65,7 @@ const OrderHistory = () => {
           <h1 className="mb-4 text-lg font-semibold">Đơn hàng của tôi</h1>
         </div>
         <div className="mb-4 flex w-full items-center justify-between rounded-lg border">
-          {orderStatusNav.map((item, index) => (
+          {orderStatus.map((item, index) => (
             <button
               key={index}
               className={`h-full w-full p-2 text-sm grid-md:text-base ${currentStatus === item.codeName ? `border-b-2 border-blue-600 text-blue-600` : "text-gray-500"}`}

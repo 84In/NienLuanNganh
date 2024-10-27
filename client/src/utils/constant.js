@@ -217,17 +217,10 @@ export const paymentMethods = [
   },
 ];
 
-export const orderStatusNav = [
-  { name: "Tất cả", codeName: "" },
-  { name: "Chờ xác nhận", codeName: "pending" },
-  { name: "Xác nhận", codeName: "confirmed" },
-  { name: "Đã hủy", codeName: "cancelled" },
-  { name: "Hoàn tất", codeName: "completed" },
-];
-
 export const orderStatus = [
+  { name: "Tất cả", codeName: "" },
   { name: "Chờ xác nhận", codeName: "pending", color: "#2DCCFF", status: true, action: "Xác nhận" },
-  { name: "Đang giao hàng", codeName: "shipping", color: "#FFB302", status: true, action: "Đã giao" },
-  { name: "Đã hủy", codeName: "canceled", color: "#FF3838", status: false },
+  { name: "Xác nhận", codeName: "confirmed", color: "#FFB302", status: true, action: "Đã xác nhận" },
+  { name: "Đã hủy", codeName: "cancelled", color: "#FF3838", status: false },
   { name: "Hoàn tất", codeName: "completed", color: "#56F000", status: false },
 ];

@@ -125,8 +125,8 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
 
       // Xác định trạng thái mới dựa trên trạng thái hiện tại
       if (order.status.codeName === "pending") {
-        newStatus = "shipping";
-      } else if (order.status.codeName === "shipping") {
+        newStatus = "comfirmed";
+      } else if (order.status.codeName === "comfirmed") {
         newStatus = "completed";
       }
 
@@ -168,8 +168,8 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
         let newStatus;
 
         if (order.status.codeName === "pending") {
-          newStatus = "shipping";
-        } else if (order.status.codeName === "shipping") {
+          newStatus = "comfirmed";
+        } else if (order.status.codeName === "comfirmed") {
           newStatus = "completed";
         }
 
@@ -214,9 +214,9 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
   return (
     <div className="flex w-full flex-col items-center">
       <div className="mb-2 flex w-full bg-gray-100">
-        <div className="flex items-center justify-center p-1">
+        {/* <div className="flex items-center justify-center p-1">
           <AdminButtonAccept title={"Tổng hợp"} func={() => handleNavigation()} />
-        </div>
+        </div> */}
         {orderStatus?.map((item, index) => (
           <div className="flex items-center justify-center p-1">
             <AdminButtonAccept
