@@ -14,6 +14,7 @@ import {
   Page404,
   PaymentResult,
   ProductDetail,
+  Search,
 } from "./containers/Public";
 import {
   AdminBase,
@@ -143,6 +144,7 @@ function App() {
             }
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail setIsModelLogin={setIsModelLogin} />} />
+          <Route path={path.SEARCH} element={<Search />} />
           <Route path={path.PRODUCT_SEARCH} element={<Filter />} />
           <Route path="*" element={<Page404 />} />
         </Route>

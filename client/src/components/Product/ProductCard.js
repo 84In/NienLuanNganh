@@ -37,7 +37,7 @@ const ProductCard = ({ product }) => {
               alt={product?.name}
             />
           </div>
-          <CardContent className="flex h-[220px] min-h-[190px] flex-col justify-between gap-2 p-3">
+          <CardContent className="flex h-[250px] min-h-[250px] flex-col justify-between gap-2 p-3">
             <div className="flex flex-col gap-1">
               <p className="line-clamp-2 min-h-10 text-sm">{product?.name}</p>
               <Rating name="half-rating-read" precision={0.5} value={product?.rating} readOnly size="small" />
@@ -54,7 +54,7 @@ const ProductCard = ({ product }) => {
                 </>
               ) : (
                 <>
-                  <p className="text-base font-bold grid-md:text-lg">{formatCurrency(price)}</p>
+                  <p className="text-sm font-bold grid-sm:text-base grid-md:text-lg">{formatCurrency(price)}</p>
                 </>
               )}
             </div>

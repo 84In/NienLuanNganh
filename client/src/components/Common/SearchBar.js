@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 
-const SearchBar = ({ isAdmin, IconBefore, TextContent, Name, valueSearch, setValueSearch, onSearch }) => {
+const SearchBar = ({ isAdmin, IconBefore, TextContent, Name, searchValue, setSearchValue, onSearch }) => {
   return (
     <div className={`my-1 flex w-full rounded-md ${isAdmin ? "bg-white" : ""} border border-gray-400`}>
       {IconBefore && (
@@ -13,8 +13,8 @@ const SearchBar = ({ isAdmin, IconBefore, TextContent, Name, valueSearch, setVal
         className={`flex min-w-40 flex-auto items-center justify-center border-r-[1px] px-2 outline-none ${TextContent ? "" : "rounded-r-md"}`}
         type="text"
         autoComplete="off"
-        value={valueSearch}
-        onChange={(e) => setValueSearch(e.target.value)}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();

@@ -1,17 +1,34 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import React, { memo } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { memo, useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import logo from "../../assets/images/logo2.png";
 import { ButtonCustom, DotAlert, SearchBar } from "../../components";
 import icons from "../../utils/icons";
 import { path } from "../../utils/constant";
+import { useSelector } from "react-redux";
 
-const { GoHomeFill, FaRegCircleUser, FaCartShopping, GoSearch } = icons;
+const { FaRegCircleUser, FaCartShopping, GoSearch } = icons;
 const defaultAvatar = require("../../assets/images/profile.png");
 
 const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { categories } = useSelector((state) => state.app);
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+
+  const handleSearch = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("search", searchValue.trim());
+
+    if (window.location.pathname !== path.HOME + path.SEARCH) {
+      navigate(`${path.SEARCH}?${queryParams.toString()}`);
+      return;
+    }
+    setSearchParams(queryParams);
+    console.log(queryParams);
+    console.log(searchParams.get("search"));
+  };
 
   return (
     <Box
@@ -25,7 +42,7 @@ const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
         height: "fit-content",
         minHeight: "90px",
         maxHeight: "fit-content",
-        padding: "16px",
+        p: 2,
       }}
     >
       <Grid2
@@ -38,9 +55,32 @@ const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
             <img className="h-[40px] w-[150px] max-w-none object-contain" src={logo} alt="logo" />
           </Link>
         </Grid2>
-        <Grid2 item xs={12} md={7} lg={7} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Grid2
+          item
+          xs={12}
+          md={7}
+          lg={7}
+          sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 1 }}
+        >
           <div className="w-full px-2">
-            <SearchBar IconBefore={GoSearch} TextContent={"Tìm kiếm"} Name={"search"} />
+            <SearchBar
+              IconBefore={GoSearch}
+              TextContent={"Tìm kiếm"}
+              Name={"search"}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              onSearch={handleSearch}
+            />
+          </div>
+          <div className="flex w-full flex-wrap items-center justify-around gap-x-4 gap-y-2 px-2 grid-md:justify-start">
+            {categories?.content &&
+              categories?.content.map((item, index) => (
+                <Link to={`/search/category/${item.codeName}`} key={index}>
+                  <div className="min-w-12 text-sm text-gray-600 hover:text-primary-color hover:underline grid-md:min-w-0">
+                    {item.name}
+                  </div>
+                </Link>
+              ))}
           </div>
         </Grid2>
         <Grid2
@@ -82,7 +122,6 @@ const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
               ClickButton={() => navigate(path.CART)}
             />
           </Grid2>
-          {/* <div className="flex items-center justify-center">Giao đến ABC</div> */}
         </Grid2>
       </Grid2>
     </Box>

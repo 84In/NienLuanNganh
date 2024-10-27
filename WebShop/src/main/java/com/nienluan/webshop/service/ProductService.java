@@ -82,6 +82,25 @@ public class ProductService {
         return products.map(productMapper::toProductResponse);
     }
 
+    public Page<ProductResponse> getProductsBySearch(Pageable pageable, Map<String, String> params) {
+        BigDecimal min = (params.get("min") != null && !params.get("min").isEmpty()) ? new BigDecimal(params.get("min")) : null;
+        BigDecimal max = (params.get("max") != null && !params.get("max").isEmpty() && !params.get("max").equalsIgnoreCase("infinity")) ? new BigDecimal(params.get("max")) : null;
+
+        Pageable sortedPageable;
+        String sortBy = params.get("sortBy");
+        String sortDirection = params.get("sortDirection");
+        if (sortBy != null && !sortBy.isEmpty() && sortDirection != null && !sortDirection.isEmpty()) {
+            Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+            sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        } else {
+            sortedPageable = pageable;
+        }
+        String search = (params.get("search") != null && !params.get("search").isEmpty()) ? params.get("search") : null;
+
+        Page<Product> products = productRepository.findBySearchWithFilters(sortedPageable, search, min, max);
+        return products.map(productMapper::toProductResponse);
+    }
+
     public Page<ProductResponse> getProductsByCategory(Pageable pageable,
                                                        String codeNameCategory, List<String> brands,
                                                        String minStr, String maxStr,

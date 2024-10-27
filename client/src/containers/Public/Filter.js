@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { BannerCarousel, FilterSideBar, PaginationMore, ProductCard } from "../../components";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { BannerCarousel, FilterContainer, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
 import { apiGetBrandByCategory } from "../../services";
 import { minAndMaxPrice } from "../../utils";
@@ -10,6 +10,7 @@ import { bannerFilter } from "../../utils/constant";
 
 const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [brands, setBrands] = useState([]);
   const [type, setType] = useState("");
   const [name, setName] = useState("");
@@ -24,7 +25,8 @@ const Filter = () => {
 
   useEffect(() => {
     const handlePathChange = () => {
-      const pathParts = window.location.pathname.split("/");
+      const pathParts = location.pathname.split("/");
+
       setType(pathParts[2]);
       setName(pathParts[3]);
     };
@@ -34,7 +36,7 @@ const Filter = () => {
     return () => {
       window.removeEventListener("popstate", handlePathChange);
     };
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     setSortBy("");
@@ -55,19 +57,19 @@ const Filter = () => {
         queryParams.push(`sortDirection=${sortDirection}`);
       }
 
-      if (brandFilter.length > 0) {
+      if (brandFilter?.length > 0) {
         const brandsParam = brandFilter.join(",");
         queryParams.push(`brand=${brandsParam}`);
       }
 
-      if (priceFilter.length > 0) {
+      if (priceFilter?.length > 0) {
         const price = minAndMaxPrice(priceFilter);
         const pricesParam = `min=${price.min}&max=${price.max}`;
         queryParams.push(`${pricesParam}`);
       }
 
       // Gộp tất cả query parameters lại
-      if (queryParams.length > 0) {
+      if (queryParams?.length > 0) {
         newUrl += `?${queryParams.join("&")}`;
       }
       setUrlApi(newUrl);
@@ -89,10 +91,10 @@ const Filter = () => {
 
   useEffect(() => {
     const params = {};
-    if (brandFilter.length > 0) {
+    if (brandFilter?.length > 0) {
       params.brand = brandFilter.join(",");
     }
-    if (priceFilter.length > 0) {
+    if (priceFilter?.length > 0) {
       const price = minAndMaxPrice(priceFilter);
       params.min = price.min;
       params.max = price.max;
@@ -104,9 +106,6 @@ const Filter = () => {
     setType(type);
     setName(name);
   };
-
-  console.log(brandFilter);
-  console.log(priceFilter);
 
   return (
     <Grid2
@@ -130,56 +129,16 @@ const Filter = () => {
       </Grid2>
       <Grid2 item container xs={12} md={8.8} gap={2}>
         <Grid2 item xs={12}>
-          <Box
-            sx={{
-              flexGrow: 1,
-              p: 2,
-              bgcolor: "white",
-              borderRadius: "8px",
-              rowGap: "2rem",
-              width: "100%",
-              height: "fit-content",
-            }}
-          >
-            {/* Sort options */}
-            <div className="mb-6 flex items-center justify-between">
-              <span className="text-sm text-gray-500">{totalElements} sản phẩm</span>
-              <div className="relative">
-                <select
-                  className="w-[180px] rounded-md border p-2"
-                  value={sortBy + "-" + sortDirection}
-                  onChange={(e) => {
-                    const [newSortBy, newSortDirection] = e.target.value.split("-");
-                    setSortBy(newSortBy);
-                    setSortDirection(newSortDirection);
-                  }}
-                >
-                  <option value="" className="" selected={(e) => e.target.value === ""}>
-                    Sắp xếp
-                  </option>
-                  {/* <option value="review-desc">Phổ biến</option> */}
-                  <option value="price-asc" selected={(e) => e.target.value === `${sortBy}-${sortDirection}`}>
-                    Giá tăng dần
-                  </option>
-                  <option value="price-desc" selected={(e) => e.target.value === `${sortBy}-${sortDirection}`}>
-                    Giá giảm dần
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            {/* Product grid */}
-            <div className="grid grid-cols-2 gap-2 grid-sm:grid-cols-3 grid-md:grid-cols-4 grid-lg:grid-cols-5">
-              {data.map((product, index) => (
-                <Link to={`/product/id/${product.id}`} state={{ product }} key={index}>
-                  <ProductCard product={product} />
-                </Link>
-              ))}
-            </div>
-            <div className="mt-2 flex items-center justify-center p-2">
-              <PaginationMore loadMore={loadMore} hasMore={hasMore} />
-            </div>
-          </Box>
+          <FilterContainer
+            data={data}
+            totalElements={totalElements}
+            loadMore={loadMore}
+            hasMore={hasMore}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+          />
         </Grid2>
       </Grid2>
     </Grid2>

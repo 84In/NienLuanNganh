@@ -89,23 +89,23 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse createOrderWithVNPay(Order order) {
-        String confirmedStatus = "confirmed";
+    public OrderResponse createOrderWithVNPay(Order order, String status, String paymentStatus) {
 
         Payment payment = Payment.builder()
                 .amount(order.getTotalAmount())
                 .paymentDate(order.getCreatedAt())
-                .status("Success")
+                .status(paymentStatus)
                 .build();
         payment = paymentRepository.save(payment);
 
         order.setPayment(payment);
-        changeOrderStatus(order.getId(), confirmedStatus);
+        changeOrderStatus(order.getId(), status);
 
         orderRepository.save(order);
         //Gửi mail khi tạo thành công đơn hàng
-        mailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
-
+        if (paymentStatus.equals("Success")) {
+            mailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
+        }
         return toOrderResponse(order, order.getOrderDetails());
     }
 

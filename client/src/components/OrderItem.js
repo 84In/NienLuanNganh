@@ -9,7 +9,7 @@ const OrderItem = ({ product }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col gap-2 rounded-lg bg-white p-2 shadow-md grid-md:p-4">
+    <div className="flex flex-col gap-2 rounded-lg border bg-white p-2 shadow-md grid-md:p-4">
       <div className="mb-2 flex flex-col justify-between gap-2 p-2 grid-md:flex-row">
         {product?.status?.codeName === "pending" ? (
           <div className={`flex items-center gap-2 text-zinc-700`}>
@@ -38,7 +38,7 @@ const OrderItem = ({ product }) => {
         </div>
       </div>
       <hr className="mb-2 flex h-[1px] w-full items-center justify-center bg-gray-400 px-4" />
-      <div className="custom-scrollbar flex max-h-[23rem] flex-col gap-4 px-2 py-4">
+      <div className="custom-scrollbar flex max-h-[24rem] flex-col gap-4 px-2 py-4">
         {product?.orderDetails?.map((item, index) => (
           <div key={index} className="flex w-full items-start">
             <div className="w-1/12 min-w-12 grid-md:min-w-20">

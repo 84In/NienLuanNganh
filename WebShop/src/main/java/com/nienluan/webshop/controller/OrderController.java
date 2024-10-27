@@ -67,14 +67,18 @@ public class OrderController {
 
 
         if (vnpResponseCode.equals("00")) {
-            OrderResponse orderResponse = orderService.createOrderWithVNPay(order);
+            String confirmedStatus = "confirmed";
+            String paymentStatus = "Success";
+            OrderResponse orderResponse = orderService.createOrderWithVNPay(order, confirmedStatus, paymentStatus);
             redirectUrl = clientUrl + "payment-result?status=success&orderId=" + order.getId();
             response.sendRedirect(redirectUrl);
             return ApiResponse.<OrderResponse>builder()
                     .result(orderResponse)
                     .build();
         } else {
-            orderService.changeOrderStatus(order.getId(), "cancelled");
+            String cancelledStatus = "cancelled";
+            String paymentStatus = "Fail";
+            OrderResponse orderResponse = orderService.createOrderWithVNPay(order, cancelledStatus, paymentStatus);
             redirectUrl = clientUrl + "payment-result?status=fail&orderId=" + order.getId();
             response.sendRedirect(redirectUrl);
             throw new AppException(ErrorCode.PAYMENT_FAIL);

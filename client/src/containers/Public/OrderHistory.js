@@ -9,7 +9,7 @@ import { NavLink, useSearchParams, useLocation } from "react-router-dom";
 const OrderHistory = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentStatus, setCurrentStatus] = useState(searchParams.get("status") || "");
-  const [valueSearch, setValueSearch] = useState(searchParams.get("search") || "");
+  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
   const baseUrl = `api/v1/orders/current-user`;
 
   const {
@@ -27,7 +27,7 @@ const OrderHistory = () => {
   } = usePagination(baseUrl, 0, 5);
 
   const handleSearch = () => {
-    const newParams = { ...currentParams, status: currentStatus, search: valueSearch.trim() };
+    const newParams = { ...currentParams, status: currentStatus, search: searchValue.trim() };
     updateParams(newParams);
   };
 
@@ -80,8 +80,8 @@ const OrderHistory = () => {
             IconBefore={GoSearch}
             TextContent={"Tra cứu"}
             Name={"order-search"}
-            valueSearch={valueSearch}
-            setValueSearch={setValueSearch}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
             onSearch={handleSearch}
           />
         </div>

@@ -18,6 +18,7 @@ export { default as Loading } from "./Common/Loading";
 export { default as OrderItem } from "./OrderItem";
 export { default as Pagination } from "./Common/Pagination";
 export { default as PaginationMore } from "./Common/PaginationMore";
+export { default as FilterContainer } from "./Product/FilterContainer";
 export { default as FilterSideBar } from "./Product/FilterSideBar";
 export { default as Product } from "./Product/Product";
 export { default as ProductCard } from "./Product/ProductCard";

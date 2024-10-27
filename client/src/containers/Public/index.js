@@ -12,3 +12,4 @@ export { default as OrderHistory } from "./OrderHistory";
 export { default as Page404 } from "./Page404";
 export { default as PaymentResult } from "./PaymentResult";
 export { default as ProductDetail } from "./ProductDetail";
+export { default as Search } from "./Search";

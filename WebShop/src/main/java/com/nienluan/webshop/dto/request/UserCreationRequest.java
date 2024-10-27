@@ -1,11 +1,13 @@
 package com.nienluan.webshop.dto.request;
 
 import com.nienluan.webshop.validator.MinAge;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
@@ -18,7 +20,7 @@ public class UserCreationRequest {
     @Size(min = 4, max = 50, message = "Tài khoản phải từ 4-50 ký tự")
     String username;
 
-    @Size(min = 5, message = "Mật khẩu phải ít nhất 5 ký tự")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{5,}$", message = "Mật khẩu phải ít nhất 5 ký tự, một chữ hoa, một chữ số")
     String password;
 
     @NotBlank(message = "Họ là bắt buộc")

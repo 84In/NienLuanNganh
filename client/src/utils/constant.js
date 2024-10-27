@@ -35,6 +35,7 @@ export const path = {
   EDIT_PASSWORD: "edit/password",
   EDIT_ADDRESS: "edit/address",
   PRODUCT_DETAIL: "product/id/:productId",
+  SEARCH: "search",
   PRODUCT_SEARCH: "search/:type/:name",
   ORDER_HISTORY: "order",
   ORDER_DETAIL: "order/id/:orderId",

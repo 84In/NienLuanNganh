@@ -1,12 +1,8 @@
 package com.nienluan.webshop.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,9 +13,9 @@ public class ChangePasswordRequest {
 
     String username;
 
-    @Size(min = 5, message = "Mật khẩu phải ít nhất 5 ký tự")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{5,}$", message = "Mật khẩu phải ít nhất 5 ký tự, một chữ hoa, một chữ số")
     String oldPassword;
 
-    @Size(min = 5, message = "Mật khẩu phải ít nhất 5 ký tự")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d).{5,}$", message = "Mật khẩu phải ít nhất 5 ký tự, một chữ hoa, một chữ số")
     String newPassword;
 }

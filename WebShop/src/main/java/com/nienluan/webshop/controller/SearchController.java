@@ -11,12 +11,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/search")
@@ -26,6 +25,18 @@ public class SearchController {
     ProductService productService;
     BrandService brandService;
     PromotionService promotionService;
+
+    @GetMapping
+    public ApiResponse<?> searchProductsBySearch(Pageable pageable,
+                                                 @RequestParam Map<String, String> params
+    ) {
+        Page<ProductResponse> products = productService.getProductsBySearch(pageable, params);
+
+        return ApiResponse.<Page<ProductResponse>>builder()
+                .message("Get products successfully")
+                .result(products)
+                .build();
+    }
 
     @GetMapping("/category/{codeName}")
     public ApiResponse<?> searchProductsByCategory(Pageable pageable,
@@ -57,4 +68,6 @@ public class SearchController {
                 .result(promotionService.searchPromotion(name))
                 .build();
     }
+
+
 }
