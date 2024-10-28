@@ -143,7 +143,7 @@ public class RevenueService {
     public List<RevenueSummaryResponse> revenueOfTheMonthsITheYear(LocalDate date){
         List <RevenueSummary> revenueSummaries = revenueSummaryRepository.findAllMonthByDate(date).orElseThrow( () -> new AppException(ErrorCode.REVENUE_NOT_EXISTED) );
         if(date.equals(LocalDate.now())){
-            revenueSummaries.add(RevenueSummary.builder().totalRevenue(orderService.getTotalAmountCurrentMonth()).dateRangeType("monthl").summaryDate(date).build());
+            revenueSummaries.add(RevenueSummary.builder().totalRevenue(orderService.getTotalAmountCurrentMonth()).dateRangeType("monthly").summaryDate(date).build());
         }
         return revenueSummaries.stream().map(revenueMapper::toRevenueSummaryResponse).toList();
     }
