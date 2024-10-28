@@ -51,7 +51,7 @@ const AdminBase = ({ user }) => {
 
   console.log(totalRevenueList);
 
-  const labels = Utils.months({ count: new Date().getMonth() });
+  const labels = Utils.months({ count: new Date().getMonth() + 1 });
   const data = {
     labels: labels,
     datasets: [
