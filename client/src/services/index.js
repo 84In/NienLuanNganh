@@ -11,3 +11,4 @@ export * from "./user";
 export * from "./ward";
 export * from "./brand";
 export * from "./order";
+export * from "./analytic";

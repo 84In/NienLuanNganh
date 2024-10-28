@@ -14,7 +14,6 @@ import {
   Page404,
   PaymentResult,
   ProductDetail,
-  Search,
 } from "./containers/Public";
 import {
   AdminBase,
@@ -144,7 +143,6 @@ function App() {
             }
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail setIsModelLogin={setIsModelLogin} />} />
-          <Route path={path.SEARCH} element={<Search />} />
           <Route path={path.PRODUCT_SEARCH} element={<Filter />} />
           <Route path="*" element={<Page404 />} />
         </Route>
@@ -152,7 +150,7 @@ function App() {
           path={path.ADMIN_HOME}
           element={<PrivateAdminFilterRouter element={AdminHome} roles={["ADMIN"]} user={userData} />}
         >
-          <Route index element={<AdminBase user={userData} />} />
+          <Route index element={<PrivateAdminFilterRouter element={AdminBase} roles={["ADMIN"]} user={userData} />} />
           <Route
             path={path.ADMIN_USER}
             element={<PrivateAdminFilterRouter element={AdminUser} roles={["ADMIN"]} user={userData} />}

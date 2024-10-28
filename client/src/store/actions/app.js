@@ -1,4 +1,3 @@
-import { AdminOrder } from "../../containers/System";
 import * as apis from "../../services";
 import actionTypes from "./actionType";
 
