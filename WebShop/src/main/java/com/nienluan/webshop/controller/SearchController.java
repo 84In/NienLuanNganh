@@ -26,7 +26,7 @@ public class SearchController {
     BrandService brandService;
     PromotionService promotionService;
 
-    @GetMapping
+    @GetMapping("/products")
     public ApiResponse<?> searchProductsBySearch(Pageable pageable,
                                                  @RequestParam Map<String, String> params
     ) {

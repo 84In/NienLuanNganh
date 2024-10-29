@@ -17,7 +17,7 @@ const Search = () => {
     const max = searchParams.get("max");
     return min && max ? [parseInt(min), parseInt(max)] : [];
   });
-  const [urlApi, setUrlApi] = useState(`/api/v1/search${location.search}`);
+  const [urlApi, setUrlApi] = useState(`/api/v1/search/products${location.search}`);
 
   const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 20, 10);
 
@@ -34,7 +34,7 @@ const Search = () => {
     const queryParams = new URLSearchParams(searchParams);
 
     const updateUrlApi = () => {
-      let newUrl = `/api/v1/search`;
+      let newUrl = `/api/v1/search/products`;
 
       if (searchValue) queryParams.set("search", searchValue);
       if (sortBy) queryParams.set("sortBy", sortBy);

@@ -15,4 +15,5 @@ public class OrderDetailResponse {
     ProductResponse product;
     BigDecimal priceAtTime;
     BigDecimal quantity;
+    boolean reviewed;
 }

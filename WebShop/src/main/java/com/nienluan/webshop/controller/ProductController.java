@@ -5,6 +5,7 @@ import com.nienluan.webshop.dto.request.ProductRequest;
 import com.nienluan.webshop.dto.request.ProductUpdateRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.ProductResponse;
+import com.nienluan.webshop.dto.response.ReviewProductResponse;
 import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.service.CsvService;
@@ -26,7 +27,7 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class    ProductController {
+public class ProductController {
     ProductService productService;
     private final CsvService csvService;
 
@@ -43,7 +44,7 @@ public class    ProductController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDirection
     ) {
-        if(sortBy == null || sortDirection == null) {
+        if (sortBy == null || sortDirection == null) {
             return ApiResponse.<Page<ProductResponse>>builder()
                     .result(productService.getAllProducts(pageable))
                     .build();
@@ -57,16 +58,23 @@ public class    ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ApiResponse<ProductResponse> getProduct(@PathVariable String productId) {
+    public ApiResponse<ProductResponse> getProduct(Pageable pageable, @PathVariable String productId) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.getProduct(productId))
+                .result(productService.getProduct(pageable, productId))
+                .build();
+    }
+
+    @GetMapping("/{productId}/reviews")
+    public ApiResponse<ReviewProductResponse> getReviewByProduct(Pageable pageable, @PathVariable String productId) {
+        return ApiResponse.<ReviewProductResponse>builder()
+                .result(productService.getReviewByProduct(pageable, productId))
                 .build();
     }
 
     @PutMapping("/{productId}")
-    public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId,@RequestPart MultipartFile[] files, @RequestBody ProductUpdateRequest request) {
+    public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId, @RequestPart MultipartFile[] files, @RequestBody ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.updateProduct(request,productId))
+                .result(productService.updateProduct(request, productId))
                 .build();
     }
 
@@ -80,13 +88,13 @@ public class    ProductController {
 
     @PostMapping("/upload-csv/{categoryId}")
     public ApiResponse<Void> uploadCsv(@PathVariable String categoryId, @RequestParam("file") MultipartFile file) {
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             return ApiResponse.<Void>builder()
                     .code(ErrorCode.FILE_EMPTY.getCode())
                     .message(ErrorCode.FILE_EMPTY.getMessage())
                     .build();
         }
-        try{
+        try {
             List<ProductCsvDTO> products = csvService.parseCsvFile(file);
             productService.saveProductsFromCsv(products, categoryId);
             return ApiResponse.<Void>builder()

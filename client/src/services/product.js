@@ -15,7 +15,6 @@ export const apiUploadCSV = (file, categoryId) => {
           "Content-Type": "multipart/form-data", // Đặt kiểu nội dung là multipart/form-data
         },
       });
-      console.log(response);
       resolve(response);
     } catch (error) {
       reject(error);
@@ -30,7 +29,6 @@ export const apiGetProductById = (productId) =>
         method: "GET",
         url: `/api/v1/products/${productId}`,
       });
-      console.log(response);
       resolve(response);
     } catch (error) {
       reject(error);
@@ -45,7 +43,6 @@ export const apiCreateProduct = (payload) =>
         url: `/api/v1/products`,
         data: payload,
       });
-      console.log(response);
       resolve(response);
     } catch (error) {
       reject(error);

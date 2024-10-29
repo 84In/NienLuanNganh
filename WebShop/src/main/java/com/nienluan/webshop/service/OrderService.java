@@ -194,6 +194,7 @@ public class OrderService {
                         .priceAtTime(orderDetail.getPriceAtTime())
                         .product(productMapper.toProductResponse(orderDetail.getProduct()))
                         .quantity(orderDetail.getQuantity())
+                        .reviewed(orderDetail.isReviewed())
                         .build())
                 .collect(Collectors.toList());
 
@@ -285,12 +286,12 @@ public class OrderService {
     }
 
     public Long getTotalAmountInDate(LocalDate date) {
-        Long totalAmountByDate =  orderRepository.findTotalAmountByDate(date).longValue();
+        Long totalAmountByDate = orderRepository.findTotalAmountByDate(date).longValue();
         return totalAmountByDate;
     }
 
-    public Long getTotalAmountCurrentMonth(){
-        Long totalAmountByMonth =  orderRepository.findTotalRevenueForCurrentMonth().longValue();
+    public Long getTotalAmountCurrentMonth() {
+        Long totalAmountByMonth = orderRepository.findTotalRevenueForCurrentMonth().longValue();
         return totalAmountByMonth;
     }
 

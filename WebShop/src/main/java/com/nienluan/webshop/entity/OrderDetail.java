@@ -20,6 +20,8 @@ public class OrderDetail {
     String id;
     BigDecimal quantity;
     BigDecimal priceAtTime;
+    @Builder.Default
+    boolean reviewed = false;
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     Order order;

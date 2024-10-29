@@ -44,4 +44,5 @@ export { default as AdminCategoryEdit } from "./System/Home/AdminCategoryEdit";
 export { default as AdminTableOrder } from "./System/Items/AdminTableOrder";
 export { default as AdminButtonAccept } from "./System/Items/AdminButtonAccept";
 export { default as AdminItemStatus } from "./System/Items/AdminItemStatus";
+export { default as AdminTag } from "./System/Items/AdminTag";
 export { default as PathSeparator } from "./Common/PathSeparator";

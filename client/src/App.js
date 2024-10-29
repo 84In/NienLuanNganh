@@ -152,7 +152,7 @@ function App() {
           path={path.ADMIN_HOME}
           element={<PrivateAdminFilterRouter element={AdminHome} roles={["ADMIN"]} user={userData} />}
         >
-          <Route index element={<AdminBase user={userData} />} />
+          <Route index element={<PrivateAdminFilterRouter element={AdminBase} roles={["ADMIN"]} user={userData} />} />
           <Route
             path={path.ADMIN_USER}
             element={<PrivateAdminFilterRouter element={AdminUser} roles={["ADMIN"]} user={userData} />}

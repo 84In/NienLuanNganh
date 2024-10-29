@@ -185,6 +185,7 @@ CREATE TABLE `t_order_details`
     `id`            varchar(255) NOT NULL,
     `quantity`      bigint(20)   NOT NULL,
     `price_at_time` bigint(20)   NOT NULL,
+    `reviewed`      boolean  DEFAULT false,
     `order_id`      varchar(255) NOT NULL,
     `product_id`    varchar(255) NOT NULL,
     `created_at`    DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -196,17 +197,18 @@ CREATE TABLE `t_order_details`
 
 CREATE TABLE `t_reviews`
 (
-    `id`         varchar(255) NOT NULL,
-    `rating`     int      DEFAULT 0,
-    `comment`    text     default null,
-    `user_id`    varchar(255) not null,
+    `rating`     int      DEFAULT 1,
+    `comment`    text     DEFAULT NULL,
     `status`     BOOLEAN  DEFAULT TRUE,
-    `product_id` varchar(255) not null,
+    `user_id`    varchar(255) NOT NULL,
+    `product_id` varchar(255) NOT NULL,
+    `order_id`   varchar(255) NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_review_user_id FOREIGN KEY (`user_id`) REFERENCES t_users (`id`) ON DELETE CASCADE,
     CONSTRAINT fk_review_product_id FOREIGN KEY (`product_id`) REFERENCES t_products (`id`) ON DELETE CASCADE,
-    primary key (`id`)
+    CONSTRAINT fk_review_order_id FOREIGN KEY (`order_id`) REFERENCES t_orders (`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`user_id`, `product_id`, `order_id`)
 );
 
 CREATE TABLE `t_carts`

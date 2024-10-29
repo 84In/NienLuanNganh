@@ -6,7 +6,11 @@ import { usePaginationMore } from "../../hooks";
 
 const MainContainer = () => {
   const { data: productsData } = usePaginationMore(`/api/v1/products`, 10, 10);
-  const { data: newProductsData } = usePaginationMore(`/api/v1/search?sortBy=createdAt&sortDirection=desc`, 10, 10);
+  const { data: newProductsData } = usePaginationMore(
+    `/api/v1/search/products?sortBy=createdAt&sortDirection=desc`,
+    10,
+    10,
+  );
 
   return (
     <Grid2

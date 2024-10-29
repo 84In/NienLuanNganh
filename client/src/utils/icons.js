@@ -8,20 +8,27 @@ import {
   BiLogoProductHunt,
   BiSolidDashboard,
   BiSolidUserAccount,
+  BiSolidLeftArrowSquare,
   BiSync,
   BiX,
   BiCategory,
+  BiData,
+  BiSolidRightArrowSquare,
+  BiTrash,
+  BiDollar,
+  BiCoinStack,
+  BiCoin,
 } from "react-icons/bi";
+
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
-import { BiTrash } from "react-icons/bi";
 import { GoHomeFill, GoSearch } from "react-icons/go";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { RiLogoutBoxLine } from "react-icons/ri";
-import { BiSolidLeftArrowSquare } from "react-icons/bi";
-import { BiSolidRightArrowSquare } from "react-icons/bi";
 import { AiFillCloseSquare } from "react-icons/ai";
 const icons = {
   BiX,
+  BiDollar,
+  BiData,
   GoHomeFill,
   FaRegCircleUser,
   FaCartShopping,
@@ -43,5 +50,7 @@ const icons = {
   AiFillCloseSquare,
   BiTrash,
   BiCategory,
+  BiCoinStack,
+  BiCoin,
 };
 export default icons;

@@ -4,18 +4,19 @@ import com.nienluan.webshop.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "t_products")
 @Getter
 @Setter
-@EqualsAndHashCode
-@Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -48,8 +49,11 @@ public class Product extends BaseEntity {
     Set<Promotion> promotions = new HashSet<>();
 
     @OneToMany(mappedBy = "product")
-    Set<OrderDetail> orderDetails = new HashSet<>();
+    List<OrderDetail> orderDetails = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    Set<CartDetail> cartDetails = new HashSet<>();
+    List<CartDetail> cartDetails = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    List<Review> reviews = new ArrayList<>();
 }
