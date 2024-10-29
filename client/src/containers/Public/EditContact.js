@@ -19,10 +19,10 @@ const EditContact = () => {
   const { userData } = useSelector((state) => state.user);
   const { provinces, districts, wards } = useSelector((state) => state.app);
 
-  const isEditPhone = location.pathname.includes(path.EDIT_PHONE);
-  const isEditEmail = location.pathname.includes(path.EDIT_EMAIL);
-  const isEditAddress = location.pathname.includes(path.EDIT_ADDRESS);
-  const isEditPassword = location.pathname.includes(path.EDIT_PASSWORD);
+  const isEditPhone = location.pathname.includes(path.ACCOUNT_EDIT_PHONE);
+  const isEditEmail = location.pathname.includes(path.ACCOUNT_EDIT_EMAIL);
+  const isEditAddress = location.pathname.includes(path.ACCOUNT_EDIT_ADDRESS);
+  const isEditPassword = location.pathname.includes(path.ACCOUNT_EDIT_PASSWORD);
 
   const [alert, setAlert] = useState("");
   const [invalidKeys, setInvalidKeys] = useState({});

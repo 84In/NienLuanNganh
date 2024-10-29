@@ -254,27 +254,27 @@ const AccountInfo = () => {
               title={"Số điện thoại"}
               info={userData?.phone}
               nameButton={"Cập nhật"}
-              onClick={() => navigate(path.EDIT_PHONE, { state: { phone: userData?.phone } })}
+              onClick={() => navigate(path.ACCOUNT_EDIT_PHONE, { state: { phone: userData?.phone } })}
             />
             <ContactButton
               icon={BiEnvelope}
               title={"Địa chỉ email"}
               info={userData?.email}
               nameButton={"Cập nhật"}
-              onClick={() => navigate(path.EDIT_EMAIL, { state: { email: userData?.email } })}
+              onClick={() => navigate(path.ACCOUNT_EDIT_EMAIL, { state: { email: userData?.email } })}
             />
             <ContactButton
               icon={BiCurrentLocation}
               title={"Địa chỉ"}
               info={userData?.address?.fullName}
               nameButton={"Cập nhật"}
-              onClick={() => navigate(path.EDIT_ADDRESS, { state: { address: userData?.address } })}
+              onClick={() => navigate(path.ACCOUNT_EDIT_ADDRESS, { state: { address: userData?.address } })}
             />
             <ContactButton
               icon={BiLockOpenAlt}
               title={"Đổi mật khẩu"}
               nameButton={"Cập nhật"}
-              onClick={() => navigate(path.EDIT_PASSWORD)}
+              onClick={() => navigate(path.ACCOUNT_EDIT_PASSWORD)}
             />
           </div>
         </Grid2>

@@ -85,25 +85,25 @@ function App() {
             }
           />
           <Route
-            path={path.ACCOUNT + "/" + path.EDIT_PHONE}
+            path={path.ACCOUNT + "/" + path.ACCOUNT_EDIT_PHONE}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route
-            path={path.ACCOUNT + "/" + path.EDIT_EMAIL}
+            path={path.ACCOUNT + "/" + path.ACCOUNT_EDIT_EMAIL}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route
-            path={path.ACCOUNT + "/" + path.EDIT_ADDRESS}
+            path={path.ACCOUNT + "/" + path.ACCOUNT_EDIT_ADDRESS}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
           />
           <Route
-            path={path.ACCOUNT + "/" + path.EDIT_PASSWORD}
+            path={path.ACCOUNT + "/" + path.ACCOUNT_EDIT_PASSWORD}
             element={
               <PrivateRoute element={<EditContact />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
@@ -126,7 +126,7 @@ function App() {
             }
           />
           <Route
-            path={path.ORDER_DETAIL}
+            path={path.ORDER_HISTORY_DETAIL}
             element={
               <PrivateRoute element={<OrderDetail />} isLoggedIn={isLoggedIn} onAccessDenied={handleAccessDenied} />
             }
@@ -145,7 +145,7 @@ function App() {
           />
           <Route path={path.PRODUCT_DETAIL} element={<ProductDetail setIsModelLogin={setIsModelLogin} />} />
           <Route path={path.SEARCH} element={<Search />} />
-          <Route path={path.PRODUCT_SEARCH} element={<Filter />} />
+          <Route path={path.SEARCH_PRODUCT} element={<Filter />} />
           <Route path="*" element={<Page404 />} />
         </Route>
         <Route

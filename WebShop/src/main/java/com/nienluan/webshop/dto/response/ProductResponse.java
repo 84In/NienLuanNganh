@@ -1,5 +1,6 @@
 package com.nienluan.webshop.dto.response;
 
+import com.nienluan.webshop.common.BaseResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class ProductResponse extends BaseResponse {
     String id;
     String name;
     String description;

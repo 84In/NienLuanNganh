@@ -5,7 +5,8 @@ import { banner } from "../../utils/constant";
 import { usePaginationMore } from "../../hooks";
 
 const MainContainer = () => {
-  const { data, totalElements, loading, loadMore, hasMore } = usePaginationMore(`/api/v1/products`, 10, 10);
+  const { data: productsData } = usePaginationMore(`/api/v1/products`, 10, 10);
+  const { data: newProductsData } = usePaginationMore(`/api/v1/search?sortBy=createdAt&sortDirection=desc`, 10, 10);
 
   return (
     <Grid2
@@ -26,7 +27,10 @@ const MainContainer = () => {
             <Widget />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
-            <Product products={data} title={"Danh mục sản phẩm"} />
+            <Product products={newProductsData} title={"Sản phẩm mới nhất"} />
+          </Grid2>
+          <Grid2 sx={{ width: "100%" }}>
+            <Product products={productsData} title={"Danh mục sản phẩm"} />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Resolution />
