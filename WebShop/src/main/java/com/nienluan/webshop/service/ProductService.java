@@ -4,6 +4,7 @@ import com.nienluan.webshop.dto.ProductCsvDTO;
 import com.nienluan.webshop.dto.request.ProductRequest;
 import com.nienluan.webshop.dto.request.ProductUpdateRequest;
 import com.nienluan.webshop.dto.response.ProductResponse;
+import com.nienluan.webshop.dto.response.ReviewProductResponse;
 import com.nienluan.webshop.entity.Brand;
 import com.nienluan.webshop.entity.Category;
 import com.nienluan.webshop.entity.Product;
@@ -41,6 +42,7 @@ public class ProductService {
     PromotionRepository promotionRepository;
     CategoryRepository categoryRepository;
     BrandRepository brandRepository;
+    ReviewService reviewService;
 
     public ProductResponse createProduct(ProductRequest request) throws AppException {
         if (productRepository.existsByName(request.getName())) {
@@ -62,13 +64,19 @@ public class ProductService {
     }
 
     public Page<ProductResponse> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(productMapper::toProductResponse);
+        return productRepository.findAll(pageable)
+                .map(product -> {
+                    return toProductResponse(pageable, product);
+                });
     }
 
-    public ProductResponse getProduct(String id) {
-        return productRepository.findById(id)
-                .map(productMapper::toProductResponse)
-                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+    public ProductResponse getProduct(Pageable pageable, String id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+        return toProductResponse(pageable, product);
+    }
+
+    public ReviewProductResponse getReviewByProduct(Pageable pageable, String productId) {
+        return reviewService.getReviewProductResponse(pageable, productId);
     }
 
     public Page<ProductResponse> getProductsByCategory(Pageable pageable, String codeNameCategory) {
@@ -98,7 +106,7 @@ public class ProductService {
         String search = (params.get("search") != null && !params.get("search").isEmpty()) ? params.get("search") : null;
 
         Page<Product> products = productRepository.findBySearchWithFilters(sortedPageable, search, min, max);
-        return products.map(productMapper::toProductResponse);
+        return products.map(product -> toProductResponse(pageable, product));
     }
 
     public Page<ProductResponse> getProductsByCategory(Pageable pageable,
@@ -126,7 +134,7 @@ public class ProductService {
         }
 
         Page<Product> products = productRepository.findByCategoryWithFilters(sortedPageable, category, brands, min, max);
-        return products.map(productMapper::toProductResponse);
+        return products.map(product -> toProductResponse(pageable, product));
     }
 
     public ProductResponse updateProduct(ProductUpdateRequest request, String id) throws AppException {
@@ -197,6 +205,13 @@ public class ProductService {
 
     }
 
+    public ProductResponse toProductResponse(Pageable pageable, Product product) {
+        ProductResponse productResponse = productMapper.toProductResponse(product);
+        ReviewProductResponse reviewProductResponse = reviewService.getReviewProductResponse(pageable, product.getId());
+        productResponse.setReviewDetail(reviewProductResponse);
+        return productResponse;
+    }
+
     public Optional<Promotion> getHighestDiscountPromotion(Product product) {
         LocalDate today = LocalDate.now();
 
@@ -208,7 +223,8 @@ public class ProductService {
     public Long countAllProducts() {
         return productRepository.count();
     }
-    public Long countProductInCurrentMonth(){
+
+    public Long countProductInCurrentMonth() {
         return productRepository.countProductsCurrentMonth();
     }
 }

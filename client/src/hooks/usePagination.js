@@ -32,8 +32,8 @@ const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true,
           },
         });
         const result = response?.result;
-        setData(result?.content);
-        setTotalPages(result?.totalPages);
+        setData(result?.content || result || []);
+        setTotalPages(result?.totalPages || result?.reviews?.totalPages || 1);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -46,7 +46,7 @@ const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true,
   useEffect(() => {
     const currentPage = getCurrentPage();
     fetchPageData(currentPage);
-  }, [getCurrentPage, fetchPageData, location.search]);
+  }, [getCurrentPage, fetchPageData, location.search, baseUrl]);
 
   const scrollToPagination = useCallback(() => {
     const paginationElement = document.getElementById(idPagination);

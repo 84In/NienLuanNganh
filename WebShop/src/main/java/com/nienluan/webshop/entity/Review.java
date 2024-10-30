@@ -1,24 +1,25 @@
 package com.nienluan.webshop.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nienluan.webshop.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@Table(name = "t_reviews")
 @Setter
 @Getter
-@Table(name = "t_reviews")
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Review extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @EmbeddedId
+    private ReviewId id;
 
     int rating;
 
@@ -27,11 +28,21 @@ public class Review extends BaseEntity {
 
     Boolean status;
 
-    @Column(name = "user_id", nullable = false)
-    String userId;
+    // Associations
+    @MapsId("userId")
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private User user;
 
-    @Column(name = "product_id", nullable = false)
-    String productId;
+    @JsonIgnore
+    @MapsId("productId")
+    @ManyToOne
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
 
-
+    @JsonIgnore
+    @MapsId("orderId")
+    @ManyToOne
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    private Order order;
 }

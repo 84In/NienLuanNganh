@@ -6,10 +6,12 @@ import { FaShippingFast } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { AlertCustom, ButtonCustom, ConfirmAlert } from "../../components";
-import { apiChangeOrderStatus, apiGetOrderDetailById } from "../../services";
+import { apiChangeOrderStatus, apiCreateReview, apiGetOrderDetailById } from "../../services";
 import { formatCurrency, path, validTotalPrice } from "../../utils";
+import { useSelector } from "react-redux";
 
 const OrderDetail = () => {
+  const { username } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const [orderDetail, setOrderDetail] = useState({});
@@ -17,6 +19,16 @@ const OrderDetail = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
   const [alert, setAlert] = useState("");
   const [confirm, setConfirm] = useState(false);
+  const [payload, setPayload] = useState({
+    rating: "",
+    comment: "",
+    username: username || "",
+    productId: "",
+    orderId: orderId || "",
+  });
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [rating, setRating] = useState(0);
+  console.log(payload);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,34 +41,77 @@ const OrderDetail = () => {
 
   useEffect(() => {
     if (orderId) {
-      const fetchOrderDetail = async () => {
-        try {
-          const response = await apiGetOrderDetailById(orderId);
-          if (response.code === 0) {
-            setOrderDetail(response?.result);
-          }
-        } catch (error) {
-          setAlert("Lỗi!");
-          setTimeout(() => {
-            setAlert("");
-          }, 5000);
-        }
-      };
       fetchOrderDetail();
     }
   }, [orderId]);
 
-  const handleReviewProduct = async (productId) => {};
+  const fetchOrderDetail = async () => {
+    try {
+      const response = await apiGetOrderDetailById(orderId);
+      if (response.code === 0) {
+        setOrderDetail(response?.result);
+      }
+    } catch (error) {
+      setAlert("Lỗi!");
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    }
+  };
 
   const handleCancelOrder = async () => {
     try {
       setConfirm(false);
-      const response = await apiChangeOrderStatus(orderId, `canceled`);
+      const response = await apiChangeOrderStatus(orderId, `cancelled`);
       if (response?.code === 0) {
         navigate(path.HOME + path.ORDER_HISTORY);
       }
     } catch (error) {
       setAlert("Lỗi!");
+      setTimeout(() => {
+        setAlert("");
+      }, 5000);
+    }
+  };
+
+  const handleReviewProduct = async (productId, product) => {
+    setSelectedProduct(product);
+    setPayload((prev) => ({ ...prev, productId }));
+  };
+
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
+    setPayload((prev) => ({ ...prev, rating: newRating }));
+  };
+
+  const handleSubmitReview = async () => {
+    if (selectedProduct && payload && payload.comment && rating > 0) {
+      try {
+        const response = await apiCreateReview(payload);
+        if (response?.code === 0) {
+          setAlert(`Cảm ơn bạn đã đánh giá sản phẩm của chúng tôi!`);
+        }
+        if (response.code === 18) {
+          setAlert(`Đơn hàng không tồn tại!`);
+        }
+        if (response.code === 26) {
+          setAlert(`Bạn đã đánh giá sản phẩm này trước đó`);
+        }
+        setTimeout(() => {
+          setAlert("");
+        }, 5000);
+      } catch (error) {
+        setAlert("Lỗi!");
+        setTimeout(() => {
+          setAlert("");
+        }, 5000);
+      }
+      setSelectedProduct(null);
+      setRating(0);
+      setPayload((prev) => ({ ...prev, rating: "", comment: "", productId: "" }));
+      fetchOrderDetail();
+    } else {
+      setAlert("Vui lòng đánh giá sản phẩm trước khi gửi");
       setTimeout(() => {
         setAlert("");
       }, 5000);
@@ -237,7 +292,8 @@ const OrderDetail = () => {
                         variant="outlined"
                         color="warning"
                         sx={{ width: "100px" }}
-                        onClick={() => handleReviewProduct(item?.product?.id)}
+                        onClick={() => handleReviewProduct(item?.product?.id, item?.product)}
+                        disabled={item?.reviewed === false ? false : true}
                       >
                         Đánh giá
                       </Button>
@@ -281,6 +337,55 @@ const OrderDetail = () => {
           onConfirm={handleCancelOrder}
           onCancel={() => setConfirm(false)}
         />
+      )}
+      {selectedProduct && (
+        <div
+          className="fixed bottom-0 left-0 right-0 top-0 z-40 flex h-full w-full content-center items-center justify-center p-4 shadow-md"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
+        >
+          <div className="h-fit w-full min-w-[350px] max-w-[800px] flex-col rounded-md border bg-white p-6">
+            <h1 className="mb-4 text-lg font-semibold">Đánh giá sản phẩm: {selectedProduct?.name}</h1>
+
+            <div className="mb-4">
+              <div className="flex items-center gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => handleRatingChange(star)}
+                    className={`text-4xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <textarea
+              className="mb-4 w-full resize-none rounded border p-2"
+              rows="5"
+              placeholder="Nhập đánh giá của bạn..."
+              value={payload.comment}
+              onChange={(e) => setPayload((prev) => ({ ...prev, comment: e.target.value }))}
+            />
+
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  setSelectedProduct(null);
+                  setRating(0);
+                  setPayload((prev) => ({ ...prev, rating: "", comment: "", productId: "" }));
+                }}
+              >
+                Hủy
+              </Button>
+              <Button variant="contained" color="primary" onClick={handleSubmitReview}>
+                Xác nhận
+              </Button>
+            </div>
+          </div>
+        </div>
       )}
     </Grid2>
   );

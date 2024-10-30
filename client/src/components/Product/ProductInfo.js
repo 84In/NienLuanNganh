@@ -34,12 +34,12 @@ const ProductInfo = ({ product }) => {
           <h1 className="break-words text-left text-xl font-semibold">{product?.name}</h1>
           <div className="flex items-center gap-2">
             <div className="gap flex items-center justify-start text-lg font-semibold">
-              {product?.rating ? product?.rating : 0}
+              {product?.reviewDetail?.averageRating ? product?.reviewDetail?.averageRating : 0}
               <Rating
                 className="ml-2"
                 name="half-rating-read"
                 precision={0.5}
-                value={product?.rating ? product?.rating : 0}
+                value={product?.reviewDetail?.averageRating ? product?.reviewDetail?.averageRating : 0}
                 readOnly
                 size="medium"
               />

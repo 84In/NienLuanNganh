@@ -3,7 +3,8 @@ package com.nienluan.webshop.dto.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -11,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class ReviewRequest {
     int rating;
     String comment;
-    String userId;
+    String username;
     String productId;
+    String orderId;
 }

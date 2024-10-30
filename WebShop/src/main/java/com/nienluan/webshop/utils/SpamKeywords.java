@@ -10,7 +10,7 @@ public class SpamKeywords {
                 "mm",
                 "cmm",
                 "dcmm",
-                "con chóoo",
+                "con chó",
                 "fuxk",
                 "fuck",
                 "bitch",
@@ -22,7 +22,8 @@ public class SpamKeywords {
                 "đồ choá"
         );
     }
-    public static String messageWarning(){
-        return "Bạn đang vi phạm chính sách tiêu chuẩn cộng đồng của chúng tôi! Đánh giá này sẽ bị xoá sau 3 ngày thông báo!";
+
+    public static String messageWarning() {
+        return "Đánh giá vi phạm chính sách tiêu chuẩn cộng đồng của chúng tôi!";
     }
 }

@@ -18,7 +18,6 @@ const ProductDetail = ({ setIsModelLogin }) => {
         console.error("Failed to fetch product", error);
       }
     };
-
     fetchProduct();
   }, [productId]);
 
@@ -64,7 +63,7 @@ const ProductDetail = ({ setIsModelLogin }) => {
             height: "fit-content",
           }}
         >
-          <Review />
+          <Review productId={productId} />
         </Grid2>
       </Grid2>
       <Grid2 item xs={12} md={3} sx={{ width: "100%" }}>

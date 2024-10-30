@@ -7,7 +7,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,11 +33,17 @@ public class User extends BaseEntity {
     LocalDate dob;
     @ManyToMany
     Set<Role> roles;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address", nullable = true)
     Address address;
+
     @OneToMany(mappedBy = "user")
-    Set<Order> orders = new HashSet<>();
+    List<Order> orders = new ArrayList<>();
+
     @OneToOne(mappedBy = "user")
     Cart cart;
+
+    @OneToMany(mappedBy = "user")
+    List<Review> review = new ArrayList<>();
 }

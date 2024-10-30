@@ -1,18 +1,20 @@
 package com.nienluan.webshop.dto.response;
 
+import com.nienluan.webshop.common.BaseResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
 @Getter
 @Setter
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class ProductResponse extends BaseResponse {
     String id;
     String name;
     String description;
@@ -23,4 +25,5 @@ public class ProductResponse {
     BrandResponse brand;
     String images;
     Set<PromotionResponse> promotions;
+    ReviewProductResponse reviewDetail;
 }

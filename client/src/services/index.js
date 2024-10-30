@@ -2,6 +2,7 @@ export * from "./auth";
 export * from "./category";
 export * from "./cart";
 export * from "./district";
+export * from "./review";
 export * from "./image";
 export * from "./product";
 export * from "./province";

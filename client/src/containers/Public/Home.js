@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 import { Footer, Header, Login } from "./";
+import { PathSeparator } from "../../components";
 
 const Home = ({ User, cart, isModelLogin, setIsModelLogin }) => {
   const { isLoggedIn } = useSelector((state) => state.auth);
