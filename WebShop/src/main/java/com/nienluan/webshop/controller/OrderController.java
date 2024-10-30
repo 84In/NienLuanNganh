@@ -4,6 +4,7 @@ import com.nienluan.webshop.dto.request.OrderRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.OrderResponse;
 import com.nienluan.webshop.dto.response.VNPayResponse;
+import com.nienluan.webshop.dto.response.ZaloPayResponse;
 import com.nienluan.webshop.entity.Order;
 import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
@@ -55,6 +56,10 @@ public class OrderController {
         return ApiResponse.<VNPayResponse>builder()
                 .result(orderService.createVNPayPayment(request, orderRequest))
                 .build();
+    }
+    @PostMapping("/zalopay")
+    public ApiResponse<ZaloPayResponse> payWithZalopay(@RequestBody OrderRequest orderRequest) {
+        return ApiResponse.<ZaloPayResponse>builder().result(orderService.createZaloPayPayment(orderRequest)).build();
     }
 
     @GetMapping("/vnpay-callback")

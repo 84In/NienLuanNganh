@@ -16,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,7 +46,18 @@ public class RevenueService {
                 .getResultList();
 
         for (Map<String, Object> result : results) {
-            LocalDate summaryDate = (LocalDate) result.get("summaryDate");
+            Object summaryDateObject = result.get("summaryDate");
+            LocalDate summaryDate;
+            // Chuyển đổi summaryDateObject sang LocalDate
+            if (summaryDateObject instanceof java.sql.Date) {
+                java.sql.Date sqlDate = (java.sql.Date) summaryDateObject;
+                summaryDate = sqlDate.toLocalDate(); // Chuyển đổi từ java.sql.Date sang LocalDate
+            } else if (summaryDateObject instanceof java.util.Date) {
+                java.util.Date utilDate = (java.util.Date) summaryDateObject;
+                summaryDate = utilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // Chuyển đổi từ java.util.Date sang LocalDate
+            } else {
+                throw new IllegalArgumentException("Unsupported date type: " + summaryDateObject.getClass());
+            }
             Long totalRevenue = (Long) result.get("totalRevenue");
 
             Optional<RevenueSummary> existingSummary = revenueSummaryRepository.findByDateRangeTypeAndSummaryDate("daily", summaryDate);
@@ -57,6 +69,7 @@ public class RevenueService {
             revenueSummaryRepository.save(revenueSummary);
         }
     }
+
 
     public void updateMonthlyRevenue() {
         // Tính toán startDate và endDate cho tháng trước
@@ -143,7 +156,7 @@ public class RevenueService {
     public List<RevenueSummaryResponse> revenueOfTheMonthsITheYear(LocalDate date){
         List <RevenueSummary> revenueSummaries = revenueSummaryRepository.findAllMonthByDate(date).orElseThrow( () -> new AppException(ErrorCode.REVENUE_NOT_EXISTED) );
         if(date.equals(LocalDate.now())){
-            revenueSummaries.add(RevenueSummary.builder().totalRevenue(orderService.getTotalAmountCurrentMonth()).dateRangeType("monthly").summaryDate(date).build());
+            revenueSummaries.add(RevenueSummary.builder().totalRevenue(orderService.getTotalAmountCurrentMonth()).dateRangeType("monthl").summaryDate(date).build());
         }
         return revenueSummaries.stream().map(revenueMapper::toRevenueSummaryResponse).toList();
     }
