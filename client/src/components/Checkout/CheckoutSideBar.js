@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import React, { memo, useState } from "react";
 import { formatCurrency } from "../../utils/format";
-import { apiCreateOrderWithCash, apiCreateOrderWithVNPay } from "../../services";
+import { apiCreateOrderWithCash, apiCreateOrderWithVNPay, apiCreateOrderWithZaloPay } from "../../services";
 import { path, validPrice, validPromotion } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -53,37 +53,85 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
         orderDetails: orderDetails,
       };
 
-      if (paymentMethod === "vnpay") {
-        const response = await apiCreateOrderWithVNPay(paymentMethod, order, {
-          amount: order.totalAmount,
-          bankCode: "NCB",
-        });
-        console.log(response);
+      switch (paymentMethod) {
+        case "vnpay":
+          const responseVNPay = await apiCreateOrderWithVNPay(paymentMethod, order, {
+            amount: order.totalAmount,
+            bankCode: "NCB",
+          });
+          console.log(responseVNPay);
 
-        if (response?.code === 0 && response?.result?.paymentUrl) {
-          // Điều hướng người dùng tới trang thanh toán của VNPay
-          window.location.href = response?.result?.paymentUrl;
-          return; // Ngăn không tiếp tục chạy hàm nếu đang thanh toán VNPay
-        } else {
-          setAlert("Có lỗi xảy ra khi tạo thanh toán VNPay");
-        }
-      } else {
-        const response = await apiCreateOrderWithCash(paymentMethod, order);
-        console.log(response);
+          if (responseVNPay?.code === 0 && responseVNPay?.result?.paymentUrl) {
+            // Điều hướng người dùng tới trang thanh toán của VNPay
+            window.location.href = responseVNPay?.result?.paymentUrl;
+            return;
+          } else {
+            setAlert("Có lỗi xảy ra khi tạo thanh toán VNPay");
+          }
+          break;
+        case "zalopay":
+          const responseZaloPay = await apiCreateOrderWithZaloPay(paymentMethod, order);
+          console.log(responseZaloPay);
 
-        if (response?.code === 0) {
-          setAlert("Thanh toán thành công");
-          dispatch({ type: actionTypes.REMOVE_CHECKOUT });
-          dispatch(actions.getCartCurrentUser());
-          navigate(path.HOME + path.ORDER_HISTORY);
-        }
-        if (response?.code === 5) {
-          setAlert("Sản phẩm không tồn tại");
-        }
-        if (response?.code === 16) {
-          setAlert("Có sản phẩm không đủ số lượng");
-        }
+          if (responseZaloPay?.code === 0 && responseZaloPay?.result?.orderurl) {
+            // Điều hướng người dùng tới trang thanh toán của ZaloPay
+            window.location.href = responseZaloPay?.result?.orderurl;
+            return;
+          } else {
+            setAlert("Có lỗi xảy ra khi tạo thanh toán ZaloPay");
+          }
+          break;
+
+        default:
+          const response = await apiCreateOrderWithCash(paymentMethod, order);
+          console.log(response);
+
+          if (response?.code === 0) {
+            setAlert("Thanh toán thành công");
+            dispatch({ type: actionTypes.REMOVE_CHECKOUT });
+            dispatch(actions.getCartCurrentUser());
+            navigate(path.HOME + path.ORDER_HISTORY);
+          }
+          if (response?.code === 5) {
+            setAlert("Sản phẩm không tồn tại");
+          }
+          if (response?.code === 16) {
+            setAlert("Có sản phẩm không đủ số lư");
+          }
+          break;
       }
+
+      // if (paymentMethod === "vnpay") {
+      //   const response = await apiCreateOrderWithVNPay(paymentMethod, order, {
+      //     amount: order.totalAmount,
+      //     bankCode: "NCB",
+      //   });
+      //   console.log(response);
+
+      //   if (response?.code === 0 && response?.result?.paymentUrl) {
+      //     // Điều hướng người dùng tới trang thanh toán của VNPay
+      //     window.location.href = response?.result?.paymentUrl;
+      //     return; // Ngăn không tiếp tục chạy hàm nếu đang thanh toán VNPay
+      //   } else {
+      //     setAlert("Có lỗi xảy ra khi tạo thanh toán VNPay");
+      //   }
+      // } else {
+      //   const response = await apiCreateOrderWithCash(paymentMethod, order);
+      //   console.log(response);
+
+      //   if (response?.code === 0) {
+      //     setAlert("Thanh toán thành công");
+      //     dispatch({ type: actionTypes.REMOVE_CHECKOUT });
+      //     dispatch(actions.getCartCurrentUser());
+      //     navigate(path.HOME + path.ORDER_HISTORY);
+      //   }
+      //   if (response?.code === 5) {
+      //     setAlert("Sản phẩm không tồn tại");
+      //   }
+      //   if (response?.code === 16) {
+      //     setAlert("Có sản phẩm đã hết");
+      //   }
+      // }
       setTimeout(() => {
         setAlert("");
       }, 5000);

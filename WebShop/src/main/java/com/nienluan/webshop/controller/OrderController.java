@@ -4,6 +4,7 @@ import com.nienluan.webshop.dto.request.OrderRequest;
 import com.nienluan.webshop.dto.response.ApiResponse;
 import com.nienluan.webshop.dto.response.OrderResponse;
 import com.nienluan.webshop.dto.response.VNPayResponse;
+import com.nienluan.webshop.dto.response.ZaloPayResponse;
 import com.nienluan.webshop.entity.Order;
 import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
@@ -57,6 +58,13 @@ public class OrderController {
                 .build();
     }
 
+    @PostMapping("/zalopay")
+    public ApiResponse<ZaloPayResponse> payWithZaloPay(@RequestBody OrderRequest orderRequest) {
+        return ApiResponse.<ZaloPayResponse>builder()
+                .result(orderService.createZaloPayPayment(orderRequest))
+                .build();
+    }
+
     @GetMapping("/vnpay-callback")
     public ApiResponse<?> payCallbackHandler(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String vnpResponseCode = request.getParameter("vnp_ResponseCode");
@@ -89,7 +97,7 @@ public class OrderController {
     public ApiResponse<?> getAllOrders(@RequestParam(required = false) String codeName, Pageable pageable) {
         return ApiResponse.<Page<OrderResponse>>builder()
                 .message("Get all orders successfully")
-                .result(orderService.getAllOrders(codeName,pageable))
+                .result(orderService.getAllOrders(codeName, pageable))
                 .build();
     }
 

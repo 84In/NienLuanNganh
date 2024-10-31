@@ -5,6 +5,7 @@ import com.nienluan.webshop.dto.request.OrderRequest;
 import com.nienluan.webshop.dto.response.OrderDetailResponse;
 import com.nienluan.webshop.dto.response.OrderResponse;
 import com.nienluan.webshop.dto.response.VNPayResponse;
+import com.nienluan.webshop.dto.response.ZaloPayResponse;
 import com.nienluan.webshop.entity.*;
 import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
@@ -16,6 +17,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -34,7 +37,7 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class OrderService {
-
+    private static final Logger logger = LoggerFactory.getLogger(Logger.class);
     OrderStatusRepository statusOrderRepository;
     OrderRepository orderRepository;
     PaymentRepository paymentRepository;
@@ -52,7 +55,8 @@ public class OrderService {
     OrderRecipientMapper orderRecipientMapper;
     MailService mailService;
     VNPayService vnPayService;
-    private final OrderStatusRepository orderStatusRepository;
+    ZaloPayService zaloPayService;
+    OrderStatusRepository orderStatusRepository;
 
     @Transactional
     public OrderResponse createOrderWithCash(OrderRequest request) {
@@ -87,6 +91,16 @@ public class OrderService {
         return VNPayResponse.builder()
                 .paymentUrl(paymentUrl)
                 .build();
+    }
+
+    public ZaloPayResponse createZaloPayPayment(OrderRequest orderRequest) {
+        Order order = createOrder(orderRequest);
+        try {
+            logger.info(order.toString());
+            return zaloPayService.createOrder(order);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
