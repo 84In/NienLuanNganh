@@ -139,14 +139,41 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
         <h1 className="font-semibold">Tạm tính:</h1>{" "}
         <span className="text-xl font-bold text-error-color">{formatCurrency(totalPrice)}</span>
       </div>
-      <div className="flex w-full flex-col gap-2 py-2">
-        <Button onClick={handleBuyNow} variant="contained" color="error" size="large" fullWidth className="mb-2">
-          Mua ngay
-        </Button>
-        <Button onClick={handleAddToCart} variant="outlined" color="primary" size="large" fullWidth className="mb-2">
-          Thêm vào giỏ
-        </Button>
-      </div>
+      {product?.stockQuantity ? (
+        <div className="flex w-full flex-col gap-2 py-2">
+          <Button onClick={handleBuyNow} variant="contained" color="error" size="large" fullWidth className="mb-2">
+            Mua ngay
+          </Button>
+          <Button onClick={handleAddToCart} variant="outlined" color="primary" size="large" fullWidth className="mb-2">
+            Thêm vào giỏ
+          </Button>
+        </div>
+      ) : (
+        <div className="flex w-full flex-col gap-2 py-2">
+          <Button
+            onClick={handleBuyNow}
+            variant="contained"
+            color="error"
+            size="large"
+            fullWidth
+            className="mb-2"
+            disabled
+          >
+            Hết hàng
+          </Button>
+          <Button
+            onClick={handleAddToCart}
+            variant="outlined"
+            color="primary"
+            size="large"
+            fullWidth
+            className="mb-2"
+            disabled
+          >
+            Thêm vào giỏ
+          </Button>
+        </div>
+      )}
     </Box>
   );
 };

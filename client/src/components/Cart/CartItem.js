@@ -26,8 +26,8 @@ const CartItem = ({
 
   const imageArray = data?.product?.images ? JSON.parse(data?.product?.images.replace(/'/g, '"')) : [];
   const firstImage = imageArray[0] ? imageArray[0] : null;
-  const minQuantity = 1;
-  const maxQuantity = data?.product.stockQuantity;
+  const minQuantity = data?.product.stockQuantity ? 1 : 0;
+  const maxQuantity = data?.product.stockQuantity ? data?.product.stockQuantity : 0;
   const promotion = validPromotion(data?.product?.promotions);
   const price = validPrice(data?.product?.price, promotion);
   const totalPrice = validTotalPrice(data?.product?.price, quantity, promotion);
@@ -96,9 +96,10 @@ const CartItem = ({
         <input
           type="checkbox"
           name={data?.product?.id}
-          className="custom-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
+          className={`custom-checkbox h-4 w-4 transition duration-150 ease-in-out ${maxQuantity <= 0 ? "cursor-not-allowed opacity-50" : "text-blue-500"}`}
           checked={isSelected || selectedItems.some((item) => item.product.id === data?.product?.id)}
-          onChange={(e) => onSelectItem(data?.product?.id, e.target.checked)}
+          onChange={(e) => maxQuantity > 0 && onSelectItem(data?.product?.id, e.target.checked)}
+          disabled={maxQuantity <= 0}
         />
       </div>
       <div className="w-5/12 items-center gap-2 px-2 text-black">

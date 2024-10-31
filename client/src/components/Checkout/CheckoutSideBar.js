@@ -81,7 +81,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
           setAlert("Sản phẩm không tồn tại");
         }
         if (response?.code === 16) {
-          setAlert("Có sản phẩm đã hết");
+          setAlert("Có sản phẩm không đủ số lượng");
         }
       }
       setTimeout(() => {

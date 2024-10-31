@@ -11,6 +11,11 @@ const MainContainer = () => {
     10,
     10,
   );
+  const { data: hotSellingProductsData } = usePaginationMore(
+    `/api/v1/search/products?sortBy=sold&sortDirection=desc`,
+    10,
+    10,
+  );
 
   return (
     <Grid2
@@ -29,6 +34,9 @@ const MainContainer = () => {
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Widget />
+          </Grid2>
+          <Grid2 sx={{ width: "100%" }}>
+            <Product products={hotSellingProductsData} title={"Sản phẩm bán chạy"} />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Product products={newProductsData} title={"Sản phẩm mới nhất"} />

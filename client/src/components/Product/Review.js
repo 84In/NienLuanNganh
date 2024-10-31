@@ -28,7 +28,7 @@ const Review = ({ productId }) => {
   }, [productId]);
 
   return (
-    <Grid2 container direction="column" sx={{ gap: 1, width: "100%" }}>
+    <Grid2 id="pagination" container direction="column" sx={{ gap: 1, width: "100%" }}>
       <Grid2 item container sx={{ width: "100%" }}>
         <Grid2 item xs={12} md={6} className="flex flex-col gap-2 p-2">
           <h1 className="text-lg font-semibold">Tổng quan</h1>
@@ -75,7 +75,7 @@ const Review = ({ productId }) => {
                         }}
                       />
                     </div>
-                    <div className="w-2/12 place-items-end">
+                    <div className="ml-4 w-2/12 place-items-start">
                       <p>{value}</p>
                     </div>
                   </div>
