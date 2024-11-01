@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Rating } from "@mui/material";
 import { styled } from "@mui/system";
 import React, { memo } from "react";
-import { formatCurrency } from "../../utils/format";
+import { formatCount, formatCurrency } from "../../utils/format";
 import { validPrice, validPromotion } from "../../utils";
 
 const StyledCard = styled(Card)({
@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
                 size="small"
               />
               <div className="text-sm text-gray-600">
-                Đã bán: <span>{product?.sold ? product?.sold : 0}</span>
+                Đã bán: <span>{product?.sold ? formatCount(product?.sold) : 0}</span>
               </div>
               {promotion ? (
                 <>

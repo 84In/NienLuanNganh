@@ -22,6 +22,14 @@ export const formatDate = (dateString) => {
   }).format(date);
 };
 
+export const formatCount = (count) => {
+  if (count < 1000) return count.toString();
+  if (count < 1_000_000) return (count / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  if (count < 1_000_000_000) return (count / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+  return (count / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "B";
+};
+
+
 export const formatLengthName = (name) => {
   if (name?.length > 15) {
     return name?.slice(0, 12) + "...";
@@ -53,3 +61,4 @@ export const formatString = (str) => {
 
   return formattedStr;
 };
+

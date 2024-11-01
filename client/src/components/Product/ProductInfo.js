@@ -1,6 +1,6 @@
 import { Box, Rating } from "@mui/material";
 import React, { memo } from "react";
-import { formatCurrency } from "../../utils/format";
+import { formatCount, formatCurrency } from "../../utils/format";
 
 import policyImage1 from "../../assets/images/icons/product_info1.png";
 import policyImage2 from "../../assets/images/icons/product_info2.png";
@@ -46,7 +46,7 @@ const ProductInfo = ({ product }) => {
             </div>
             |
             <p>
-              Đã bán: <span>{product?.sold ? product?.sold : 0}</span>
+              Đã bán: <span>{product?.sold ? formatCount(product?.sold) : 0}</span>
             </p>
           </div>
           {promotion ? (
