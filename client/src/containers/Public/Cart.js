@@ -44,7 +44,7 @@ const Cart = ({ setIsModelLogin }) => {
   const handleSelectAll = (isChecked) => {
     if (isChecked) {
       setSelectedItems((prev) => {
-        const allProduct = cart.cartDetails;
+        const allProduct = cart.cartDetails.filter((item) => item.product.stockQuantity > 0);
         dispatch({ type: actionTypes.CREATE_CHECKOUT, checkout: allProduct });
         return allProduct;
       });
@@ -115,7 +115,7 @@ const Cart = ({ setIsModelLogin }) => {
                   checked={
                     cart?.cartDetails &&
                     cart?.cartDetails.length !== 0 &&
-                    selectedItems?.length === cart?.cartDetails?.length
+                    selectedItems?.length === cart.cartDetails.filter((item) => item.product.stockQuantity > 0).length
                   }
                 />
               </div>

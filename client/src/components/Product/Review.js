@@ -4,6 +4,7 @@ import React, { memo, useEffect, useState } from "react";
 import ReviewItem from "./ReviewItem";
 import { usePagination } from "../../hooks";
 import Pagination from "../Common/Pagination";
+import { formatCount } from "../../utils";
 
 const Review = ({ productId }) => {
   const [urlApi, setUrlApi] = useState(`/api/v1/products/${productId}/reviews`);
@@ -28,7 +29,7 @@ const Review = ({ productId }) => {
   }, [productId]);
 
   return (
-    <Grid2 container direction="column" sx={{ gap: 1, width: "100%" }}>
+    <Grid2 id="pagination" container direction="column" sx={{ gap: 1, width: "100%" }}>
       <Grid2 item container sx={{ width: "100%" }}>
         <Grid2 item xs={12} md={6} className="flex flex-col gap-2 p-2">
           <h1 className="text-lg font-semibold">Tổng quan</h1>
@@ -36,7 +37,7 @@ const Review = ({ productId }) => {
             <p className="text-5xl font-bold">{reviews?.averageRating ? reviews?.averageRating : 0}</p>
             <Rating value={reviews?.averageRating ? reviews?.averageRating : 0} precision={0.5} size="large" readOnly />
           </div>
-          <p className="text-gray-500">({reviews?.totalReviews ? reviews?.totalReviews : 0} đánh giá)</p>
+          <p className="text-gray-500">({reviews?.totalReviews ? formatCount(reviews?.totalReviews) : 0} đánh giá)</p>
         </Grid2>
         <Grid2
           item
@@ -75,8 +76,8 @@ const Review = ({ productId }) => {
                         }}
                       />
                     </div>
-                    <div className="w-2/12 place-items-end">
-                      <p>{value}</p>
+                    <div className="ml-4 w-2/12 place-items-start">
+                      <p>{formatCount(value)}</p>
                     </div>
                   </div>
                 );

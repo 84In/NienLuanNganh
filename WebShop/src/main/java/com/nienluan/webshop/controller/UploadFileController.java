@@ -18,31 +18,10 @@ public class UploadFileController {
 
     UploadFileService uploadFileService;
 
-    @PostMapping("/banner/{name}")
-    public ApiResponse<List<String>> uploadBanner(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
+    @PostMapping("/{type}/{name}")
+    public ApiResponse<List<String>> uploadImages(@PathVariable String type, @PathVariable String name, @RequestParam("files") List<MultipartFile> files) {
         return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFiles("banner", name, files))
-                .build();
-    }
-
-    @PostMapping("/product/{name}")
-    public ApiResponse<List<String>> uploadProduct(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
-        return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFiles("product", name, files))
-                .build();
-    }
-
-    @PostMapping("/avatar/{name}")
-    public ApiResponse<List<String>> uploadAvatar(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
-        return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFiles("avatar", name, files))
-                .build();
-    }
-
-    @PostMapping("/category/{name}")
-    public ApiResponse<List<String>> uploadCategory(@PathVariable String name, @RequestParam("files")List<MultipartFile> files) {
-        return ApiResponse.<List<String>>builder()
-                .result(uploadFileService.uploadFiles("category", name, files))
+                .result(uploadFileService.uploadFiles(type, name, files))
                 .build();
     }
 

@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, CardMedia, Rating } from "@mui/material";
 import { styled } from "@mui/system";
 import React, { memo } from "react";
-import { formatCurrency } from "../../utils/format";
+import { formatCount, formatCurrency } from "../../utils/format";
 import { validPrice, validPromotion } from "../../utils";
 
 const StyledCard = styled(Card)({
@@ -25,10 +25,10 @@ const ProductCard = ({ product }) => {
     <Box display="flex" flexDirection="column" alignItems="center" height="100%" width="100%">
       {product && (
         <StyledCard className="product-hover">
-          <div className="h-[280px]">
+          <div className="relative h-[280px]">
             <CardMedia
               component="img"
-              sx={{ objectFit: "contain", height: "100%" }}
+              sx={{ objectFit: "contain", height: "100%", zIndex: "10" }}
               image={
                 firstImage && firstImage.startsWith("https://")
                   ? firstImage
@@ -36,6 +36,13 @@ const ProductCard = ({ product }) => {
               }
               alt={product?.name}
             />
+            {product.stockQuantity <= 0 && (
+              <div className="absolute top-0 z-20 flex h-[280px] w-full items-center justify-center bg-[rgba(0,0,0,0.3)]">
+                <div className="h-24 w-24 place-content-center place-items-center rounded-full bg-red-500 text-center text-sm text-white">
+                  HẾT HÀNG
+                </div>
+              </div>
+            )}
           </div>
           <CardContent className="flex h-[250px] min-h-[250px] flex-col justify-between gap-2 p-3">
             <div className="flex flex-col gap-1">
@@ -48,7 +55,7 @@ const ProductCard = ({ product }) => {
                 size="small"
               />
               <div className="text-sm text-gray-600">
-                Đã bán: <span>{product?.sold ? product?.sold : 0}</span>
+                Đã bán: <span>{product?.sold ? formatCount(product?.sold) : 0}</span>
               </div>
               {promotion ? (
                 <>

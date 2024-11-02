@@ -64,7 +64,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
           if (responseVNPay?.code === 0 && responseVNPay?.result?.paymentUrl) {
             // Điều hướng người dùng tới trang thanh toán của VNPay
             window.location.href = responseVNPay?.result?.paymentUrl;
-            return; // Ngăn không tiếp tục chạy hàm nếu đang thanh toán VNPay
+            return;
           } else {
             setAlert("Có lỗi xảy ra khi tạo thanh toán VNPay");
           }
@@ -74,9 +74,9 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
           console.log(responseZaloPay);
 
           if (responseZaloPay?.code === 0 && responseZaloPay?.result?.orderurl) {
-            // Điều hướng người dùng tới trang thanh toán của VNPay
+            // Điều hướng người dùng tới trang thanh toán của ZaloPay
             window.location.href = responseZaloPay?.result?.orderurl;
-            return; // Ngăn không tiếp tục chạy hàm nếu đang thanh toán VNPay
+            return;
           } else {
             setAlert("Có lỗi xảy ra khi tạo thanh toán ZaloPay");
           }
@@ -96,7 +96,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
             setAlert("Sản phẩm không tồn tại");
           }
           if (response?.code === 16) {
-            setAlert("Có sản phẩm đã hết");
+            setAlert("Có sản phẩm không đủ số lượng");
           }
           break;
       }

@@ -65,19 +65,20 @@ public class OrderController {
                 .result(orderService.createVNPayPayment(request, orderRequest))
                 .build();
     }
+
     @PostMapping("/zalopay")
     public ApiResponse<ZaloPayResponse> payWithZalopay(@RequestBody OrderRequest orderRequest) throws IOException {
         return ApiResponse.<ZaloPayResponse>builder().result(orderService.createZaloPayPayment(orderRequest)).build();
     }
 
     @GetMapping("/vnpay-callback")
-    public ApiResponse<?> payCallbackHandler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ApiResponse<?> payCallbackHandler(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         String vnpResponseCode = request.getParameter("vnp_ResponseCode");
         String vnpTxnRef = request.getParameter("vnp_TxnRef");
         Order order = orderRepository.findById(vnpTxnRef)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         String redirectUrl;
-
 
         if (vnpResponseCode.equals("00")) {
             String confirmedStatus = "confirmed";
@@ -98,7 +99,7 @@ public class OrderController {
         }
     }
 
-    //zalopay-callback
+    // zalopay-callback
     @GetMapping("/zalopay-callback")
     public ResponseEntity<Void> handleZaloPayCallback(
             @RequestParam("amount") Long amount,
@@ -128,7 +129,8 @@ public class OrderController {
             ;
 
             // URL kết quả để redirect client
-            String resultUrl = orderService.callbackZaloPay(callbackData.toString());  // Đường dẫn đến trang kết quả trên client
+            String resultUrl = orderService.callbackZaloPay(callbackData.toString()); // Đường dẫn đến trang kết quả
+                                                                                      // trên client
 
             log.info(resultUrl);
             // Tạo ResponseEntity với mã 302 và URL trong header Location
@@ -146,7 +148,7 @@ public class OrderController {
     public ApiResponse<?> getAllOrders(@RequestParam(required = false) String codeName, Pageable pageable) {
         return ApiResponse.<Page<OrderResponse>>builder()
                 .message("Get all orders successfully")
-                .result(orderService.getAllOrders(codeName,pageable))
+                .result(orderService.getAllOrders(codeName, pageable))
                 .build();
     }
 
@@ -160,17 +162,17 @@ public class OrderController {
 
     @GetMapping("/current-user")
     public ApiResponse<?> getOrder(Pageable pageable,
-                                   @RequestParam(name = "status", required = false) String status,
-                                   @RequestParam(name = "search", required = false) String search) {
+            @RequestParam(name = "status", required = false) String status,
+            @RequestParam(name = "search", required = false) String search) {
         return ApiResponse.<Page<OrderResponse>>builder()
                 .message("Get order successful")
                 .result(orderService.getOrderCurrentUser(pageable, status, search))
                 .build();
     }
 
-
     @PutMapping("/change-status/{id}")
-    public ApiResponse<?> changeOrderStatus(@PathVariable("id") String id, @RequestParam(name = "status", required = false) String status) {
+    public ApiResponse<?> changeOrderStatus(@PathVariable("id") String id,
+            @RequestParam(name = "status", required = false) String status) {
         return ApiResponse.<OrderResponse>builder()
                 .message("Change order status successfully")
                 .result(orderService.changeOrderStatus(id, status))
