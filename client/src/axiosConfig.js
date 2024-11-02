@@ -1,7 +1,10 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL,
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? process.env.REACT_APP_SERVER_URL_PROD
+      : process.env.REACT_APP_SERVER_URL_DEV,
 });
 
 instance.interceptors.request.use(

@@ -29,7 +29,11 @@ const SideBar = () => {
                 <div>
                   <ButtonCustom
                     ImageSize={10}
-                    Image={process.env.REACT_APP_SERVER_URL + item.images}
+                    Image={
+                      (process.env.NODE_ENV === "production"
+                        ? process.env.REACT_APP_SERVER_URL_PROD
+                        : process.env.REACT_APP_SERVER_URL_DEV) + item.images
+                    }
                     TextTitle={item.name}
                     HoverColor={"hover:bg-blue-100"}
                   />

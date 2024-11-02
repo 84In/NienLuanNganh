@@ -20,6 +20,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     BigDecimal amount;
+    Long zpTransId;
+    Long refundId;
     String status;
     LocalDateTime paymentDate;
 }

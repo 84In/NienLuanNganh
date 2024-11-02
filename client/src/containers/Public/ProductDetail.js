@@ -4,7 +4,7 @@ import { AlertCustom, ProductImagesCarousel, ProductInfo, Purchase, Review } fro
 import { apiGetProductById } from "../../services";
 
 const ProductDetail = ({ setIsModelLogin }) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1); //Value khoi dau la 1!
   const [product, setProduct] = useState(null);
   const [alert, setAlert] = useState("");
   const productId = window.location.pathname.split("/").pop();

@@ -12,6 +12,7 @@ import com.nienluan.webshop.repository.OrderRepository;
 import com.nienluan.webshop.repository.OrderStatusRepository;
 import com.nienluan.webshop.service.OrderService;
 import com.nienluan.webshop.service.PaymentService;
+import com.nienluan.webshop.service.ZaloPayService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -19,18 +20,25 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderController {
+    ZaloPayService zaloPayService;
     @Value("${client.url}")
     @NonFinal
     String clientUrl;
@@ -58,7 +66,7 @@ public class OrderController {
                 .build();
     }
     @PostMapping("/zalopay")
-    public ApiResponse<ZaloPayResponse> payWithZalopay(@RequestBody OrderRequest orderRequest) {
+    public ApiResponse<ZaloPayResponse> payWithZalopay(@RequestBody OrderRequest orderRequest) throws IOException {
         return ApiResponse.<ZaloPayResponse>builder().result(orderService.createZaloPayPayment(orderRequest)).build();
     }
 
@@ -87,6 +95,50 @@ public class OrderController {
             redirectUrl = clientUrl + "payment-result?status=fail&orderId=" + order.getId();
             response.sendRedirect(redirectUrl);
             throw new AppException(ErrorCode.PAYMENT_FAIL);
+        }
+    }
+
+    //zalopay-callback
+    @GetMapping("/zalopay-callback")
+    public ResponseEntity<Void> handleZaloPayCallback(
+            @RequestParam("amount") Long amount,
+            @RequestParam("appid") Integer appId,
+            @RequestParam("apptransid") String appTransId,
+            @RequestParam("bankcode") String bankCode,
+            @RequestParam("checksum") String checksum,
+            @RequestParam("discountamount") Long discountAmount,
+            @RequestParam("pmcid") Integer pmcId,
+            @RequestParam("status") Integer status) {
+
+        log.info("Received ZaloPay callback request with parameters");
+
+        try {
+            // Chuẩn bị dữ liệu thành JSONObject để xử lý callback
+            JSONObject callbackData = new JSONObject();
+            callbackData.put("amount", amount);
+            callbackData.put("appid", appId);
+            callbackData.put("apptransid", appTransId);
+            callbackData.put("bankcode", bankCode);
+            callbackData.put("checksum", checksum);
+            callbackData.put("discountamount", discountAmount);
+            callbackData.put("pmcid", pmcId);
+            callbackData.put("status", status);
+
+            // Xử lý callbackor
+            ;
+
+            // URL kết quả để redirect client
+            String resultUrl = orderService.callbackZaloPay(callbackData.toString());  // Đường dẫn đến trang kết quả trên client
+
+            log.info(resultUrl);
+            // Tạo ResponseEntity với mã 302 và URL trong header Location
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .location(URI.create(resultUrl))
+                    .build();
+
+        } catch (Exception e) {
+            log.error("Error handling ZaloPay callback", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

@@ -219,6 +219,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                   .filter((key) => key !== "category_id")
                   .filter((key) => key !== "brand_id")
                   .filter((key) => key !== "promotions")
+                  .filter((key) => key !== "reviewDetail")
                   .map((key, index) => (
                     <StyledTableCell key={index} align="left">
                       {key === "roles" ? (
@@ -231,7 +232,13 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                         dataItem[key] && (
                           <div className="flex items-center justify-center">
                             <img
-                              src={dataItem[key] ? process.env.REACT_APP_SERVER_URL + dataItem[key] : defaultAvatar}
+                              src={
+                                dataItem[key]
+                                  ? (process.env.NODE_ENV === "production"
+                                      ? process.env.REACT_APP_SERVER_URL_PROD
+                                      : process.env.REACT_APP_SERVER_URL_DEV) + dataItem[key]
+                                  : defaultAvatar
+                              }
                               alt={`Avatar`}
                               className="h-10 w-10 rounded-full bg-white"
                             />
@@ -248,7 +255,15 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                               .map((item, idx) => (
                                 <div key={idx} className="flex items-center justify-center">
                                   <img
-                                    src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                                    src={
+                                      item.includes("http")
+                                        ? item
+                                        : `${
+                                            process.env.NODE_ENV === "production"
+                                              ? process.env.REACT_APP_SERVER_URL_PROD
+                                              : process.env.REACT_APP_SERVER_URL_DEV
+                                          }${item}`
+                                    }
                                     alt={`Image ${idx}`}
                                     style={{ width: "50px", height: "50px" }}
                                   />
@@ -257,7 +272,11 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                           ) : (
                             <div className="flex items-center justify-center">
                               <img
-                                src={`${process.env.REACT_APP_SERVER_URL}${dataItem[key]}`}
+                                src={`${
+                                  process.env.NODE_ENV === "production"
+                                    ? process.env.REACT_APP_SERVER_URL_PROD
+                                    : process.env.REACT_APP_SERVER_URL_DEV
+                                }${dataItem[key]}`}
                                 alt={`Image ${dataItem.name}`}
                                 style={{ width: "50px", height: "50px" }}
                               />

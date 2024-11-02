@@ -134,6 +134,8 @@ CREATE TABLE `t_payments`
     `id`           varchar(255) NOT NULL,
     `payment_date` DATETIME     NOT NULL,
     `amount`       bigint(20)   NOT NULL,
+    `zp_trans_id`  bigint(20)   DEFAULT NULL,
+    `refund_id`    bigint(20)   DEFAULT NULL,
     `status`       varchar(255) NOT NULL,
     `created_at`   DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at`   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

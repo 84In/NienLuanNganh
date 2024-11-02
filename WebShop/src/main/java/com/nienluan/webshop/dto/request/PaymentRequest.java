@@ -12,7 +12,9 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentRequest {
-    LocalDateTime paymentDate;
     BigDecimal amount;
+    Long zpTransId;
+    Long refundId;
     String status;
+    LocalDateTime paymentDate;
 }

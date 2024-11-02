@@ -2,6 +2,7 @@ package com.nienluan.webshop.service;
 
 import com.nienluan.webshop.dto.request.OrderDetailRequest;
 import com.nienluan.webshop.dto.request.OrderRequest;
+import com.nienluan.webshop.dto.request.PaymentRequest;
 import com.nienluan.webshop.dto.response.OrderDetailResponse;
 import com.nienluan.webshop.dto.response.OrderResponse;
 import com.nienluan.webshop.dto.response.VNPayResponse;
@@ -11,25 +12,47 @@ import com.nienluan.webshop.exception.AppException;
 import com.nienluan.webshop.exception.ErrorCode;
 import com.nienluan.webshop.mapper.*;
 import com.nienluan.webshop.repository.*;
+import com.nienluan.webshop.utils.HMACUtil;
 import com.nienluan.webshop.utils.VNPayUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.xml.bind.DatatypeConverter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +79,33 @@ public class OrderService {
     MailService mailService;
     VNPayService vnPayService;
     ZaloPayService zaloPayService;
-    OrderStatusRepository orderStatusRepository;
+
+    @Value("${payment.zalopay.appid}")
+    @NonFinal
+    String appid;
+
+    @Value("${payment.zalopay.key1}")
+    @NonFinal
+    String key1;
+    @Value("${payment.zalopay.key2}")
+    @NonFinal
+    String key2;
+
+    @Value("${payment.zalopay.create.endpoint}")
+    @NonFinal
+    String createEndpoint;
+    @Value("${payment.zalopay.query.endpoint}")
+    @NonFinal
+    String queryEndpoint;
+    @Value("${payment.zalopay.refund.endpoint}")
+    @NonFinal
+    String refundEndpoint;
+    @Value("${payment.zalopay.returnUrl}")
+    @NonFinal
+    String returnUrl;
+
+    long MAX_CHECK_DURATION_MS = 15 * 60 * 1000;
+
 
     @Transactional
     public OrderResponse createOrderWithCash(OrderRequest request) {
@@ -93,14 +142,38 @@ public class OrderService {
                 .build();
     }
 
-    public ZaloPayResponse createZaloPayPayment(OrderRequest orderRequest) {
+    public ZaloPayResponse createZaloPayPayment( OrderRequest orderRequest) throws IOException {
         Order order = createOrder(orderRequest);
-        try {
-            logger.info(order.toString());
-            return zaloPayService.createOrder(order);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        Map<String, Object> orderData = zaloPayService.createOrder(order);
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(createEndpoint);
+
+        List<NameValuePair> params = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : orderData.entrySet()){
+            params.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
         }
+
+        post.setEntity(new UrlEncodedFormEntity(params));
+
+        CloseableHttpResponse response = client.execute(post);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+        logger.info(resultJsonStr.toString());
+        JSONObject jsonObject = new JSONObject(resultJsonStr.toString());
+        ZaloPayResponse zaloPayResponse = new ZaloPayResponse();
+        zaloPayResponse.setZptranstoken(jsonObject.optString("zptranstoken", ""));
+        zaloPayResponse.setOrderurl(jsonObject.optString("orderurl", ""));
+        zaloPayResponse.setReturncode(jsonObject.optInt("returncode", -1));
+        zaloPayResponse.setReturnmessage(jsonObject.optString("returnmessage", ""));
+        if(zaloPayResponse.getReturncode() == 1){
+            startOrderStatusCheck((String) orderData.get("apptransid"), (Long) orderData.get("apptime"),order.getId());
+        }
+        return zaloPayResponse;
     }
 
     @Transactional
@@ -122,6 +195,32 @@ public class OrderService {
             mailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
         }
         return toOrderResponse(order, order.getOrderDetails());
+    }
+    @Transactional
+    public void createOrderWithZaloPay(String idOrder, Long zpTransId, String paymentStatus) {
+        //Thanh toan thanh cong thi goi
+        //CallBack cua zalopay khong can phan hoi!
+        Order order = orderRepository.findById(idOrder).orElseThrow( () -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+
+        Payment payment = Payment.builder()
+                .amount(order.getTotalAmount())
+                .paymentDate(order.getCreatedAt())
+                .status(paymentStatus)
+                .build();
+        if(zpTransId != null){
+            payment.setZpTransId(zpTransId);
+        }
+        paymentRepository.save(payment);
+
+        order.setPayment(payment);
+//        changeOrderStatus(order.getId(), status);
+//         Khong can set lai status don hang!
+
+        orderRepository.save(order);
+        //Gửi mail khi tạo thành công đơn hàng
+        if (paymentStatus.equals("Success")) {
+            mailService.sendOrderConfirmationEmail(order.getUser().getEmail(), order);
+        }
     }
 
     public OrderResponse getOrder(String orderId) {
@@ -188,6 +287,16 @@ public class OrderService {
                 productRepository.save(product);
             }
             //Xử lý refund tiền trên thanh toán điện tử
+            if(order.getPayment() != null && order.getPayment().getStatus() == "Success") {
+                try {
+                        Boolean response =   refundZaloPay(order.getPayment());
+                        if(response != Boolean.TRUE) {
+                            throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
+                        }
+                } catch (Exception e) {
+                    throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
+                }
+            }
         } else {
             if (status.getCodeName().equals(completedStatus)) {
                 //Thêm số lượng đã bán cho sản phẩm nếu đơn hàng hoàn tất
@@ -308,6 +417,121 @@ public class OrderService {
         Long totalAmountByMonth = orderRepository.findTotalRevenueForCurrentMonth().longValue();
         return totalAmountByMonth;
     }
+    private void startOrderStatusCheck(String apptransid, long apptime, String orderId) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                // Kiểm tra nếu thời gian kiểm tra đã vượt quá 15 phút
+                if (System.currentTimeMillis() - apptime > MAX_CHECK_DURATION_MS) {
+                    logger.info("Thời gian kiểm tra đã vượt quá 15 phút. Dừng kiểm tra trạng thái.");
+                    scheduler.shutdown(); // Dừng scheduler
+                    return;
+                }
+                checkOrderStatus(apptransid, orderId, scheduler);
+            } catch (URISyntaxException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }, 1, 3, TimeUnit.MINUTES);
+    }
+    private void checkOrderStatus(String app_trans_id, String orderId, ScheduledExecutorService scheduler) throws URISyntaxException, IOException {
+        String data = appid +"|"+ app_trans_id  +"|"+ key1;
+        String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, key1, data);
 
+        log.info("Check status");
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("appid", appid));
+        params.add(new BasicNameValuePair("apptransid", app_trans_id));
+        params.add(new BasicNameValuePair("mac", mac));
+
+        URIBuilder uri = new URIBuilder(queryEndpoint);
+        uri.addParameters(params);
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(uri.build());
+        post.setEntity(new UrlEncodedFormEntity(params));
+
+        CloseableHttpResponse res = client.execute(post);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        JSONObject result = new JSONObject(resultJsonStr.toString());
+        // Kiểm tra mã trả về
+        int returnCode = result.optInt("returncode");
+        Long zpTransId = result.optLong("zptransid");
+        if (returnCode == 1) {
+            OrderResponse order = getOrder(orderId);
+            if (order.getPayment() != null) {
+                createOrderWithZaloPay(orderId,zpTransId,"Success");
+            }
+            scheduler.shutdown(); // Dừng scheduler
+        }
+        if(returnCode == 2){
+            createOrderWithZaloPay(orderId,zpTransId,"Failed");
+            changeOrderStatus(orderId,"Cancelled");
+        }
+    }
+    public String callbackZaloPay(String jsonStr) {
+        String urlClient = "";
+        log.info("callbackZaloPay");
+        log.info("jsonStr:" + jsonStr);
+            // Chuyển đổi chuỗi JSON thành JSONObject
+            JSONObject cbData = new JSONObject(jsonStr);
+            // Trích xuất dữ liệu từ JSONObject
+            String appTransId = cbData.getString("apptransid");
+            Integer status = cbData.getInt("status");
+            String[] parts = appTransId.split("_");
+
+            // So sánh MAC đã tính với checksum nhận được
+            if (status != 1) {
+                createOrderWithZaloPay(parts[1], null, "Fail");
+                urlClient = String.format(returnUrl, "fail", parts[1]);
+            } else {
+                // Cập nhật trạng thái
+                if (status == 1) {
+                    createOrderWithZaloPay(parts[1], null, "Success");
+                    urlClient = String.format(returnUrl, "success", parts[1]);
+
+                }
+            }
+        return urlClient;
+    }
+    public Boolean refundZaloPay(Payment payment) throws IOException {
+
+        Map<String, Object> order = zaloPayService.createdRefund(payment);
+
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost post = new HttpPost(refundEndpoint);
+
+        List<NameValuePair> params = new ArrayList<>();
+        for (Map.Entry<String, Object> e : order.entrySet()) {
+            params.add(new BasicNameValuePair(e.getKey(), e.getValue().toString()));
+        }
+
+        post.setEntity(new UrlEncodedFormEntity(params));
+
+        CloseableHttpResponse res = client.execute(post);
+        BufferedReader rd = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
+        StringBuilder resultJsonStr = new StringBuilder();
+        String line;
+
+        while ((line = rd.readLine()) != null) {
+            resultJsonStr.append(line);
+        }
+
+        JSONObject result = new JSONObject(resultJsonStr.toString());
+        int return_code = result.optInt("return_code");
+        Long refundId = result.optLong("refund_id");
+        if(return_code==1){
+            PaymentRequest request = PaymentRequest.builder().status("Refund").refundId(refundId).build();
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
 }
     

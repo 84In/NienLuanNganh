@@ -30,7 +30,7 @@ public class SecurityConfig {
     private final CustomJwtDecoder customJwtDecoder;
 
     private final String[] PUBLIC_POST_METHOD_ENDPOINTS = {"/api/v1/users", "/api/v1/auth/login", "/api/v1/auth/logout"};
-    private final String[] PUBLIC_GET_METHOD_ENDPOINTS = {"/images", "/images/**", "/api/v1/categories", "/api/v1/promotions", "/api/v1/promotions/**", "/api/v1/search/", "/api/v1/search/**", "/api/v1/products", "/api/v1/products/**", "/api/v1/brands/**", "/api/v1/orders/vnpay-callback"};
+    private final String[] PUBLIC_GET_METHOD_ENDPOINTS = {"/images", "/images/**", "/api/v1/categories", "/api/v1/promotions", "/api/v1/promotions/**", "/api/v1/search/", "/api/v1/search/**", "/api/v1/products", "/api/v1/products/**", "/api/v1/brands/**", "/api/v1/orders/vnpay-callback", "/api/v1/orders/zalopay-callback"};
     private final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/webjars/**", "/favicon.ico"
     };
 
@@ -75,7 +75,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Thay đổi thành các nguồn gốc phù hợp
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://10.13.129.3:3000")); // Thay đổi thành các nguồn gốc phù hợp
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

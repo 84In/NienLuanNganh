@@ -36,6 +36,7 @@ public enum ErrorCode {
     PAYMENT_FAIL(24, "Payment fail", HttpStatus.BAD_REQUEST),
     REVENUE_NOT_EXISTED(25, "Revenue not existed", HttpStatus.BAD_REQUEST),
     REVIEW_EXISTED(26, "Review existed", HttpStatus.BAD_REQUEST),
+    PAYMENT_CANNOT_REFUND_ZALOPAY(27, "Payment cannot refund zalopay", HttpStatus.BAD_REQUEST),
 
 
     //System

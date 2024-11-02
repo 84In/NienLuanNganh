@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ZaloResponse {
+public class ZaloPayResponse {
     String zptranstoken;
     String orderurl;
     int returncode;
