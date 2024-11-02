@@ -1,5 +1,6 @@
 package com.nienluan.webshop.dto.response;
 
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ZaloPayResponse {
+public class ZaloResponse {
     String zptranstoken;
     String orderurl;
     int returncode;
