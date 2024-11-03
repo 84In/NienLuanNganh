@@ -125,8 +125,8 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
 
       // Xác định trạng thái mới dựa trên trạng thái hiện tại
       if (order.status.codeName === "pending") {
-        newStatus = "comfirmed";
-      } else if (order.status.codeName === "comfirmed") {
+        newStatus = "confirmed";
+      } else if (order.status.codeName === "confirmed") {
         newStatus = "completed";
       }
 

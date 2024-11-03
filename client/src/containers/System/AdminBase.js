@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import React, { memo, useEffect, useState } from "react";
 import icons from "../../utils/icons";
@@ -150,16 +150,35 @@ const AdminBase = ({ user }) => {
         </Grid2>
       </Box>
 
+      <Grid2 container spacing={2}>
+        <Grid2 item xs={12} md={6}>
+          <Paper elevation={3} style={{ padding: "16px", height: "100%" }}>
+            <Typography variant="h6" align="center">
+              Phương thức thanh toán 7 ngày qua
+            </Typography>
+            <Typography variant="body2" align="center">
+              Payment (cash, zalopay, vnpay)
+            </Typography>
+            {/* Chèn biểu đồ Sector Chart ở đây */}
+          </Paper>
+        </Grid2>
+
+        <Grid2 item xs={12} md={6}>
+          <Paper elevation={3} style={{ padding: "16px", height: "100%" }}>
+            <Typography variant="h6" align="center">
+              Thông tin doanh thu năm hiện tại
+            </Typography>
+            <Bar data={data} options={options} style={{ height: "350px", width: "100%" }} />
+          </Paper>
+        </Grid2>
+      </Grid2>
+
       <Box sx={{ flexGrow: 1 }} className="w-full rounded-md">
         <Grid2 container spacing={2}>
           <Grid2 xs={12}>
             <Box className="flex flex-col items-center justify-center rounded-md bg-white">
-              <div className="flex h-10 w-full items-center justify-start rounded-tl-md rounded-tr-md bg-gray-100 p-4 font-semibold">
-                Biểu đồ hiển thị thông tin doanh thu từ đầu năm đến tháng hiện tại
-              </div>
-              <div className="flex w-2/3 items-center justify-center">
-                <Bar data={data} options={options} style={{ height: "350px", width: "100%" }} />
-              </div>
+              <div className="flex h-10 w-full items-center justify-start rounded-tl-md rounded-tr-md bg-gray-100 p-4 font-semibold"></div>
+              <div className="flex w-2/3 items-center justify-center"></div>
             </Box>
           </Grid2>
         </Grid2>
