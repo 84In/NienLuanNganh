@@ -49,7 +49,13 @@ const ProductImagesCarousel = ({ product }) => {
               <SwiperSlide className="h-full" key={index}>
                 <img
                   className="h-full max-h-[400px] object-contain px-8"
-                  src={image.startsWith("https://") ? image : process.env.REACT_APP_SERVER_URL + image}
+                  src={
+                    image.startsWith("https://")
+                      ? image
+                      : (process.env.NODE_ENV === "production"
+                          ? process.env.REACT_APP_SERVER_URL_PROD
+                          : process.env.REACT_APP_SERVER_URL_DEV) + image
+                  }
                   alt={`Ảnh ${product?.name}  ${index}`}
                 />
               </SwiperSlide>
@@ -69,7 +75,13 @@ const ProductImagesCarousel = ({ product }) => {
               <SwiperSlide className="h-ful rounded-md border border-black" key={index}>
                 <img
                   className="h-full max-h-[100px] object-contain px-2"
-                  src={image.startsWith("https://") ? image : process.env.REACT_APP_SERVER_URL + image}
+                  src={
+                    image.startsWith("https://")
+                      ? image
+                      : (process.env.NODE_ENV === "production"
+                          ? process.env.REACT_APP_SERVER_URL_PROD
+                          : process.env.REACT_APP_SERVER_URL_DEV) + image
+                  }
                   alt={`Ảnh ${product?.name}  ${index}`}
                 />
               </SwiperSlide>

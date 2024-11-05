@@ -196,7 +196,13 @@ const AdminCategoryEdit = ({ isEdit, category }) => {
                 <img
                   id="category-images"
                   className="h-28 w-28 bg-white p-2"
-                  src={category?.images ? process.env.REACT_APP_SERVER_URL + category?.images : fileUpload}
+                  src={
+                    category?.images
+                      ? (process.env.NODE_ENV === "production"
+                          ? process.env.REACT_APP_SERVER_URL_PROD
+                          : process.env.REACT_APP_SERVER_URL_DEV) + category?.images
+                      : fileUpload
+                  }
                   alt="category images"
                 />
 

@@ -46,7 +46,10 @@ const OrderItem = ({ product }) => {
                 src={
                   JSON.parse(item?.product?.images.replace(/'/g, '"'))[0].startsWith("https://")
                     ? JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
-                    : process.env.REACT_APP_SERVER_URL + JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
+                    : (process.env.NODE_ENV === "production"
+                        ? process.env.REACT_APP_SERVER_URL_PROD
+                        : process.env.REACT_APP_SERVER_URL_DEV) +
+                      JSON.parse(item?.product?.images.replace(/'/g, '"'))[0]
                 }
                 alt={item?.product?.name + index}
                 className="h-16 w-16 object-contain"

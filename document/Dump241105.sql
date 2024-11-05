@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `webshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `webshop`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: webshop
@@ -16,6 +18,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `t_addresses`
+--
+
+DROP TABLE IF EXISTS `t_addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_addresses` (
+  `id` varchar(255) NOT NULL,
+  `full_name` text NOT NULL,
+  `province` int NOT NULL,
+  `district` int NOT NULL,
+  `ward` int NOT NULL,
+  `street` text,
+  PRIMARY KEY (`id`),
+  KEY `fk_province_code` (`province`),
+  KEY `fk_district_code` (`district`),
+  KEY `fk_ward_code` (`ward`),
+  CONSTRAINT `fk_district_code` FOREIGN KEY (`district`) REFERENCES `t_districts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_province_code` FOREIGN KEY (`province`) REFERENCES `t_provinces` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_ward_code` FOREIGN KEY (`ward`) REFERENCES `t_wards` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_addresses`
 --
 
@@ -26,6 +52,21 @@ INSERT INTO `t_addresses` VALUES ('160bb949-1581-458b-96b1-8796e8c58c2b','Thị 
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_banner`
+--
+
+DROP TABLE IF EXISTS `t_banner`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_banner` (
+  `id` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `images` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_banner`
 --
 
@@ -33,6 +74,23 @@ LOCK TABLES `t_banner` WRITE;
 /*!40000 ALTER TABLE `t_banner` DISABLE KEYS */;
 /*!40000 ALTER TABLE `t_banner` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_brands`
+--
+
+DROP TABLE IF EXISTS `t_brands`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_brands` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_brands`
@@ -45,6 +103,28 @@ INSERT INTO `t_brands` VALUES ('027fee3b-c8ab-4d29-aa54-0441923e6227','DOWON','2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_cart_details`
+--
+
+DROP TABLE IF EXISTS `t_cart_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_cart_details` (
+  `id` varchar(255) NOT NULL,
+  `quantity` bigint NOT NULL,
+  `cart_id` varchar(255) NOT NULL,
+  `product_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_cart_id` (`cart_id`),
+  KEY `fk_product_id_cart` (`product_id`),
+  CONSTRAINT `fk_cart_id` FOREIGN KEY (`cart_id`) REFERENCES `t_carts` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_product_id_cart` FOREIGN KEY (`product_id`) REFERENCES `t_products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_cart_details`
 --
 
@@ -53,6 +133,24 @@ LOCK TABLES `t_cart_details` WRITE;
 INSERT INTO `t_cart_details` VALUES ('0d1eb571-b0da-46d6-b04f-4d8f75c88fe6',1,'57aa9891-794e-4375-ba32-d5741c815fc3','04937b82-a66b-4365-8ea1-51e06ab40c59','2024-10-29 11:24:37','2024-10-30 08:16:33'),('3bd725a4-061a-468d-a101-a3633c9ff98c',1,'57aa9891-794e-4375-ba32-d5741c815fc3','018914b2-430d-4f4f-bad3-ae6983e8c187','2024-10-30 09:45:46','2024-10-30 09:45:46'),('407d6235-874f-462b-9743-4f9a9f0d810f',0,'57aa9891-794e-4375-ba32-d5741c815fc3','0006ea18-c7f6-4aac-94eb-8b8fa638b1a0','2024-10-30 08:12:18','2024-10-30 08:12:34');
 /*!40000 ALTER TABLE `t_cart_details` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_carts`
+--
+
+DROP TABLE IF EXISTS `t_carts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_carts` (
+  `id` varchar(255) NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_id_cart` (`user_id`),
+  CONSTRAINT `fk_user_id_cart` FOREIGN KEY (`user_id`) REFERENCES `t_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_carts`
@@ -65,6 +163,26 @@ INSERT INTO `t_carts` VALUES ('57aa9891-794e-4375-ba32-d5741c815fc3','586c6b6e-7
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_categories`
+--
+
+DROP TABLE IF EXISTS `t_categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_categories` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code_name` varchar(255) NOT NULL,
+  `images` text,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `code_name` (`code_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_categories`
 --
 
@@ -73,6 +191,25 @@ LOCK TABLES `t_categories` WRITE;
 INSERT INTO `t_categories` VALUES ('08f26e2e-e97a-4f11-b216-9abbd80bb2a2','Giày','giay','/images/category/Giày/giay.png','2024-10-29 07:14:43','2024-10-29 07:14:43'),('540dc5c3-8532-4e64-8f8b-c05481aa3230','Điện Lạnh','dien-lanh','/images/category/Điện Lạnh/dienlanh.png','2024-10-29 07:14:43','2024-10-29 07:14:43'),('674aab9b-731a-4b03-ae0e-457140c921e8','Sách','sach','/images/category/Sách/sach.png','2024-10-29 07:14:43','2024-10-29 07:14:43'),('8a3e56de-c5c4-4e67-a7da-d2b396a336b9','Túi Xách Nữ','tui-xach-nu','/images/category/Túi Xách Nữ/tuixachnu.png','2024-10-29 07:14:43','2024-10-29 07:14:43'),('8b4581ae-00e2-4dd0-a8ec-4008952201cf','LapTop','laptop','/images/category/LapTop/laptop.jpg','2024-10-29 07:14:43','2024-10-29 07:14:43'),('d193bbcc-f027-475b-844b-1c5045a87245','Balo','balo','/images/category/Balo/balo.png','2024-10-29 07:14:43','2024-10-29 07:14:43'),('d8f05c1d-72d7-46ca-9fa1-e9956617e143','Xe máy','xe-may','/images/category/Xe máy/xemay.png','2024-10-29 07:14:43','2024-10-29 07:14:43'),('e3aabcbf-d7a8-4289-91e9-92afb39acb2f','Điện Thoại','dien-thoai','/images/category/Điện Thoại/dienthoai.png','2024-10-29 07:14:43','2024-10-29 07:14:43');
 /*!40000 ALTER TABLE `t_categories` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_districts`
+--
+
+DROP TABLE IF EXISTS `t_districts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_districts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `division_type` varchar(255) NOT NULL,
+  `code_name` varchar(255) NOT NULL,
+  `province_code` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_province_id` (`province_code`),
+  CONSTRAINT `fk_province_id` FOREIGN KEY (`province_code`) REFERENCES `t_provinces` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=706 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_districts`
@@ -85,6 +222,30 @@ INSERT INTO `t_districts` VALUES (1,'Quận Bắc Từ Liêm','quận','quan_bac
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_order_details`
+--
+
+DROP TABLE IF EXISTS `t_order_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_order_details` (
+  `id` varchar(255) NOT NULL,
+  `quantity` bigint NOT NULL,
+  `price_at_time` bigint NOT NULL,
+  `reviewed` tinyint(1) DEFAULT '0',
+  `order_id` varchar(255) NOT NULL,
+  `product_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_order_id` (`order_id`),
+  KEY `fk_product_id` (`product_id`),
+  CONSTRAINT `fk_order_id` FOREIGN KEY (`order_id`) REFERENCES `t_orders` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_product_id` FOREIGN KEY (`product_id`) REFERENCES `t_products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_order_details`
 --
 
@@ -93,6 +254,24 @@ LOCK TABLES `t_order_details` WRITE;
 INSERT INTO `t_order_details` VALUES ('338ed9a9-3886-4f18-98bb-fad5687da822',2,7164000,1,'e33000cf-6c87-4630-a996-4bd2d619b32f','0740bc7a-655c-447d-8b46-d952c8703ebd','2024-10-29 07:46:57','2024-10-29 11:19:04'),('38fc60dd-e645-49d1-8427-bd8965354fa7',2,189000,1,'e8846cb5-1c1b-4a33-86f0-138535010b50','0ca92842-5b44-4c56-8d05-c091c76d8c26','2024-10-29 17:58:20','2024-10-29 18:01:53'),('40f110eb-8522-4f1f-af78-2aba0e394472',2,189000,1,'96ca111d-53ba-4f93-9dee-ef5cf5243f22','0ca92842-5b44-4c56-8d05-c091c76d8c26','2024-10-29 18:05:40','2024-10-29 18:06:37'),('4b14bcc6-46a2-4842-9d34-734b8cb5666f',1,580000,0,'b6162946-c2f2-4ed3-9444-6c08a132f541','0fc8414c-22da-44e0-af26-d961806df5c1','2024-10-29 11:26:10','2024-10-29 11:26:10'),('4fcab148-2df5-4a98-9444-c3159cb3a259',1,299000,0,'bbfc3ff5-8200-4418-8c4d-d7f6153d79d9','0da243ea-a3d0-41ba-879b-f3421f508973','2024-10-29 11:27:31','2024-10-29 11:27:31'),('65874072-1f63-4c03-bfbc-0438f9c44caf',1,490000,0,'b6162946-c2f2-4ed3-9444-6c08a132f541','3a6f3448-1fc8-4389-aa0e-2ac6c3ea258e','2024-10-29 11:26:10','2024-10-29 11:26:10'),('6812dc8c-92f6-4c14-aa42-91c1f3edcdac',1,189000,1,'2f8fa602-7c34-4283-bc2e-e2cf2d6879c4','0ca92842-5b44-4c56-8d05-c091c76d8c26','2024-10-29 17:27:46','2024-10-29 17:30:26'),('6f34d9ba-4348-4742-9063-8f15dd8032f4',5,158000,0,'08b24e79-c71b-42c6-a288-4653478dc1d7','018914b2-430d-4f4f-bad3-ae6983e8c187','2024-10-29 11:23:51','2024-10-29 11:23:51'),('736dbd23-4c05-4058-9b2b-d5ac3104ef5f',1,189000,1,'bbfc3ff5-8200-4418-8c4d-d7f6153d79d9','0ca92842-5b44-4c56-8d05-c091c76d8c26','2024-10-29 11:27:31','2024-10-29 11:30:29'),('79da03af-b62c-45d0-ae39-536337eb5d49',2,189000,1,'a3e32316-4d63-48d9-9950-910761b4e434','0ca92842-5b44-4c56-8d05-c091c76d8c26','2024-10-29 16:07:07','2024-10-29 16:09:58'),('9bb04ae7-7051-49a2-a483-0f786a548507',2,470000,0,'b6162946-c2f2-4ed3-9444-6c08a132f541','139e6388-d141-47c9-a8a9-dbe984117f48','2024-10-29 11:26:10','2024-10-29 11:26:10'),('a67b8479-a1e4-4888-9fda-2fbbbdfb982c',1,1275000,0,'085e2aa8-c521-4c5e-bb7d-a7ca3f216725','0029218e-8060-4771-b71f-1b2cd4b510cc','2024-10-29 07:21:37','2024-10-29 07:21:37'),('b0af7b06-022c-4df3-8eea-36487628e8d5',1,210000,1,'e33000cf-6c87-4630-a996-4bd2d619b32f','1630dfe4-3f35-4e99-b9ec-1673444fd160','2024-10-29 07:46:57','2024-10-29 10:59:43'),('c01e7619-a38e-4998-afa7-421b41319a2d',1,1199000,0,'e33000cf-6c87-4630-a996-4bd2d619b32f','2d91619e-5eb6-42df-9895-8c89d7244535','2024-10-29 07:46:57','2024-10-29 07:46:57'),('c30a10f3-d007-4818-a4c2-256a32b1be2c',1,1399000,1,'e33000cf-6c87-4630-a996-4bd2d619b32f','18cd5220-e55c-4551-85b8-adb2cb3e7ca0','2024-10-29 07:46:57','2024-10-29 17:43:27'),('d5c5ac80-abb4-426e-b911-d7269587bb9a',2,189000,1,'c76cd264-1d69-4004-b796-45da86587ac1','0ca92842-5b44-4c56-8d05-c091c76d8c26','2024-10-29 17:27:31','2024-10-29 17:31:31'),('f7f02f4a-4b42-49dd-b9e9-848a6abb60fb',1,4100000,0,'b6162946-c2f2-4ed3-9444-6c08a132f541','c1198134-3643-4bcb-a37d-c6d96516ed7a','2024-10-29 11:26:10','2024-10-29 11:26:10');
 /*!40000 ALTER TABLE `t_order_details` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_order_recipient`
+--
+
+DROP TABLE IF EXISTS `t_order_recipient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_order_recipient` (
+  `id` varchar(255) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_order_recipient`
@@ -105,6 +284,25 @@ INSERT INTO `t_order_recipient` VALUES ('8ff85a81-f987-469e-ae92-4e0671b7bf04','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_order_status`
+--
+
+DROP TABLE IF EXISTS `t_order_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_order_status` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code_name` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `code_name` (`code_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_order_status`
 --
 
@@ -113,6 +311,37 @@ LOCK TABLES `t_order_status` WRITE;
 INSERT INTO `t_order_status` VALUES ('290ac18c-887b-4a1f-b1bb-9686b40f37d8','Chờ xác nhận','pending','2024-10-29 07:14:43','2024-10-29 07:14:43'),('2f498bfe-b96f-4191-a809-6c0bd606c4c8','Xác nhận','confirmed','2024-10-29 07:14:43','2024-10-29 07:14:43'),('ab085525-a5f5-47b0-94a3-3fef2c4ba5fd','Đã hủy','cancelled','2024-10-29 07:14:43','2024-10-29 07:14:43'),('c526b8e6-b7d5-46df-91d2-70c00885ff26','Hoàn tất','completed','2024-10-29 07:14:43','2024-10-29 07:14:43');
 /*!40000 ALTER TABLE `t_order_status` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_orders`
+--
+
+DROP TABLE IF EXISTS `t_orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_orders` (
+  `id` varchar(255) NOT NULL,
+  `total_amount` bigint DEFAULT NULL,
+  `recipient_id` varchar(255) NOT NULL,
+  `status_id` varchar(255) NOT NULL,
+  `payment_method_id` varchar(255) NOT NULL,
+  `payment_id` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_payment_method` (`payment_method_id`),
+  KEY `fk_order_recipient` (`recipient_id`),
+  KEY `fk_order_status` (`status_id`),
+  KEY `fk_payment_id` (`payment_id`),
+  KEY `fk_user_id` (`user_id`),
+  CONSTRAINT `fk_order_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `t_order_recipient` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_order_status` FOREIGN KEY (`status_id`) REFERENCES `t_order_status` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_payment_id` FOREIGN KEY (`payment_id`) REFERENCES `t_payments` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_payment_method` FOREIGN KEY (`payment_method_id`) REFERENCES `t_payment_methods` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `t_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_orders`
@@ -125,6 +354,25 @@ INSERT INTO `t_orders` VALUES ('085e2aa8-c521-4c5e-bb7d-a7ca3f216725',1275000,'8
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_payment_methods`
+--
+
+DROP TABLE IF EXISTS `t_payment_methods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_payment_methods` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code_name` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `code_name` (`code_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_payment_methods`
 --
 
@@ -135,14 +383,62 @@ INSERT INTO `t_payment_methods` VALUES ('35868063-f3c8-415c-9614-fd6b72155857','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_payments`
+--
+
+DROP TABLE IF EXISTS `t_payments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_payments` (
+  `id` varchar(255) NOT NULL,
+  `payment_date` datetime NOT NULL,
+  `amount` bigint NOT NULL,
+  `zp_trans_id` bigint DEFAULT NULL,
+  `refund_id` bigint DEFAULT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_payments`
 --
 
 LOCK TABLES `t_payments` WRITE;
 /*!40000 ALTER TABLE `t_payments` DISABLE KEYS */;
-INSERT INTO `t_payments` VALUES ('45c7b0c6-b336-4af3-89ab-d0b0e877b925','2024-10-29 18:26:11',6110000,'Success','2024-10-29 11:26:40','2024-10-29 11:26:40'),('cdd59ae9-4dfa-4b4a-a190-c1adfd29fc5e','2024-10-29 14:46:58',17136000,'Success','2024-10-29 07:47:26','2024-10-29 07:47:26'),('e4d8ff52-2a7b-4329-a48b-55d1880645bf','2024-10-29 23:07:08',378000,'Success','2024-10-29 16:07:27','2024-10-29 16:07:27'),('f1b8380e-e28f-41e2-9c0a-e64cb7eac8e3','2024-10-30 00:58:20',378000,'Success','2024-10-29 17:58:42','2024-10-29 17:58:42');
+INSERT INTO `t_payments` VALUES ('45c7b0c6-b336-4af3-89ab-d0b0e877b925','2024-10-29 18:26:11',6110000,NULL,NULL,'Success','2024-10-29 11:26:40','2024-10-29 11:26:40'),('cdd59ae9-4dfa-4b4a-a190-c1adfd29fc5e','2024-10-29 14:46:58',17136000,NULL,NULL,'Success','2024-10-29 07:47:26','2024-10-29 07:47:26'),('e4d8ff52-2a7b-4329-a48b-55d1880645bf','2024-10-29 23:07:08',378000,NULL,NULL,'Success','2024-10-29 16:07:27','2024-10-29 16:07:27'),('f1b8380e-e28f-41e2-9c0a-e64cb7eac8e3','2024-10-30 00:58:20',378000,NULL,NULL,'Success','2024-10-29 17:58:42','2024-10-29 17:58:42');
 /*!40000 ALTER TABLE `t_payments` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_products`
+--
+
+DROP TABLE IF EXISTS `t_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_products` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `price` bigint DEFAULT NULL,
+  `stock_quantity` bigint DEFAULT '0',
+  `sold` bigint DEFAULT '0',
+  `images` text,
+  `category_id` varchar(255) NOT NULL,
+  `brand_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `fk_category` (`category_id`),
+  KEY `fk_brand` (`brand_id`),
+  CONSTRAINT `fk_brand` FOREIGN KEY (`brand_id`) REFERENCES `t_brands` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `t_categories` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_products`
@@ -156,6 +452,23 @@ INSERT INTO `t_products` VALUES ('a74f316c-e7cd-465f-9dd7-611d035b4e2d','Sách �
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_products_promotions`
+--
+
+DROP TABLE IF EXISTS `t_products_promotions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_products_promotions` (
+  `product_id` varchar(255) NOT NULL,
+  `promotion_id` varchar(255) NOT NULL,
+  PRIMARY KEY (`product_id`,`promotion_id`),
+  KEY `fk_promotionP` (`promotion_id`),
+  CONSTRAINT `fk_productP` FOREIGN KEY (`product_id`) REFERENCES `t_products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_promotionP` FOREIGN KEY (`promotion_id`) REFERENCES `t_promotions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_products_promotions`
 --
 
@@ -164,6 +477,28 @@ LOCK TABLES `t_products_promotions` WRITE;
 INSERT INTO `t_products_promotions` VALUES ('0041169a-da41-464d-9dbe-513524126e89','03ddff8a-c946-4432-af88-882d75dcd1e4'),('0134569c-84f4-409b-baef-52a521c92bd2','03ddff8a-c946-4432-af88-882d75dcd1e4'),('018914b2-430d-4f4f-bad3-ae6983e8c187','03ddff8a-c946-4432-af88-882d75dcd1e4'),('052a1884-dbcb-4e8f-9a34-4cd4c0e422c8','03ddff8a-c946-4432-af88-882d75dcd1e4'),('06020d62-a215-4b32-90dd-cddae0f177cf','03ddff8a-c946-4432-af88-882d75dcd1e4'),('0783fc59-83e4-482b-9dee-3285ba83daf2','03ddff8a-c946-4432-af88-882d75dcd1e4'),('0ca92842-5b44-4c56-8d05-c091c76d8c26','03ddff8a-c946-4432-af88-882d75dcd1e4'),('0041169a-da41-464d-9dbe-513524126e89','e3bb3220-9b25-4669-b594-0ecbf309e81d'),('0134569c-84f4-409b-baef-52a521c92bd2','e3bb3220-9b25-4669-b594-0ecbf309e81d'),('018914b2-430d-4f4f-bad3-ae6983e8c187','e3bb3220-9b25-4669-b594-0ecbf309e81d'),('052a1884-dbcb-4e8f-9a34-4cd4c0e422c8','e3bb3220-9b25-4669-b594-0ecbf309e81d');
 /*!40000 ALTER TABLE `t_products_promotions` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_promotions`
+--
+
+DROP TABLE IF EXISTS `t_promotions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_promotions` (
+  `id` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `discount_percentage` float NOT NULL DEFAULT '0',
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_promotions`
@@ -176,6 +511,22 @@ INSERT INTO `t_promotions` VALUES ('03ddff8a-c946-4432-af88-882d75dcd1e4','popul
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_provinces`
+--
+
+DROP TABLE IF EXISTS `t_provinces`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_provinces` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code_name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `division_type` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_provinces`
 --
 
@@ -186,6 +537,24 @@ INSERT INTO `t_provinces` VALUES (1,'thanh_pho_ha_noi','Thành phố Hà Nội',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_revenue_summary`
+--
+
+DROP TABLE IF EXISTS `t_revenue_summary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_revenue_summary` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `date_range_type` varchar(50) NOT NULL,
+  `summary_date` date NOT NULL,
+  `total_revenue` bigint DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_revenue_summary`
 --
 
@@ -193,6 +562,31 @@ LOCK TABLES `t_revenue_summary` WRITE;
 /*!40000 ALTER TABLE `t_revenue_summary` DISABLE KEYS */;
 /*!40000 ALTER TABLE `t_revenue_summary` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_reviews`
+--
+
+DROP TABLE IF EXISTS `t_reviews`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_reviews` (
+  `rating` int DEFAULT '1',
+  `comment` text,
+  `status` tinyint(1) DEFAULT '1',
+  `user_id` varchar(255) NOT NULL,
+  `product_id` varchar(255) NOT NULL,
+  `order_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`,`product_id`,`order_id`),
+  KEY `fk_review_product_id` (`product_id`),
+  KEY `fk_review_order_id` (`order_id`),
+  CONSTRAINT `fk_review_order_id` FOREIGN KEY (`order_id`) REFERENCES `t_orders` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_review_product_id` FOREIGN KEY (`product_id`) REFERENCES `t_products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_review_user_id` FOREIGN KEY (`user_id`) REFERENCES `t_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_reviews`
@@ -205,6 +599,22 @@ INSERT INTO `t_reviews` VALUES (5,'Bìa cứng, giấy chất lượng, nội du
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_roles`
+--
+
+DROP TABLE IF EXISTS `t_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_roles` (
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_roles`
 --
 
@@ -213,6 +623,20 @@ LOCK TABLES `t_roles` WRITE;
 INSERT INTO `t_roles` VALUES ('ADMIN','Admin','2024-10-29 07:14:47','2024-10-29 07:14:47'),('USER','Customer','2024-10-29 07:14:47','2024-10-29 07:14:47');
 /*!40000 ALTER TABLE `t_roles` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_tokens`
+--
+
+DROP TABLE IF EXISTS `t_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_tokens` (
+  `token` varchar(255) NOT NULL,
+  `expiry_time` date NOT NULL,
+  PRIMARY KEY (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_tokens`
@@ -225,6 +649,35 @@ INSERT INTO `t_tokens` VALUES ('026df0c9-01c6-4293-a0fe-b5a092e3059d','2025-03-2
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_users`
+--
+
+DROP TABLE IF EXISTS `t_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_users` (
+  `id` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) NOT NULL,
+  `avatar` text,
+  `dob` date NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `status` int DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `phone` (`phone`),
+  KEY `fk_address` (`address`),
+  CONSTRAINT `fk_address` FOREIGN KEY (`address`) REFERENCES `t_addresses` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_users`
 --
 
@@ -235,6 +688,23 @@ INSERT INTO `t_users` VALUES ('13db1309-6ca0-4a3e-9ce3-8396f0b2deb3','phamden618
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_users_roles`
+--
+
+DROP TABLE IF EXISTS `t_users_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_users_roles` (
+  `users_id` varchar(255) NOT NULL,
+  `roles_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`users_id`,`roles_name`),
+  KEY `fk_role` (`roles_name`),
+  CONSTRAINT `fk_role` FOREIGN KEY (`roles_name`) REFERENCES `t_roles` (`name`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user` FOREIGN KEY (`users_id`) REFERENCES `t_users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `t_users_roles`
 --
 
@@ -243,6 +713,25 @@ LOCK TABLES `t_users_roles` WRITE;
 INSERT INTO `t_users_roles` VALUES ('fcd307a4-bc3c-4b18-98ce-07d3ccc919d5','ADMIN'),('13db1309-6ca0-4a3e-9ce3-8396f0b2deb3','USER'),('586c6b6e-7e86-4bb5-9671-48691a146c95','USER');
 /*!40000 ALTER TABLE `t_users_roles` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `t_wards`
+--
+
+DROP TABLE IF EXISTS `t_wards`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_wards` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `division_type` varchar(255) NOT NULL,
+  `code_name` varchar(255) NOT NULL,
+  `district_code` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_district_id` (`district_code`),
+  CONSTRAINT `fk_district_id` FOREIGN KEY (`district_code`) REFERENCES `t_districts` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10599 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_wards`
@@ -263,4 +752,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-30 17:05:22
+-- Dump completed on 2024-11-05 20:23:54

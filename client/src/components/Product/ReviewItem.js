@@ -10,7 +10,13 @@ const ReviewItem = ({ review }) => {
         <div className="flex items-center gap-2">
           <img
             className="avatar h-10 w-10 rounded-full border border-black bg-white object-cover"
-            src={review?.user?.avatar ? process.env.REACT_APP_SERVER_URL + review?.user?.avatar : defaultAvatar}
+            src={
+              review?.user?.avatar
+                ? (process.env.NODE_ENV === "production"
+                    ? process.env.REACT_APP_SERVER_URL_PROD
+                    : process.env.REACT_APP_SERVER_URL_DEV) + review?.user?.avatar
+                : defaultAvatar
+            }
             alt="Avatar"
           />
           <p>{review?.user?.firstName + " " + review?.user?.lastName}</p>

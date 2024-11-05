@@ -110,7 +110,9 @@ const CartItem = ({
                 src={
                   firstImage && firstImage.startsWith("https://")
                     ? firstImage
-                    : process.env.REACT_APP_SERVER_URL + firstImage
+                    : (process.env.NODE_ENV === "production"
+                        ? process.env.REACT_APP_SERVER_URL_PROD
+                        : process.env.REACT_APP_SERVER_URL_DEV) + firstImage
                 }
                 alt={data?.product?.name}
                 className="max-h-20 min-h-20 min-w-20 max-w-20 object-contain grid-md:min-w-16 grid-lg:min-w-20"

@@ -94,7 +94,13 @@ const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
           <Grid2 item xs={6} md={7} className="flex items-center justify-around gap-1 sm:px-3">
             {isLoggedIn ? (
               <ButtonCustom
-                Avatar={User?.avatar ? process.env.REACT_APP_SERVER_URL + User?.avatar : defaultAvatar}
+                Avatar={
+                  User?.avatar
+                    ? (process.env.NODE_ENV === "production"
+                        ? process.env.REACT_APP_SERVER_URL_PROD
+                        : process.env.REACT_APP_SERVER_URL_DEV) + User?.avatar
+                    : defaultAvatar
+                }
                 TextTitle={User?.lastName}
                 User={User}
               />

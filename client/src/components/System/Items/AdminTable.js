@@ -328,7 +328,15 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                                   .map((item, idx) => (
                                     <img
                                       key={idx}
-                                      src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                                      src={
+                                        item.includes("http")
+                                          ? item
+                                          : `${
+                                              process.env.NODE_ENV === "production"
+                                                ? process.env.REACT_APP_SERVER_URL_PROD
+                                                : process.env.REACT_APP_SERVER_URL_DEV
+                                            }${item}`
+                                      }
                                       alt={`Full Image ${idx}`}
                                       style={{
                                         width: "100px",
@@ -340,7 +348,11 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                                   ))
                               ) : (
                                 <img
-                                  src={`${process.env.REACT_APP_SERVER_URL}${dataItem[key]}`}
+                                  src={`${
+                                    process.env.NODE_ENV === "production"
+                                      ? process.env.REACT_APP_SERVER_URL_PROD
+                                      : process.env.REACT_APP_SERVER_URL_DEV
+                                  }${dataItem[key]}`}
                                   alt={`Image ${dataItem.name}`}
                                   style={{
                                     width: "100px",

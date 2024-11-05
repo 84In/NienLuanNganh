@@ -32,7 +32,9 @@ const ProductCard = ({ product }) => {
               image={
                 firstImage && firstImage.startsWith("https://")
                   ? firstImage
-                  : process.env.REACT_APP_SERVER_URL + firstImage
+                  : (process.env.NODE_ENV === "production"
+                      ? process.env.REACT_APP_SERVER_URL_PROD
+                      : process.env.REACT_APP_SERVER_URL_DEV) + firstImage
               }
               alt={product?.name}
             />
