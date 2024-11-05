@@ -121,3 +121,20 @@ export const apiChangeAddress = (payload) =>
       reject(error);
     }
   });
+
+export const apiSearchUserByKeyword = (keyword) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const params = {
+        keyword: keyword,
+      };
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/users/search`,
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

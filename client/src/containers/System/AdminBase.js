@@ -2,12 +2,11 @@ import { Box, Paper, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import React, { memo, useEffect, useState } from "react";
 import icons from "../../utils/icons";
-import { AdminTag, Loading } from "../../components";
+import { AdminPolarAreaCharts, AdminTag, Loading } from "../../components";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Utils } from "../../utils";
-import { apiAnalytics } from "../../services";
-import { months } from "moment/moment";
+import { apiAnalytics, apiGetPaymentMethod } from "../../services";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -21,6 +20,8 @@ const AdminBase = ({ user }) => {
   const [allProducts, setAllProducts] = useState(null);
   const [productsInMonth, setProductsInMonth] = useState(null);
   const [totalAmountInToday, setTotalAmountInToday] = useState(null);
+  const [paymentSummaries, setPaymentSummaries] = useState(null);
+  const [paymentMethods, setPaymentMethods] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -35,9 +36,23 @@ const AdminBase = ({ user }) => {
       setLoading(false);
     }
   };
+  const fetchDataPaymentMethod = async () => {
+    try {
+      const response = await apiGetPaymentMethod();
+
+      if (response?.code === 0) {
+        setPaymentMethods(response?.result?.content);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchData();
+    fetchDataPaymentMethod();
   }, []);
 
   useEffect(() => {
@@ -45,9 +60,17 @@ const AdminBase = ({ user }) => {
     setTotalRevenues(valueData?.totalRevenues);
     setTotalAmountInToday(valueData?.totalRevenueInToday);
     setProductsInMonth(valueData?.productsInMonth);
+    setPaymentSummaries(valueData?.paymentSummaries);
   }, [valueData]);
 
   const totalRevenueList = totalRevenues?.map((revenue) => revenue.totalRevenue);
+  const valuePaymentList = paymentSummaries?.map((payment) => payment?.totalCount);
+  const labelPaymentList = paymentSummaries
+    ?.map((payment) => {
+      const paymentMethod = paymentMethods && paymentMethods?.find((item) => item.id === payment?.paymentMethodId);
+      return paymentMethod ? paymentMethod.name : null;
+    })
+    .filter(Boolean);
 
   console.log(totalRevenueList);
 
@@ -116,6 +139,7 @@ const AdminBase = ({ user }) => {
   };
 
   if (loading) return <Loading />;
+  console.log(labelPaymentList);
 
   return (
     <div className="flex flex-col gap-3 bg-gray-200 p-2">
@@ -152,19 +176,26 @@ const AdminBase = ({ user }) => {
 
       <Grid2 container spacing={2}>
         <Grid2 item xs={12} md={6}>
-          <Paper elevation={3} style={{ padding: "16px", height: "100%" }}>
+          <Paper
+            // className="flex flex-col items-center justify-center"
+            elevation={3}
+            style={{ padding: "16px", height: "100%" }}
+          >
             <Typography variant="h6" align="center">
               Phương thức thanh toán 7 ngày qua
             </Typography>
-            <Typography variant="body2" align="center">
-              Payment (cash, zalopay, vnpay)
-            </Typography>
-            {/* Chèn biểu đồ Sector Chart ở đây */}
+            <div className="flex w-full items-center justify-center">
+              <AdminPolarAreaCharts valueData={valuePaymentList} label={labelPaymentList} />
+            </div>
           </Paper>
         </Grid2>
 
         <Grid2 item xs={12} md={6}>
-          <Paper elevation={3} style={{ padding: "16px", height: "100%" }}>
+          <Paper
+            className="flex flex-col items-center justify-center"
+            elevation={3}
+            style={{ padding: "16px", height: "100%" }}
+          >
             <Typography variant="h6" align="center">
               Thông tin doanh thu năm hiện tại
             </Typography>

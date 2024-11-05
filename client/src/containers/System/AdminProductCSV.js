@@ -83,17 +83,17 @@ const AdminProductCSV = () => {
 
       <Grid2 xs={6} className="flex items-center justify-center">
         <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-          Upload file
+          Thêm tệp dữ liệu
           <VisuallyHiddenInput type="file" onChange={handleSetFile} />
         </Button>
       </Grid2>
 
       <Grid2 xs={12} className="flex items-center justify-center">
-        {file && <p>File đã chọn: {file.name}</p>}
+        {file && <p>Tệp đã chọn: {file.name}</p>}
       </Grid2>
       <Grid2 xs={12} className="flex items-center justify-center pt-4">
         <Button variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>
-          Submit
+          Hoàn tất
         </Button>
       </Grid2>
     </Grid2>

@@ -1,8 +1,12 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
+  Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Paper,
   styled,
   Table,
@@ -15,24 +19,73 @@ import {
 } from "@mui/material";
 import axiosConfig from "../../../axiosConfig";
 import * as actions from "../../../store/actions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
-import { capitalizeFirstLetterIfNeeded, formatDate } from "../../../utils/format";
+import { capitalizeFirstLetterIfNeeded, formatCurrency, formatDate } from "../../../utils/format";
 import Swal from "sweetalert2";
 import * as apis from "../../../services";
-import { isJSON } from "../../../utils";
+import { isJSON, translateColumn } from "../../../utils";
 import { useDispatch } from "react-redux";
 
 const defaultAvatar = require("../../../assets/images/profile.png");
 const TYPE_REMOVE = ["product", "category"];
 const TYPE_CHECK_BOX = ["order", "product"];
 
+const status = (value) => (value === "Success" ? "#76ff03" : "#ff1744");
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "150px",
+    transition: "all 0.3s ease",
+    "&:hover": {
+      whiteSpace: "normal",
+      overflow: "visible",
+      textOverflow: "unset",
+      maxWidth: "none",
+    },
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // Hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+  transition: "height 0.3s ease", // Smooth height transition
+  "&:hover": {
+    height: "auto", // Expand the row height on hover
+  },
+}));
+
 const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, setLoading, setTotalPage }) => {
   const { BiEdit, BiTrash } = icons;
 
   const [selectedRows, setSelectedRows] = useState([]);
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState(null);
+
+  const handleOpenDialog = (product) => {
+    setSelectedImages(product);
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setSelectedImages(null);
+  };
 
   // Check if data exists
   if (data == null || data.length === 0) {
@@ -40,41 +93,6 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
   }
 
   const sampleData = data[0]; // Get a sample from data to build the columns dynamically
-
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      maxWidth: "150px",
-      transition: "all 0.3s ease",
-      "&:hover": {
-        whiteSpace: "normal",
-        overflow: "visible",
-        textOverflow: "unset",
-        maxWidth: "none",
-      },
-    },
-  }));
-
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // Hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-    transition: "height 0.3s ease", // Smooth height transition
-    "&:hover": {
-      height: "auto", // Expand the row height on hover
-    },
-  }));
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -171,7 +189,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
           <TableHead>
             <TableRow>
               {TYPE_CHECK_BOX.includes(type) && (
-                <StyledTableCell padding="checkbox">
+                <StyledTableCell padding="checkbox" align="left">
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Checkbox
                       indeterminate={selectedRows.length > 0 && selectedRows.length < data.length}
@@ -185,10 +203,10 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                         "&.MuiCheckbox-indeterminate": {
                           color: "blue",
                         },
-                        mr: 2,
+                        // mr: 1,
                       }}
                     />
-                    <span style={{ whiteSpace: "nowrap" }}>Select all</span>
+                    {/* <span style={{ whiteSpace: "nowrap" }}>Tất cả</span> */}
                   </Box>
                 </StyledTableCell>
               )}
@@ -196,14 +214,15 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                 .filter((key) => key !== "id")
                 .filter((key) => key !== "category_id")
                 .filter((key) => key !== "brand_id")
-                .filter((key) => key !== "promotions") // Exclude the "id" column
+                .filter((key) => key !== "promotions")
+                .filter((key) => key !== "reviewDetail") // Exclude the "id" column
                 .map((key, index) => (
                   <StyledTableCell align="center" key={index}>
-                    {capitalizeFirstLetterIfNeeded(key)}
+                    {translateColumn(capitalizeFirstLetterIfNeeded(key))}
                   </StyledTableCell>
                 ))}
-              <StyledTableCell>Edit</StyledTableCell>
-              {TYPE_REMOVE.includes(type) && <StyledTableCell>Delete</StyledTableCell>}
+              {type !== "payment" && <StyledTableCell>Chỉnh sửa</StyledTableCell>}
+              {TYPE_REMOVE.includes(type) && <StyledTableCell>Xoá</StyledTableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -221,13 +240,19 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                   .filter((key) => key !== "promotions")
                   .filter((key) => key !== "reviewDetail")
                   .map((key, index) => (
-                    <StyledTableCell key={index} align="left">
+                    <StyledTableCell
+                      key={index}
+                      align={type === "payment" ? "center" : "left"}
+                      sx={{ color: key === "status" ? status(dataItem[key]) : "inherit" }}
+                    >
                       {key === "roles" ? (
                         dataItem[key].map((role) => role.name).join(", ")
-                      ) : key === "createdAt" || key === "updatedAt" ? (
+                      ) : key === "createdAt" || key === "updatedAt" || key === "paymentDate" ? (
                         formatDate(dataItem[key])
                       ) : key === "dob" ? (
                         formatDate(dataItem[key])
+                      ) : key === "amount" ? (
+                        formatCurrency(dataItem[key])
                       ) : key === "avatar" ? (
                         dataItem[key] && (
                           <div className="flex items-center justify-center">
@@ -249,7 +274,19 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       ) : key === "images" ? (
                         <div className="group relative flex w-28 flex-wrap items-center justify-center gap-1 overflow-hidden">
                           {/* Chỉ hiển thị 4 hình ảnh nhỏ */}
-                          {dataItem[key] !== null && isJSON(dataItem[key].replace(/'/g, '"')) ? (
+                          {type === "product" ? (
+                            <Button
+                              onClick={() =>
+                                handleOpenDialog(
+                                  dataItem[key] !== null &&
+                                    isJSON(dataItem[key].replace(/'/g, '"')) &&
+                                    JSON.parse(dataItem[key].replace(/'/g, '"')),
+                                )
+                              }
+                            >
+                              Chi tiết
+                            </Button>
+                          ) : dataItem[key] !== null && isJSON(dataItem[key].replace(/'/g, '"')) ? (
                             JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
                               .slice(0, 4) // Hiển thị 4 hình ảnh nhỏ
                               .map((item, idx) => (
@@ -284,7 +321,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                           )}
 
                           {/* Danh sách hình ảnh lớn hiện ra khi hover */}
-                          <div className="absolute left-0 top-0 z-10 hidden bg-white p-2 group-hover:block">
+                          {/* <div className="absolute left-0 top-0 z-10 hidden bg-white p-2 group-hover:block">
                             <div className="flex flex-wrap items-center justify-center gap-1">
                               {dataItem[key] && isJSON(dataItem[key].replace(/'/g, '"')) ? (
                                 JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
@@ -314,7 +351,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                                 />
                               )}
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       ) : key === "category" || key === "brand" ? (
                         dataItem[key].name
@@ -325,11 +362,13 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       )}
                     </StyledTableCell>
                   ))}
-                <StyledTableCell align="center">
-                  <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${dataItem.id}`}>
-                    <BiEdit size={24} />
-                  </NavLink>
-                </StyledTableCell>
+                {type !== "payment" && (
+                  <StyledTableCell align="center">
+                    <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${dataItem.id}`}>
+                      <BiEdit size={24} />
+                    </NavLink>
+                  </StyledTableCell>
+                )}
                 {TYPE_REMOVE.includes(type) && (
                   <StyledTableCell align="center">
                     <button
@@ -347,6 +386,40 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
       </TableContainer>
       {/* Render the pagination component here */}
       {pagination}
+      {selectedImages && (
+        <Dialog open={open} onClose={handleCloseDialog} fullWidth={true} maxWidth="lg">
+          <DialogTitle>Chi tiết hình ảnh</DialogTitle>
+          <DialogContent>
+            <div className="flex flex-wrap items-center justify-start gap-2">
+              {selectedImages &&
+                selectedImages?.map((item, idx) => {
+                  return (
+                    <img
+                      key={idx}
+                      src={
+                        item.includes("http")
+                          ? item
+                          : `${
+                              process.env.NODE_ENV === "production"
+                                ? process.env.REACT_APP_SERVER_URL_PROD
+                                : process.env.REACT_APP_SERVER_URL_DEV
+                            }${item}`
+                      }
+                      alt={`Image ${idx}`}
+                      style={{ width: "150px", height: "150px" }}
+                      className="border-1 border-gray-500 p-2"
+                    />
+                  );
+                })}
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Đóng
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 };

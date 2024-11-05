@@ -1,7 +1,7 @@
 import { Autocomplete, Paper, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
-const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setInputValue }) => {
+const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setInputValue, type }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false); // Cờ để xác định nếu người dùng đang nhập
 
@@ -20,7 +20,7 @@ const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setI
     <div className="flex w-full items-center justify-center gap-4">
       <Autocomplete
         options={options}
-        getOptionLabel={(option) => option?.name || ""}
+        getOptionLabel={type === "user" ? (option) => option?.username || "" : (option) => option?.name || ""}
         fullWidth
         disableClearable
         freeSolo
@@ -57,7 +57,7 @@ const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setI
         )}
         renderOption={(props, option) => (
           <li {...props} style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}>
-            {option.name}
+            {type === "user" ? option.username : option.name}
           </li>
         )}
         PaperComponent={CustomPaper}
@@ -75,7 +75,7 @@ const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setI
         onChange={(event, newValue) => {
           if (newValue) {
             setValue(newValue); // Cập nhật giá trị khi chọn
-            setInputValue(newValue.name); // Cập nhật inputValue để hiển thị tên
+            type === "user" ? setInputValue(newValue.username) : setInputValue(newValue.name); // Cập nhật inputValue để hiển thị tên
           }
           setIsOpen(false); // Đóng dropdown khi chọn
           setIsTyping(false); // Người dùng không còn nhập nữa

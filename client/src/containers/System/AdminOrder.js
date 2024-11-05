@@ -13,9 +13,9 @@ const AdminOrder = () => {
           <NavLink to={""} end className={({ isActive }) => (isActive ? active : nonActive)}>
             Bảng đơn hàng
           </NavLink>
-          <NavLink to={path.ADMIN_ORDER_EXPORT_CSV} className={({ isActive }) => (isActive ? active : nonActive)}>
+          {/* <NavLink to={path.ADMIN_ORDER_EXPORT_CSV} className={({ isActive }) => (isActive ? active : nonActive)}>
             Xuất file CSV
-          </NavLink>
+          </NavLink> */}
         </div>
         <div className="m-2 items-center p-1">
           <Outlet />

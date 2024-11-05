@@ -314,7 +314,13 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
       </TableContainer>
       {pagination}
       {selectedProduct && (
-        <Dialog open={open} onClose={handleCloseDialog} fullWidth={true} maxWidth="lg">
+        <Dialog
+          open={open}
+          onClose={handleCloseDialog}
+          className="flex items-center justify-center justify-items-center"
+          fullWidth={true}
+          maxWidth="lg"
+        >
           <DialogTitle>Chi tiết sản phẩm</DialogTitle>
           <DialogContent>
             <TableContainer component={Paper}>

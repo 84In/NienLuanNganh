@@ -33,7 +33,8 @@ const usePagination = (baseUrl, initialPage = 0, size = 15, useUrlParams = true,
         });
         const result = response?.result;
         setData(result?.content || result || []);
-        setTotalPages(result?.totalPages || result?.reviews?.totalPages || 1);
+        //Lay sai nen khong hien ben admin (Lay o page?.totalpage)
+        setTotalPages(result?.page?.totalPages || result?.reviews?.totalPages || 1);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

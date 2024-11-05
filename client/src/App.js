@@ -25,11 +25,16 @@ import {
   AdminHome,
   AdminOrder,
   AdminOrderContent,
+  AdminPayment,
+  AdminPaymentContent,
   AdminProduct,
   AdminProductContent,
   AdminProductCreate,
   AdminProductCSV,
   AdminProductEditByID,
+  AdminReview,
+  AdminReviewContent,
+  AdminReviewFilter,
   AdminUser,
   AdminUserContent,
   AdminUserCreate,
@@ -47,6 +52,10 @@ function App() {
   const { isLoggedIn, username } = useSelector((state) => state.auth);
   const { userData, cart } = useSelector((state) => state.user);
   const [isModelLogin, setIsModelLogin] = useState(false);
+
+  useEffect(() => {
+    dispatch(actions.getCategories);
+  }, []);
 
   useEffect(() => {
     dispatch(actions.getCategories());
@@ -183,6 +192,19 @@ function App() {
             element={<PrivateAdminFilterRouter element={AdminOrder} roles={["ADMIN"]} user={userData} />}
           >
             <Route index element={<AdminOrderContent />} />
+          </Route>
+          <Route
+            path={path.ADMIN_REVIEW}
+            element={<PrivateAdminFilterRouter element={AdminReview} roles={["ADMIN"]} user={userData} />}
+          >
+            <Route index element={<AdminReviewContent />} />
+            <Route path={path.ADMIN_REVIEW_FILTER} element={<AdminReviewFilter />} />
+          </Route>
+          <Route
+            path={path.ADMIN_PAYMENT}
+            element={<PrivateAdminFilterRouter element={AdminPayment} roles={["ADMIN"]} user={userData} />}
+          >
+            <Route index element={<AdminPaymentContent />} />
           </Route>
         </Route>
       </Routes>

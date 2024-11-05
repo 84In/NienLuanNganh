@@ -46,3 +46,4 @@ export { default as AdminButtonAccept } from "./System/Items/AdminButtonAccept";
 export { default as AdminItemStatus } from "./System/Items/AdminItemStatus";
 export { default as AdminTag } from "./System/Items/AdminTag";
 export { default as PathSeparator } from "./Common/PathSeparator";
+export { default as AdminPolarAreaCharts } from "./System/Items/AdminPolarAreaCharts";

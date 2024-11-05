@@ -60,3 +60,20 @@ export const apiDeleteProduct = (productId) =>
       reject(error);
     }
   });
+
+export const apiSearchProduct = (keyword) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const params = {
+        keyword: keyword,
+      };
+      const response = await axiosConfig({
+        method: "GET",
+        url: "/api/v1/products/search",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

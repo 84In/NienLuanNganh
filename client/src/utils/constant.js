@@ -55,41 +55,44 @@ export const path = {
   ADMIN_CATEGORY: "category",
   ADMIN_CATEGORY_CREATE: "create-category",
   ADMIN_CATEGORY_EDIT: "edit/:id",
+  ADMIN_REVIEW: "review",
+  ADMIN_REVIEW_FILTER: "filter",
+  ADMIN_PAYMENT: "payment",
 };
 
 export const adminSideBar = [
   {
-    name: "Dashboard",
+    name: "Bảng điều khiển",
     path: "",
     icon: BiSolidDashboard,
   },
   {
-    name: "User",
+    name: "Quản lý người dùng",
     path: "user",
     icon: BiSolidUserAccount,
   },
   {
-    name: "Category",
+    name: "Quản lý danh mục",
     path: "category",
     icon: BiCategory,
   },
   {
-    name: "Product",
+    name: "Quản lý sản phẩm",
     path: "product",
     icon: BiGift,
   },
   {
-    name: "Order",
+    name: "Quản lý đơn hàng",
     path: "order",
     icon: BiFile,
   },
   {
-    name: "Review",
+    name: "Quản lý đánh giá",
     path: "review",
     icon: BiBookHeart,
   },
   {
-    name: "Payment",
+    name: "Quản lý thanh toán",
     path: "payment",
     icon: BiCreditCard,
   },
