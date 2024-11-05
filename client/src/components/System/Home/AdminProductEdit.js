@@ -341,7 +341,15 @@ const AdminProductEdit = ({ product, isEdit }) => {
                       style={{ position: "relative", margin: "10px" }} // Đảm bảo mỗi hình ảnh có khoảng cách
                     >
                       <img
-                        src={item.includes("http") ? item : `${process.env.REACT_APP_SERVER_URL}${item}`}
+                        src={
+                          item.includes("http")
+                            ? item
+                            : `${
+                                process.env.NODE_ENV === "production"
+                                  ? process.env.REACT_APP_SERVER_URL_PROD
+                                  : process.env.REACT_APP_SERVER_URL_DEV
+                              }${item}`
+                        }
                         // Tạo URL tạm thời từ file
                         alt={`Uploaded ${index}`}
                         style={{

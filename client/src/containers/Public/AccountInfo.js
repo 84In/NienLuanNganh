@@ -169,7 +169,13 @@ const AccountInfo = () => {
             <div className="relative h-20 w-20 grid-md:h-24 grid-md:w-24">
               <img
                 className="avatarShow h-full w-full rounded-full border border-black object-cover"
-                src={userData?.avatar ? process.env.REACT_APP_SERVER_URL + userData.avatar : defaultAvatar}
+                src={
+                  userData?.avatar
+                    ? (process.env.NODE_ENV === "production"
+                        ? process.env.REACT_APP_SERVER_URL_PROD
+                        : process.env.REACT_APP_SERVER_URL_DEV) + userData.avatar
+                    : defaultAvatar
+                }
                 alt="Avatar"
               />
               <div className="absolute bottom-2 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gray-500 text-white hover:bg-gray-800">
