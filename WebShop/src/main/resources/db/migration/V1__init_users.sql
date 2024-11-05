@@ -266,3 +266,15 @@ CREATE TABLE `t_products_promotions`
     CONSTRAINT fk_promotionP FOREIGN KEY (`promotion_id`) REFERENCES t_promotions (`id`) ON DELETE CASCADE,
     PRIMARY KEY (`product_id`, `promotion_id`)
 );
+
+CREATE TABLE `t_recent_payment_summary`
+(
+    `id`                varchar(255) NOT NULL,
+    `payment_method_id` varchar(255) NOT NULL,
+    `date`              DATE NOT NULL,
+    `total_amount`      bigint(20) NOT NULL,
+    `total_count`       bigint(20) NOT NULL,
+    `created_at`        DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    CONSTRAINT fk_payment_summary_method FOREIGN KEY (`payment_method_id`) REFERENCES t_payment_methods (`id`) ON DELETE CASCADE
+);

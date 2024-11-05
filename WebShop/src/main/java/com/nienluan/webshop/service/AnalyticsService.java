@@ -15,6 +15,7 @@ public class AnalyticsService {
 
     RevenueService revenueService;
     ProductService productService;
+    PaymentSummaryService paymentSummaryService;
 
     public AnalyticsDTO getAnalytics() {
         AnalyticsDTO analyticsDTO = new AnalyticsDTO();
@@ -22,6 +23,8 @@ public class AnalyticsService {
         analyticsDTO.setProductsInMonth(productService.countProductInCurrentMonth());
         analyticsDTO.setTotalRevenues(revenueService.revenueOfTheMonthsITheYear(LocalDate.now()));
         analyticsDTO.setTotalRevenueInToday(revenueService.getRevenueToday(LocalDate.now()));
+        analyticsDTO.setPaymentSummaries(paymentSummaryService.getRecentPaymentSummary());
         return analyticsDTO;
     }
+
 }

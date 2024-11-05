@@ -94,9 +94,29 @@ public class ReviewService {
         return toReviewResponse(review);
     }
 
-//    public Page<ReviewResponse> getAllReviews(Pageable pageable) {
-//        return reviewRepository.findAll(pageable).map(reviewMapper::toReviewResponse);
-//    }
+    public Page<ReviewResponse> getAllReviews(Pageable pageable) {
+        return reviewRepository.findAll(pageable).map(reviewMapper::toReviewResponse);
+    }
+    public Page<ReviewResponse> getFilteredReviews(String userId, String productId, Integer rating, Pageable pageable) {
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdAt").descending());
+        if (userId != null && productId != null && rating != null) {
+            return reviewRepository.findByUserIdAndProductIdAndRating(userId, productId, rating, sortedPageable)
+                    .map(reviewMapper::toReviewResponse);
+        } else if (userId != null && productId != null) {
+            return reviewRepository.findByUserIdAndProductId(userId, productId, sortedPageable)
+                    .map(reviewMapper::toReviewResponse);
+        } else if (userId != null) {
+            return reviewRepository.findByUserId(userId, sortedPageable)
+                    .map(reviewMapper::toReviewResponse);
+        } else if (productId != null) {
+            return reviewRepository.findByProductId(productId, sortedPageable)
+                    .map(reviewMapper::toReviewResponse);
+        } else if (rating != null) {
+            return reviewRepository.findByRating(rating, sortedPageable)
+                    .map(reviewMapper::toReviewResponse);
+        }
+        return reviewRepository.findAll(sortedPageable).map(reviewMapper::toReviewResponse);
+    }
 
 //    public ReviewResponse getReviewById(String id) {
 //        Review review = reviewRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.REVIEW_NOT_EXISTED));

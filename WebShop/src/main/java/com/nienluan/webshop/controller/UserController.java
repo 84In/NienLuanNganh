@@ -38,6 +38,13 @@ public class UserController {
                 .result(userService.getAllUser(pageable))
                 .build();
     }
+    @GetMapping("/search")
+    ApiResponse<?> getAllUserByKeyword(@RequestParam String keyword,Pageable pageable) {
+        return ApiResponse.<Page<UserResponse>>builder()
+                .message("Success")
+                .result(userService.getAllUserByKeyword(keyword,pageable))
+                .build();
+    }
 
     @GetMapping("/id/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable String userId) {

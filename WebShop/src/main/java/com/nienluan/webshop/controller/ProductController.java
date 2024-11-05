@@ -70,6 +70,12 @@ public class ProductController {
                 .result(productService.getReviewByProduct(pageable, productId))
                 .build();
     }
+    @GetMapping("/search")
+    public ApiResponse<Page<ProductResponse>> searchProducts(
+            @RequestParam String keyword,
+            Pageable pageable) {
+        return ApiResponse.<Page<ProductResponse>>builder().result(productService.searchProducts(keyword, pageable)).build();
+    }
 
     @PutMapping("/{productId}")
     public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId, @RequestPart MultipartFile[] files, @RequestBody ProductUpdateRequest request) {

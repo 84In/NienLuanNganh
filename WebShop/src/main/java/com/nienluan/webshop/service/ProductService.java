@@ -227,4 +227,8 @@ public class ProductService {
     public Long countProductInCurrentMonth() {
         return productRepository.countProductsCurrentMonth();
     }
+
+    public Page<ProductResponse> searchProducts(String keyword, Pageable pageable) {
+        return productRepository.findByNameContainingIgnoreCase(keyword, pageable).map(productMapper::toProductResponse);
+    }
 }

@@ -25,4 +25,15 @@ public interface ReviewRepository extends JpaRepository<Review, ReviewId> {
 
     Long countByProductId(String productId);
 
+    Page<Review> findByUserIdAndProductIdAndRating(
+            String userId, String productId, int rating, Pageable pageable);
+
+    Page<Review> findByUserIdAndProductId(String userId, String productId, Pageable pageable);
+
+    Page<Review> findByUserId(String userId, Pageable pageable);
+
+    Page<Review> findByProductId(String productId, Pageable pageable);
+
+    Page<Review> findByRating(int rating, Pageable pageable);
+
 }

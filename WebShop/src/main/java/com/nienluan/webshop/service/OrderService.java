@@ -49,6 +49,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -273,12 +274,16 @@ public class OrderService {
 
 
     public OrderResponse changeOrderStatus(String id, String statusCodeName) {
+
+        log.info(statusCodeName);
         String cancelledStatus = "cancelled";
         String completedStatus = "completed";
 
         var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         var status = statusOrderRepository.findByCodeName(statusCodeName);
         order.setStatus(status);
+        log.info("Status", status.toString());
+
         if (status.getCodeName().equals(cancelledStatus)) {
             for (OrderDetail orderDetail : order.getOrderDetails()) {
                 Product product = orderDetail.getProduct();
@@ -287,7 +292,7 @@ public class OrderService {
                 productRepository.save(product);
             }
             //Xử lý refund tiền trên thanh toán điện tử
-            if(order.getPayment() != null && order.getPayment().getStatus() == "Success") {
+            if(order.getPayment() != null && order.getPayment().getStatus() != null && order.getPayment().getStatus() == "Success") {
                 try {
                         Boolean response =   refundZaloPay(order.getPayment());
                         if(response != Boolean.TRUE) {
