@@ -537,6 +537,35 @@ INSERT INTO `t_provinces` VALUES (1,'thanh_pho_ha_noi','Thành phố Hà Nội',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `t_recent_payment_summary`
+--
+
+DROP TABLE IF EXISTS `t_recent_payment_summary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_recent_payment_summary` (
+  `id` varchar(255) NOT NULL,
+  `payment_method_id` varchar(255) NOT NULL,
+  `date` date NOT NULL,
+  `total_amount` bigint NOT NULL,
+  `total_count` bigint NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_payment_summary_method` (`payment_method_id`),
+  CONSTRAINT `fk_payment_summary_method` FOREIGN KEY (`payment_method_id`) REFERENCES `t_payment_methods` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_recent_payment_summary`
+--
+
+LOCK TABLES `t_recent_payment_summary` WRITE;
+/*!40000 ALTER TABLE `t_recent_payment_summary` DISABLE KEYS */;
+/*!40000 ALTER TABLE `t_recent_payment_summary` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `t_revenue_summary`
 --
 
@@ -752,4 +781,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-05 20:23:54
+-- Dump completed on 2024-11-06 18:08:32

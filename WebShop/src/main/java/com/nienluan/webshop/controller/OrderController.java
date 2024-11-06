@@ -125,12 +125,10 @@ public class OrderController {
             callbackData.put("pmcid", pmcId);
             callbackData.put("status", status);
 
-            // Xử lý callbackor
-            ;
+            // Xử lý callback
 
             // URL kết quả để redirect client
-            String resultUrl = orderService.callbackZaloPay(callbackData.toString()); // Đường dẫn đến trang kết quả
-                                                                                      // trên client
+            String resultUrl = orderService.callbackZaloPay(callbackData.toString()); // Đường dẫn đến trang kết quả trên client
 
             log.info(resultUrl);
             // Tạo ResponseEntity với mã 302 và URL trong header Location
@@ -162,8 +160,8 @@ public class OrderController {
 
     @GetMapping("/current-user")
     public ApiResponse<?> getOrder(Pageable pageable,
-            @RequestParam(name = "status", required = false) String status,
-            @RequestParam(name = "search", required = false) String search) {
+                                   @RequestParam(name = "status", required = false) String status,
+                                   @RequestParam(name = "search", required = false) String search) {
         return ApiResponse.<Page<OrderResponse>>builder()
                 .message("Get order successful")
                 .result(orderService.getOrderCurrentUser(pageable, status, search))
@@ -172,7 +170,7 @@ public class OrderController {
 
     @PutMapping("/change-status/{id}")
     public ApiResponse<?> changeOrderStatus(@PathVariable("id") String id,
-            @RequestParam(name = "status", required = false) String status) {
+                                            @RequestParam(name = "status", required = false) String status) {
         return ApiResponse.<OrderResponse>builder()
                 .message("Change order status successfully")
                 .result(orderService.changeOrderStatus(id, status))

@@ -15,7 +15,6 @@ import com.nienluan.webshop.repository.*;
 import com.nienluan.webshop.utils.HMACUtil;
 import com.nienluan.webshop.utils.VNPayUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.xml.bind.DatatypeConverter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -38,8 +37,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,7 +46,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -122,14 +118,14 @@ public class OrderService {
         Order order = createOrder(orderRequest);
 
         long amount = Long.parseLong(request.getParameter("amount")) * 100L;
-        String bankCode = request.getParameter("bankCode");
+        //String bankCode = request.getParameter("bankCode");
         Map<String, String> vnpParamsMap = vnPayService.getVNPayConfig();
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         vnpParamsMap.put("vnp_TxnRef", order.getId());
         vnpParamsMap.put("vnp_OrderInfo", "Thanh toán đơn hàng:" + order.getId());
-        if (bankCode != null && !bankCode.isEmpty()) {
-            vnpParamsMap.put("vnp_BankCode", bankCode);
-        }
+        //if (bankCode != null && !bankCode.isEmpty()) {
+        //    vnpParamsMap.put("vnp_BankCode", bankCode);
+        //}
         vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
         //Build query url
         String queryUrl = VNPayUtils.getPaymentURL(vnpParamsMap, true);
@@ -143,14 +139,14 @@ public class OrderService {
                 .build();
     }
 
-    public ZaloPayResponse createZaloPayPayment( OrderRequest orderRequest) throws IOException {
+    public ZaloPayResponse createZaloPayPayment(OrderRequest orderRequest) throws IOException {
         Order order = createOrder(orderRequest);
         Map<String, Object> orderData = zaloPayService.createOrder(order);
         CloseableHttpClient client = HttpClients.createDefault();
         HttpPost post = new HttpPost(createEndpoint);
 
         List<NameValuePair> params = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : orderData.entrySet()){
+        for (Map.Entry<String, Object> entry : orderData.entrySet()) {
             params.add(new BasicNameValuePair(entry.getKey(), entry.getValue().toString()));
         }
 
@@ -171,8 +167,8 @@ public class OrderService {
         zaloPayResponse.setOrderurl(jsonObject.optString("orderurl", ""));
         zaloPayResponse.setReturncode(jsonObject.optInt("returncode", -1));
         zaloPayResponse.setReturnmessage(jsonObject.optString("returnmessage", ""));
-        if(zaloPayResponse.getReturncode() == 1){
-            startOrderStatusCheck((String) orderData.get("apptransid"), (Long) orderData.get("apptime"),order.getId());
+        if (zaloPayResponse.getReturncode() == 1) {
+            startOrderStatusCheck((String) orderData.get("apptransid"), (Long) orderData.get("apptime"), order.getId());
         }
         return zaloPayResponse;
     }
@@ -197,18 +193,19 @@ public class OrderService {
         }
         return toOrderResponse(order, order.getOrderDetails());
     }
+
     @Transactional
     public void createOrderWithZaloPay(String idOrder, Long zpTransId, String paymentStatus) {
         //Thanh toan thanh cong thi goi
         //CallBack cua zalopay khong can phan hoi!
-        Order order = orderRepository.findById(idOrder).orElseThrow( () -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        Order order = orderRepository.findById(idOrder).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
 
         Payment payment = Payment.builder()
                 .amount(order.getTotalAmount())
                 .paymentDate(order.getCreatedAt())
                 .status(paymentStatus)
                 .build();
-        if(zpTransId != null){
+        if (zpTransId != null) {
             payment.setZpTransId(zpTransId);
         }
         paymentRepository.save(payment);
@@ -292,12 +289,12 @@ public class OrderService {
                 productRepository.save(product);
             }
             //Xử lý refund tiền trên thanh toán điện tử
-            if(order.getPayment() != null && order.getPayment().getStatus() != null && order.getPayment().getStatus() == "Success") {
+            if (order.getPayment() != null && order.getPayment().getStatus() != null && order.getPayment().getStatus() == "Success") {
                 try {
-                        Boolean response =   refundZaloPay(order.getPayment());
-                        if(response != Boolean.TRUE) {
-                            throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
-                        }
+                    Boolean response = refundZaloPay(order.getPayment());
+                    if (response != Boolean.TRUE) {
+                        throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
+                    }
                 } catch (Exception e) {
                     throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
                 }
@@ -422,6 +419,7 @@ public class OrderService {
         Long totalAmountByMonth = orderRepository.findTotalRevenueForCurrentMonth().longValue();
         return totalAmountByMonth;
     }
+
     private void startOrderStatusCheck(String apptransid, long apptime, String orderId) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(() -> {
@@ -438,8 +436,9 @@ public class OrderService {
             }
         }, 1, 3, TimeUnit.MINUTES);
     }
+
     private void checkOrderStatus(String app_trans_id, String orderId, ScheduledExecutorService scheduler) throws URISyntaxException, IOException {
-        String data = appid +"|"+ app_trans_id  +"|"+ key1;
+        String data = appid + "|" + app_trans_id + "|" + key1;
         String mac = HMACUtil.HMacHexStringEncode(HMACUtil.HMACSHA256, key1, data);
 
         log.info("Check status");
@@ -472,40 +471,42 @@ public class OrderService {
         if (returnCode == 1) {
             OrderResponse order = getOrder(orderId);
             if (order.getPayment() != null) {
-                createOrderWithZaloPay(orderId,zpTransId,"Success");
+                createOrderWithZaloPay(orderId, zpTransId, "Success");
             }
             scheduler.shutdown(); // Dừng scheduler
         }
-        if(returnCode == 2){
-            createOrderWithZaloPay(orderId,zpTransId,"Failed");
-            changeOrderStatus(orderId,"Cancelled");
+        if (returnCode == 2) {
+            createOrderWithZaloPay(orderId, zpTransId, "Failed");
+            changeOrderStatus(orderId, "Cancelled");
         }
     }
+
     public String callbackZaloPay(String jsonStr) {
         String urlClient = "";
         log.info("callbackZaloPay");
         log.info("jsonStr:" + jsonStr);
-            // Chuyển đổi chuỗi JSON thành JSONObject
-            JSONObject cbData = new JSONObject(jsonStr);
-            // Trích xuất dữ liệu từ JSONObject
-            String appTransId = cbData.getString("apptransid");
-            Integer status = cbData.getInt("status");
-            String[] parts = appTransId.split("_");
+        // Chuyển đổi chuỗi JSON thành JSONObject
+        JSONObject cbData = new JSONObject(jsonStr);
+        // Trích xuất dữ liệu từ JSONObject
+        String appTransId = cbData.getString("apptransid");
+        Integer status = cbData.getInt("status");
+        String[] parts = appTransId.split("_");
 
-            // So sánh MAC đã tính với checksum nhận được
-            if (status != 1) {
-                createOrderWithZaloPay(parts[1], null, "Fail");
-                urlClient = String.format(returnUrl, "fail", parts[1]);
-            } else {
-                // Cập nhật trạng thái
-                if (status == 1) {
-                    createOrderWithZaloPay(parts[1], null, "Success");
-                    urlClient = String.format(returnUrl, "success", parts[1]);
+        // So sánh MAC đã tính với checksum nhận được
+        if (status != 1) {
+            createOrderWithZaloPay(parts[1], null, "Fail");
+            urlClient = String.format(returnUrl, "fail", parts[1]);
+        } else {
+            // Cập nhật trạng thái
+            if (status == 1) {
+                createOrderWithZaloPay(parts[1], null, "Success");
+                urlClient = String.format(returnUrl, "success", parts[1]);
 
-                }
             }
+        }
         return urlClient;
     }
+
     public Boolean refundZaloPay(Payment payment) throws IOException {
 
         Map<String, Object> order = zaloPayService.createdRefund(payment);
@@ -532,7 +533,7 @@ public class OrderService {
         JSONObject result = new JSONObject(resultJsonStr.toString());
         int return_code = result.optInt("return_code");
         Long refundId = result.optLong("refund_id");
-        if(return_code==1){
+        if (return_code == 1) {
             PaymentRequest request = PaymentRequest.builder().status("Refund").refundId(refundId).build();
             return Boolean.TRUE;
         }

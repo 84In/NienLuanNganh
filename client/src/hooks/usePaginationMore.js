@@ -22,7 +22,7 @@ const usePaginationMore = (url, pageSize = 15, addPageSize = 10) => {
           resolve(response);
           const result = response?.result;
           setData(result?.content);
-          setTotalElements(result?.totalElements);
+          setTotalElements(result?.page?.totalElements);
         } catch (error) {
           console.error("Error fetching more data:", error);
         } finally {

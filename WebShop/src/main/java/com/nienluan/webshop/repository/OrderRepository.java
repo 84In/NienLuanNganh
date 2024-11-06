@@ -32,6 +32,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "LOWER(or.fullName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(or.phone) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(odp.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            "LOWER(odp.category.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             "LOWER(pm.name) LIKE LOWER(CONCAT('%', :search, '%'))) ")
     Page<Order> findByUserAndStatusAndSearch(@Param("user") User user,
                                              @Param("status") OrderStatus status,
@@ -39,8 +40,10 @@ public interface OrderRepository extends JpaRepository<Order, String> {
                                              Pageable pageable);
 
     Page<Order> findByStatusCodeName(String codename, Pageable pageable);
+
     @Query("SELECT COALESCE(SUM(o.totalAmount), 0) FROM Order o WHERE DATE(o.createdAt) = :date")
     BigDecimal findTotalAmountByDate(@Param("date") LocalDate date);
+
     @Query("SELECT COALESCE(SUM(o.totalAmount), 0) FROM Order o " +
             "WHERE MONTH(o.createdAt) = MONTH(CURRENT_DATE) " +
             "AND YEAR(o.createdAt) = YEAR(CURRENT_DATE)")
