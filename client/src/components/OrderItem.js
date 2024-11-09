@@ -33,12 +33,13 @@ const OrderItem = ({ product }) => {
               <span className="text-sm font-semibold">Hoàn tất</span>
             </div>
           )}
-          {product?.payment?.status === "Success" && product?.status?.codeName !== "cancelled" && (
-            <>
-              <span className="text-gray-200">|</span>
-              <div className="text-sm text-gray-500"> Đã thanh toán</div>
-            </>
-          )}
+          {product?.payment?.status === "Success" &&
+            (product?.status?.codeName === "pending" || product?.status?.codeName === "confirmed") && (
+              <>
+                <span className="text-gray-200">|</span>
+                <div className="text-sm text-gray-500"> Đã thanh toán</div>
+              </>
+            )}
         </div>
         <div className="flex flex-col items-start gap-2 text-sm text-gray-500 grid-md:items-end">
           <p>Mã: {product?.id}</p>

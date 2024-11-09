@@ -49,13 +49,17 @@ const ProductCard = ({ product }) => {
           <CardContent className="flex h-[250px] min-h-[250px] flex-col justify-between gap-2 p-3">
             <div className="flex flex-col gap-1">
               <p className="line-clamp-2 min-h-10 text-sm">{product?.name}</p>
-              <Rating
-                name="half-rating-read"
-                precision={0.5}
-                value={product?.reviewDetail?.averageRating ? product?.reviewDetail?.averageRating : 0}
-                readOnly
-                size="small"
-              />
+              <div className="h-[18px]">
+                {product?.reviewDetail?.averageRating && (
+                  <Rating
+                    name="half-rating-read"
+                    precision={0.5}
+                    value={product?.reviewDetail?.averageRating ? product?.reviewDetail?.averageRating : 0}
+                    readOnly
+                    size="small"
+                  />
+                )}
+              </div>
               <div className="text-sm text-gray-600">
                 Đã bán: <span>{product?.sold ? formatCount(product?.sold) : 0}</span>
               </div>
