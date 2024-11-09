@@ -1,5 +1,6 @@
 package com.nienluan.webshop.service;
 
+import com.nienluan.webshop.utils.VNPayUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -15,19 +16,30 @@ public class VNPayService {
     @Getter
     @Value("${payment.vnpay.url}")
     private String vnp_PayUrl;
+    @Getter
     @Value("${payment.vnpay.returnUrl}")
     private String vnp_ReturnUrl;
+    @Getter
     @Value("${payment.vnpay.tmnCode}")
     private String vnp_TmnCode;
     @Getter
     @Value("${payment.vnpay.hashSecret}")
     private String secretKey;
+    @Getter
     @Value("${payment.vnpay.version}")
     private String vnp_Version;
+    @Getter
     @Value("${payment.vnpay.command}")
     private String vnp_Command;
+    @Getter
     @Value("${payment.vnpay.orderType}")
     private String orderType;
+    @Getter
+    @Value("${payment.vnpay.query.endpoint}")
+    private String queryEndpoint;
+    @Getter
+    @Value("${payment.vnpay.refund.endpoint}")
+    private String refundEndpoint;
 
     public Map<String, String> getVNPayConfig() {
         Map<String, String> vnpParamsMap = new HashMap<>();
@@ -47,4 +59,13 @@ public class VNPayService {
         vnpParamsMap.put("vnp_ExpireDate", vnp_ExpireDate);
         return vnpParamsMap;
     }
+
+    public String generateUrl(Map<String, String> paramsMap) {
+        String queryUrl = VNPayUtils.getPaymentURL(paramsMap, true);
+        String hashData = VNPayUtils.getPaymentURL(paramsMap, false);
+        String vnpSecureHash = VNPayUtils.hmacSHA512(secretKey, hashData);
+        queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
+        return queryUrl;
+    }
+
 }

@@ -41,7 +41,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -123,15 +127,9 @@ public class OrderService {
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         vnpParamsMap.put("vnp_TxnRef", order.getId());
         vnpParamsMap.put("vnp_OrderInfo", "Thanh toán đơn hàng:" + order.getId());
-        //if (bankCode != null && !bankCode.isEmpty()) {
-        //    vnpParamsMap.put("vnp_BankCode", bankCode);
-        //}
         vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
         //Build query url
-        String queryUrl = VNPayUtils.getPaymentURL(vnpParamsMap, true);
-        String hashData = VNPayUtils.getPaymentURL(vnpParamsMap, false);
-        String vnpSecureHash = VNPayUtils.hmacSHA512(vnPayService.getSecretKey(), hashData);
-        queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
+        String queryUrl = vnPayService.generateUrl(vnpParamsMap);
         String paymentUrl = vnPayService.getVnp_PayUrl() + "?" + queryUrl;
 
         return VNPayResponse.builder()
@@ -269,7 +267,6 @@ public class OrderService {
         return new PageImpl<>(orderResponses, pageable, orderPage.getTotalElements());
     }
 
-
     public OrderResponse changeOrderStatus(String id, String statusCodeName) {
 
         log.info(statusCodeName);
@@ -297,6 +294,57 @@ public class OrderService {
                     }
                 } catch (Exception e) {
                     throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
+                }
+            }
+        } else {
+            if (status.getCodeName().equals(completedStatus)) {
+                //Thêm số lượng đã bán cho sản phẩm nếu đơn hàng hoàn tất
+                for (OrderDetail orderDetail : order.getOrderDetails()) {
+                    Product product = orderDetail.getProduct();
+                    product.setSold(product.getSold().add(orderDetail.getQuantity()));
+                    productRepository.save(product);
+                }
+            }
+        }
+        orderRepository.save(order);
+        return toOrderResponse(order, order.getOrderDetails());
+    }
+
+
+    public OrderResponse changeOrderStatus(HttpServletRequest request, String id, String statusCodeName) {
+
+        log.info(statusCodeName);
+        String cancelledStatus = "cancelled";
+        String completedStatus = "completed";
+
+        var order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        var status = statusOrderRepository.findByCodeName(statusCodeName);
+        order.setStatus(status);
+        log.info("Status", status.toString());
+
+        if (status.getCodeName().equals(cancelledStatus)) {
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                Product product = orderDetail.getProduct();
+                //Cập nhật số lượng trong kho
+                product.setStockQuantity(product.getStockQuantity().add(orderDetail.getQuantity()));
+                productRepository.save(product);
+            }
+            //Xử lý refund tiền trên thanh toán điện tử
+            if (order.getPayment() != null && order.getPayment().getStatus() != null && order.getPayment().getStatus() == "Success") {
+                if (order.getPaymentMethod().getCodeName() == "zalopay") {
+                    try {
+                        Boolean response = refundZaloPay(order.getPayment());
+                        if (response != Boolean.TRUE) {
+                            throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
+                        }
+                    } catch (Exception e) {
+                        throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_ZALOPAY);
+                    }
+                } else if (order.getPaymentMethod().getCodeName() == "vnpay") {
+                    Boolean response = refundVNPay(request, order);
+                    if (response != Boolean.TRUE) {
+                        throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_VNPAY);
+                    }
                 }
             }
         } else {
@@ -505,6 +553,39 @@ public class OrderService {
             }
         }
         return urlClient;
+    }
+
+    public Boolean refundVNPay(HttpServletRequest request, Order order) {
+        Map<String, String> vnpParamsMap = vnPayService.getVNPayConfig();
+        vnpParamsMap.put("vnp_Command", "refund");
+        vnpParamsMap.put("vnp_Amount", String.valueOf(order.getPayment().getAmount().multiply(BigDecimal.valueOf(100L)))); // VNPay expects amount in smallest currency unit
+        vnpParamsMap.put("vnp_OrderInfo", "Hoàn tiền cho đơn hàng: " + order.getId());
+        vnpParamsMap.put("vnp_TxnRef", order.getId());
+        vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
+
+        String queryUrl = vnPayService.generateUrl(vnpParamsMap);
+        String refundUrl = vnPayService.getRefundEndpoint() + "?" + queryUrl;
+
+        // Send refund request to VNPay and handle the response
+        try {
+            // Create the HTTP client
+            HttpClient client = HttpClient.newHttpClient();
+
+            // Build the GET request
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(refundUrl))
+                    .GET()
+                    .build();
+
+            // Send the request and get the response
+            HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            // Check for success response code in the response body
+            return response.body().contains("\"vnp_ResponseCode\":\"00\"");
+
+        } catch (IOException | InterruptedException e) {
+            throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_VNPAY);
+        }
     }
 
     public Boolean refundZaloPay(Payment payment) throws IOException {

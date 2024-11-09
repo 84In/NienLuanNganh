@@ -81,9 +81,9 @@ public class OrderController {
         String redirectUrl;
 
         if (vnpResponseCode.equals("00")) {
-            String confirmedStatus = "confirmed";
+            String pendingStatus = "pending";
             String paymentStatus = "Success";
-            OrderResponse orderResponse = orderService.createOrderWithVNPay(order, confirmedStatus, paymentStatus);
+            OrderResponse orderResponse = orderService.createOrderWithVNPay(order, pendingStatus, paymentStatus);
             redirectUrl = clientUrl + "payment-result?status=success&orderId=" + order.getId();
             response.sendRedirect(redirectUrl);
             return ApiResponse.<OrderResponse>builder()
@@ -169,11 +169,12 @@ public class OrderController {
     }
 
     @PutMapping("/change-status/{id}")
-    public ApiResponse<?> changeOrderStatus(@PathVariable("id") String id,
+    public ApiResponse<?> changeOrderStatus(HttpServletRequest request,
+                                            @PathVariable("id") String id,
                                             @RequestParam(name = "status", required = false) String status) {
         return ApiResponse.<OrderResponse>builder()
                 .message("Change order status successfully")
-                .result(orderService.changeOrderStatus(id, status))
+                .result(orderService.changeOrderStatus(request, id, status))
                 .build();
     }
 }

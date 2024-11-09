@@ -11,27 +11,35 @@ const OrderItem = ({ product }) => {
   return (
     <div className="flex flex-col gap-2 rounded-lg border bg-white p-2 shadow-md grid-md:p-4">
       <div className="mb-2 flex flex-col justify-between gap-2 p-2 grid-md:flex-row">
-        {product?.status?.codeName === "pending" ? (
-          <div className={`flex items-center gap-2 text-zinc-700`}>
-            <BiSolidPackage className="h-5 w-5" />
-            <span className="text-sm font-semibold">Chờ xác nhận</span>
-          </div>
-        ) : product?.status?.codeName === "confirmed" ? (
-          <div className={`flex items-center gap-2 text-blue-600`}>
-            <FaShippingFast className="h-5 w-5" />
-            <span className="text-sm font-semibold">Xác nhận</span>
-          </div>
-        ) : product?.status?.codeName === "cancelled" ? (
-          <div className={`flex items-center gap-2 text-red-600`}>
-            <BiBlock className="h-5 w-5" />
-            <span className="text-sm font-semibold">Đã hủy</span>
-          </div>
-        ) : (
-          <div className={`flex items-center gap-2 text-green-600`}>
-            <BiCheckCircle className="h-5 w-5" />
-            <span className="text-sm font-semibold">Hoàn tất</span>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          {product?.status?.codeName === "pending" ? (
+            <div className={`flex items-center gap-2 text-zinc-700`}>
+              <BiSolidPackage className="h-5 w-5" />
+              <span className="text-sm font-semibold">Chờ xác nhận</span>
+            </div>
+          ) : product?.status?.codeName === "confirmed" ? (
+            <div className={`flex items-center gap-2 text-blue-600`}>
+              <FaShippingFast className="h-5 w-5" />
+              <span className="text-sm font-semibold">Xác nhận</span>
+            </div>
+          ) : product?.status?.codeName === "cancelled" ? (
+            <div className={`flex items-center gap-2 text-red-600`}>
+              <BiBlock className="h-5 w-5" />
+              <span className="text-sm font-semibold">Đã hủy</span>
+            </div>
+          ) : (
+            <div className={`flex items-center gap-2 text-green-600`}>
+              <BiCheckCircle className="h-5 w-5" />
+              <span className="text-sm font-semibold">Hoàn tất</span>
+            </div>
+          )}
+          {product?.payment?.status === "Success" && product?.status?.codeName !== "cancelled" && (
+            <>
+              <span className="text-gray-200">|</span>
+              <div className="text-sm text-gray-500"> Đã thanh toán</div>
+            </>
+          )}
+        </div>
         <div className="flex flex-col items-start gap-2 text-sm text-gray-500 grid-md:items-end">
           <p>Mã: {product?.id}</p>
           <p>Ngày đặt hàng: {product?.createdAt?.replace("T", " ")}</p>
