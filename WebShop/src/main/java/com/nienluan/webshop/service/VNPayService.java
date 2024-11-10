@@ -29,9 +29,6 @@ public class VNPayService {
     @Value("${payment.vnpay.version}")
     private String vnp_Version;
     @Getter
-    @Value("${payment.vnpay.command}")
-    private String vnp_Command;
-    @Getter
     @Value("${payment.vnpay.orderType}")
     private String orderType;
     @Getter
@@ -44,7 +41,7 @@ public class VNPayService {
     public Map<String, String> getVNPayConfig() {
         Map<String, String> vnpParamsMap = new HashMap<>();
         vnpParamsMap.put("vnp_Version", this.vnp_Version);
-        vnpParamsMap.put("vnp_Command", this.vnp_Command);
+        vnpParamsMap.put("vnp_Command", "pay");
         vnpParamsMap.put("vnp_TmnCode", this.vnp_TmnCode);
         vnpParamsMap.put("vnp_CurrCode", "VND");
         vnpParamsMap.put("vnp_OrderType", this.orderType);
@@ -57,6 +54,19 @@ public class VNPayService {
         calendar.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(calendar.getTime());
         vnpParamsMap.put("vnp_ExpireDate", vnp_ExpireDate);
+        return vnpParamsMap;
+    }
+
+    public Map<String, String> getRefundVNPayConfig() {
+        Map<String, String> vnpParamsMap = new HashMap<>();
+        vnpParamsMap.put("vnp_Version", this.vnp_Version);
+        vnpParamsMap.put("vnp_Command", "refund");
+        vnpParamsMap.put("vnp_TmnCode", this.vnp_TmnCode);
+        vnpParamsMap.put("vnp_TransactionType", "02");
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnpCreateDate = formatter.format(calendar.getTime());
+        vnpParamsMap.put("vnp_CreateDate", vnpCreateDate);
         return vnpParamsMap;
     }
 
