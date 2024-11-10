@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,9 +25,9 @@ public class Promotion {
     String code;
     String name;
     String description;
-    Integer discountPercentage;
-    LocalDate startDate;
-    LocalDate endDate;
+    Double discountPercentage;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
 
     @ManyToMany(mappedBy = "promotions")
     Set<Product> products = new HashSet<>();

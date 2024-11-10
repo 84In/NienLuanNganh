@@ -41,6 +41,12 @@ public class BannerController {
                 .result(bannerService.getBanner(bannerId))
                 .build();
     }
+    @GetMapping("/title/{title}")
+    public ApiResponse<BannerResponse> getBannerByTitle(@PathVariable String title) {
+        return ApiResponse.<BannerResponse>builder()
+                .result(bannerService.getBannerByTitlte(title))
+                .build();
+    }
 
     @PutMapping("/{bannerId}")
     public ApiResponse<BannerResponse> updateBanner(@PathVariable String bannerId, @RequestBody BannerUpdateRequest request) {

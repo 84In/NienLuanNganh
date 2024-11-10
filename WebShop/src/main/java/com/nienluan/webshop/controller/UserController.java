@@ -31,6 +31,14 @@ public class UserController {
                 .build();
     }
 
+    @PostMapping("/admin")
+    ApiResponse<?> createUserAdmin(@Valid @RequestBody UserCreationRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Success")
+                .result(userService.createUserByAdmin(request))
+                .build();
+    }
+
     @GetMapping
     ApiResponse<?> getAllUser(Pageable pageable) {
         return ApiResponse.<Page<UserResponse>>builder()

@@ -62,6 +62,23 @@ public class UserService {
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
+    public UserResponse createUserByAdmin(UserCreationRequest request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+        if (userRepository.existsByPhone(request.getPhone())) {
+            throw new AppException(ErrorCode.PHONE_EXISTED);
+        }
+        User user = userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Optional<Role> role = roleRepository.findById("ADMIN");
+        Set<Role> roles = new HashSet<>();
+        roles.add(role.stream().findFirst().get());
+        user.setRoles(roles);
+
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
 
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Page<UserResponse> getAllUser(Pageable pageable) {

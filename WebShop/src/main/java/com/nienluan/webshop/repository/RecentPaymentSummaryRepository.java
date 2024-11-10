@@ -13,5 +13,6 @@ public interface RecentPaymentSummaryRepository extends JpaRepository<RecentPaym
     List<RecentPaymentSummary> findByDate(LocalDate date);
 
     // Lấy dữ liệu tổng hợp thanh toán theo phương thức và ngày
+
     Optional<RecentPaymentSummary> findByPaymentMethodIdAndDate(String paymentMethodId, LocalDate date);
 }

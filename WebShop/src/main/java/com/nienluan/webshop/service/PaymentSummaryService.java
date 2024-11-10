@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
@@ -79,8 +80,8 @@ public class PaymentSummaryService {
         LocalDate today = LocalDate.now();
         List<RecentPaymentSummary> summaries = summaryRepository.findByDate(today);
 
-        // Nếu dữ liệu chưa có hoặc đã cũ, cập nhật lại
-        if (summaries.isEmpty()) {
+        // Kiểm tra nếu không có dữ liệu hoặc dữ liệu đã quá 3 giờ
+        if (summaries.isEmpty() || summaries.get(0).getCreatedAt().isBefore(LocalDateTime.now().minusHours(3))) {
             updatePaymentSummary();
             summaries = summaryRepository.findByDate(today);
         }

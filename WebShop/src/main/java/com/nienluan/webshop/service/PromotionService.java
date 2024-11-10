@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +48,7 @@ public class PromotionService {
     public PromotionResponse updatePromotion(String id, PromotionUpdateRequest request) {
         var promotion = promotionRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PROMOTION_NOT_EXISTED));
         promotionMapper.updatePromotion(promotion, request);
-        return promotionMapper.toPromotionResponse(promotion);
+        return promotionMapper.toPromotionResponse(promotionRepository.save(promotion));
     }
 
     public boolean checkCodePromotion(String code) {
@@ -65,7 +66,7 @@ public class PromotionService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void cleanUpExpiredPromotions() {
         log.info("Starting cleanup of expired promotions at 00:00 AM...");
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         var expiredPromotions = promotionRepository.findAll().stream()
                 .filter(promotion -> promotion.getEndDate().isBefore(now))
                 .collect(Collectors.toList());

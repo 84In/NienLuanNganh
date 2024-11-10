@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ public class PromotionResponse {
     String code;
     String name;
     String description;
-    Integer discountPercentage;
-    LocalDate startDate;
-    LocalDate endDate;
+    Double discountPercentage;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
 }

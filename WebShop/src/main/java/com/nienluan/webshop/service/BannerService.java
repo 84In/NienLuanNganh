@@ -35,6 +35,12 @@ public class BannerService {
     public BannerResponse getBanner(String id) {
         return bannerRepository.findById(id).map(bannerMapper::toBannerResponse).orElseThrow(()-> new AppException(ErrorCode.BANNER_NOT_EXISTED));
     }
+    public BannerResponse getBannerByTitlte(String title) {
+        if(!bannerRepository.existsByTitle(title)) {
+            throw new AppException(ErrorCode.BANNER_NOT_EXISTED);
+        }
+        return bannerMapper.toBannerResponse(bannerRepository.findByTitle(title));
+    }
 
     public BannerResponse updateBanner(String id, BannerUpdateRequest request) {
         var banner = bannerRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.BANNER_NOT_EXISTED));

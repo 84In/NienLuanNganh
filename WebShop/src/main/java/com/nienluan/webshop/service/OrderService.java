@@ -473,7 +473,7 @@ public class OrderService {
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 // Kiểm tra nếu thời gian kiểm tra đã vượt quá 15 phút
-                if (System.currentTimeMillis() - apptime > MAX_CHECK_DURATION_MS) {
+                if ((System.currentTimeMillis() - apptime )> MAX_CHECK_DURATION_MS) {
                     logger.info("Thời gian kiểm tra đã vượt quá 15 phút. Dừng kiểm tra trạng thái.");
                     scheduler.shutdown(); // Dừng scheduler
                     return;
@@ -544,6 +544,7 @@ public class OrderService {
         if (status != 1) {
             createOrderWithZaloPay(parts[1], null, "Fail");
             urlClient = String.format(returnUrl, "fail", parts[1]);
+            changeOrderStatus(parts[1], "cancelled");
         } else {
             // Cập nhật trạng thái
             if (status == 1) {

@@ -25,5 +25,4 @@ public class RecentPaymentSummary {
     private BigDecimal totalAmount;
     private Long totalCount;
     private LocalDateTime createdAt;
-
 }

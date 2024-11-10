@@ -14,7 +14,7 @@ public class PromotionUpdateRequest {
     String code;
     String name;
     String description;
-    Integer discountPercentage;
+    Double discountPercentage;
     LocalDate startDate;
     LocalDate endDate;
 }
