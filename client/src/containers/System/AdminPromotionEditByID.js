@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiGetUserById } from "../../services";
-import { AdminUserEdit } from "../../components";
+import { apiGetPromotionById } from "../../services";
+import { path } from "../../utils";
+import { AdminPromotionEdit } from "../../components";
 
-import { path } from "../../utils/constant";
-
-const AdminUserEditByID = () => {
+const AdminPromotionEditByID = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -14,10 +13,12 @@ const AdminUserEditByID = () => {
   useEffect(() => {
     const fetchData = async (id) => {
       try {
-        const response = await apiGetUserById(id);
+        const response = await apiGetPromotionById(id);
+        console.log(response);
+
         setData(response?.result);
       } catch (error) {
-        navigate(path.ADMIN_USER);
+        navigate(path.ADMIN_PROMOTION);
       }
     };
     fetchData(id);
@@ -27,8 +28,7 @@ const AdminUserEditByID = () => {
     // Optionally, you can return a loading indicator or null
     return <div>Loading...</div>; // Or return null;
   }
-
-  return <AdminUserEdit isEdit={true} user={data} />;
+  return <AdminPromotionEdit isEdit={true} promotion={data} />;
 };
 
-export default AdminUserEditByID;
+export default AdminPromotionEditByID;

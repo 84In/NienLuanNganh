@@ -11,7 +11,17 @@ import banner10 from "../assets/images/banner/banner10.png.webp";
 
 import icons from "./icons";
 
-const { BiCreditCard, BiFile, BiGift, BiImage, BiSolidDashboard, BiSolidUserAccount, BiBookHeart, BiCategory } = icons;
+const {
+  BiCreditCard,
+  BiFile,
+  BiGift,
+  BiImage,
+  BiSolidDashboard,
+  BiSolidUserAccount,
+  BiBookHeart,
+  BiCategory,
+  BiMoneyWithdraw,
+} = icons;
 
 const widget1 = require("../assets/images/widget/widget1.png");
 const widget2 = require("../assets/images/widget/widget2.png");
@@ -58,6 +68,12 @@ export const path = {
   ADMIN_REVIEW: "review",
   ADMIN_REVIEW_FILTER: "filter",
   ADMIN_PAYMENT: "payment",
+  ADMIN_PROMOTION: "promotion",
+  ADMIN_PROMOTION_CREATE: "create",
+  ADMIN_PROMOTION_EDIT: "edit/:id",
+  ADMIN_BANNER: "banner",
+  ADMIN_BANNER_CREATE: "create",
+  ADMIN_BANNER_EDIT: "edit/:id",
 };
 
 export const adminSideBar = [
@@ -95,6 +111,11 @@ export const adminSideBar = [
     name: "Quản lý thanh toán",
     path: "payment",
     icon: BiCreditCard,
+  },
+  {
+    name: "Quản lý mã giảm giá",
+    path: "promotion",
+    icon: BiMoneyWithdraw,
   },
   {
     name: "Banner",

@@ -20,6 +20,10 @@ const translationDictionary = {
   Sold: "Đã Bán",
   Category: "Danh Mục",
   Brand: "Thương Hiệu",
+  Code: "Mã giảm giá",
+  DiscountPercentage: "Phần trăm giảm giá",
+  StartDate: "Ngày bắt đầu",
+  EndDate: "Ngày kết thúc",
 };
 
 export const translateColumn = (columnName) => {

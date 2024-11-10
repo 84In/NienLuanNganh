@@ -1,10 +1,12 @@
-import { Button, FormControl, MenuItem, Select, styled, TextField } from "@mui/material";
+import { Alert, Button, FormControl, MenuItem, Select, Snackbar, styled, TextField } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { CloudUploadIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import defaultAvatar from "../../../assets/images/profile.png";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../../store/actions";
+import { apiCreateUserAdmin } from "../../../services";
+import Swal from "sweetalert2";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -32,14 +34,15 @@ const cssField = {
     },
   },
 };
+const CSS_HEADING = "font-bold text-2xl";
 const AdminUserEdit = ({ user }) => {
-  const [role, setRole] = useState("");
-  const { roles, provinces, districts, wards } = useSelector((state) => state.app);
+  const { provinces, districts, wards } = useSelector((state) => state.app);
   const [province, setProvince] = useState("");
   const [district, setDistrict] = useState("");
   const [ward, setWard] = useState("");
   const [dataFullAddress, setDataFullAddress] = useState("");
   const [dataAddress, setDataAddress] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -73,50 +76,77 @@ const AdminUserEdit = ({ user }) => {
   const [data, setData] = useState({
     avatar: null,
     dob: null,
-    email: null,
+    email: "webshopcompany1224@gmail.com",
     firstName: null,
-    id: null,
     lastName: null,
-    phone: null,
-    roles: null,
+    phone: "18001091",
+    roles: ["ADMIN"],
     username: null,
   });
-
-  useEffect(() => {
-    if (user) {
-      setData({
-        avatar: user?.avatar || null,
-        dob: user?.dob || null,
-        email: user?.email || null,
-        firstName: user?.firstName || "",
-        id: user?.id || null,
-        lastName: user?.lastName || "",
-        phone: user?.phone || "",
-        roles: user?.roles || [],
-        username: user?.username || "",
-      });
-    }
-  }, [user]);
-
   const handleChange = (setter) => (event) => {
     setter(event.target.value);
   };
 
-  const handleChangeRole = handleChange(setRole);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  // const handleChangeRole = handleChange(setRole);
   const handleChangeProvince = handleChange(setProvince);
   const handleChangeDistrict = handleChange(setDistrict);
   const handleChangeWard = handleChange(setWard);
   const handleChangeAddress = handleChange(setDataAddress);
 
-  const CSS_HEADING = "font-bold text-2xl";
+  const handleSubmit = async () => {
+    // const isValid = Object.values(data).every((value) => value !== "" && value !== null && value !== undefined);
+    // if (!isValid) {
+    //   setOpenSnackbar(true); // Hiển thị thông báo lỗi nếu không hợp lệ
+    //   return;
+    // }
+
+    const response = await apiCreateUserAdmin(data);
+
+    if (response && response?.code === 0) {
+      // Hiển thị thông báo thành công
+      Swal.fire({
+        title: "Thành công!",
+        text: `Người dùng đã được tạo thành công.`,
+        icon: "success", // Loại thông báo: "success", "error", "warning", "info"
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.history.back(); // Quay lại trang trước
+      });
+    } else {
+      // Hiển thị thông báo lỗi nếu có vấn đề với phản hồi
+      Swal.fire({
+        title: "Lỗi!",
+        text: `Có lỗi xảy ra khi tạo người dùng.`,
+        icon: "error",
+        confirmButtonText: "Thử lại",
+      });
+    }
+  };
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false); // Đóng Snackbar
+  };
+
   return (
     <div className="flex flex-col">
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000} // Tự động ẩn sau 3 giây
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: "top", // Vị trí theo chiều dọc (top là trên cùng)
+          horizontal: "center", // Vị trí theo chiều ngang (center là giữa)
+        }}
+      >
+        <Alert severity="error" onClose={handleCloseSnackbar}>
+          Vui lòng điền đầy đủ tất cả các trường.
+        </Alert>
+      </Snackbar>
       <div className="flex w-full items-center justify-center">
-        {user ? (
-          <span className={CSS_HEADING}>Cập nhật tài khoản</span>
-        ) : (
-          <span className={CSS_HEADING}>Tạo tài khoản mới</span>
-        )}
+        <span className={CSS_HEADING}>Tạo tài khoản mới</span>
       </div>
       <div className="mt-2 flex flex-col items-center justify-center p-2">
         <div className="m-2 w-full rounded-md bg-gray-200 p-2">
@@ -176,13 +206,13 @@ const AdminUserEdit = ({ user }) => {
                     />
                   </Button>
                 </div>
-                <div className="mt-2 flex w-2/3 flex-col items-center justify-center">
+                {/* <div className="mt-2 flex w-2/3 flex-col items-center justify-center">
                   <FormControl className="relative" fullWidth>
                     {!role && <div className="absolute left-3 top-2 z-20">Role:</div>}
                     <Select
                       labelId="role"
                       id="role-select"
-                      value={role ? role : data?.roles && data?.roles.lenth > 0 ? data?.roles[0]?.name : ""}
+                      value={role ? role?.name : data?.roles}
                       // defaultValue={"USER"}
                       size="small"
                       variant="outlined"
@@ -228,7 +258,7 @@ const AdminUserEdit = ({ user }) => {
                         })}
                     </Select>
                   </FormControl>
-                </div>
+                </div> */}
               </Grid2>
               <Grid2 display={"flex"} justifyContent={"start"} alignItems={"center"} item xs={6}>
                 <div className="flex w-2/3 flex-col items-center justify-center gap-4">
@@ -243,6 +273,12 @@ const AdminUserEdit = ({ user }) => {
                       fullWidth
                       className="bg-white"
                       label="Họ"
+                      onChange={(e) => {
+                        setData((prev) => ({
+                          ...prev,
+                          firstName: e.target.value,
+                        }));
+                      }}
                       InputLabelProps={{
                         shrink: true,
                         style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
@@ -260,6 +296,12 @@ const AdminUserEdit = ({ user }) => {
                       fullWidth
                       className="bg-white"
                       label="Tên"
+                      onChange={(e) => {
+                        setData((prev) => ({
+                          ...prev,
+                          lastName: e.target.value,
+                        }));
+                      }}
                       InputLabelProps={{
                         shrink: true,
                         style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
@@ -271,7 +313,13 @@ const AdminUserEdit = ({ user }) => {
                   <TextField
                     name="dob"
                     type="date"
-                    value={data?.dob ? new Date(data.dob).toISOString().slice(0, 10) : ""}
+                    value={data?.dob ? data.dob : ""}
+                    onChange={(e) => {
+                      setData((prev) => ({
+                        ...prev,
+                        dob: e.target.value,
+                      }));
+                    }}
                     variant="outlined"
                     size="small"
                     fullWidth
@@ -294,6 +342,12 @@ const AdminUserEdit = ({ user }) => {
                     fullWidth
                     className="bg-white"
                     label="Tài khoản"
+                    onChange={(e) => {
+                      setData((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }));
+                    }}
                     InputLabelProps={{
                       shrink: true,
                       style: { fontSize: "16px", fontWeight: "bold" }, // Chữ lớn và đậm
@@ -304,6 +358,13 @@ const AdminUserEdit = ({ user }) => {
                   <TextField
                     name="password"
                     type="password"
+                    value={data?.password}
+                    onChange={(e) => {
+                      setData((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }));
+                    }}
                     // defaultValue={data?.password}
                     variant="outlined"
                     size="small"
@@ -537,6 +598,12 @@ const AdminUserEdit = ({ user }) => {
                     size="small"
                     backgroundColor="white"
                     fullWidth
+                    onChange={(e) => {
+                      setData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }));
+                    }}
                     className="bg-white"
                     label="Email"
                     InputLabelProps={{
@@ -549,6 +616,12 @@ const AdminUserEdit = ({ user }) => {
                     name="phoneNumber"
                     type="Phone"
                     value={data?.phone}
+                    onChange={(e) => {
+                      setData((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }));
+                    }}
                     variant="outlined"
                     size="small"
                     backgroundColor="white"
@@ -575,6 +648,7 @@ const AdminUserEdit = ({ user }) => {
           role={undefined}
           variant="contained"
           tabIndex={-1}
+          onClick={handleSubmit}
           sx={{
             backgroundColor: "#5951da", // Màu tùy chỉnh
             color: "#fff", // Màu chữ
@@ -587,7 +661,7 @@ const AdminUserEdit = ({ user }) => {
             },
           }}
         >
-          {user ? "Cập nhật tài khoản" : "Tạo tài khoản"}
+          {"Tạo tài khoản"}
         </Button>
       </div>
     </div>

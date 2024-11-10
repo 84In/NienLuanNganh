@@ -31,6 +31,8 @@ import { useDispatch } from "react-redux";
 const defaultAvatar = require("../../../assets/images/profile.png");
 const TYPE_REMOVE = ["product", "category"];
 const TYPE_CHECK_BOX = ["order", "product"];
+const TYPE_NON_EDIT = ["promotion", "user"];
+const TYPE_HIDE_IMAGES = ["product", "banner"];
 
 const status = (value) => (value === "Success" ? "#76ff03" : "#ff1744");
 
@@ -221,7 +223,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                     {translateColumn(capitalizeFirstLetterIfNeeded(key))}
                   </StyledTableCell>
                 ))}
-              {type !== "payment" && <StyledTableCell>Chỉnh sửa</StyledTableCell>}
+              {!TYPE_NON_EDIT.includes(type) && <StyledTableCell>Chỉnh sửa</StyledTableCell>}
               {TYPE_REMOVE.includes(type) && <StyledTableCell>Xoá</StyledTableCell>}
             </TableRow>
           </TableHead>
@@ -274,7 +276,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       ) : key === "images" ? (
                         <div className="group relative flex w-28 flex-wrap items-center justify-center gap-1 overflow-hidden">
                           {/* Chỉ hiển thị 4 hình ảnh nhỏ */}
-                          {type === "product" ? (
+                          {TYPE_HIDE_IMAGES.includes(type) ? (
                             <Button
                               onClick={() =>
                                 handleOpenDialog(
@@ -374,7 +376,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       )}
                     </StyledTableCell>
                   ))}
-                {type !== "payment" && (
+                {!TYPE_NON_EDIT.includes(type) && (
                   <StyledTableCell align="center">
                     <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${dataItem.id}`}>
                       <BiEdit size={24} />

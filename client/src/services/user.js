@@ -13,7 +13,32 @@ export const apiRegister = (payload) =>
       reject(error);
     }
   });
-
+export const apiCreateUserAdmin = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: `/api/v1/users/admin`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiUpdateUser = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `/api/v1/users/${payload?.id}`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
 export const apiGetUserByUsername = (username) =>
   new Promise(async (resolve, reject) => {
     try {

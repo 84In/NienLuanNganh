@@ -17,6 +17,10 @@ import {
   Search,
 } from "./containers/Public";
 import {
+  AdminBanner,
+  AdminBannerContent,
+  AdminBannerCreate,
+  AdminBannerEditByID,
   AdminBase,
   AdminCategory,
   AdminCategoryContent,
@@ -32,6 +36,10 @@ import {
   AdminProductCreate,
   AdminProductCSV,
   AdminProductEditByID,
+  AdminPromotion,
+  AdminPromotionContent,
+  AdminPromotionCreate,
+  AdminPromotionEditByID,
   AdminReview,
   AdminReviewContent,
   AdminReviewFilter,
@@ -205,6 +213,22 @@ function App() {
             element={<PrivateAdminFilterRouter element={AdminPayment} roles={["ADMIN"]} user={userData} />}
           >
             <Route index element={<AdminPaymentContent />} />
+          </Route>
+          <Route
+            path={path.ADMIN_PROMOTION}
+            element={<PrivateAdminFilterRouter element={AdminPromotion} roles={["ADMIN"]} user={userData} />}
+          >
+            <Route index element={<AdminPromotionContent />} />
+            <Route path={path.ADMIN_PROMOTION_CREATE} element={<AdminPromotionCreate />} />
+            <Route path={path.ADMIN_PROMOTION_EDIT} element={<AdminPromotionEditByID />} />
+          </Route>
+          <Route
+            path={path.ADMIN_BANNER}
+            element={<PrivateAdminFilterRouter element={AdminBanner} roles={["ADMIN"]} user={userData} />}
+          >
+            <Route index element={<AdminBannerContent />} />
+            <Route path={path.ADMIN_BANNER_CREATE} element={<AdminBannerCreate />} />
+            <Route path={path.ADMIN_BANNER_EDIT} element={<AdminBannerEditByID />} />
           </Route>
         </Route>
       </Routes>

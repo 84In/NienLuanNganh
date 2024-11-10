@@ -14,3 +14,4 @@ export * from "./brand";
 export * from "./order";
 export * from "./analytic";
 export * from "./paymentMethod";
+export * from "./promotion";

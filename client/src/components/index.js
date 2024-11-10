@@ -47,3 +47,5 @@ export { default as AdminItemStatus } from "./System/Items/AdminItemStatus";
 export { default as AdminTag } from "./System/Items/AdminTag";
 export { default as PathSeparator } from "./Common/PathSeparator";
 export { default as AdminPolarAreaCharts } from "./System/Items/AdminPolarAreaCharts";
+export { default as AdminPromotionEdit } from "./System/Home/AdminPromotionEdit";
+export { default as AdminBannerEdit } from "./System/Home/AdminBannerEdit";

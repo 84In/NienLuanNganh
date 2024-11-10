@@ -18,6 +18,9 @@ import {
   BiDollar,
   BiCoinStack,
   BiCoin,
+  BiMoneyWithdraw,
+  BiCamera,
+  BiLoader,
 } from "react-icons/bi";
 
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
@@ -52,5 +55,8 @@ const icons = {
   BiCategory,
   BiCoinStack,
   BiCoin,
+  BiMoneyWithdraw,
+  BiCamera,
+  BiLoader,
 };
 export default icons;
