@@ -1,5 +1,7 @@
 package com.nienluan.webshop.service;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.nienluan.webshop.dto.request.OrderDetailRequest;
 import com.nienluan.webshop.dto.request.OrderRequest;
 import com.nienluan.webshop.dto.request.PaymentRequest;
@@ -46,11 +48,14 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -172,11 +177,12 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse createOrderWithVNPay(Order order, String status, String paymentStatus) {
+    public OrderResponse createOrderWithVNPay(HttpServletRequest request, Order order, String status, String paymentStatus) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
         Payment payment = Payment.builder()
-                .amount(order.getTotalAmount())
-                .paymentDate(order.getCreatedAt())
+                .amount(BigDecimal.valueOf(Long.parseLong(request.getParameter("vnp_Amount"))))
+                .paymentDate(LocalDateTime.parse(request.getParameter("vnp_PayDate"), formatter))
                 .status(paymentStatus)
                 .build();
         payment = paymentRepository.save(payment);
@@ -556,32 +562,34 @@ public class OrderService {
     }
 
     public Boolean refundVNPay(HttpServletRequest request, Order order) {
-        Map<String, String> vnpParamsMap = vnPayService.getVNPayConfig();
-        vnpParamsMap.put("vnp_Command", "refund");
-        vnpParamsMap.put("vnp_Amount", String.valueOf(order.getPayment().getAmount().multiply(BigDecimal.valueOf(100L)))); // VNPay expects amount in smallest currency unit
+        Map<String, String> vnpParamsMap = vnPayService.getRefundVNPayConfig();
+        vnpParamsMap.put("vnp_Amount", String.valueOf(order.getPayment().getAmount().multiply(BigDecimal.valueOf(100L))));
         vnpParamsMap.put("vnp_OrderInfo", "Hoàn tiền cho đơn hàng: " + order.getId());
         vnpParamsMap.put("vnp_TxnRef", order.getId());
+
+        // Set transaction date in GMT+7 timezone
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+        String vnpTransactionDate = formatter.format(order.getPayment().getPaymentDate());
+        vnpParamsMap.put("vnp_TransactionDate", vnpTransactionDate);
+
+        vnpParamsMap.put("vnp_CreateBy", order.getUser().getUsername());
         vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
 
         String queryUrl = vnPayService.generateUrl(vnpParamsMap);
         String refundUrl = vnPayService.getRefundEndpoint() + "?" + queryUrl;
 
-        // Send refund request to VNPay and handle the response
         try {
-            // Create the HTTP client
             HttpClient client = HttpClient.newHttpClient();
-
-            // Build the GET request
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(refundUrl))
                     .GET()
                     .build();
-
-            // Send the request and get the response
             HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            // Check for success response code in the response body
-            return response.body().contains("\"vnp_ResponseCode\":\"00\"");
+            // Parse the response JSON to check vnp_ResponseCode
+            JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
+            return "00".equals(jsonResponse.get("vnp_ResponseCode").getAsString());
 
         } catch (IOException | InterruptedException e) {
             throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_VNPAY);
