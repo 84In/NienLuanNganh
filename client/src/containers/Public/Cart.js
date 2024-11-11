@@ -114,8 +114,9 @@ const Cart = ({ setIsModelLogin }) => {
                   onChange={(e) => handleSelectAll(e.target.checked)}
                   checked={
                     cart?.cartDetails &&
-                    cart?.cartDetails.length !== 0 &&
-                    selectedItems?.length === cart.cartDetails.filter((item) => item.product.stockQuantity > 0).length
+                    cart?.cartDetails?.length !== 0 &&
+                    selectedItems?.length !== 0 &&
+                    selectedItems?.length === cart?.cartDetails?.filter((item) => item.product.stockQuantity > 0).length
                   }
                 />
               </div>
