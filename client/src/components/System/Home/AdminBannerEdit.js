@@ -180,7 +180,7 @@ const AdminBannerEdit = ({ isEdit, banner }) => {
                       style={{ display: "flex", flexWrap: "wrap" }}
                       className="w-full rounded-md border border-dashed bg-white"
                     >
-                      {!(images?.length > 0) && (
+                      {!(images?.length > 0 || payload?.images) && (
                         <span className="flex h-44 w-full items-center justify-center">
                           <BiCamera size={56} />
                         </span>
