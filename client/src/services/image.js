@@ -41,3 +41,16 @@ export const apiUploadCategoryImages = (categoryName, formData) =>
       reject(error);
     }
   });
+export const apiUploadBannerImages = (titleBanner, formData) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: `/api/v1/upload/banner/${titleBanner}`,
+        data: formData,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

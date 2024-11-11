@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import axiosConfig from "../../../axiosConfig";
 import * as actions from "../../../store/actions";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import icons from "../../../utils/icons";
 import { capitalizeFirstLetterIfNeeded, formatCurrency, formatDate } from "../../../utils/format";
@@ -33,6 +33,7 @@ const TYPE_REMOVE = ["product", "category"];
 const TYPE_CHECK_BOX = ["order", "product"];
 const TYPE_NON_EDIT = ["promotion", "user"];
 const TYPE_HIDE_IMAGES = ["product", "banner"];
+const TYPE_CENTER_COL = ["payment", "banner"];
 
 const status = (value) => (value === "Success" ? "#76ff03" : "#ff1744");
 
@@ -244,8 +245,11 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                   .map((key, index) => (
                     <StyledTableCell
                       key={index}
-                      align={type === "payment" ? "center" : "left"}
-                      sx={{ color: key === "status" ? status(dataItem[key]) : "inherit" }}
+                      align={TYPE_CENTER_COL.includes(type) ? "center" : "left"}
+                      sx={{
+                        textAlign: "center",
+                        color: key === "status" ? status(dataItem[key]) : "inherit",
+                      }}
                     >
                       {key === "roles" ? (
                         dataItem[key].map((role) => role.name).join(", ")
@@ -274,8 +278,9 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                       ) : key === "address" ? (
                         dataItem[key]?.fullName
                       ) : key === "images" ? (
-                        <div className="group relative flex w-28 flex-wrap items-center justify-center gap-1 overflow-hidden">
-                          {/* Chỉ hiển thị 4 hình ảnh nhỏ */}
+                        <div
+                          className={`group relative flex w-full flex-wrap items-center justify-center gap-1 overflow-hidden`}
+                        >
                           {TYPE_HIDE_IMAGES.includes(type) ? (
                             <Button
                               onClick={() =>
@@ -377,14 +382,14 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                     </StyledTableCell>
                   ))}
                 {!TYPE_NON_EDIT.includes(type) && (
-                  <StyledTableCell align="center">
+                  <StyledTableCell alignItems="center">
                     <NavLink className={"text-primary-color underline-offset-1"} to={`edit/${dataItem.id}`}>
                       <BiEdit size={24} />
                     </NavLink>
                   </StyledTableCell>
                 )}
                 {TYPE_REMOVE.includes(type) && (
-                  <StyledTableCell align="center">
+                  <StyledTableCell align="center" sx={{ textAlign: "center" }}>
                     <button
                       className={"text-primary-color underline-offset-1"}
                       onClick={() => handleRemoveValue(dataItem.id)}

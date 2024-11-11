@@ -189,8 +189,6 @@ const AdminProductEdit = ({ product, isEdit }) => {
     var brand_id = data?.brand?.id || valueBrand?.id;
     var promotions = data?.promotions;
 
-    console.log(name && category_id);
-
     if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity) {
       if (!isEdit) {
         // Upload ảnh
