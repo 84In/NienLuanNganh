@@ -11,30 +11,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+@Getter
 @Configuration
 public class VNPayService {
-    @Getter
     @Value("${payment.vnpay.url}")
     private String vnp_PayUrl;
-    @Getter
     @Value("${payment.vnpay.returnUrl}")
     private String vnp_ReturnUrl;
-    @Getter
     @Value("${payment.vnpay.tmnCode}")
     private String vnp_TmnCode;
-    @Getter
     @Value("${payment.vnpay.hashSecret}")
     private String secretKey;
-    @Getter
     @Value("${payment.vnpay.version}")
     private String vnp_Version;
-    @Getter
     @Value("${payment.vnpay.orderType}")
     private String orderType;
-    @Getter
     @Value("${payment.vnpay.query.endpoint}")
     private String queryEndpoint;
-    @Getter
     @Value("${payment.vnpay.refund.endpoint}")
     private String refundEndpoint;
 
