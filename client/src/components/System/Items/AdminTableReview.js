@@ -50,7 +50,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const AdminTableReview = ({ data, pagination }) => {
-  return !data ? (
+  return !data || data.length <= 0 ? (
     <div>No data available</div>
   ) : (
     <div className="flex w-full flex-col items-center justify-center">
