@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Button, FormControl, InputLabel, MenuItem, Pagination, Rating, Select, Typography } from "@mui/material";
+import { Box, Button, FormControl, InputLabel, MenuItem, Rating, Select, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import icons from "../../utils/icons";
-import { AdminItemAutoSelect, AdminTable, Loading } from "../../components";
+import { AdminItemAutoSelect, AdminTableReview, Pagination } from "../../components";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import { usePagination } from "../../hooks";
 import { useNavigate } from "react-router-dom";
@@ -30,11 +30,7 @@ const AdminReviewFilter = () => {
   const [rating, setRating] = useState("");
   const url = "/api/v1/reviews/filter";
   const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(url, 0);
-
-  const [valueData, setValueData] = useState("");
-  const [isLoading, setIsLoading] = useState(loading);
-  const [totalPage, setTotalPage] = useState(totalPages);
+    usePagination(url);
 
   const [optionUsers, setOptionUsers] = useState([]);
   const [valueUser, setValueUser] = useState("");
@@ -44,16 +40,6 @@ const AdminReviewFilter = () => {
   const debouncedValueUser = useDebounce(valueUser, 300);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(data);
-
-    setValueData(data);
-  }, [data]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   const handleRatingChange = (event) => {
     setRating(event.target.value);
@@ -79,9 +65,9 @@ const AdminReviewFilter = () => {
     }
   };
 
-  //   useEffect(() => {
-
-  //   }, [valueUser]);
+  useEffect(() => {
+    handleFilter();
+  }, [user, product, rating]);
 
   useEffect(() => {
     const fetchDataProduct = async (keyword) => {
@@ -116,9 +102,22 @@ const AdminReviewFilter = () => {
   // Hàm lọc (có thể thêm logic cho hàm này)
   const handleFilter = () => {
     const updatedParams = new URLSearchParams();
-    if (user) updatedParams.set("userId", user?.id);
-    if (product) updatedParams.set("productId", product?.id);
-    if (rating) updatedParams.set("rating", rating);
+    console.log("rating", rating);
+    if (user && user !== "") {
+      updatedParams.set("userId", user?.id);
+    } else {
+      updatedParams.delete("userId");
+    }
+    if (product && product !== "") {
+      updatedParams.set("productId", product?.id);
+    } else {
+      updatedParams.delete("productId");
+    }
+    if (rating && rating !== "") {
+      updatedParams.set("rating", rating);
+    } else {
+      updatedParams.delete("rating");
+    }
     navigate(`?${updatedParams.toString()}`);
   };
   return (
@@ -173,9 +172,9 @@ const AdminReviewFilter = () => {
         </FormControl>
 
         {/* Button để lọc */}
-        <Button variant="contained" color="primary" onClick={handleFilter}>
+        {/* <Button variant="contained" color="primary" onClick={handleFilter}>
           Lọc
-        </Button>
+        </Button> */}
       </Box>
       {/* Hiển thị giá trị bộ lọc đã chọn */}
       {(user !== "" || product !== "" || rating !== "") && (
@@ -198,21 +197,15 @@ const AdminReviewFilter = () => {
           </StyledTypography>
         </Box>
       )}
-      <Box marginTop={2} className={"flex items-center gap-2"}>
-        <AdminTable
-          data={valueData}
-          setValueData={setValueData}
-          setLoading={setIsLoading}
-          setTotalPage={setTotalPage}
-          currentPage={currentPage}
-          type={"review"}
-          url={url}
+      <Box marginTop={2} className={"flex items-center justify-center"}>
+        <AdminTableReview
+          data={data}
           pagination={
             <Grid2 item xs={12}>
               <Pagination
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
-                totalPages={totalPage}
+                totalPages={totalPages}
                 nextPage={nextPage}
                 prevPage={prevPage}
                 hasNextPage={hasNextPage}

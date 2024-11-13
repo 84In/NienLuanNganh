@@ -49,3 +49,4 @@ export { default as PathSeparator } from "./Common/PathSeparator";
 export { default as AdminPolarAreaCharts } from "./System/Items/AdminPolarAreaCharts";
 export { default as AdminPromotionEdit } from "./System/Home/AdminPromotionEdit";
 export { default as AdminBannerEdit } from "./System/Home/AdminBannerEdit";
+export { default as AdminTableReview } from "./System/Items/AdminTableReview";

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axiosConfig from "../../../axiosConfig";
 import {
   Box,
   Button,
@@ -52,9 +51,6 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
   };
 
   // Check if data exists
-  if (data == null || data.length === 0) {
-    return <div>No data available</div>;
-  }
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -238,162 +234,173 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
           Xác nhận các đơn hàng đã chọn
         </Button>
       )}
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              {TYPE_CHECK_BOX.includes(type) && (
-                <StyledTableCell padding="checkbox">
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox
-                      indeterminate={selectedRows.length > 0 && selectedRows.length < data.length}
-                      checked={data.length > 0 && selectedRows.length === data.length}
-                      onChange={handleSelectAllClick}
-                      sx={{
-                        color: "white",
-                        "&.Mui-checked": {
-                          color: "blue",
-                        },
-                        "&.MuiCheckbox-indeterminate": {
-                          color: "blue",
-                        },
-                      }}
-                    />
-                  </Box>
-                </StyledTableCell>
-              )}
-              <StyledTableCell align="center">Mã Đơn Hàng</StyledTableCell>
-              <StyledTableCell align="center">Ngày tạo đơn</StyledTableCell>
-              <StyledTableCell align="center">Khách hàng</StyledTableCell>
-              <StyledTableCell align="center">Số điện thoại</StyledTableCell>
-              <StyledTableCell align="center">Địa chỉ</StyledTableCell>
-              <StyledTableCell align="center">Sản phẩm</StyledTableCell>
-              <StyledTableCell align="center">
-                Hình thức <br /> thanh toán
-              </StyledTableCell>
-              <StyledTableCell align="center">Tổng tiền</StyledTableCell>
-              <StyledTableCell align="center">Trạng thái</StyledTableCell>
-              <StyledTableCell align="center">Hành động</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((dataItem, index) => (
-              <StyledTableRow key={index} selected={isSelected}>
-                {TYPE_CHECK_BOX.includes(type) && (
-                  <StyledTableCell padding="checkbox">
-                    <Checkbox checked={isSelected(dataItem.id)} onChange={(event) => handleClick(event, dataItem.id)} />
+      {!data || data.length <= 0 ? (
+        <div>No data available</div>
+      ) : (
+        <>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  {TYPE_CHECK_BOX.includes(type) && (
+                    <StyledTableCell padding="checkbox">
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Checkbox
+                          indeterminate={selectedRows.length > 0 && selectedRows.length < data.length}
+                          checked={data.length > 0 && selectedRows.length === data.length}
+                          onChange={handleSelectAllClick}
+                          sx={{
+                            color: "white",
+                            "&.Mui-checked": {
+                              color: "blue",
+                            },
+                            "&.MuiCheckbox-indeterminate": {
+                              color: "blue",
+                            },
+                          }}
+                        />
+                      </Box>
+                    </StyledTableCell>
+                  )}
+                  <StyledTableCell align="center">Mã Đơn Hàng</StyledTableCell>
+                  <StyledTableCell align="center">Ngày tạo đơn</StyledTableCell>
+                  <StyledTableCell align="center">Khách hàng</StyledTableCell>
+                  <StyledTableCell align="center">Số điện thoại</StyledTableCell>
+                  <StyledTableCell align="center">Địa chỉ</StyledTableCell>
+                  <StyledTableCell align="center">Sản phẩm</StyledTableCell>
+                  <StyledTableCell align="center">
+                    Hình thức <br /> thanh toán
                   </StyledTableCell>
-                )}
-                <StyledTableCell align="left">{dataItem?.id}</StyledTableCell>
-                <StyledTableCell align="left">{formatDate(dataItem?.createdAt)}</StyledTableCell>
-                <StyledTableCell align="left">{dataItem?.recipient?.fullName}</StyledTableCell>
-                <StyledTableCell align="left">{dataItem?.recipient?.phone}</StyledTableCell>
-                <StyledTableCell align="left">{dataItem?.recipient?.address}</StyledTableCell>
-                <StyledTableCell align="left">
-                  <Button onClick={() => handleOpenDialog(dataItem?.orderDetails)}>Chi tiết</Button>
-                </StyledTableCell>
-                <StyledTableCell align="center">{dataItem?.paymentMethod?.name}</StyledTableCell>
-                <StyledTableCell align="center">{formatCurrency(dataItem?.totalAmount)}</StyledTableCell>
-                <StyledTableCell align="left">
-                  <AdminItemStatus
-                    color={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.color}
-                    title={dataItem?.status?.name}
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <AdminButtonAccept
-                    color={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.color}
-                    title={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.action}
-                    func={() => handleAcceptOrder(dataItem.id)}
-                  />
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {pagination}
-      {selectedProduct && (
-        <Dialog
-          open={open}
-          onClose={handleCloseDialog}
-          className="flex items-center justify-center justify-items-center"
-          fullWidth={true}
-          maxWidth="lg"
-        >
-          <DialogTitle>Chi tiết sản phẩm</DialogTitle>
-          <DialogContent>
-            <TableContainer component={Paper}>
-              <TableContainer sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Tên sản phẩm</TableCell>
-                    <TableCell align="center">Loại sản phẩm</TableCell>
-                    <TableCell align="center">Thương hiệu</TableCell>
-                    <TableCell align="center">Số lượng</TableCell>
-                    <TableCell align="center">Giá Gốc</TableCell>
-                    <TableCell align="center">Giảm giá</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {selectedProduct.map((item, idx) => (
-                    <TableRow key={idx}>
-                      <TableCell align="left">{item?.product?.name}</TableCell>
-                      <TableCell align="left">{item?.product?.category?.name}</TableCell>
-                      <TableCell align="left">{item?.product?.brand?.name}</TableCell>
-                      <TableCell align="center">{item?.quantity}</TableCell>
-                      <TableCell align="right">{formatCurrency(item?.product?.price)}</TableCell>
-                      <TableCell align="right">{formatCurrency(item?.product?.price - item?.priceAtTime)}</TableCell>
-                    </TableRow>
-                  ))}
-                  <TableRow>
-                    <TableCell rowSpan={3} colSpan={2} />
+                  <StyledTableCell align="center">Tổng tiền</StyledTableCell>
+                  <StyledTableCell align="center">Trạng thái</StyledTableCell>
+                  <StyledTableCell align="center">Hành động</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((dataItem, index) => (
+                  <StyledTableRow key={index} selected={isSelected}>
+                    {TYPE_CHECK_BOX.includes(type) && (
+                      <StyledTableCell padding="checkbox">
+                        <Checkbox
+                          checked={isSelected(dataItem.id)}
+                          onChange={(event) => handleClick(event, dataItem.id)}
+                        />
+                      </StyledTableCell>
+                    )}
+                    <StyledTableCell align="left">{dataItem?.id}</StyledTableCell>
+                    <StyledTableCell align="left">{formatDate(dataItem?.createdAt)}</StyledTableCell>
+                    <StyledTableCell align="left">{dataItem?.recipient?.fullName}</StyledTableCell>
+                    <StyledTableCell align="left">{dataItem?.recipient?.phone}</StyledTableCell>
+                    <StyledTableCell align="left">{dataItem?.recipient?.address}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      <Button onClick={() => handleOpenDialog(dataItem?.orderDetails)}>Chi tiết</Button>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{dataItem?.paymentMethod?.name}</StyledTableCell>
+                    <StyledTableCell align="center">{formatCurrency(dataItem?.totalAmount)}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      <AdminItemStatus
+                        color={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.color}
+                        title={dataItem?.status?.name}
+                      />
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <AdminButtonAccept
+                        color={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.color}
+                        title={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.action}
+                        func={() => handleAcceptOrder(dataItem.id)}
+                      />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {pagination}
+          {selectedProduct && (
+            <Dialog
+              open={open}
+              onClose={handleCloseDialog}
+              className="flex items-center justify-center justify-items-center"
+              fullWidth={true}
+              maxWidth="lg"
+            >
+              <DialogTitle>Chi tiết sản phẩm</DialogTitle>
+              <DialogContent>
+                <TableContainer component={Paper}>
+                  <TableContainer sx={{ minWidth: 700 }} aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Tên sản phẩm</TableCell>
+                        <TableCell align="center">Loại sản phẩm</TableCell>
+                        <TableCell align="center">Thương hiệu</TableCell>
+                        <TableCell align="center">Số lượng</TableCell>
+                        <TableCell align="center">Giá Gốc</TableCell>
+                        <TableCell align="center">Giảm giá</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {selectedProduct.map((item, idx) => (
+                        <TableRow key={idx}>
+                          <TableCell align="left">{item?.product?.name}</TableCell>
+                          <TableCell align="left">{item?.product?.category?.name}</TableCell>
+                          <TableCell align="left">{item?.product?.brand?.name}</TableCell>
+                          <TableCell align="center">{item?.quantity}</TableCell>
+                          <TableCell align="right">{formatCurrency(item?.product?.price)}</TableCell>
+                          <TableCell align="right">
+                            {formatCurrency(item?.product?.price - item?.priceAtTime)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow>
+                        <TableCell rowSpan={3} colSpan={2} />
 
-                    <TableCell colSpan={3} align="left">
-                      Thành tiền
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatCurrency(
-                        selectedProduct?.reduce((accumulator, item) => {
-                          return accumulator + item?.product?.price;
-                        }, 0),
-                      )}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={3} align="left">
-                      Tổng tiền giảm
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatCurrency(
-                        selectedProduct?.reduce((accumulator, item) => {
-                          return accumulator + (item?.product?.price - item?.priceAtTime);
-                        }, 0),
-                      )}
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell colSpan={3} align="left">
-                      Tổng thành tiền
-                    </TableCell>
-                    <TableCell align="right">
-                      {formatCurrency(
-                        selectedProduct?.reduce((accumulator, item) => {
-                          return accumulator + item?.priceAtTime;
-                        }, 0),
-                      )}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </TableContainer>
-            </TableContainer>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              Đóng
-            </Button>
-          </DialogActions>
-        </Dialog>
+                        <TableCell colSpan={3} align="left">
+                          Thành tiền
+                        </TableCell>
+                        <TableCell align="right">
+                          {formatCurrency(
+                            selectedProduct?.reduce((accumulator, item) => {
+                              return accumulator + item?.product?.price;
+                            }, 0),
+                          )}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={3} align="left">
+                          Tổng tiền giảm
+                        </TableCell>
+                        <TableCell align="right">
+                          {formatCurrency(
+                            selectedProduct?.reduce((accumulator, item) => {
+                              return accumulator + (item?.product?.price - item?.priceAtTime);
+                            }, 0),
+                          )}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={3} align="left">
+                          Tổng thành tiền
+                        </TableCell>
+                        <TableCell align="right">
+                          {formatCurrency(
+                            selectedProduct?.reduce((accumulator, item) => {
+                              return accumulator + item?.priceAtTime;
+                            }, 0),
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </TableContainer>
+                </TableContainer>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                  Đóng
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
+        </>
       )}
     </div>
   );

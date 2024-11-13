@@ -48,6 +48,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     maxWidth: "150px",
+    padding: "4px 8px",
     transition: "all 0.3s ease",
     "&:hover": {
       whiteSpace: "normal",
@@ -253,7 +254,11 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                     >
                       {key === "roles" ? (
                         dataItem[key].map((role) => role.name).join(", ")
-                      ) : key === "createdAt" || key === "updatedAt" || key === "paymentDate" ? (
+                      ) : key === "createdAt" ||
+                        key === "updatedAt" ||
+                        key === "paymentDate" ||
+                        key === "startDate" ||
+                        key === "endDate" ? (
                         formatDate(dataItem[key])
                       ) : key === "dob" ? (
                         formatDate(dataItem[key])

@@ -1,30 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { usePagination } from "../../hooks";
-import { AdminTable, Loading, Pagination } from "../../components";
+import { AdminTableReview, Loading, Pagination } from "../../components";
 import Grid2 from "@mui/material/Unstable_Grid2";
 
 const AdminReviewContent = () => {
   const url = "/api/v1/reviews/filter";
   const { data, currentPage, setCurrentPage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
-    usePagination(url, 0);
+    usePagination(url);
 
-  const [valueData, setValueData] = useState("");
   const [isLoading, setIsLoading] = useState(loading);
   const [totalPage, setTotalPage] = useState(totalPages);
-
-  useEffect(() => {
-    console.log(data);
-
-    setValueData(data);
-  }, [data]);
 
   if (isLoading) {
     return <Loading />;
   }
   return (
-    <AdminTable
-      data={valueData}
-      setValueData={setValueData}
+    <AdminTableReview
+      data={data}
       setLoading={setIsLoading}
       setTotalPage={setTotalPage}
       currentPage={currentPage}
