@@ -31,7 +31,7 @@ import { useDispatch } from "react-redux";
 const defaultAvatar = require("../../../assets/images/profile.png");
 const TYPE_REMOVE = ["product", "category"];
 const TYPE_CHECK_BOX = ["order", "product"];
-const TYPE_NON_EDIT = ["promotion", "user"];
+const TYPE_NON_EDIT = ["promotion", "user", "payment"];
 const TYPE_HIDE_IMAGES = ["product", "banner"];
 const TYPE_CENTER_COL = ["payment", "banner"];
 

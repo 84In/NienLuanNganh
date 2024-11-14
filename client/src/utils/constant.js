@@ -244,7 +244,7 @@ export const paymentMethods = [
 export const orderStatus = [
   { name: "Tất cả", codeName: "" },
   { name: "Chờ xác nhận", codeName: "pending", color: "#2DCCFF", status: true, action: "Xác nhận" },
-  { name: "Xác nhận", codeName: "confirmed", color: "#FFB302", status: true, action: "Đã xác nhận" },
+  { name: "Xác nhận", codeName: "confirmed", color: "#FFB302", status: true, action: "Hoàn tất" },
   { name: "Đã hủy", codeName: "cancelled", color: "#FF3838", status: false },
   { name: "Hoàn tất", codeName: "completed", color: "#56F000", status: false },
 ];

@@ -182,7 +182,7 @@ const AdminBase = ({ user }) => {
             style={{ padding: "16px", height: "100%" }}
           >
             <Typography variant="h6" align="center">
-              Phương thức thanh toán 7 ngày qua
+              Các phương thức thanh toán hôm nay
             </Typography>
             <div className="flex w-full items-center justify-center">
               <AdminPolarAreaCharts valueData={valuePaymentList} label={labelPaymentList} />

@@ -6,7 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "t_banner_images")
+@Table(name = "t_banner")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -24,6 +24,9 @@ const translationDictionary = {
   DiscountPercentage: "Phần trăm giảm giá",
   StartDate: "Ngày bắt đầu",
   EndDate: "Ngày kết thúc",
+  PaymentDate: "Ngày thanh toán",
+  Amount: "Tiền thanh toán",
+  Status: "Trạng thái",
 };
 
 export const translateColumn = (columnName) => {
