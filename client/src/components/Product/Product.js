@@ -4,7 +4,7 @@ import React, { memo } from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 
-const Product = ({ title, products }) => {
+const Product = ({ title, products, readMore }) => {
   return (
     <Box
       sx={{
@@ -17,7 +17,12 @@ const Product = ({ title, products }) => {
         height: "fit-content",
       }}
     >
-      <h2 className="mb-4 px-2 text-lg font-semibold text-rose-500">{title}</h2>
+      <div className="mb-4 flex justify-between px-2">
+        <h2 className="text-lg font-semibold text-rose-500">{title}</h2>
+        <Link to={readMore} className="text-sm hover:text-blue-500 hover:underline">
+          Xem chi tiết
+        </Link>
+      </div>
       <Grid2 container spacing={1}>
         {products?.slice(0, 6 * 2).map((product, index) => (
           <Grid2 item xs={6} sm={4} md={3} lg={2.4} key={index}>

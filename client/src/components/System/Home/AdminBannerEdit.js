@@ -27,13 +27,13 @@ const AdminBannerEdit = ({ isEdit, banner }) => {
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
-    const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+    const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
     const validFiles = files.filter((file) => validImageTypes.includes(file.type));
 
     if (validFiles.length > 0) {
       setImages((prevImages) => [...prevImages, ...validFiles]);
     } else {
-      setErrorInput("Vui lòng chỉ tải lên các tệp hình ảnh hợp lệ (jpeg, jpg, png, gif).");
+      setErrorInput("Vui lòng chỉ tải lên các tệp hình ảnh hợp lệ (jpeg, jpg, png, gif, webp)");
       setOpenSnackbar(true);
     }
   };

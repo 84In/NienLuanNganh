@@ -23,7 +23,9 @@ const ReviewItem = ({ review }) => {
         </div>
         <Rating value={review?.rating} precision={1} size="medium" readOnly />
       </div>
-      <div className="whitespace-pre-line break-words rounded-lg border bg-white p-2">{review?.comment}</div>
+      {review?.comment && (
+        <div className="whitespace-pre-line break-words rounded-lg border bg-white p-2">{review?.comment}</div>
+      )}
       <div className="w-full text-right text-xs text-gray-500">{`Ngày: ${new Date(review?.createdAt).toLocaleDateString()}`}</div>
     </Box>
   );

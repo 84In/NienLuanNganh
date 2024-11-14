@@ -5,10 +5,12 @@ import { BannerCarousel, FilterContainer } from "../../components";
 import { usePaginationMore } from "../../hooks";
 import { minAndMaxPrice } from "../../utils";
 import { bannerFilter } from "../../utils/constant";
+import { apiGetBannerByTitle } from "../../services";
 
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+  const [searchBanner, setSearchBanner] = useState();
   const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "");
   const [sortDirection, setSortDirection] = useState(searchParams.get("sortDirection") || "");
   const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
@@ -20,6 +22,17 @@ const Search = () => {
   const [urlApi, setUrlApi] = useState(`/api/v1/search/products${location.search}`);
 
   const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 20, 10);
+
+  useEffect(() => {
+    const fetchBanner = async () => {
+      const response = await apiGetBannerByTitle("search");
+      if (response?.code === 0) {
+        setSearchBanner(response?.result);
+        console.log(response);
+      }
+    };
+    fetchBanner();
+  }, []);
 
   // Update searchValue when searchParams change
   useEffect(() => {
@@ -67,7 +80,7 @@ const Search = () => {
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
       <Grid2 item xs={12}>
-        <BannerCarousel data={bannerFilter} slide={3} />
+        <BannerCarousel data={searchBanner} slide={3} />
       </Grid2>
       <Grid2 item container xs={12} gap={2}>
         <Grid2 item xs={12}>

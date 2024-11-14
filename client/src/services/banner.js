@@ -26,3 +26,16 @@ export const apiGetBannerById = (id) =>
       reject(error);
     }
   });
+
+export const apiGetBannerByTitle = (title) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/api/v1/banners/title/${title}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { React, memo } from "react";
+import { React, memo, useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
@@ -88,6 +88,16 @@ function BannerCarousel({ data, slide }) {
       },
     ],
   };
+
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const newImages = data?.images ? JSON.parse(data?.images.replace(/'/g, '"')) : [];
+    setImages(newImages);
+  }, [data]);
+
+  console.log(images);
+
   return (
     <Box
       sx={{
@@ -101,13 +111,25 @@ function BannerCarousel({ data, slide }) {
         height: "fit-content",
       }}
     >
-      <Slider {...settings}>
-        {data.map((item, index) => (
-          <div key={index} className="px-2">
-            <img src={item.image} alt={item.title} className="h-auto w-full rounded-lg" />
-          </div>
-        ))}
-      </Slider>
+      {images && (
+        <Slider {...settings}>
+          {images.map((item, index) => (
+            <div key={index} className="px-2">
+              <img
+                src={
+                  item.startsWith("https://")
+                    ? item
+                    : (process.env.NODE_ENV === "production"
+                        ? process.env.REACT_APP_SERVER_URL_PROD
+                        : process.env.REACT_APP_SERVER_URL_DEV) + item
+                }
+                alt={item.title}
+                className="h-auto w-full rounded-lg"
+              />
+            </div>
+          ))}
+        </Slider>
+      )}
     </Box>
   );
 }

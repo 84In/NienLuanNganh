@@ -79,6 +79,7 @@ const FilterSideBar = ({ brands, brandFilter, priceFilter, setBrandFilter, setPr
             </div>
           </div>
         )}
+        <h1 className="p-1 text-center text-lg font-semibold">Lọc</h1>
         {brands && brands.length > 0 && (
           <>
             <p className="mb-2 font-semibold">Thương hiệu</p>

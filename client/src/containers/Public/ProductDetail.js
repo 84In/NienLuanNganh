@@ -6,7 +6,7 @@ import { usePaginationMore } from "../../hooks";
 import { useLocation } from "react-router-dom";
 
 const ProductDetail = ({ setIsModelLogin }) => {
-  const [quantity, setQuantity] = useState(1); //Value khoi dau la 1!
+  const [quantity, setQuantity] = useState(0);
   const location = useLocation();
   const [product, setProduct] = useState(null);
   const [alert, setAlert] = useState("");
@@ -40,6 +40,7 @@ const ProductDetail = ({ setIsModelLogin }) => {
     if (product && productId) {
       const baseUrl = `/api/v1/search/products?search=${product?.category?.name}&sortBy=sold&sortDirection=desc`;
       setUrlApi(baseUrl);
+      setQuantity(product?.stockQuantity ? 1 : 0);
     }
   }, [product, productId]);
 

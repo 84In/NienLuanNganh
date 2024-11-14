@@ -4,7 +4,7 @@ import React, { memo, useEffect, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { BannerCarousel, FilterContainer, FilterSideBar, PaginationMore, ProductCard } from "../../components";
 import { usePaginationMore } from "../../hooks";
-import { apiGetBrandByCategory } from "../../services";
+import { apiGetBannerByTitle, apiGetBrandByCategory } from "../../services";
 import { minAndMaxPrice } from "../../utils";
 import { bannerFilter } from "../../utils/constant";
 
@@ -20,8 +20,20 @@ const Filter = () => {
 
   const [brandFilter, setBrandFilter] = useState([]);
   const [priceFilter, setPriceFilter] = useState([]);
+  const [searchBanner, setSearchBanner] = useState();
 
   const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 15, 10);
+
+  useEffect(() => {
+    const fetchBanner = async () => {
+      const response = await apiGetBannerByTitle("search");
+      if (response?.code === 0) {
+        setSearchBanner(response?.result);
+        console.log(response);
+      }
+    };
+    fetchBanner();
+  }, []);
 
   useEffect(() => {
     const handlePathChange = () => {
@@ -115,7 +127,7 @@ const Filter = () => {
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
       <Grid2 item xs={12}>
-        <BannerCarousel data={bannerFilter} slide={3} />
+        <BannerCarousel data={searchBanner} slide={3} />
       </Grid2>
       <Grid2 item xs={12} md={3}>
         <FilterSideBar

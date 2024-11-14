@@ -1,11 +1,12 @@
-import { React, memo } from "react";
+import { React, memo, useEffect, useState } from "react";
 import { BannerCarousel, Widget, SideBar, Product, Resolution } from "..";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { banner } from "../../utils/constant";
 import { usePaginationMore } from "../../hooks";
+import { apiGetBannerByTitle } from "../../services";
 
 const MainContainer = () => {
-  const { data: productsData } = usePaginationMore(`/api/v1/products`, 10, 10);
+  const [homeBanner, setHomeBanner] = useState();
+  const { data: productsData } = usePaginationMore(`/api/v1/search/products`, 10, 10);
   const { data: newProductsData } = usePaginationMore(
     `/api/v1/search/products?sortBy=createdAt&sortDirection=desc`,
     10,
@@ -16,6 +17,17 @@ const MainContainer = () => {
     10,
     10,
   );
+
+  useEffect(() => {
+    const fetchBanner = async () => {
+      const response = await apiGetBannerByTitle("trang_chu");
+      if (response?.code === 0) {
+        setHomeBanner(response?.result);
+        console.log(response);
+      }
+    };
+    fetchBanner();
+  }, []);
 
   return (
     <Grid2
@@ -30,19 +42,27 @@ const MainContainer = () => {
       <Grid2 item container xs={12} md={8.8} sx={{ width: "100%" }}>
         <Grid2 item container spacing={2}>
           <Grid2 sx={{ width: "100%" }}>
-            <BannerCarousel data={banner} />
+            <BannerCarousel data={homeBanner} />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Widget />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
-            <Product products={hotSellingProductsData} title={"Sản phẩm bán chạy"} />
+            <Product
+              products={hotSellingProductsData}
+              title={"Sản phẩm bán chạy"}
+              readMore={"/search?sortBy=sold&sortDirection=desc"}
+            />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
-            <Product products={newProductsData} title={"Sản phẩm mới nhất"} />
+            <Product
+              products={newProductsData}
+              title={"Sản phẩm mới nhất"}
+              readMore={"/search?sortBy=createdAt&sortDirection=desc"}
+            />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
-            <Product products={productsData} title={"Danh mục sản phẩm"} />
+            <Product products={productsData} title={"Danh mục sản phẩm"} readMore={"/search"} />
           </Grid2>
           <Grid2 sx={{ width: "100%" }}>
             <Resolution />

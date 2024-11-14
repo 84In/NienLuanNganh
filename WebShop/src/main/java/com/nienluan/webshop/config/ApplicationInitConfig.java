@@ -55,6 +55,7 @@ public class ApplicationInitConfig {
                         .lastName("ADMIN")
                         .dob(DateUtils.formatStringToLocalDate("1900-01-01"))
                         .phone("18001000")
+                        .email("adminvanous@gmail.com")
                         .roles(adminRole)
                         .build();
                 userRepository.save(user);

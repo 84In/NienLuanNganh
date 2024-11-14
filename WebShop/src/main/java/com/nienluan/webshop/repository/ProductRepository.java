@@ -1,13 +1,12 @@
 package com.nienluan.webshop.repository;
 
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import com.nienluan.webshop.entity.Brand;
 import com.nienluan.webshop.entity.Category;
 import com.nienluan.webshop.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +29,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "OR LOWER(pc.codeName) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(pb.name) LIKE LOWER(CONCAT('%', :search, '%'))) " +
             "AND (:min IS NULL OR p.price >= :min) " +
-            "AND (:max IS NULL OR p.price <= :max)")
+            "AND (:max IS NULL OR p.price <= :max)" +
+            "AND (p.stockQuantity > 0)")
     Page<Product> findBySearchWithFilters(Pageable pageable,
                                           @Param("search") String search,
                                           @Param("min") BigDecimal min,
@@ -49,7 +49,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query(value = "SELECT COUNT(*) FROM t_products WHERE MONTH(created_at) = MONTH(CURRENT_DATE) AND YEAR(created_at) = YEAR(CURRENT_DATE)", nativeQuery = true)
     Long countProductsCurrentMonth();
 
-//    @Query("SELECT p FROM Product p WHERE " +
+    //    @Query("SELECT p FROM Product p WHERE " +
 //            "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
 //    Page<Product> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);

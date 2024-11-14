@@ -85,7 +85,7 @@ const OrderDetail = () => {
   };
 
   const handleSubmitReview = async () => {
-    if (selectedProduct && payload && payload.comment && rating > 0) {
+    if (selectedProduct && payload && rating > 0) {
       try {
         const response = await apiCreateReview(payload);
         if (response?.code === 0) {
@@ -302,11 +302,11 @@ const OrderDetail = () => {
                       <Button
                         variant="outlined"
                         color="warning"
-                        sx={{ width: "100px" }}
+                        sx={{ minWidth: "100px" }}
                         onClick={() => handleReviewProduct(item?.product?.id, item?.product)}
                         disabled={item?.reviewed === false ? false : true}
                       >
-                        Đánh giá
+                        {item?.reviewed ? "Đã đánh giá" : "Đánh giá"}
                       </Button>
                     </div>
                   )}

@@ -18,6 +18,7 @@ instance.interceptors.request.use(
     const isAuthRequest = config.url.startsWith("/api/v1/auth");
     const isGetSearchRequest = config.url.startsWith("/api/v1/search") && config.method.toLowerCase() === "get";
     const isGetBrandRequest = config.url.startsWith("/api/v1/brands") && config.method.toLowerCase() === "get";
+    const isGetBannerRequest = config.url.startsWith("/api/v1/banners") && config.method.toLowerCase() === "get";
     if (
       !(
         isGetCategoriesRequest ||
@@ -25,7 +26,8 @@ instance.interceptors.request.use(
         isAuthRequest ||
         isGetProductRequest ||
         isGetSearchRequest ||
-        isGetBrandRequest
+        isGetBrandRequest ||
+        isGetBannerRequest
       ) ||
       isGetCategoryIdRequest
     ) {

@@ -68,14 +68,16 @@ const ProductInfo = ({ product }) => {
             <p className="font-medium text-black">Mô tả:</p>
             <p className="line-clamp-4 break-words">{product?.description}</p>
           </div>
-          <div className="text-justify text-gray-600">
-            <p className="font-medium text-black">Thương hiệu:</p>
-            <p>{product?.brand.name}</p>
-          </div>
-          <div className="text-justify text-gray-600">
+          {product?.brand.name && (
+            <div className="text-justify text-gray-600">
+              <p className="font-medium text-black">Thương hiệu:</p>
+              <p>{product?.brand.name}</p>
+            </div>
+          )}
+          {/* <div className="text-justify text-gray-600">
             <p className="font-medium text-black">Số lượng:</p>
             <p>{product?.stockQuantity}</p>
-          </div>
+          </div> */}
         </>
       )}
     </Box>
