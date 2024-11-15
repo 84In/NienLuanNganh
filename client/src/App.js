@@ -63,6 +63,7 @@ function App() {
 
   useEffect(() => {
     dispatch(actions.getCategories);
+    dispatch(actions.getBanner());
   }, []);
 
   useEffect(() => {
@@ -71,7 +72,6 @@ function App() {
       setTimeout(() => {
         dispatch(actions.getCurrentUser());
         dispatch(actions.getCartCurrentUser());
-        // dispatch(actions.getOrderCurrentUser());
       }, 200);
     }
   }, [isLoggedIn, username, dispatch]);

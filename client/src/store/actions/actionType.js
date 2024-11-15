@@ -22,6 +22,7 @@ const actionTypes = {
   GET_DISTRICTS: "GET_DISTRICTS",
   GET_WARDS: "GET_WARDS",
   GET_CATEGORIES: "GET_CATEGORIES",
+  GET_BANNER: "GET_BANNER",
 };
 
 export default actionTypes;

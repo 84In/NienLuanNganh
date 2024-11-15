@@ -7,6 +7,8 @@ const initState = {
   districts: [],
   wards: [],
   categories: [],
+  homeBanner: [],
+  searchBanner: [],
 };
 const appReducer = (state = initState, action) => {
   switch (action.type) {
@@ -38,6 +40,13 @@ const appReducer = (state = initState, action) => {
       return {
         ...state,
         categories: action.categories || [],
+        msg: action.msg || "",
+      };
+    case actionTypes.GET_BANNER:
+      return {
+        ...state,
+        homeBanner: action.homeBanner || [],
+        searchBanner: action.searchBanner || [],
         msg: action.msg || "",
       };
     default:

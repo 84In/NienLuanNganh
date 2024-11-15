@@ -92,11 +92,9 @@ function BannerCarousel({ data, slide }) {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    const newImages = data?.images ? JSON.parse(data?.images.replace(/'/g, '"')) : [];
+    const newImages = typeof data === "string" ? JSON.parse(data.replace(/'/g, '"')) : [];
     setImages(newImages);
   }, [data]);
-
-  console.log(images);
 
   return (
     <Box

@@ -3,9 +3,10 @@ import { BannerCarousel, Widget, SideBar, Product, Resolution } from "..";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { usePaginationMore } from "../../hooks";
 import { apiGetBannerByTitle } from "../../services";
+import { useSelector } from "react-redux";
 
 const MainContainer = () => {
-  const [homeBanner, setHomeBanner] = useState();
+  const { homeBanner } = useSelector((state) => state.app);
   const { data: productsData } = usePaginationMore(`/api/v1/search/products`, 10, 10);
   const { data: newProductsData } = usePaginationMore(
     `/api/v1/search/products?sortBy=createdAt&sortDirection=desc`,
@@ -17,17 +18,6 @@ const MainContainer = () => {
     10,
     10,
   );
-
-  useEffect(() => {
-    const fetchBanner = async () => {
-      const response = await apiGetBannerByTitle("trang_chu");
-      if (response?.code === 0) {
-        setHomeBanner(response?.result);
-        console.log(response);
-      }
-    };
-    fetchBanner();
-  }, []);
 
   return (
     <Grid2

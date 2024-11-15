@@ -116,3 +116,31 @@ export const getCategories = () => async (dispatch) => {
     });
   }
 };
+
+export const getBanner = () => async (dispatch) => {
+  try {
+    const response1 = await apis.apiGetBannerByTitle("trang_chu");
+    const response2 = await apis.apiGetBannerByTitle("search");
+
+    if (response1?.code === 0 && response2?.code === 0) {
+      dispatch({
+        type: actionTypes.GET_BANNER,
+        homeBanner: response1.result.images,
+        searchBanner: response2.result.images,
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_BANNER,
+        msg: response1.message || response2.message,
+        homeBanner: [],
+        searchBanner: [],
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_BANNER,
+      homeBanner: null,
+      searchBanner: null,
+    });
+  }
+};

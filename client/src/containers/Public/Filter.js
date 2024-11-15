@@ -1,16 +1,16 @@
-import { Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React, { memo, useEffect, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
-import { BannerCarousel, FilterContainer, FilterSideBar, PaginationMore, ProductCard } from "../../components";
+import { useSelector } from "react-redux";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { BannerCarousel, FilterContainer, FilterSideBar } from "../../components";
 import { usePaginationMore } from "../../hooks";
-import { apiGetBannerByTitle, apiGetBrandByCategory } from "../../services";
+import { apiGetBrandByCategory } from "../../services";
 import { minAndMaxPrice } from "../../utils";
-import { bannerFilter } from "../../utils/constant";
 
 const Filter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
+  const { searchBanner } = useSelector((state) => state.app);
   const [brands, setBrands] = useState([]);
   const [type, setType] = useState("");
   const [name, setName] = useState("");
@@ -20,20 +20,8 @@ const Filter = () => {
 
   const [brandFilter, setBrandFilter] = useState([]);
   const [priceFilter, setPriceFilter] = useState([]);
-  const [searchBanner, setSearchBanner] = useState();
 
   const { data, totalElements, loadMore, hasMore } = usePaginationMore(urlApi, 15, 10);
-
-  useEffect(() => {
-    const fetchBanner = async () => {
-      const response = await apiGetBannerByTitle("search");
-      if (response?.code === 0) {
-        setSearchBanner(response?.result);
-        console.log(response);
-      }
-    };
-    fetchBanner();
-  }, []);
 
   useEffect(() => {
     const handlePathChange = () => {
