@@ -1,7 +1,7 @@
 import React from "react";
 import { formatCurrency, formattedNumber } from "../../../utils";
 
-const AdminTag = ({ Icon, data, type, typeData, date }) => {
+const AdminTag = ({ Icon, data, type, date }) => {
   return (
     <div className="item-center flex gap-2 p-4">
       <div className="flex flex-1 items-center justify-center">
@@ -17,9 +17,13 @@ const AdminTag = ({ Icon, data, type, typeData, date }) => {
         )}
         {type === "product" && (
           <>
-            <span className="font-semibold">
-              {typeData === "all" ? `Tổng số lượng sản phẩm ` : "Số lượng sản phẩm mới"}
-            </span>
+            <span className="font-semibold">{"Số lượng sản phẩm mới"}</span>
+            <div>{formattedNumber(data)}</div>
+          </>
+        )}
+        {type === "user" && (
+          <>
+            <span className="font-semibold">Người dùng mới trong 7 ngày quá</span>
             <div>{formattedNumber(data)}</div>
           </>
         )}

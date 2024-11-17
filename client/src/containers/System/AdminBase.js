@@ -17,7 +17,7 @@ const AdminBase = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [totalRevenues, setTotalRevenues] = useState(null);
-  const [allProducts, setAllProducts] = useState(null);
+  const [user7Day, setUser7Day] = useState(null);
   const [productsInMonth, setProductsInMonth] = useState(null);
   const [totalAmountInToday, setTotalAmountInToday] = useState(null);
   const [paymentSummaries, setPaymentSummaries] = useState(null);
@@ -56,7 +56,7 @@ const AdminBase = ({ user }) => {
   }, []);
 
   useEffect(() => {
-    setAllProducts(valueData?.allProducts);
+    setUser7Day(valueData?.user7Day);
     setTotalRevenues(valueData?.totalRevenues);
     setTotalAmountInToday(valueData?.totalRevenueInToday);
     setProductsInMonth(valueData?.productsInMonth);
@@ -148,7 +148,7 @@ const AdminBase = ({ user }) => {
         <Grid2 container spacing={2}>
           <Grid2 xs={12} sm={6} md={4}>
             <Box sx={{ ...commonBoxStyles }}>
-              <AdminTag Icon={BiCoinStack} type="product" typeData="all" data={allProducts} />
+              <AdminTag Icon={BiCoinStack} type="user" data={user7Day} />
             </Box>
           </Grid2>
           <Grid2 xs={12} sm={6} md={4}>

@@ -133,6 +133,20 @@ export const apiChangePassword = (payload) =>
     }
   });
 
+export const apiChangePasswordByAdmin = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `api/v1/users/change/password-admin`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const apiChangeAddress = (payload) =>
   new Promise(async (resolve, reject) => {
     try {

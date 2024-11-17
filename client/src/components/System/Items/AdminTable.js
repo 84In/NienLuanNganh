@@ -34,6 +34,7 @@ const TYPE_CHECK_BOX = ["order", "product"];
 const TYPE_NON_EDIT = ["promotion", "user", "payment"];
 const TYPE_HIDE_IMAGES = ["product", "banner"];
 const TYPE_CENTER_COL = ["payment", "banner"];
+const KEY_RIGHT_COL = ["amount", "price", "stockQuantity", "sold", "discountPercentage"];
 
 const status = (value) => (value === "Success" ? "#76ff03" : "#ff1744");
 
@@ -84,6 +85,58 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
   const handleOpenDialog = (product) => {
     setSelectedImages(product);
     setOpen(true);
+  };
+
+  const handleOpenPass = (username) => {
+    Swal.fire({
+      title: "Đổi mật khẩu",
+      html: `
+        <input type="password" id="newPassword" class="swal2-input" placeholder="Mật khẩu mới">
+        <input type="password" id="confirmPassword" class="swal2-input" placeholder="Xác nhận mật khẩu mới">
+      `,
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonText: "Cập nhật mật khẩu",
+      cancelButtonText: "Hủy",
+      preConfirm: () => {
+        const newPassword = Swal.getPopup().querySelector("#newPassword").value;
+        const confirmPassword = Swal.getPopup().querySelector("#confirmPassword").value;
+
+        const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{5,}$/;
+
+        if (!newPassword) {
+          Swal.showValidationMessage("Mật khẩu mới không được để trống");
+          return false;
+        }
+        if (!passwordPattern.test(newPassword)) {
+          Swal.showValidationMessage("Mật khẩu phải ít nhất 5 ký tự, bao gồm một chữ hoa và một chữ số");
+          return false;
+        }
+        if (newPassword !== confirmPassword) {
+          Swal.showValidationMessage("Mật khẩu xác nhận không khớp");
+          return false;
+        }
+
+        return { newPassword, confirmPassword };
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { newPassword } = result.value;
+        const response = apis.apiChangePasswordByAdmin({
+          username: username,
+          password: newPassword,
+        });
+        if (response?.code === 0) {
+          Swal.fire({
+            title: "Thành công!",
+            text: "Cập nhật mật khẩu thành công!",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+      }
+    });
   };
 
   const handleCloseDialog = () => {
@@ -226,6 +279,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                   </StyledTableCell>
                 ))}
               {!TYPE_NON_EDIT.includes(type) && <StyledTableCell>Chỉnh sửa</StyledTableCell>}
+              {type === "user" && <StyledTableCell>Đổi mật khẩu</StyledTableCell>}
               {TYPE_REMOVE.includes(type) && <StyledTableCell>Xoá</StyledTableCell>}
             </TableRow>
           </TableHead>
@@ -246,9 +300,9 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                   .map((key, index) => (
                     <StyledTableCell
                       key={index}
-                      align={TYPE_CENTER_COL.includes(type) ? "center" : "left"}
+                      align={KEY_RIGHT_COL.includes(key) ? "right" : "left"}
                       sx={{
-                        textAlign: "center",
+                        textAlign: key === "status" ? "center" : KEY_RIGHT_COL.includes(key) ? "right" : "left",
                         color: key === "status" ? status(dataItem[key]) : "inherit",
                       }}
                     >
@@ -260,6 +314,8 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                         key === "startDate" ||
                         key === "endDate" ? (
                         formatDate(dataItem[key])
+                      ) : key === "discountPercentage" ? (
+                        `${dataItem[key] * 100} %`
                       ) : key === "dob" ? (
                         formatDate(dataItem[key])
                       ) : key === "amount" ? (
@@ -393,8 +449,18 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                     </NavLink>
                   </StyledTableCell>
                 )}
+                {type === "user" && (
+                  <StyledTableCell alignItems="center">
+                    <Button
+                      className={"text-primary-color underline-offset-1"}
+                      onClick={() => handleOpenPass(dataItem?.username)}
+                    >
+                      <BiEdit size={24} />
+                    </Button>
+                  </StyledTableCell>
+                )}
                 {TYPE_REMOVE.includes(type) && (
-                  <StyledTableCell align="center" sx={{ textAlign: "center" }}>
+                  <StyledTableCell align="left" sx={{ textAlign: "left" }}>
                     <button
                       className={"text-primary-color underline-offset-1"}
                       onClick={() => handleRemoveValue(dataItem.id)}
