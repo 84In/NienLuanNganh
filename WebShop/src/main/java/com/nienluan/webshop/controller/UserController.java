@@ -102,6 +102,13 @@ public class UserController {
                 .result(userService.changePassword(request))
                 .build();
     }
+    @PutMapping("/change/password-admin")
+    public ApiResponse<UserResponse> changePasswordByAdmin(@Valid @RequestBody ChangePasswordByAdminRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .message("Change Password Successful")
+                .result(userService.changePasswordByAdmin(request))
+                .build();
+    }
 
     @PutMapping("/change/personal-information")
     public ApiResponse<UserResponse> changePersonalInformation(@Valid @RequestBody ChangePersonalInformationRequest request) {

@@ -232,6 +232,17 @@ public class OrderService {
         return toOrderResponse(order, orderDetails);
     }
 
+    public void cancelOrderInAdmin(String orderId, String reason) {
+
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
+        OrderResponse orderResponse = changeOrderStatus(orderId, "cancelled");
+
+        if (orderResponse != null){
+            mailService.sendOrderCanceledEmail(order.getUser().getEmail(), order, reason);
+        }
+
+    }
+
     public Page<OrderResponse> getOrderCurrentUser(Pageable pageable, String status, String search) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userRepository.findByUsername(username)

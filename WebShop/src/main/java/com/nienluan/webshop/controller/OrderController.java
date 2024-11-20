@@ -177,4 +177,12 @@ public class OrderController {
                 .result(orderService.changeOrderStatus(request, id, status))
                 .build();
     }
+    @DeleteMapping("/canceled/{id}")
+    public ApiResponse<?> canceledByAdmin(  @PathVariable("id") String id,
+                                            @RequestParam(name = "reason") String reason) {
+        orderService.cancelOrderInAdmin(id, reason);
+        return ApiResponse.<Void>builder()
+                .message("Canceled Order successfully")
+                .build();
+    }
 }

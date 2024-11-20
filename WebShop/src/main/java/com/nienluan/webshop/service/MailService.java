@@ -40,7 +40,7 @@ public class MailService {
         context.setVariable("orderId", order.getId());
         context.setVariable("orderDetails", order.getOrderDetails());
         context.setVariable("totalPrice", order.getTotalAmount());
-        
+
         // Process Thymeleaf template into a String
         String htmlContent = templateEngine.process("order-confirmation", context);
 
@@ -57,5 +57,36 @@ public class MailService {
             e.printStackTrace();
         }
     }
+    public void sendOrderCanceledEmail(String toEmail, Order order, String reason) {
+
+        // Prepare the context for Thymeleaf template
+        Context context = new Context();
+        context.setVariable("recipient", order.getRecipient());
+        context.setVariable("reason", reason);
+        String formattedDate = order.getCreatedAt() != null
+                ? order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))
+                : LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        context.setVariable("createdAt", formattedDate);
+        context.setVariable("orderId", order.getId());
+        context.setVariable("orderDetails", order.getOrderDetails());
+        context.setVariable("totalPrice", order.getTotalAmount());
+
+        // Process Thymeleaf template into a String
+        String htmlContent = templateEngine.process("order-canceled", context);
+
+        // Build the email
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(toEmail);
+            helper.setSubject("Order Canceled #" + order.getId());
+            helper.setText(htmlContent, true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
