@@ -19,9 +19,11 @@ const Product = ({ title, products, readMore }) => {
     >
       <div className="mb-4 flex justify-between px-2">
         <h2 className="text-lg font-semibold text-rose-500">{title}</h2>
-        <Link to={readMore} className="text-sm hover:text-blue-500 hover:underline">
-          Xem chi tiết
-        </Link>
+        {readMore && (
+          <Link to={readMore} className="text-sm hover:text-blue-500 hover:underline">
+            Xem chi tiết
+          </Link>
+        )}
       </div>
       <Grid2 container spacing={1}>
         {products?.slice(0, 6 * 2).map((product, index) => (

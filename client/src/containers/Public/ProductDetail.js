@@ -11,7 +11,7 @@ const ProductDetail = ({ setIsModelLogin }) => {
   const [product, setProduct] = useState(null);
   const [alert, setAlert] = useState("");
   const [urlApi, setUrlApi] = useState(
-    `/api/v1/search/products?search=${product?.category?.name}&sortBy=sold&sortDirection=desc`,
+    `/api/v1/search?search=${product?.category?.name}&sortBy=sold&sortDirection=desc`,
   );
   const [productId, setProductId] = useState(location.pathname.split("/").pop());
 
@@ -100,7 +100,11 @@ const ProductDetail = ({ setIsModelLogin }) => {
           />
         </Grid2>
         <Grid2 item xs={12} sx={{ width: "100%" }}>
-          <Product products={relatedProductsData} title={"Sản phẩm liên quan"} />
+          <Product
+            products={relatedProductsData}
+            title={"Sản phẩm liên quan"}
+            readMore={`/search?search=${product?.category?.name}&sortBy=sold&sortDirection=desc`}
+          />
         </Grid2>
       </Grid2>
     </>
