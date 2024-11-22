@@ -14,12 +14,12 @@ export const apiSearchBrandByName = (name) =>
       reject(error);
     }
   });
-export const apiSearchPromotionsByName = (name) =>
+export const apiSearchPromotionsByKeyWord = (keyword) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "GET",
-        url: `/api/v1/search/promotion/${name}`,
+        url: `/api/v1/search/promotion/${keyword}`,
       });
       console.log(response);
 

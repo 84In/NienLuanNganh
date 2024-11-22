@@ -48,6 +48,19 @@ export const apiCreateProduct = (payload) =>
       reject(error);
     }
   });
+export const apiUpdateProduct = (payload, id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `/api/v1/products/${id}`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
 export const apiDeleteProduct = (productId) =>
   new Promise(async (resolve, reject) => {
     try {

@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,9 +58,14 @@ public class ProductService {
         Brand brand = brandRepository.findById(request.getBrandId())
                 .orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
 
+
         Product product = productMapper.toProduct(request);
         product.setCategory(category);
         product.setBrand(brand);
+        if(!request.getPromotions().isEmpty()){
+            Set<Promotion> promotion = new HashSet<>(promotionRepository.findAllById(request.getPromotions()));
+            product.setPromotions(promotion);
+        }
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
@@ -155,13 +161,18 @@ public class ProductService {
             product.setBrand(brand);
         }
 
+
+
         // Ánh xạ các trường khác từ request
         productMapper.updateProduct(product, request);
 
         // Cập nhật promotions
-        var promotions = promotionRepository.findAllById(request.getPromotions());
-        product.setPromotions(new HashSet<>(promotions));
-
+//        var promotions = promotionRepository.findAllById(request.getPromotions());
+//        product.setPromotions(new HashSet<>(promotions));
+        if(!request.getPromotions().isEmpty()){
+            Set<Promotion> promotion = new HashSet<>(promotionRepository.findAllById(request.getPromotions()));
+            product.setPromotions(promotion);
+        }
         return productMapper.toProductResponse(productRepository.save(product));
     }
 

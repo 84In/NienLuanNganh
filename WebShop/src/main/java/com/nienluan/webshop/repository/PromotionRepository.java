@@ -13,6 +13,6 @@ import java.util.List;
 public interface PromotionRepository extends JpaRepository<Promotion, String> {
     boolean existsByName(String name);
     boolean existsByCode(String code);
-    @Query("SELECT p FROM Promotion p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%',:name,'%'))")
-    List<Promotion> findByNameContaining(@Param("name") String name);
+    @Query("SELECT p FROM Promotion p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%',:keyword,'%')) OR LOWER(p.code) LIKE LOWER(CONCAT('%',:keyword,'%'))")
+    List<Promotion> findByNameContaining(@Param("keyword") String keyword);
 }
