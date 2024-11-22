@@ -53,9 +53,6 @@ const OrderDetail = () => {
       }
     } catch (error) {
       setAlert("Lỗi!");
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     }
   };
 
@@ -68,9 +65,6 @@ const OrderDetail = () => {
       }
     } catch (error) {
       setAlert("Lỗi!");
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     }
   };
 
@@ -97,14 +91,8 @@ const OrderDetail = () => {
         if (response.code === 26) {
           setAlert(`Bạn đã đánh giá sản phẩm này trước đó`);
         }
-        setTimeout(() => {
-          setAlert("");
-        }, 5000);
       } catch (error) {
         setAlert("Lỗi!");
-        setTimeout(() => {
-          setAlert("");
-        }, 5000);
       }
       setSelectedProduct(null);
       setRating(0);
@@ -112,9 +100,6 @@ const OrderDetail = () => {
       fetchOrderDetail();
     } else {
       setAlert("Vui lòng đánh giá sản phẩm trước khi gửi");
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     }
   };
 
@@ -132,7 +117,7 @@ const OrderDetail = () => {
         position: "relative",
       }}
     >
-      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
+      {alert && <AlertCustom open={true} title={"Thông báo"} content={alert} onClose={() => setAlert("")} />}
 
       <Grid2
         item

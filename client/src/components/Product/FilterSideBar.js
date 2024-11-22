@@ -84,21 +84,24 @@ const FilterSideBar = ({ brands, brandFilter, priceFilter, setBrandFilter, setPr
           <>
             <p className="mb-2 font-semibold">Thương hiệu</p>
             <div className="flex w-full flex-wrap gap-y-2">
-              {brands.map((item, index) => (
-                <div key={index} className="flex w-1/3 items-center grid-md:w-1/2">
-                  <input
-                    id={item.id}
-                    value={item.id}
-                    type="checkbox"
-                    className="custom-checkbox"
-                    checked={brandFilter.includes(item.id)}
-                    onChange={(e) => handleFilterChange(setBrandFilter, item.id, e.target.checked)}
-                  />
-                  <label htmlFor={item.id} className="ml-2 line-clamp-1 cursor-pointer">
-                    {item.name}
-                  </label>
-                </div>
-              ))}
+              {brands.map(
+                (item, index) =>
+                  item?.name && (
+                    <div key={index} className="flex w-1/3 items-center grid-md:w-1/2">
+                      <input
+                        id={item.id}
+                        value={item.id}
+                        type="checkbox"
+                        className="custom-checkbox"
+                        checked={brandFilter.includes(item.id)}
+                        onChange={(e) => handleFilterChange(setBrandFilter, item.id, e.target.checked)}
+                      />
+                      <label htmlFor={item.id} className="ml-2 line-clamp-1 cursor-pointer">
+                        {item.name}
+                      </label>
+                    </div>
+                  ),
+              )}
             </div>
           </>
         )}

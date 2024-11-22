@@ -61,7 +61,6 @@ const CartItem = ({
       }
     } catch (error) {
       setAlert("Lỗi!");
-      setTimeout(() => setAlert(""), 5000);
     }
   };
 
@@ -74,11 +73,9 @@ const CartItem = ({
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
         setAlert("Xóa sản phẩm thành công");
-        setTimeout(() => setAlert(""), 5000);
       }
     } catch (error) {
       setAlert("Lỗi!");
-      setTimeout(() => setAlert(""), 5000);
     }
   };
 

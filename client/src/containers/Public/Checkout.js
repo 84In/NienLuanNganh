@@ -44,7 +44,7 @@ const Checkout = () => {
       columnGap={"none"}
       sx={{ display: "flex", justifyContent: "space-between", width: "100%", paddingX: "1rem", height: "100%" }}
     >
-      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
+      {alert && <AlertCustom open={true} title={"Thông báo"} content={alert} onClose={() => setAlert("")} />}
       <Grid2 item container xs={12} lg={8.8} sx={{ display: "flex", gap: 2, alignContent: "flex-start" }}>
         <Grid2
           item

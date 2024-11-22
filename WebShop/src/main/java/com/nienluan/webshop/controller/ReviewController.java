@@ -31,6 +31,7 @@ public class ReviewController {
                 .result(reviewService.getAllReviews(pageable))
                 .build();
     }
+
     @GetMapping("/filter")
     public ApiResponse<Page<ReviewResponse>> getFilterReviews(
             @RequestParam(required = false) String userId,
@@ -44,22 +45,4 @@ public class ReviewController {
                 .build();
     }
 
-//    @GetMapping("/{id}")
-//    public ApiResponse<ReviewResponse> getReview(@PathVariable String id) {
-//        return ApiResponse.<ReviewResponse>builder()
-//                .result(reviewService.getReviewById(id))
-//                .build();
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ApiResponse<ReviewResponse> updateReview(@PathVariable String id, ReviewUpdateRequest request) {
-//        return ApiResponse.<ReviewResponse>builder()
-//                .result(reviewService.updateReview(request,id))
-//                .build();
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ApiResponse<Void> deleteReview(@PathVariable String id) {
-//        return ApiResponse.<Void>builder().message("Deleted success!").build();
-//    }
 }

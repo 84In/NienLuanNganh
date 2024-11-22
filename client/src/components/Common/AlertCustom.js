@@ -1,15 +1,29 @@
-import { Alert, AlertTitle } from "@mui/material";
-import React from "react";
+import { Alert, AlertTitle, Snackbar } from "@mui/material";
+import React, { useState } from "react";
 
-const AlertCustom = ({ title, content, variant }) => {
+const AlertCustom = ({ open, title, content, variant, onClose }) => {
+  const [openSnackbar, setOpenSnackbar] = useState(open);
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+    onClose();
+  };
+
   return (
-    <Alert
-      severity={variant ? variant : "info"}
-      className="fixed left-1/2 top-6 z-50 w-60 -translate-x-1/2 transform border shadow-md grid-sm:w-[300px] grid-md:w-[450px]"
+    <Snackbar
+      open={openSnackbar}
+      autoHideDuration={3000}
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
     >
-      <AlertTitle>{title}</AlertTitle>
-      {content}
-    </Alert>
+      <Alert severity={variant ? variant : "info"} onClose={handleCloseSnackbar}>
+        <AlertTitle>{title}</AlertTitle>
+        {content}
+      </Alert>
+    </Snackbar>
   );
 };
 

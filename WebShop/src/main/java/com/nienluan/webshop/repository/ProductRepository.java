@@ -23,7 +23,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             "LEFT JOIN FETCH p.category pc " +
             "LEFT JOIN FETCH p.brand pb " +
             "WHERE (:search IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
-            "OR LOWER(p.description) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(CAST(p.price AS string)) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(pc.name) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(pc.codeName) LIKE LOWER(CONCAT('%', :search, '%')) " +
