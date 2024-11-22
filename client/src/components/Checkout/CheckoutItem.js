@@ -10,7 +10,15 @@ const CheckoutItem = ({ data }) => {
   return (
     <div className="flex w-full items-center">
       <div className="w-1/12 min-w-12 grid-md:min-w-20">
-        <img className="h-16 w-16 object-contain" src={firstImage} alt={data?.product?.name}></img>
+        <img
+          className="h-16 w-16 object-contain"
+          src={
+            process.env.NODE_ENV === "production"
+              ? process.env.REACT_APP_SERVER_URL_PROD
+              : process.env.REACT_APP_SERVER_URL_DEV + firstImage
+          }
+          alt={data?.product?.name}
+        ></img>
       </div>
       <div className="ml-2 flex w-6/12 flex-col gap-1 text-sm grid-md:w-7/12 grid-md:text-base">
         <p className="line-clamp-2 grid-md:line-clamp-1">{data?.product?.name}</p>

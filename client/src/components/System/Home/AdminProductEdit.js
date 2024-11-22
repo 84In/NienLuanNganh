@@ -14,6 +14,7 @@ import AdminItemInputStock from "../Items/AdminItemInputStock";
 import AdminItemInputPrice from "../Items/AdminItemInputPrice";
 import Swal from "sweetalert2";
 import AdminItemAutoSelectMultiple from "../Items/AdminItemAutoSelectMultiple";
+import useDebounce from "../../../hooks/debounce";
 
 const { BiX } = icons;
 
@@ -85,24 +86,24 @@ const AdminProductEdit = ({ product, isEdit }) => {
       description: inputValue,
     }));
   };
-
-  useEffect(() => {
-    if (inputValueBrand && inputValueBrand !== prevValueBrand) {
-      const fetchBrands = async () => {
-        const response = await apiSearchBrandByName(inputValueBrand);
-        if (response?.code === 0) {
-          setOptions(response?.result);
-        } else {
-          setOptions([]); // Xóa danh sách khi không có kết quả
-        }
-      };
-      fetchBrands();
-      setPrevValueBrand(inputValueBrand); // Cập nhật giá trị trước đó
-    } else if (!valueBrand) {
-      setOptions([]); // Xóa kết quả khi không có giá trị tìm kiếm
+  const fetchBrands = async (keyword) => {
+    if (!keyword) {
+      setOptions([]); // Clear options if no input
+      return;
     }
-  }, [inputValueBrand]); // Gọi lại khi valueBrand thay đổi
 
+    const response = await apiSearchBrandByName(keyword);
+    if (response?.code === 0) {
+      setOptions(response?.result);
+    } else {
+      setOptions([]); // Xóa danh sách khi không có kết quả
+    }
+    setPrevValueBrand(inputValueBrand);
+  };
+  const debouncedInputValue = useDebounce(inputValueBrand, 300);
+  useEffect(() => {
+    fetchBrands(debouncedInputValue);
+  }, [debouncedInputValue]);
   const handleChangeCategory = (e) => {
     setData((prev) => ({
       ...prev,
@@ -169,7 +170,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
     const price = data?.price;
     const stockQuantity = data?.stockQuantity;
     const description = data?.description;
-    var brand_id = valueBrand.id;
+    var brand_id = data?.brand?.id || valueBrand.id;
 
     if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity) {
       if (images && images.length > 0) {

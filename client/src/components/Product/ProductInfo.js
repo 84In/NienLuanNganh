@@ -10,9 +10,6 @@ const ProductInfo = ({ product }) => {
   const promotion = validPromotion(product?.promotions);
   const price = validPrice(product?.price, promotion);
 
-  console.log(promotion);
-  console.log(product?.promotions);
-
   return (
     <Box
       sx={{

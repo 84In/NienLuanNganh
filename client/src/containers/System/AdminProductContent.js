@@ -4,7 +4,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import { usePagination } from "../../hooks";
 
 const AdminProductContent = () => {
-  const url = "/api/v1/products";
+  const url = "/api/v1/search/products";
   const { data, currentPage, updatePage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
     usePagination(url);
 

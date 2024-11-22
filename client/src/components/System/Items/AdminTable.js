@@ -315,7 +315,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                         key === "endDate" ? (
                         formatDate(dataItem[key])
                       ) : key === "discountPercentage" ? (
-                        `${dataItem[key] * 100} %`
+                        `${dataItem[key]} %`
                       ) : key === "dob" ? (
                         formatDate(dataItem[key])
                       ) : key === "amount" ? (

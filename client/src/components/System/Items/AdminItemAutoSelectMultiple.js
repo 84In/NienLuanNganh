@@ -1,53 +1,59 @@
-import { Autocomplete, Paper, TextField, Chip } from "@mui/material";
+import { Autocomplete, Paper, TextField, Chip, Typography, CircularProgress } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { debounce } from "lodash";
+
 import { apiSearchPromotionsByKeyWord } from "../../../services";
+import useDebounce from "../../../hooks/debounce";
 
 const AdminItemAutoSelectMultiple = ({ label, value, setValue }) => {
   const [options, setOptions] = useState([]); // Danh sách tùy chọn
   const [inputValue, setInputValue] = useState(""); // Giá trị input
   const [isLoading, setIsLoading] = useState(false); // Trạng thái loading
+  const [error, setError] = useState(null); // Error state
 
   const CustomPaper = (props) => (
     <Paper {...props} sx={{ borderRadius: "8px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)", ...props.sx }} />
   );
 
-  // Hàm debounce để gọi API
-  const fetchOptions = debounce(async (searchTerm) => {
+  const debouncedInputValue = useDebounce(inputValue, 700);
+
+  const fetchOptions = async (searchTerm) => {
     if (!searchTerm) {
-      setOptions([]); // Xóa danh sách khi không có input
+      setOptions([]); // Clear options if no input
       return;
     }
 
-    setIsLoading(true); // Hiển thị trạng thái loading
+    setIsLoading(true); // Show loading indicator
+    setError(null); // Reset error state
 
     try {
       const response = await apiSearchPromotionsByKeyWord(searchTerm);
       if (response?.code === 0 && response?.result) {
-        setOptions(response?.result); // Cập nhật danh sách options
+        setOptions(response?.result); // Update options
       }
     } catch (error) {
-      console.error("Lỗi khi gọi API:", error);
+      setError("Failed to fetch promotions. Please try again later."); // Set error message
+      console.error("Error fetching promotions:", error);
     } finally {
-      setIsLoading(false); // Tắt trạng thái loading
+      setIsLoading(false); // Hide loading indicator
     }
-  }, 300); // 300ms debounce
+  };
 
-  // Lắng nghe khi inputValue thay đổi để gọi API
+  // Fetch options when debounced input value changes
   useEffect(() => {
-    fetchOptions(inputValue);
-  }, [inputValue]);
+    fetchOptions(debouncedInputValue);
+  }, [debouncedInputValue]);
 
   return (
     <div className="flex w-full items-center justify-center gap-4">
       <Autocomplete
         multiple
         options={options}
-        getOptionLabel={(option) => option?.name}
+        getOptionLabel={(option) => option?.name || ""}
         fullWidth
         disableClearable
+        freeSolo
         value={value || []}
-        loading={isLoading} // Hiển thị trạng thái loading
+        loading={isLoading} // Show loading state
         renderTags={(selected, getTagProps) =>
           selected.map((option, index) => (
             <Chip
@@ -73,7 +79,8 @@ const AdminItemAutoSelectMultiple = ({ label, value, setValue }) => {
                 "&.Mui-focused fieldset": { borderColor: "#3182CE" },
               },
             }}
-            onChange={(event) => setInputValue(event.target.value)}
+            value={inputValue} // Display the current input value
+            onChange={(event) => setInputValue(event.target.value)} // Update input value
           />
         )}
         renderOption={(props, option) => (
@@ -82,9 +89,22 @@ const AdminItemAutoSelectMultiple = ({ label, value, setValue }) => {
           </li>
         )}
         PaperComponent={CustomPaper}
-        onChange={(event, newValue) => setValue(newValue || [])} // Cập nhật giá trị
+        onChange={(event, newValue) => {
+          setValue(newValue || []); // Update selected value
+          setInputValue(""); // Clear input value after selection
+        }}
         isOptionEqualToValue={(option, value) => option?.id === value?.id}
       />
+
+      {/* Error message display */}
+      {error && <Typography color="error">{error}</Typography>}
+
+      {/* Loading spinner */}
+      {isLoading && (
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+          <CircularProgress />
+        </div>
+      )}
     </div>
   );
 };
