@@ -155,7 +155,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
     event.dataTransfer.setData("text/plain", index);
   };
 
-  valueBrand && console.log(valueBrand);
+  valueBrand && console.log(valueBrand.id);
   inputValueBrand && console.log(inputValueBrand);
 
   useEffect(() => {
@@ -169,7 +169,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
     const price = data?.price;
     const stockQuantity = data?.stockQuantity;
     const description = data?.description;
-    var brand_id = data?.brand?.id || valueBrand?.id;
+    var brand_id = valueBrand.id;
 
     if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity) {
       if (images && images.length > 0) {
@@ -193,7 +193,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
       }
 
       // Tạo brand nếu chưa có
-      if (!valueBrand && inputValueBrand) {
+      if (inputValueBrand && !valueBrand !== "") {
         const response = await apis.apiCreateBrand({ name: inputValueBrand });
         if (response?.code === 0) {
           brand_id = response?.result?.id;
@@ -212,9 +212,12 @@ const AdminProductEdit = ({ product, isEdit }) => {
         });
         if (response?.code === 0) {
           Swal.fire({
-            title: "Good job!",
+            title: "Đã thêm sản phẩm thành công!",
             text: response?.message,
             icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            window.history.back();
           });
         }
       } else {
@@ -225,7 +228,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
             price,
             stockQuantity,
             categoryId: category_id,
-            brandId: brand_id,
+            brandId: brand_id || valueBrand.id,
             images: data?.images,
             promotions: valuePromotion.map((item) => item.id),
           },
@@ -233,9 +236,12 @@ const AdminProductEdit = ({ product, isEdit }) => {
         );
         if (response?.code === 0) {
           Swal.fire({
-            title: "Good job!",
+            title: "Đã cập nhật sản phẩm thành công!",
             text: response?.message,
             icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            window.history.back();
           });
         }
       }

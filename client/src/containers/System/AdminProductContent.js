@@ -19,6 +19,18 @@ const AdminProductContent = () => {
     console.log(totalPages);
   }, [totalPages]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      updatePage(currentPage);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   if (isLoading) {
     return <Loading />;
   }
