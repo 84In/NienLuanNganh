@@ -50,3 +50,4 @@ export { default as AdminPolarAreaCharts } from "./System/Items/AdminPolarAreaCh
 export { default as AdminPromotionEdit } from "./System/Home/AdminPromotionEdit";
 export { default as AdminBannerEdit } from "./System/Home/AdminBannerEdit";
 export { default as AdminTableReview } from "./System/Items/AdminTableReview";
+export { default as AdminItemAutoSelectMultiple } from "./System/Items/AdminItemAutoSelectMultiple";

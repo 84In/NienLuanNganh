@@ -37,7 +37,7 @@ const AdminPromotionEdit = ({ promotion, isEdit }) => {
   );
   const [errorInput, setErrorInput] = useState("");
 
-  const [discountPercent, setDiscountPercent] = useState(promotion?.discountPercentage * 100 || "");
+  const [discountPercent, setDiscountPercent] = useState(promotion?.discountPercentage || "");
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -58,7 +58,7 @@ const AdminPromotionEdit = ({ promotion, isEdit }) => {
         setDiscountPercent(numericValue);
         setPayload((prev) => ({
           ...prev,
-          discountPercentage: numericValue / 100,
+          discountPercentage: numericValue,
         }));
       } else if (value === "") {
         // Xóa hoàn toàn khi người dùng xóa hết

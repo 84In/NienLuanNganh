@@ -10,12 +10,12 @@ const AdminReview = () => {
       <div className="rounded-md bg-white p-2 text-2xl font-semibold underline-offset-1">Quản lý đánh giá</div>
       <div className="rounded-md bg-white">
         <div className="flex h-10 items-center rounded-tl-md rounded-tr-md bg-gray-100">
-          <NavLink to={""} end className={({ isActive }) => (isActive ? active : nonActive)}>
+          <NavLink to={path.ADMIN_REVIEW_FILTER} end className={({ isActive }) => (isActive ? active : nonActive)}>
             Toàn bộ
           </NavLink>
-          <NavLink to={path.ADMIN_REVIEW_FILTER} className={({ isActive }) => (isActive ? active : nonActive)}>
+          {/* <NavLink to={path.ADMIN_REVIEW_FILTER} className={({ isActive }) => (isActive ? active : nonActive)}>
             Lọc
-          </NavLink>
+          </NavLink> */}
         </div>
         <div className="m-2 items-center p-1">
           <Outlet />

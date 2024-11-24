@@ -20,7 +20,11 @@ const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setI
     <div className="flex w-full items-center justify-center gap-4">
       <Autocomplete
         options={options}
-        getOptionLabel={type === "user" ? (option) => option?.username || "" : (option) => option?.name || ""}
+        getOptionLabel={
+          type === "user"
+            ? (option) => `${option?.firstName || ""} ${option?.lastName || ""}` || ""
+            : (option) => option?.name || ""
+        }
         fullWidth
         disableClearable
         freeSolo
@@ -57,7 +61,7 @@ const AdminItemAutoSelect = ({ label, options, value, setValue, inputValue, setI
         )}
         renderOption={(props, option) => (
           <li {...props} style={{ padding: "10px", borderBottom: "1px solid #E2E8F0", textAlign: "center" }}>
-            {type === "user" ? option.username : option.name}
+            {type === "user" ? `${option?.firstName || ""} ${option?.lastName || ""}` : option.name}
           </li>
         )}
         PaperComponent={CustomPaper}

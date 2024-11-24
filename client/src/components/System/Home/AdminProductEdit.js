@@ -2,7 +2,7 @@ import { Button, IconButton } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 import React, { useEffect, useState } from "react";
-import { apiSearchBrandByName, apiSearchPromotionsByName } from "../../../services";
+import { apiSearchBrandByName } from "../../../services";
 import { useSelector } from "react-redux";
 import icons from "../../../utils/icons";
 import * as apis from "../../../services";
@@ -13,6 +13,8 @@ import AdminItemDescription from "../Items/AdminItemDescription";
 import AdminItemInputStock from "../Items/AdminItemInputStock";
 import AdminItemInputPrice from "../Items/AdminItemInputPrice";
 import Swal from "sweetalert2";
+import AdminItemAutoSelectMultiple from "../Items/AdminItemAutoSelectMultiple";
+import useDebounce from "../../../hooks/debounce";
 
 const { BiX } = icons;
 
@@ -25,19 +27,15 @@ const AdminProductEdit = ({ product, isEdit }) => {
     images: null,
     category_id: null,
     brand_id: null,
+    promotions: [],
   });
   const [errorPrice, setErrorPrice] = useState(false);
   const [errorStockQuantity, setErrorStockQuantity] = useState(false);
   const [valueBrand, setValueBrand] = useState("");
   const [valuePromotion, setValuePromotion] = useState("");
   const [inputValueBrand, setInputValueBrand] = useState("");
-  const [inputValuePromotion, setInputValuePromotion] = useState("");
   const [options, setOptions] = useState([]);
-  const [optionsPromotion, setOptionsPromotion] = useState("");
   const [prevValueBrand, setPrevValueBrand] = useState("");
-  const [prevValuePromotion, setPrevValuePromotion] = useState("");
-
-  // const [isOpenPromotion, setIsOpenPromotion] = useState(false);
   const { categories } = useSelector((state) => state.app);
   const [images, setImages] = useState([]);
 
@@ -88,48 +86,29 @@ const AdminProductEdit = ({ product, isEdit }) => {
       description: inputValue,
     }));
   };
-
-  useEffect(() => {
-    if (inputValueBrand && inputValueBrand !== prevValueBrand) {
-      const fetchBrands = async () => {
-        const response = await apiSearchBrandByName(inputValueBrand);
-        if (response?.code === 0) {
-          setOptions(response?.result);
-        } else {
-          setOptions([]); // Xóa danh sách khi không có kết quả
-        }
-      };
-      fetchBrands();
-      setPrevValueBrand(inputValueBrand); // Cập nhật giá trị trước đó
-    } else if (!valueBrand) {
-      setOptions([]); // Xóa kết quả khi không có giá trị tìm kiếm
+  const fetchBrands = async (keyword) => {
+    if (!keyword) {
+      setOptions([]); // Clear options if no input
+      return;
     }
-  }, [inputValueBrand]); // Gọi lại khi valueBrand thay đổi
 
-  useEffect(() => {
-    if (inputValuePromotion && inputValuePromotion !== prevValuePromotion) {
-      const fetchPromotions = async () => {
-        const response = await apiSearchPromotionsByName(inputValuePromotion);
-        if (response?.code === 0) {
-          setOptionsPromotion(response?.result);
-        } else {
-          setOptionsPromotion([]); // Xóa danh sách khi không có kết quả
-        }
-      };
-
-      fetchPromotions();
-      setPrevValuePromotion(valueBrand); // Cập nhật giá trị trước đó
-    } else if (!valuePromotion) {
-      setOptionsPromotion([]); // Xóa kết quả khi không có giá trị tìm kiếm
+    const response = await apiSearchBrandByName(keyword);
+    if (response?.code === 0) {
+      setOptions(response?.result);
+    } else {
+      setOptions([]); // Xóa danh sách khi không có kết quả
     }
-  }, [inputValuePromotion]); // Gọi lại khi valueBrand thay đổi
-
+    setPrevValueBrand(inputValueBrand);
+  };
+  const debouncedInputValue = useDebounce(inputValueBrand, 300);
+  useEffect(() => {
+    fetchBrands(debouncedInputValue);
+  }, [debouncedInputValue]);
   const handleChangeCategory = (e) => {
     setData((prev) => ({
       ...prev,
       category_id: e.target.value,
     }));
-    console.log(data.category_id);
   };
 
   const handleImageUpload = (event) => {
@@ -177,8 +156,13 @@ const AdminProductEdit = ({ product, isEdit }) => {
     event.dataTransfer.setData("text/plain", index);
   };
 
-  valueBrand && console.log(valueBrand);
+  valueBrand && console.log(valueBrand.id);
   inputValueBrand && console.log(inputValueBrand);
+
+  useEffect(() => {
+    console.log(valuePromotion);
+    console.log(product);
+  }, [valuePromotion, product]);
 
   const handleSubmit = async () => {
     const name = data?.name;
@@ -186,42 +170,37 @@ const AdminProductEdit = ({ product, isEdit }) => {
     const price = data?.price;
     const stockQuantity = data?.stockQuantity;
     const description = data?.description;
-    var brand_id = data?.brand?.id || valueBrand?.id;
-    var promotions = data?.promotions;
+    var brand_id = data?.brand?.id || valueBrand.id;
 
     if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity) {
-      if (!isEdit) {
-        // Upload ảnh
-        if (images && images.length > 0) {
-          const formData = new FormData();
-          images.forEach((image) => {
-            formData.append("files", image); // Thêm từng hình ảnh vào FormData
+      if (images && images.length > 0) {
+        const formData = new FormData();
+        images.forEach((image) => {
+          formData.append("files", image); // Thêm từng hình ảnh vào FormData
+        });
+        const response = await apis.apiUploadProductImages(data.name, formData);
+        if (response.code === 0 && response.result && response.result.length > 0) {
+          console.log(response);
+
+          setData((prev) => {
+            const imagesArray = prev.images ? JSON.parse(prev.images.replace(/'/g, '"')) : [];
+            const resultImage = [...imagesArray, ...response.result];
+            return {
+              ...prev,
+              images: JSON.stringify(resultImage),
+            };
           });
-          const response = await apis.apiUploadProductImages(data.name, formData);
-          if (response.code === 0 && response.result && response.result.length > 0) {
-            console.log(response);
-
-            setData((prev) => {
-              const imagesArray = prev.images ? JSON.parse(prev.images.replace(/'/g, '"')) : [];
-              const resultImage = [...imagesArray, ...response.result];
-              return {
-                ...prev,
-                images: JSON.stringify(resultImage),
-              };
-            });
-          }
         }
+      }
 
-        // Tạo brand nếu chưa có
-        if (!valueBrand && inputValueBrand) {
-          const response = await apis.apiCreateBrand({ name: inputValueBrand });
-          if (response?.code === 0) {
-            brand_id = response?.result?.id;
-          }
+      // Tạo brand nếu chưa có
+      if (inputValueBrand && !valueBrand !== "") {
+        const response = await apis.apiCreateBrand({ name: inputValueBrand });
+        if (response?.code === 0) {
+          brand_id = response?.result?.id;
         }
-
-        // Tạo sản phẩm
-
+      }
+      if (!isEdit) {
         const response = await apis.apiCreateProduct({
           name,
           description,
@@ -230,16 +209,42 @@ const AdminProductEdit = ({ product, isEdit }) => {
           categoryId: category_id,
           brandId: brand_id,
           images: data?.images,
+          promotions: valuePromotion.map((item) => item.id),
         });
         if (response?.code === 0) {
           Swal.fire({
-            title: "Good job!",
+            title: "Đã thêm sản phẩm thành công!",
             text: response?.message,
             icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            window.history.back();
           });
         }
       } else {
-        console.log("khac submit");
+        const response = await apis.apiUpdateProduct(
+          {
+            name,
+            description,
+            price,
+            stockQuantity,
+            categoryId: category_id,
+            brandId: brand_id || valueBrand.id,
+            images: data?.images,
+            promotions: valuePromotion.map((item) => item.id),
+          },
+          product?.id,
+        );
+        if (response?.code === 0) {
+          Swal.fire({
+            title: "Đã cập nhật sản phẩm thành công!",
+            text: response?.message,
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            window.history.back();
+          });
+        }
       }
     }
   };
@@ -286,13 +291,10 @@ const AdminProductEdit = ({ product, isEdit }) => {
                       category_id={isEdit ? data?.category?.id : data?.category_id}
                       handleChangeCategory={handleChangeCategory}
                     />
-                    <AdminItemAutoSelect
-                      label={"Nhập thương thiệu"}
-                      value={valueBrand}
-                      options={options}
-                      setValue={setValueBrand}
-                      inputValue={inputValueBrand}
-                      setInputValue={setInputValueBrand}
+                    <AdminItemAutoSelectMultiple
+                      label={"Nhập mã giảm giá"}
+                      value={valuePromotion}
+                      setValue={setValuePromotion}
                     />
                   </div>
                   <div className="flex w-full flex-col items-center justify-end gap-4">
@@ -305,12 +307,12 @@ const AdminProductEdit = ({ product, isEdit }) => {
                         stockQuantity={data?.stockQuantity}
                       />
                       <AdminItemAutoSelect
-                        label={"Nhập mã giảm giá"}
-                        options={optionsPromotion}
-                        value={valuePromotion}
-                        setValue={setValuePromotion}
-                        inputValue={inputValuePromotion}
-                        setInputValue={setInputValuePromotion}
+                        label={"Nhập thương thiệu"}
+                        value={valueBrand}
+                        options={options}
+                        setValue={setValueBrand}
+                        inputValue={inputValueBrand}
+                        setInputValue={setInputValueBrand}
                       />
                     </div>
                   </div>

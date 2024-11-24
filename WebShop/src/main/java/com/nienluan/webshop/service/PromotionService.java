@@ -59,8 +59,8 @@ public class PromotionService {
         promotionRepository.deleteById(id);
     }
 
-    public List<PromotionResponse> searchPromotion(String name) {
-        return promotionRepository.findByNameContaining(name).stream().map(promotionMapper::toPromotionResponse).toList();
+    public List<PromotionResponse> searchPromotion(String keyword) {
+        return promotionRepository.findByNameContaining(keyword).stream().map(promotionMapper::toPromotionResponse).toList();
     }
 
     @Scheduled(cron = "0 0 0 * * ?")

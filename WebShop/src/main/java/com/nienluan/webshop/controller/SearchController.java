@@ -62,10 +62,10 @@ public class SearchController {
                 .build();
     }
 
-    @GetMapping("/promotion/{name}")
-    public ApiResponse<List<PromotionResponse>> getPromotionsByName(@PathVariable("name") String name) {
+    @GetMapping("/promotion/{keyword}")
+    public ApiResponse<List<PromotionResponse>> getPromotionsByName(@PathVariable("keyword") String keyword) {
         return ApiResponse.<List<PromotionResponse>>builder()
-                .result(promotionService.searchPromotion(name))
+                .result(promotionService.searchPromotion(keyword))
                 .build();
     }
 

@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +19,5 @@ public class ProductRequest {
     String categoryId;
     String brandId;
     String images;
+    Set<String> promotions;
 }

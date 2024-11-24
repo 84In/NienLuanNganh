@@ -205,8 +205,7 @@ function App() {
             path={path.ADMIN_REVIEW}
             element={<PrivateAdminFilterRouter element={AdminReview} roles={["ADMIN"]} user={userData} />}
           >
-            <Route index element={<AdminReviewContent />} />
-            <Route path={path.ADMIN_REVIEW_FILTER} element={<AdminReviewFilter />} />
+            <Route index element={<AdminReviewFilter />} />
           </Route>
           <Route
             path={path.ADMIN_PAYMENT}

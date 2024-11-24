@@ -4,7 +4,7 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import { usePagination } from "../../hooks";
 
 const AdminProductContent = () => {
-  const url = "/api/v1/products";
+  const url = "/api/v1/search/products";
   const { data, currentPage, updatePage, totalPages, loading, nextPage, prevPage, hasNextPage, hasPrevPage } =
     usePagination(url);
 
@@ -18,6 +18,18 @@ const AdminProductContent = () => {
   useEffect(() => {
     console.log(totalPages);
   }, [totalPages]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      updatePage(currentPage);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   if (isLoading) {
     return <Loading />;

@@ -78,7 +78,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId, @RequestPart MultipartFile[] files, @RequestBody ProductUpdateRequest request) {
+    public ApiResponse<ProductResponse> updateProduct(@PathVariable String productId, @RequestBody ProductUpdateRequest request) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.updateProduct(request, productId))
                 .build();
