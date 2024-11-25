@@ -49,9 +49,6 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query(value = "SELECT COUNT(*) FROM t_products WHERE MONTH(created_at) = MONTH(CURRENT_DATE) AND YEAR(created_at) = YEAR(CURRENT_DATE)", nativeQuery = true)
     Long countProductsCurrentMonth();
 
-    //    @Query("SELECT p FROM Product p WHERE " +
-//            "LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-//    Page<Product> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
     Page<Product> findByNameContainingIgnoreCase(String keyword, Pageable pageable);
 
 }

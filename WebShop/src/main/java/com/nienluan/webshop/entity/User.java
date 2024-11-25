@@ -25,7 +25,11 @@ public class User extends BaseEntity {
     String id;
     String username;
     String password;
+
+    @Column(name = "first_name")
     String firstName;
+
+    @Column(name = "last_name")
     String lastName;
     String avatar;
     String email;
