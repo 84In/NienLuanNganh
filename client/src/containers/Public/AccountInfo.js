@@ -57,7 +57,6 @@ const AccountInfo = () => {
       const validImageTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
       if (!validImageTypes.includes(file.type)) {
         setAlert("Tập tin hình ảnh không hợp lệ! (JPEG, JPG, PNG & GIF)");
-        setTimeout(() => setAlert(""), 5000);
         return;
       }
       const reader = new FileReader();
@@ -92,7 +91,6 @@ const AccountInfo = () => {
     } else {
       setAlert("Lỗi tải ảnh lên");
     }
-    setTimeout(() => setAlert(""), 5000);
   };
 
   const handleSaveChange = async (e) => {
@@ -110,7 +108,6 @@ const AccountInfo = () => {
 
       if (!payload.firstName.trim() || !payload.lastName.trim() || !payload.dob.trim()) {
         setAlert("Các trường thông tin không được để trống");
-        setTimeout(() => setAlert(""), 5000);
         return;
       }
 
@@ -132,7 +129,6 @@ const AccountInfo = () => {
     } catch (error) {
       setAlert("Lỗi!");
     }
-    setTimeout(() => setAlert(""), 5000);
   };
 
   return (
@@ -149,7 +145,7 @@ const AccountInfo = () => {
         position: "relative",
       }}
     >
-      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
+      {alert && <AlertCustom open={true} title={"Thông báo"} content={alert} onClose={() => setAlert("")} />}
       <Grid2
         item
         container

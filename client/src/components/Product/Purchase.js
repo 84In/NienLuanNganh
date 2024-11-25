@@ -36,7 +36,6 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
     }
     if (quantity <= 0) {
       setAlert("Vui lòng thêm số lượng");
-      setTimeout(() => setAlert(""), 5000);
       return;
     }
     dispatch({
@@ -58,7 +57,6 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
     }
     if (quantity <= 0) {
       setAlert("Vui lòng thêm số lượng");
-      setTimeout(() => setAlert(""), 5000);
       return;
     }
     try {
@@ -72,11 +70,9 @@ const Purchase = ({ product, quantity, setAlert, setQuantity, setIsModelLogin })
       if (response?.code === 0) {
         dispatch(actions.getCart(username));
         setAlert("Đã thêm sản phẩm vào giỏ hàng");
-        setTimeout(() => setAlert(""), 5000);
       }
     } catch (error) {
       setAlert("Lỗi!");
-      setTimeout(() => setAlert(""), 5000);
     }
   };
 

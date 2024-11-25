@@ -18,16 +18,10 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
 
     if (!userData?.address?.fullName || userData?.address?.fullName === "") {
       setAlert("Vui lòng điền địa chỉ trước khi thanh toán");
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
       return;
     }
     if (!paymentMethod) {
       setAlert("Vui lòng chọn phương thức thanh toán");
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
       return;
     }
     try {
@@ -99,14 +93,8 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
           }
           break;
       }
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     } catch (error) {
       setAlert("Lỗi!");
-      setTimeout(() => {
-        setAlert("");
-      }, 5000);
     } finally {
       setIsProcessing(false);
     }

@@ -77,7 +77,9 @@ const ProductCard = ({ product }) => {
                 </>
               )}
             </div>
-            {product?.category && <p className="mt-2 h-10 text-sm text-gray-500">Thương hiệu {product?.brand.name}</p>}
+            {product?.brand?.name && (
+              <p className="mt-2 h-10 text-sm text-gray-500">Thương hiệu {product?.brand.name}</p>
+            )}
           </CardContent>
         </StyledCard>
       )}

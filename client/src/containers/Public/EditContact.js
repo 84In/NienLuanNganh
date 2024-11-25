@@ -142,9 +142,6 @@ const EditContact = () => {
     } catch (error) {
       setAlert("Lỗi!");
     }
-    setTimeout(() => {
-      setAlert("");
-    }, 5000);
   };
 
   const handleSubmitChangePassword = async (e) => {
@@ -247,7 +244,7 @@ const EditContact = () => {
         position: "relative",
       }}
     >
-      {alert && <AlertCustom title={"Thông báo"} content={alert} />}
+      {alert && <AlertCustom open={true} title={"Thông báo"} content={alert} onClose={() => setAlert("")} />}
       <div className="absolute flex items-center gap-1 p-2 text-lg">
         <ButtonCustom
           TypeButton={"button"}
