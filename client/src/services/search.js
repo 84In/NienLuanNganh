@@ -7,7 +7,7 @@ export const apiSearchBrandByName = (name) =>
         method: "GET",
         url: `/api/v1/search/brand/${name}`,
       });
-      console.log(response);
+      // console.log(response);
 
       resolve(response);
     } catch (error) {
@@ -21,7 +21,7 @@ export const apiSearchPromotionsByKeyWord = (keyword) =>
         method: "GET",
         url: `/api/v1/search/promotion/${keyword}`,
       });
-      console.log(response);
+      // console.log(response);
 
       resolve(response);
     } catch (error) {

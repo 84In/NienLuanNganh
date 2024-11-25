@@ -102,7 +102,7 @@ const AdminReviewFilter = () => {
   // Hàm lọc (có thể thêm logic cho hàm này)
   const handleFilter = () => {
     const updatedParams = new URLSearchParams();
-    console.log("rating", rating);
+    // console.log("rating", rating);
     if (user && user !== "") {
       updatedParams.set("userId", user?.id);
     } else {

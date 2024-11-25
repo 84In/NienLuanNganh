@@ -58,7 +58,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
           const responseVNPay = await apiCreateOrderWithVNPay(paymentMethod, order, {
             amount: order.totalAmount,
           });
-          console.log(responseVNPay);
+          // console.log(responseVNPay);
 
           if (responseVNPay?.code === 0 && responseVNPay?.result?.paymentUrl) {
             // Điều hướng người dùng tới trang thanh toán của VNPay
@@ -70,7 +70,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
           break;
         case "zalopay":
           const responseZaloPay = await apiCreateOrderWithZaloPay(paymentMethod, order);
-          console.log(responseZaloPay);
+          // console.log(responseZaloPay);
 
           if (responseZaloPay?.code === 0 && responseZaloPay?.result?.orderurl) {
             // Điều hướng người dùng tới trang thanh toán của ZaloPay
@@ -83,7 +83,7 @@ const CheckoutSideBar = ({ userData, paymentMethod, checkout, totalDiscountPrice
 
         default:
           const response = await apiCreateOrderWithCash(paymentMethod, order);
-          console.log(response);
+          // console.log(response);
 
           if (response?.code === 0) {
             setAlert("Thanh toán thành công");

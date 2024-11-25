@@ -248,3 +248,9 @@ export const orderStatus = [
   { name: "Đã hủy", codeName: "cancelled", color: "#FF3838", status: false },
   { name: "Hoàn tất", codeName: "completed", color: "#56F000", status: false },
 ];
+
+export const reasonDefault = [
+  "Shop chân thành xin lỗi vì chi nhánh của cửa hàng không tồn tại ở khu vực của bạn.",
+  "Shop chân thành xin lỗi vì sự bất tiện này, hiện tại shop đang đóng cửa tiến hành sửa chữa. Shop sẽ trở lại sớm",
+  "Shop chân thành xin lỗi vì bộ phận vận chuyển đã quá tải. Vui lòng đặt hàng lại sau!",
+];

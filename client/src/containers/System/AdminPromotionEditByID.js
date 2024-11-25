@@ -14,7 +14,7 @@ const AdminPromotionEditByID = () => {
     const fetchData = async (id) => {
       try {
         const response = await apiGetPromotionById(id);
-        console.log(response);
+        // console.log(response);
 
         setData(response?.result);
       } catch (error) {

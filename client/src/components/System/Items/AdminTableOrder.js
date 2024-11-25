@@ -17,7 +17,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { formatCurrency, formatDate, orderStatus } from "../../../utils";
+import { formatCurrency, formatDate, orderStatus, reasonDefault } from "../../../utils";
 import AdminButtonAccept from "./AdminButtonAccept";
 import AdminItemStatus from "./AdminItemStatus";
 import * as apis from "../../../services";
@@ -25,6 +25,70 @@ import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const TYPE_CHECK_BOX = ["order", "product"];
+
+// const StyledTableCell = styled(TableCell)(({ theme }) => ({
+//   [`&.${tableCellClasses.head}`]: {
+//     backgroundColor: theme.palette.common.black,
+//     color: theme.palette.common.white,
+//   },
+//   [`&.${tableCellClasses.body}`]: {
+//     fontSize: 14,
+//     whiteSpace: "nowrap",
+//     overflow: "hidden",
+//     textOverflow: "ellipsis",
+//     maxWidth: "150px",
+//     transition: "all 0.3s ease",
+//     "&:hover": {
+//       whiteSpace: "normal",
+//       overflow: "visible",
+//       textOverflow: "unset",
+//       maxWidth: "none",
+//     },
+//   },
+// }));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "150px",
+    transition: "all 0.3s ease",
+
+    "&:hover": {
+      whiteSpace: "normal",
+      overflow: "visible",
+      textOverflow: "unset",
+      maxWidth: "none",
+    },
+
+    // Bỏ hover riêng cho ô có class "no-hover"
+    "&.no-hover:hover": {
+      whiteSpace: "nowrap",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      maxWidth: "150px",
+    },
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+  transition: "height 0.3s ease",
+  "&:hover": {
+    height: "auto",
+  },
+}));
 
 const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -40,51 +104,10 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
   }, [selectedProduct]);
 
   const handleNavigation = (codeName) => {
-    // Lấy địa chỉ hiện tại
     const currentPath = location.pathname;
-
-    // Thêm tham số vào địa chỉ
     const newPath = codeName ? `${currentPath}?codeName=${codeName}` : currentPath;
-
-    // Điều hướng đến địa chỉ mới
     navigate(newPath);
   };
-
-  // Check if data exists
-
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      maxWidth: "150px",
-      transition: "all 0.3s ease",
-      "&:hover": {
-        whiteSpace: "normal",
-        overflow: "visible",
-        textOverflow: "unset",
-        maxWidth: "none",
-      },
-    },
-  }));
-
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-    transition: "height 0.3s ease",
-    "&:hover": {
-      height: "auto",
-    },
-  }));
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -94,6 +117,25 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
     }
     setSelectedRows([]);
   };
+
+  // Hàm fetch lại dữ liệu
+  const fetchData = async () => {
+    navigate(0);
+  };
+
+  // // Dùng useEffect để thiết lập và dọn dẹp interval
+  // useEffect(() => {
+  //   // Fetch dữ liệu ngay khi component mount
+  //   fetchData();
+
+  //   // Thiết lập interval để fetch lại dữ liệu mỗi 15 phút (15 * 60 * 1000 ms)
+  //   const intervalId = setInterval(fetchData, 15 * 60 * 1000);
+
+  //   // Dọn dẹp interval khi component unmount
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
 
   const handleClick = (event, id) => {
     const selectedIndex = selectedRows.indexOf(id);
@@ -192,6 +234,110 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
     } catch (error) {
       Swal.fire({
         title: "Cập nhật trạng thái đơn hàng không thành công!",
+        timer: 2000,
+        icon: "error",
+      });
+    }
+  };
+
+  const handleCancelOrder = async (orderId) => {
+    console.log(orderId);
+
+    try {
+      const order = data.find((item) => item.id === orderId);
+      let newStatus;
+
+      // Xác định trạng thái mới dựa trên trạng thái hiện tại
+      if (order.status.codeName === "pending") {
+        newStatus = "cancelled";
+      }
+
+      if (newStatus) {
+        Swal.fire({
+          title: "Phản hồi khi huỷ đơn hàng",
+          html: `
+            <div class="space-y-4">
+              <label for="reason-select" class="block text-sm">Chọn lý do huỷ:</label>
+              <select id="reason-select" class="w-full p-2 text-sm border rounded-md font-medium">
+                ${reasonDefault
+                  .map(
+                    (reason, index) =>
+                      `<option class="text-sm whitespace-normal break-words" value="${reason}">${reason}</option>`,
+                  )
+                  .join("")}
+              </select>
+              <textarea id="custom-reason" class="w-full p-2 text-sm border rounded-md font-medium" placeholder="Hoặc nhập lý do mới..."></textarea>
+            </div>
+          `,
+          showCancelButton: true,
+          confirmButtonText: "Gửi",
+          cancelButtonText: "Hủy",
+          preConfirm: () => {
+            const selectedReason = document.getElementById("reason-select").value;
+            const customReason = document.getElementById("custom-reason").value.trim();
+
+            if (!selectedReason && !customReason) {
+              Swal.showValidationMessage("Vui lòng chọn hoặc nhập lý do!");
+            }
+
+            return customReason || selectedReason;
+          },
+          customClass: {
+            popup: "swal-custom-popup", // Thêm lớp tùy chỉnh để sử dụng Tailwind
+            title: "swal-custom-title", // Tùy chỉnh lớp tiêu đề
+          },
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const reason = result.value;
+
+            // Hiển thị loading khi gọi API
+            Swal.fire({
+              title: "Đang xử lý...",
+              text: "Vui lòng đợi trong giây lát...",
+              showConfirmButton: false,
+              didOpen: () => {
+                Swal.showLoading(); // Hiển thị biểu tượng loading
+              },
+            });
+
+            try {
+              const response = await apis.apiCancelledOrderByAdmin(orderId, reason);
+
+              Swal.close();
+
+              if (response?.code === 0) {
+                Swal.fire({
+                  title: `Trạng thái đơn hàng ${orderId} đã được cập nhật thành công!`,
+                  timer: 2000,
+                  icon: "success",
+                });
+                // Cập nhật lại dữ liệu để hiển thị trạng thái mới
+                // setValueData((prevData) =>
+                //   prevData.map((item) =>
+                //     item.id === orderId ? { ...item, status: { ...item.status, codeName: newStatus } } : item,
+                //   ),
+                // );
+                fetchData();
+              } else {
+                Swal.fire({
+                  title: `Cập nhật trạng thái đơn hàng ${orderId} không thành công!`,
+                  timer: 2000,
+                  icon: "error",
+                });
+              }
+            } catch (error) {
+              Swal.fire({
+                icon: "error",
+                title: "Lỗi",
+                text: error.message,
+              });
+            }
+          }
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng!",
         timer: 2000,
         icon: "error",
       });
@@ -303,12 +449,21 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
                         title={dataItem?.status?.name}
                       />
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <AdminButtonAccept
-                        color={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.color}
-                        title={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.action}
-                        func={() => handleAcceptOrder(dataItem.id)}
-                      />
+                    <StyledTableCell className="no-hover flex flex-col" align="center">
+                      <div className="flex flex-wrap gap-1">
+                        <AdminButtonAccept
+                          color={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.color}
+                          title={orderStatus?.find((item) => item?.codeName === dataItem?.status?.codeName)?.action}
+                          func={() => handleAcceptOrder(dataItem.id)}
+                        />
+                        {dataItem?.status?.codeName === "pending" && (
+                          <AdminButtonAccept
+                            title="Huỷ đơn hàng"
+                            color="#FF3838"
+                            func={() => handleCancelOrder(dataItem.id)}
+                          />
+                        )}
+                      </div>
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}

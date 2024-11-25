@@ -72,7 +72,7 @@ const AdminBase = ({ user }) => {
     })
     .filter(Boolean);
 
-  console.log(totalRevenueList);
+  // console.log(totalRevenueList);
 
   const labels = Utils.months({ count: new Date().getMonth() + 1 });
   const data = {
@@ -139,7 +139,7 @@ const AdminBase = ({ user }) => {
   };
 
   if (loading) return <Loading />;
-  console.log(labelPaymentList);
+  // console.log(labelPaymentList);
 
   return (
     <div className="flex flex-col gap-3 bg-gray-200 p-2">

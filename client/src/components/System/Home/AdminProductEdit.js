@@ -159,10 +159,10 @@ const AdminProductEdit = ({ product, isEdit }) => {
   valueBrand && console.log(valueBrand.id);
   inputValueBrand && console.log(inputValueBrand);
 
-  useEffect(() => {
-    console.log(valuePromotion);
-    console.log(product);
-  }, [valuePromotion, product]);
+  // useEffect(() => {
+  //   console.log(valuePromotion);
+  //   console.log(product);
+  // }, [valuePromotion, product]);
 
   const handleSubmit = async () => {
     const name = data?.name;
@@ -180,7 +180,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
         });
         const response = await apis.apiUploadProductImages(data.name, formData);
         if (response.code === 0 && response.result && response.result.length > 0) {
-          console.log(response);
+          // console.log(response);
 
           setData((prev) => {
             const imagesArray = prev.images ? JSON.parse(prev.images.replace(/'/g, '"')) : [];
@@ -248,18 +248,6 @@ const AdminProductEdit = ({ product, isEdit }) => {
       }
     }
   };
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    console.log(valueBrand);
-  }, [valueBrand]);
-
-  useEffect(() => {
-    console.log(valuePromotion);
-  }, [valuePromotion]);
   const CSS_HEADING = "font-bold text-2xl";
   return (
     <div className="flex flex-col">

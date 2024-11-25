@@ -85,3 +85,19 @@ export const apiChangeOrderStatus = (orderId, status) =>
       reject(error);
     }
   });
+
+export const apiCancelledOrderByAdmin = (orderId, reason) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "DELETE",
+        url: `/api/v1/orders/canceled/${orderId}`,
+        params: {
+          reason: reason,
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

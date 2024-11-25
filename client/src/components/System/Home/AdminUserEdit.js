@@ -87,10 +87,6 @@ const AdminUserEdit = ({ user }) => {
     setter(event.target.value);
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   // const handleChangeRole = handleChange(setRole);
   const handleChangeProvince = handleChange(setProvince);
   const handleChangeDistrict = handleChange(setDistrict);

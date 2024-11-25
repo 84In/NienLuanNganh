@@ -14,7 +14,7 @@ const AdminProductEditByID = () => {
     const fetchData = async (id) => {
       try {
         const response = await apiGetProductById(id);
-        console.log(response);
+        // console.log(response);
 
         setData(response?.result);
       } catch (error) {

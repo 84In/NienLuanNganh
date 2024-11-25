@@ -64,6 +64,6 @@ export const logout = (token) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };

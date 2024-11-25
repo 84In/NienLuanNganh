@@ -12,12 +12,28 @@ const AdminProductContent = () => {
   const [isLoading, setIsLoading] = useState(loading);
 
   useEffect(() => {
+    // Cập nhật dữ liệu ban đầu
     setValueData(data);
-  }, [data]);
+
+    // Thiết lập interval để cập nhật dữ liệu mỗi 15 phút (15 * 60 * 1000 ms)
+    const intervalId = setInterval(
+      () => {
+        updatePage(currentPage); // Fetch lại dữ liệu trang hiện tại
+      },
+      15 * 60 * 1000,
+    );
+
+    // Dọn dẹp interval khi component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [data, currentPage, updatePage]); // Dependency array cập nhật khi data hoặc currentPage thay đổi
 
   useEffect(() => {
-    console.log(totalPages);
-  }, [totalPages]);
+    // Cập nhật lại valueData khi loading hoặc khi dữ liệu thay đổi
+    setValueData(data);
+    setIsLoading(loading);
+  }, [data, loading]);
 
   useEffect(() => {
     const handlePopState = () => {

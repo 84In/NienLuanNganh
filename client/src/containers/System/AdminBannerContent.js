@@ -13,7 +13,7 @@ const AdminBannerContent = () => {
   const [totalPage, setTotalPage] = useState(totalPages);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
 
     setValueData(data);
   }, [data]);

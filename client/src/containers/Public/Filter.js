@@ -73,7 +73,7 @@ const Filter = () => {
         newUrl += `?${queryParams.join("&")}`;
       }
       setUrlApi(newUrl);
-      console.log(newUrl);
+      // console.log(newUrl);
     }
   }, [urlApi, sortBy, sortDirection, type, name, priceFilter, brandFilter]);
 

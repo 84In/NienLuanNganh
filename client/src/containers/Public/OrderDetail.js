@@ -28,7 +28,7 @@ const OrderDetail = () => {
   });
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [rating, setRating] = useState(0);
-  console.log(payload);
+  // console.log(payload);
 
   useEffect(() => {
     const handleResize = () => {

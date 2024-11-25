@@ -210,7 +210,7 @@ const EditContact = () => {
       }
     } catch (error) {
       setAlert("Lỗi!");
-      console.log(error);
+      // console.log(error);
     }
     setTimeout(() => {
       setAlert("");

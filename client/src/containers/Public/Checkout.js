@@ -34,9 +34,6 @@ const Checkout = () => {
     calculateTotalAmount();
   }, [checkout]);
 
-  console.log(paymentMethod);
-  console.log(checkout);
-
   return (
     <Grid2
       container

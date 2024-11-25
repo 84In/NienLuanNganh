@@ -26,8 +26,8 @@ const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
       return;
     }
     setSearchParams(queryParams);
-    console.log(queryParams);
-    console.log(searchParams.get("search"));
+    // console.log(queryParams);
+    // console.log(searchParams.get("search"));
   };
 
   return (
