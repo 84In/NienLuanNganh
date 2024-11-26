@@ -13,9 +13,11 @@ const CheckoutItem = ({ data }) => {
         <img
           className="h-16 w-16 object-contain"
           src={
-            process.env.NODE_ENV === "production"
-              ? process.env.REACT_APP_SERVER_URL_PROD
-              : process.env.REACT_APP_SERVER_URL_DEV + firstImage
+            firstImage && firstImage.startsWith("https://")
+              ? firstImage
+              : (process.env.NODE_ENV === "production"
+                  ? process.env.REACT_APP_SERVER_URL_PROD
+                  : process.env.REACT_APP_SERVER_URL_DEV) + firstImage
           }
           alt={data?.product?.name}
         ></img>

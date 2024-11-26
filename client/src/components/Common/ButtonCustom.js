@@ -79,6 +79,11 @@ const ButtonCustom = ({
                         Thông tin tài khoản
                       </p>
                     </Link>
+                    <Link to={path.HOME + path.ORDER_HISTORY}>
+                      <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Đơn hàng của tôi
+                      </p>
+                    </Link>
                     <Link to={path.HOME}>
                       <p className="block cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                         Trang chủ
