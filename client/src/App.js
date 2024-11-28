@@ -226,7 +226,7 @@ function App() {
             element={<PrivateAdminFilterRouter element={AdminBanner} roles={["ADMIN"]} user={userData} />}
           >
             <Route index element={<AdminBannerContent />} />
-            <Route path={path.ADMIN_BANNER_CREATE} element={<AdminBannerCreate />} />
+            {/* <Route path={path.ADMIN_BANNER_CREATE} element={<AdminBannerCreate />} /> */}
             <Route path={path.ADMIN_BANNER_EDIT} element={<AdminBannerEditByID />} />
           </Route>
         </Route>

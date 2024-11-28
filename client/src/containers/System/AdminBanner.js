@@ -14,9 +14,9 @@ const AdminBanner = () => {
           <NavLink to={""} end className={({ isActive }) => (isActive ? active : nonActive)}>
             Bảng tổng hợp
           </NavLink>
-          <NavLink to={path.ADMIN_BANNER_CREATE} className={({ isActive }) => (isActive ? active : nonActive)}>
+          {/* <NavLink to={path.ADMIN_BANNER_CREATE} className={({ isActive }) => (isActive ? active : nonActive)}>
             Tạo banner mới
-          </NavLink>
+          </NavLink> */}
         </div>
         <div className="m-2 items-center p-1">
           <Outlet />

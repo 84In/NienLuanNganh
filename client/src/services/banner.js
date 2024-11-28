@@ -27,6 +27,32 @@ export const apiGetBannerById = (id) =>
     }
   });
 
+export const apiUpdateBanner = (id, payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "PUT",
+        url: `/api/v1/banners/${id}`,
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiRemoveBanner = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "DELETE",
+        url: `/api/v1/banners/${id}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const apiGetBannerByTitle = (title) =>
   new Promise(async (resolve, reject) => {
     try {

@@ -33,7 +33,6 @@ const TYPE_REMOVE = ["product", "category"];
 const TYPE_CHECK_BOX = ["order", "product"];
 const TYPE_NON_EDIT = ["promotion", "user", "payment"];
 const TYPE_HIDE_IMAGES = ["product", "banner"];
-const TYPE_CENTER_COL = ["payment", "banner"];
 const KEY_RIGHT_COL = ["amount", "price", "stockQuantity", "sold", "discountPercentage"];
 
 const status = (value) => (value === "Success" ? "#76ff03" : "#ff1744");
@@ -185,6 +184,8 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
         return await apis.apiRemoveCategory(id);
       case "product":
         return await apis.apiDeleteProduct(id);
+      case "banner":
+        return await apis.apiRemoveBanner(id);
       default:
         return;
     }
@@ -232,7 +233,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
       });
       const result = response.result;
       setValueData(result.content);
-      setTotalPage(result.totalPages);
+      setTotalPage(result?.page?.totalPages || result?.reviews?.page?.totalPages || 1);
     } catch (error) {
       console.error("Error fetching more data:", error);
     } finally {
@@ -318,7 +319,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                         `${dataItem[key]} %`
                       ) : key === "dob" ? (
                         formatDate(dataItem[key])
-                      ) : key === "amount" ? (
+                      ) : key === "amount" || key === "price" ? (
                         formatCurrency(dataItem[key])
                       ) : key === "avatar" ? (
                         dataItem[key] && (
@@ -387,51 +388,6 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
                               />
                             </div>
                           )}
-
-                          {/* Danh sách hình ảnh lớn hiện ra khi hover */}
-                          {/* <div className="absolute left-0 top-0 z-10 hidden bg-white p-2 group-hover:block">
-                            <div className="flex flex-wrap items-center justify-center gap-1">
-                              {dataItem[key] && isJSON(dataItem[key].replace(/'/g, '"')) ? (
-                                JSON.parse(dataItem[key].replace(/'/g, '"')) // Thay thế dấu nháy đơn bằng dấu nháy kép
-                                  .map((item, idx) => (
-                                    <img
-                                      key={idx}
-                                      src={
-                                        item.includes("http")
-                                          ? item
-                                          : `${
-                                              process.env.NODE_ENV === "production"
-                                                ? process.env.REACT_APP_SERVER_URL_PROD
-                                                : process.env.REACT_APP_SERVER_URL_DEV
-                                            }${item}`
-                                      }
-                                      alt={`Full Image ${idx}`}
-                                      style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        transition: "transform 0.3s ease", // Mượt mà khi zoom
-                                      }}
-                                      className="hover:scale-150" // Kích thước hình ảnh lớn hơn
-                                    />
-                                  ))
-                              ) : (
-                                <img
-                                  src={`${
-                                    process.env.NODE_ENV === "production"
-                                      ? process.env.REACT_APP_SERVER_URL_PROD
-                                      : process.env.REACT_APP_SERVER_URL_DEV
-                                  }${dataItem[key]}`}
-                                  alt={`Image ${dataItem.name}`}
-                                  style={{
-                                    width: "100px",
-                                    height: "100px",
-                                    transition: "transform 0.3s ease", // Mượt mà khi zoom
-                                  }}
-                                  className="hover:scale-150" // Phóng to 1.5 lần khi hover
-                                />
-                              )}
-                            </div>
-                          </div> */}
                         </div>
                       ) : key === "category" || key === "brand" ? (
                         dataItem[key].name

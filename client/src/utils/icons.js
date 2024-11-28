@@ -22,6 +22,8 @@ import {
   BiCamera,
   BiLoader,
   BiLockOpenAlt,
+  BiSolidLeftArrow,
+  BiSolidRightArrow,
 } from "react-icons/bi";
 
 import { FaCartShopping, FaRegCircleUser } from "react-icons/fa6";
@@ -60,5 +62,7 @@ const icons = {
   BiCamera,
   BiLoader,
   BiLockOpenAlt,
+  BiSolidRightArrow,
+  BiSolidLeftArrow,
 };
 export default icons;
