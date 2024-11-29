@@ -124,7 +124,7 @@ const Header = ({ User, cart, setIsModelLogin, isLoggedIn }) => {
               TextColor={"text-blue-600"}
               FontWeight={"font-medium"}
               HoverColor={"hover:bg-blue-100"}
-              TextTitle={<DotAlert number={cart?.cartDetails?.length ? cart?.cartDetails?.length : 0} />}
+              TextTitle={cart?.cartDetails?.length > 0 ? <DotAlert number={cart?.cartDetails?.length} /> : null}
               ClickButton={() => navigate(path.CART)}
             />
           </Grid2>
