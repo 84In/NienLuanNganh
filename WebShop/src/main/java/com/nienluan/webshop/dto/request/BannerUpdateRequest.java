@@ -10,5 +10,5 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BannerUpdateRequest {
     String title;
-    String image;
+    String images;
 }

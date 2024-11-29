@@ -10,6 +10,8 @@ import com.nienluan.webshop.repository.BannerRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,9 +46,9 @@ public class BannerService {
 
     public BannerResponse updateBanner(String id, BannerUpdateRequest request) {
         var banner = bannerRepository.findById(id).orElseThrow(()-> new AppException(ErrorCode.BANNER_NOT_EXISTED));
-
         bannerMapper.updateBanner(banner,request);
-
+        banner.setImages(request.getImages());
+        System.out.println(request.getImages());
         return bannerMapper.toBannerResponse(bannerRepository.save(banner));
     }
 
