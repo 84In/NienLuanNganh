@@ -237,7 +237,7 @@ public class OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED));
         OrderResponse orderResponse = changeOrderStatus(orderId, "cancelled");
 
-        if (orderResponse != null){
+        if (orderResponse != null) {
             mailService.sendOrderCanceledEmail(order.getUser().getEmail(), order, reason);
         }
 
@@ -490,7 +490,7 @@ public class OrderService {
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 // Kiểm tra nếu thời gian kiểm tra đã vượt quá 15 phút
-                if ((System.currentTimeMillis() - apptime )> MAX_CHECK_DURATION_MS) {
+                if ((System.currentTimeMillis() - apptime) > MAX_CHECK_DURATION_MS) {
                     logger.info("Thời gian kiểm tra đã vượt quá 15 phút. Dừng kiểm tra trạng thái.");
                     scheduler.shutdown(); // Dừng scheduler
                     return;
@@ -571,6 +571,38 @@ public class OrderService {
             }
         }
         return urlClient;
+    }
+
+    public Boolean queryVNPay(HttpServletRequest request, Order order) {
+        Map<String, String> vnpParamsMap = vnPayService.getQueryVNPayConfig();
+        vnpParamsMap.put("vnp_OrderInfo", "Truy vấn đơn hàng: " + order.getId());
+        vnpParamsMap.put("vnp_TxnRef", order.getId());
+
+        // Set transaction date in GMT+7 timezone
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
+        String vnpTransactionDate = formatter.format(order.getPayment().getPaymentDate());
+        vnpParamsMap.put("vnp_TransactionDate", vnpTransactionDate);
+        vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
+
+        String queryUrl = vnPayService.generateUrl(vnpParamsMap);
+        String refundUrl = vnPayService.getQueryEndpoint() + "?" + queryUrl;
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest httpRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(refundUrl))
+                    .GET()
+                    .build();
+            HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+            // Parse the response JSON to check vnp_ResponseCode
+            JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
+            return "00".equals(jsonResponse.get("vnp_ResponseCode").getAsString());
+
+        } catch (IOException | InterruptedException e) {
+            throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_VNPAY);
+        }
     }
 
     public Boolean refundVNPay(HttpServletRequest request, Order order) {
