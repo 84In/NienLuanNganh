@@ -20,6 +20,7 @@ public class CategoryController {
 
     CategoryService categoryService;
 
+
     @PostMapping
     public ApiResponse<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
         return ApiResponse.<CategoryResponse>builder()
@@ -32,7 +33,15 @@ public class CategoryController {
     public ApiResponse<Page<CategoryResponse>> getCategories(Pageable pageable) {
         return ApiResponse.<Page<CategoryResponse>>builder()
                 .message("Success!")
-                .result(categoryService.getAllCategories(pageable))
+                .result(categoryService.getAllCategories(null,pageable))
+                .build();
+    }
+
+    @GetMapping("/search")
+    public ApiResponse<Page<CategoryResponse>> getCategoriesByKeyword(@RequestParam(required = false) String keyword, Pageable pageable) {
+        return ApiResponse.<Page<CategoryResponse>>builder()
+                .message("Success!")
+                .result(categoryService.getAllCategories(keyword,pageable))
                 .build();
     }
 

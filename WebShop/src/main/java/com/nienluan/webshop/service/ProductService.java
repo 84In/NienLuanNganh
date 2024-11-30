@@ -241,6 +241,12 @@ public class ProductService {
     }
 
     public Page<ProductResponse> searchProducts(String keyword, Pageable pageable) {
-        return productRepository.findByNameContainingIgnoreCase(keyword, pageable).map(productMapper::toProductResponse);
+        Page<Product> products;
+        if (keyword == null || keyword.isEmpty()) {
+            products = productRepository.findAll(pageable);
+        }else{
+            products = productRepository.findByNameContainingIgnoreCase(keyword, pageable);
+        }
+        return products.map(productMapper::toProductResponse);
     }
 }

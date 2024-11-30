@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 
@@ -24,6 +25,7 @@ public class CategoryService {
     CategoryRepository categoryRepository;
     CategoryMapper categoryMapper;
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public CategoryResponse createdCategory(CategoryRequest request){
         if(categoryRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
@@ -32,14 +34,20 @@ public class CategoryService {
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public CategoryResponse updateCategory(CategoryUpdateRequest request, String id){
         Category categoryUpdate = categoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         categoryMapper.updateCategory(categoryUpdate,request);
         return categoryMapper.toCategoryResponse(categoryRepository.save(categoryUpdate));
     }
 
-    public Page<CategoryResponse> getAllCategories(Pageable pageable){
-        var categories = categoryRepository.findAll(pageable);
+    public Page<CategoryResponse> getAllCategories(String keyword,Pageable pageable){
+        Page<Category> categories;
+        if (keyword == null || keyword.isEmpty()) {
+            categories = categoryRepository.findAll(pageable);
+        }else{
+            categories = categoryRepository.searchCategoriesByKeyword(pageable,keyword);
+        }
         return categories.map(categoryMapper::toCategoryResponse);
     }
 

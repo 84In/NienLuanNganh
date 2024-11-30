@@ -23,7 +23,6 @@ import AdminItemStatus from "./AdminItemStatus";
 import * as apis from "../../../services";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
-
 const TYPE_CHECK_BOX = ["order", "product"];
 
 // const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -90,12 +89,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
+const AdminTableOrder = ({ data, pagination, type, setValueData, search, setIsShowKeyword, setIsKeyword }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     if (selectedProduct !== null) {
@@ -104,8 +102,10 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
   }, [selectedProduct]);
 
   const handleNavigation = (codeName) => {
-    const currentPath = location.pathname;
+    const currentPath = new URLSearchParams();
     const newPath = codeName ? `${currentPath}?codeName=${codeName}` : currentPath;
+    setIsShowKeyword(false);
+    setIsKeyword("");
     navigate(newPath);
   };
 
@@ -122,20 +122,6 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
   const fetchData = async () => {
     navigate(0);
   };
-
-  // // Dùng useEffect để thiết lập và dọn dẹp interval
-  // useEffect(() => {
-  //   // Fetch dữ liệu ngay khi component mount
-  //   fetchData();
-
-  //   // Thiết lập interval để fetch lại dữ liệu mỗi 15 phút (15 * 60 * 1000 ms)
-  //   const intervalId = setInterval(fetchData, 15 * 60 * 1000);
-
-  //   // Dọn dẹp interval khi component unmount
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, []);
 
   const handleClick = (event, id) => {
     const selectedIndex = selectedRows.indexOf(id);
@@ -355,20 +341,22 @@ const AdminTableOrder = ({ data, pagination, type, setValueData }) => {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="mb-2 flex w-full bg-gray-100">
-        {/* <div className="flex items-center justify-center p-1">
-          <AdminButtonAccept title={"Tổng hợp"} func={() => handleNavigation()} />
-        </div> */}
-        {orderStatus?.map((item, index) => (
-          <div className="flex items-center justify-center p-1">
-            <AdminButtonAccept
-              key={index}
-              title={item?.name}
-              color={item?.color}
-              func={() => handleNavigation(item?.codeName)}
-            />
+      <div className="flex w-full">
+        <Box className="mb-4 flex w-full flex-col justify-center gap-4 outline-1">
+          <div className="flex items-center justify-start">
+            {orderStatus?.map((item, index) => (
+              <div className="flex items-center justify-center p-1">
+                <AdminButtonAccept
+                  key={index}
+                  title={item?.name}
+                  color={item?.color}
+                  func={() => handleNavigation(item?.codeName)}
+                />
+              </div>
+            ))}
           </div>
-        ))}
+          {search}
+        </Box>
       </div>
       {selectedRows.length !== 0 && (
         <Button

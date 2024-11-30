@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-const AdminItemName = ({ name, handleName, nameLabel, helpText, disable }) => {
+const AdminItemName = ({ name, handleName, nameLabel, helpText, disable, onKeyDown }) => {
   const cssField = {
     backgroundColor: "#fff", // Màu nền của Select
     borderRadius: "8px", // Bo góc
@@ -34,6 +34,7 @@ const AdminItemName = ({ name, handleName, nameLabel, helpText, disable }) => {
           shrink: true,
           style: { fontSize: "18px", fontWeight: "bold" }, // Chữ lớn và đậm
         }}
+        onKeyDown={onKeyDown}
         required
         sx={{ backgroundColor: "white", ...cssField }} // Đảm bảo CSS tương ứng
         helperText={helpText ? helpText : ""}

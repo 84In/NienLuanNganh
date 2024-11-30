@@ -89,7 +89,13 @@ public class UserService {
     }
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Page<UserResponse> getAllUserByKeyword(String keyword,Pageable pageable) {
-        var users = userRepository.searchUserByKeyword(pageable,keyword);
+        Page<User> users;
+        if (keyword == null || keyword.isEmpty()) {
+            users = userRepository.findAll(pageable);
+        }else{
+            users = userRepository.searchUserByKeyword(pageable,keyword);
+        }
+
         return users.map(userMapper::toUserResponse);
     }
 
