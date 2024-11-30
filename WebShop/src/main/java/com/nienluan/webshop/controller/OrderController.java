@@ -143,10 +143,10 @@ public class OrderController {
     }
 
     @GetMapping
-    public ApiResponse<?> getAllOrders(@RequestParam(required = false) String codeName, Pageable pageable) {
+    public ApiResponse<?> getAllOrders(@RequestParam(required = false) String codeName, @RequestParam(required = false) String keyword, Pageable pageable) {
         return ApiResponse.<Page<OrderResponse>>builder()
                 .message("Get all orders successfully")
-                .result(orderService.getAllOrders(codeName, pageable))
+                .result(orderService.getAllOrders(codeName, keyword, pageable))
                 .build();
     }
 

@@ -264,14 +264,14 @@ public class OrderService {
     }
 
 
-    public Page<OrderResponse> getAllOrders(String codeName, Pageable pageable) {
+    public Page<OrderResponse> getAllOrders(String codeName,String keyword, Pageable pageable) {
         Page<Order> orderPage;
 
-        if (codeName == null || codeName.isEmpty()) {
+        if ((codeName == null || codeName.isEmpty() ) && (keyword == null || keyword.isEmpty())) {
             // Trả về tất cả nếu codename trống hoặc null
             orderPage = orderRepository.findAll(pageable);
         } else {
-            orderPage = orderRepository.findByStatusCodeName(codeName, pageable);
+            orderPage = orderRepository.findByKeywordAndStatusCode(keyword, codeName, pageable);
         }
 
         List<OrderResponse> orderResponses = orderPage.getContent().stream()

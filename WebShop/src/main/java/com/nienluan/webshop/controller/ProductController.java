@@ -72,7 +72,7 @@ public class ProductController {
     }
     @GetMapping("/search")
     public ApiResponse<Page<ProductResponse>> searchProducts(
-            @RequestParam String keyword,
+            @RequestParam(required = false) String keyword,
             Pageable pageable) {
         return ApiResponse.<Page<ProductResponse>>builder().result(productService.searchProducts(keyword, pageable)).build();
     }

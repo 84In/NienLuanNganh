@@ -38,8 +38,23 @@ public interface OrderRepository extends JpaRepository<Order, String> {
                                              @Param("status") OrderStatus status,
                                              @Param("search") String search,
                                              Pageable pageable);
-
-    Page<Order> findByStatusCodeName(String codename, Pageable pageable);
+    @Query("SELECT DISTINCT o FROM Order o " +
+            "LEFT JOIN FETCH o.orderDetails od " +
+            "LEFT JOIN FETCH od.product odp " +
+            "LEFT JOIN FETCH o.paymentMethod pm " +
+            "LEFT JOIN FETCH o.recipient or " +
+            "WHERE (:keyword IS NULL OR " +
+            "LOWER(o.id) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(CAST(o.totalAmount AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(CAST(o.createdAt AS string)) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(or.address) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(or.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(or.phone) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(odp.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(odp.category.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+            "LOWER(pm.name) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+            "AND (:codename IS NULL OR o.status.codeName = :codename)")
+    Page<Order> findByKeywordAndStatusCode(String keyword, String codename, Pageable pageable);
 
     @Query("SELECT COALESCE(SUM(o.totalAmount), 0) FROM Order o WHERE DATE(o.createdAt) = :date")
     BigDecimal findTotalAmountByDate(@Param("date") LocalDate date);

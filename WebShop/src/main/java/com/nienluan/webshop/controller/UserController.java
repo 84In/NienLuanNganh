@@ -47,7 +47,7 @@ public class UserController {
                 .build();
     }
     @GetMapping("/search")
-    ApiResponse<?> getAllUserByKeyword(@RequestParam String keyword,Pageable pageable) {
+    ApiResponse<?> getAllUserByKeyword(@RequestParam(required = false) String keyword,Pageable pageable) {
         return ApiResponse.<Page<UserResponse>>builder()
                 .message("Success")
                 .result(userService.getAllUserByKeyword(keyword,pageable))
