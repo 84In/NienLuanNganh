@@ -38,7 +38,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
     @Query("SELECT p FROM Product p WHERE p.category = :category " +
             "AND (:brands IS NULL OR p.brand.id IN :brands) " +
             "AND (:min IS NULL OR p.price >= :min) " +
-            "AND (:max IS NULL OR p.price <= :max)")
+            "AND (:max IS NULL OR p.price <= :max)" +
+            "AND (p.stockQuantity > 0)")
     Page<Product> findByCategoryWithFilters(Pageable pageable,
                                             @Param("category") Category category,
                                             @Param("brands") List<String> brands,
