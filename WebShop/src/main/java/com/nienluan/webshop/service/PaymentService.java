@@ -11,7 +11,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +28,8 @@ public class PaymentService {
     }
 
     public Page<PaymentResponse> getAllPayment(Pageable pageable) {
-        return paymentRepository.findAll(pageable).map(paymentMapper::toPaymentResponse);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("paymentDate")));
+        return paymentRepository.findAll(sortedPageable).map(paymentMapper::toPaymentResponse);
     }
 
     public PaymentResponse createPayment(PaymentRequest request) {

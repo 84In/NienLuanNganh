@@ -267,11 +267,12 @@ public class OrderService {
     public Page<OrderResponse> getAllOrders(String codeName,String keyword, Pageable pageable) {
         Page<Order> orderPage;
 
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("createdAt")));
         if ((codeName == null || codeName.isEmpty() ) && (keyword == null || keyword.isEmpty())) {
             // Trả về tất cả nếu codename trống hoặc null
-            orderPage = orderRepository.findAll(pageable);
+            orderPage = orderRepository.findAll(sortedPageable);
         } else {
-            orderPage = orderRepository.findByKeywordAndStatusCode(keyword, codeName, pageable);
+            orderPage = orderRepository.findByKeywordAndStatusCode(keyword, codeName, sortedPageable);
         }
 
         List<OrderResponse> orderResponses = orderPage.getContent().stream()

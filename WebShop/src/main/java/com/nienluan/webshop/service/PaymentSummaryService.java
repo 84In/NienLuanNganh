@@ -81,7 +81,7 @@ public class PaymentSummaryService {
         List<RecentPaymentSummary> summaries = summaryRepository.findByDate(today);
 
         // Kiểm tra nếu không có dữ liệu hoặc dữ liệu đã quá 3 giờ
-        if (summaries.isEmpty() || summaries.get(0).getCreatedAt().isBefore(LocalDateTime.now().minusHours(3))) {
+        if (summaries.isEmpty()  || summaries.get(0).getCreatedAt() == null || summaries.get(0).getCreatedAt().isBefore(LocalDateTime.now().minusHours(3))) {
             updatePaymentSummary();
             summaries = summaryRepository.findByDate(today);
         }

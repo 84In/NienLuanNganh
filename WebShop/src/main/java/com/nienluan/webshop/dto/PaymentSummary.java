@@ -12,9 +12,9 @@ public class PaymentSummary {
     private LocalDate date;
     private BigDecimal totalAmount;
     private Long totalCount;
-    public PaymentSummary(String paymentMethodId, LocalDate createdAt, BigDecimal totalAmount, Long count) {
+    public PaymentSummary(String paymentMethodId, LocalDate date, BigDecimal totalAmount, Long count) {
         this.paymentMethodId = paymentMethodId;
-        this.date= createdAt;
+        this.date= date;
         this.totalAmount = totalAmount;
         this.totalCount = count;
     }

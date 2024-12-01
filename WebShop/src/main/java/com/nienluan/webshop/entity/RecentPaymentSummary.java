@@ -24,5 +24,13 @@ public class RecentPaymentSummary {
     private LocalDate date;
     private BigDecimal totalAmount;
     private Long totalCount;
+
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now(); // Gán giá trị hiện tại
+        }
+    }
 }

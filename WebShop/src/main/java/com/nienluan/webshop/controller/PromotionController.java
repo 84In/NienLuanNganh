@@ -58,6 +58,7 @@ public class PromotionController {
 
    @DeleteMapping("/{promotionId}")
     public ApiResponse<Void> deletePromotion(@PathVariable String promotionId) {
+       promotionService.deletePromotion(promotionId);
        return ApiResponse.<Void>builder()
                .message("Deleted Promotion!")
                .build();
