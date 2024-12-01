@@ -1,9 +1,9 @@
 const translationDictionary = {
   CreatedAt: "Ngày Tạo",
   UpdatedAt: "Ngày Cập Nhật",
-  Username: "Tên Người Dùng",
-  FirstName: "Tên",
-  LastName: "Họ",
+  Username: "Tài khoản",
+  FirstName: "Họ",
+  LastName: "Tên",
   Email: "Email",
   Phone: "Số Điện Thoại",
   Dob: "Ngày Sinh",

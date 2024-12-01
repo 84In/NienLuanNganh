@@ -170,9 +170,9 @@ const AdminProductEdit = ({ product, isEdit }) => {
     const price = data?.price;
     const stockQuantity = data?.stockQuantity;
     const description = data?.description;
-    var brand_id = data?.brand?.id || valueBrand.id;
+    var brand_id = data?.brand?.id || valueBrand.id || null;
 
-    if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity) {
+    if ((images.length > 0 || data?.images.length > 0) && name && category_id && price && stockQuantity > 0) {
       if (images && images.length > 0) {
         const formData = new FormData();
         images.forEach((image) => {
@@ -192,14 +192,18 @@ const AdminProductEdit = ({ product, isEdit }) => {
           });
         }
       }
-
-      // Tạo brand nếu chưa có
       if (inputValueBrand && !valueBrand !== "") {
         const response = await apis.apiCreateBrand({ name: inputValueBrand });
         if (response?.code === 0) {
           brand_id = response?.result?.id;
         }
+      } else {
+        brand_id = valueBrand.id;
       }
+      if (inputValueBrand === "") {
+        brand_id = null;
+      }
+
       if (!isEdit) {
         const response = await apis.apiCreateProduct({
           name,
@@ -229,7 +233,7 @@ const AdminProductEdit = ({ product, isEdit }) => {
             price,
             stockQuantity,
             categoryId: category_id,
-            brandId: brand_id || valueBrand.id,
+            brandId: brand_id,
             images: data?.images,
             promotions: valuePromotion.map((item) => item.id),
           },
@@ -246,6 +250,21 @@ const AdminProductEdit = ({ product, isEdit }) => {
           });
         }
       }
+      // Tạo brand nếu chưa có
+    } else {
+      let errorMessage = "Vui lòng kiểm tra các thông tin sau:\n";
+      if (!name) errorMessage += "- Tên sản phẩm\n";
+      if (!category_id) errorMessage += "- Danh mục\n";
+      if (!price) errorMessage += "- Giá\n";
+      if (stockQuantity || !(stockQuantity > 0)) errorMessage += "- Số lượng tồn kho\n";
+      if (!(images.length > 0 || data?.images?.length > 0)) errorMessage += "- Hình ảnh sản phẩm\n";
+
+      Swal.fire({
+        title: "Lỗi!",
+        text: errorMessage,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
   const CSS_HEADING = "font-bold text-2xl";

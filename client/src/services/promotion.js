@@ -38,3 +38,15 @@ export const apiGetPromotionById = (id) =>
       reject(error);
     }
   });
+export const apiRemovePromotion = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "DELETE",
+        url: `/api/v1/promotions/${id}`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Alert, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { CloudUploadIcon, SendIcon } from "lucide-react";
+import { CloudUploadIcon, Grid, SendIcon } from "lucide-react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as apis from "../../services";
@@ -23,28 +23,54 @@ const AdminProductCSV = () => {
   const { categories } = useSelector((state) => state.app);
   const [category, setCategory] = useState("");
   const [file, setFile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSetCategory = (event) => {
     setCategory(event.target.value);
   };
 
   const handleSetFile = (event) => {
-    setFile(event.target.files[0]);
+    let value = event.target.files[0];
+
+    if (value) {
+      const fileExtension = value.name.split(".").pop().toLowerCase();
+      if (fileExtension !== "csv") {
+        setErrorMessage("Vui lòng chọn tệp CSV hợp lệ!");
+        return;
+      }
+      setErrorMessage(""); // Xóa lỗi nếu tệp hợp lệ
+      setFile(value);
+    }
   };
 
   const handleSubmit = async () => {
     if (category && file) {
       const response = await apis.apiUploadCSV(file, category);
+
       if (response?.code === 0) {
         Swal.fire({
-          title: "Submit!",
-          text: "Complete data entry",
+          title: "Thành công",
+          text: "Dữ liệu đã được cập nhật!",
           type: "success",
           timer: 3000,
         });
         setCategory("");
         setFile(null);
+      } else {
+        setErrorMessage(response?.message);
       }
+      setFile(null);
+    } else {
+      let errorMessage = "Vui lòng kiểm tra các thông tin sau:\n";
+      if (!category) errorMessage += "- Loại sản phẩm\n";
+      if (!file) errorMessage += "- file dữ liệu\n";
+
+      Swal.fire({
+        title: "Lỗi!",
+        text: errorMessage,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
@@ -84,12 +110,17 @@ const AdminProductCSV = () => {
       <Grid2 xs={6} className="flex items-center justify-center">
         <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
           Thêm tệp dữ liệu
-          <VisuallyHiddenInput type="file" onChange={handleSetFile} />
+          <VisuallyHiddenInput type="file" accept=".csv" onChange={handleSetFile} />
         </Button>
       </Grid2>
 
       <Grid2 xs={12} className="flex items-center justify-center">
-        {file && <p>Tệp đã chọn: {file.name}</p>}
+        {!errorMessage && file && <p>Tệp đã chọn: {file.name}</p>}
+        {errorMessage && (
+          <Alert severity="error" onClose={() => setErrorMessage("")}>
+            {errorMessage}
+          </Alert>
+        )}
       </Grid2>
       <Grid2 xs={12} className="flex items-center justify-center pt-4">
         <Button variant="contained" endIcon={<SendIcon />} onClick={handleSubmit}>

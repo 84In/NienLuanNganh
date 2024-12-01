@@ -115,6 +115,8 @@ const AdminCategoryContent = () => {
       <Box marginTop={2} className={"flex items-center justify-center"}>
         <AdminTable
           data={valueData}
+          type={"category"}
+          currentPage={currentPage}
           pagination={
             <Grid2 item xs={12}>
               <Pagination

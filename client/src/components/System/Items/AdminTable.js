@@ -17,10 +17,9 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import axiosConfig from "../../../axiosConfig";
 import * as actions from "../../../store/actions";
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import icons from "../../../utils/icons";
 import { capitalizeFirstLetterIfNeeded, formatCurrency, formatDate } from "../../../utils/format";
 import Swal from "sweetalert2";
@@ -29,7 +28,7 @@ import { isJSON, translateColumn } from "../../../utils";
 import { useDispatch } from "react-redux";
 
 const defaultAvatar = require("../../../assets/images/profile.png");
-const TYPE_REMOVE = ["product", "category"];
+const TYPE_REMOVE = ["product", "category", "promotion"];
 const TYPE_CHECK_BOX = ["order", "product"];
 const TYPE_NON_EDIT = ["promotion", "user", "payment"];
 const TYPE_HIDE_IMAGES = ["product", "banner"];
@@ -80,6 +79,7 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [selectedImages, setSelectedImages] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpenDialog = (product) => {
     setSelectedImages(product);
@@ -186,6 +186,8 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
         return await apis.apiDeleteProduct(id);
       case "banner":
         return await apis.apiRemoveBanner(id);
+      case "promotion":
+        return await apis.apiRemovePromotion(id);
       default:
         return;
     }
@@ -193,53 +195,37 @@ const AdminTable = ({ data, pagination, type, setValueData, url, currentPage, se
 
   const handleRemoveValue = async (id) => {
     if (TYPE_REMOVE.includes(type)) {
-      Swal.fire({
+      const result = await Swal.fire({
         title: "Bạn có chắc chắc không?",
-        html: `Hành động này sẽ không thể hoàn tác!
-        <br />
-        ID: ${id} sẽ bị xoá vĩnh viễn!`,
+        html: `Hành động này sẽ không thể hoàn tác!<br />ID: ${id} sẽ bị xoá vĩnh viễn!`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "OK",
         cancelButtonText: "Hủy",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const response = await handleRemove(type, id);
-          if (response?.code === 0) {
-            reloadDataPage(currentPage);
-            if (type === "category") dispatch(actions.getCategories());
-            Swal.fire({
-              title: "Thành công!",
-              text: "Xoá thành công!",
-              icon: "success",
-              timer: 2000,
-              showConfirmButton: false,
-            });
-          }
-        }
       });
+
+      if (result.isConfirmed) {
+        const response = await handleRemove(type, id);
+        if (response?.code === 0) {
+          if (type === "category") dispatch(actions.getCategories());
+          Swal.fire({
+            title: "Thành công!",
+            text: "Xoá thành công!",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          }).then(() => {
+            setTimeout(() => {
+              const updatedParams = new URLSearchParams();
+              updatedParams.set("page", currentPage);
+              navigate(`?${updatedParams.toString()}`);
+            }, 1000);
+          });
+        }
+      }
     }
   };
 
-  const reloadDataPage = async (currentPage) => {
-    setLoading(true);
-    try {
-      const response = await axiosConfig({
-        method: "GET",
-        url: url,
-        params: {
-          page: currentPage,
-        },
-      });
-      const result = response.result;
-      setValueData(result.content);
-      setTotalPage(result?.page?.totalPages || result?.reviews?.page?.totalPages || 1);
-    } catch (error) {
-      console.error("Error fetching more data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <TableContainer component={Paper}>

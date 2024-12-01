@@ -257,7 +257,7 @@ const AdminCategoryEdit = ({ isEdit, category }) => {
               },
             }}
           >
-            {isEdit ? "Cập nhật loại sản phẩm" : "Tạo tài loại sản phẩm mới"}
+            {isEdit ? "Cập nhật danh mục sản phẩm" : "Tạo danh mục sản phẩm mới"}
           </Button>
         </div>
       </div>

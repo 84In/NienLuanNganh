@@ -21,9 +21,9 @@ const AdminNav = ({ user }) => {
           }
         />
       </div>
-      <div className="flex w-full items-center justify-center">
+      {/* <div className="flex w-full items-center justify-center">
         <ButtonCustom HoverColor={"hover:bg-white"} FontWeight={"font-medium"} IconBefore={IoNotificationsOutline} />
-      </div>
+      </div> */}
     </div>
   );
 };

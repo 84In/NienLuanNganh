@@ -184,6 +184,7 @@ const AdminBannerEdit = ({ isEdit, banner }) => {
                   handleName={handleSetTitle}
                   nameLabel={"Tiêu đề banner"}
                   helpText={"Vui lòng nhập không dấu và cách nhau dấu _. Ví dụ: trang_chu"}
+                  disable={true}
                 />
               </Grid2>
               <Grid2 item xs={6}></Grid2>

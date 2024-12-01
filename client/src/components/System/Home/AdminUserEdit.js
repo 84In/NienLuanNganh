@@ -79,7 +79,7 @@ const AdminUserEdit = ({ user }) => {
     email: "webshopcompany1224@gmail.com",
     firstName: null,
     lastName: null,
-    phone: "18001091",
+    phone: "",
     roles: ["ADMIN"],
     username: null,
   });
@@ -114,9 +114,26 @@ const AdminUserEdit = ({ user }) => {
       });
     } else {
       // Hiển thị thông báo lỗi nếu có vấn đề với phản hồi
+      const errorList = response?.result || {};
+      const errorMessages = Object.values(errorList)
+        .map((message) => `<li>${message}</li>`) // Gạch đầu dòng cho từng lỗi
+        .join("");
+
+      // Hiển thị thông báo lỗi với CSS đẹp
       Swal.fire({
         title: "Lỗi!",
-        text: `Có lỗi xảy ra khi tạo người dùng.`,
+        html: `
+              <ul style="
+                  text-align: left;
+                  list-style-type: disc;
+                  padding-left: 20px;
+                  max-height: 200px; /* Giới hạn chiều cao */
+                  overflow-y: auto;  /* Cuộn nếu quá dài */
+                  word-wrap: break-word; /* Tự xuống dòng khi quá dài */
+                  font-size: 14px;
+                  line-height: 1.6;">
+                  ${errorMessages}
+              </ul>`,
         icon: "error",
         confirmButtonText: "Thử lại",
       });
