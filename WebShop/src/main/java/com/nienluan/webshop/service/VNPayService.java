@@ -50,6 +50,18 @@ public class VNPayService {
         return vnpParamsMap;
     }
 
+    public Map<String, String> getQueryVNPayConfig() {
+        Map<String, String> vnpParamsMap = new HashMap<>();
+        vnpParamsMap.put("vnp_Version", this.vnp_Version);
+        vnpParamsMap.put("vnp_Command", "querydr");
+        vnpParamsMap.put("vnp_TmnCode", this.vnp_TmnCode);
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnpCreateDate = formatter.format(calendar.getTime());
+        vnpParamsMap.put("vnp_CreateDate", vnpCreateDate);
+        return vnpParamsMap;
+    }
+
     public Map<String, String> getRefundVNPayConfig() {
         Map<String, String> vnpParamsMap = new HashMap<>();
         vnpParamsMap.put("vnp_Version", this.vnp_Version);
