@@ -1,18 +1,18 @@
 CREATE TABLE `t_provinces`
 (
     `id`            int AUTO_INCREMENT PRIMARY KEY,
-    `code_name`     varchar(255) NOT NULL,
-    `name`          varchar(255) NOT NULL,
-    `division_type` varchar(255) NOT NULL
+    `code_name`     varchar(50) NOT NULL,
+    `name`          varchar(50) NOT NULL,
+    `division_type` varchar(50) NOT NULL
 );
 
 
 CREATE TABLE `t_districts`
 (
     `id`            int AUTO_INCREMENT PRIMARY KEY,
-    `name`          varchar(255) NOT NULL,
-    `division_type` varchar(255) NOT NULL,
-    `code_name`     varchar(255) NOT NULL,
+    `name`          varchar(50) NOT NULL,
+    `division_type` varchar(50) NOT NULL,
+    `code_name`     varchar(50) NOT NULL,
     `province_code` int          NOT NULL,
     CONSTRAINT fk_province_id FOREIGN KEY (`province_code`) REFERENCES t_provinces (`id`) ON DELETE CASCADE
 );
@@ -21,9 +21,9 @@ CREATE TABLE `t_districts`
 CREATE TABLE `t_wards`
 (
     `id`            int AUTO_INCREMENT PRIMARY KEY,
-    `name`          varchar(255) NOT NULL,
-    `division_type` varchar(255) NOT NULL,
-    `code_name`     varchar(255) NOT NULL,
+    `name`          varchar(50) NOT NULL,
+    `division_type` varchar(50) NOT NULL,
+    `code_name`     varchar(50) NOT NULL,
     `district_code` int          NOT NULL,
     CONSTRAINT fk_district_id FOREIGN KEY (`district_code`) REFERENCES t_districts (`id`) ON DELETE CASCADE
 );
@@ -46,12 +46,12 @@ CREATE TABLE `t_addresses`
 CREATE TABLE `t_users`
 (
     `id`         varchar(255) NOT NULL,
-    `username`   varchar(255) NOT NULL UNIQUE,
-    `password`   varchar(255) NOT NULL,
-    `first_name` varchar(255) NOT NULL,
-    `last_name`  varchar(255) NOT NULL,
-    `email`      varchar(255) DEFAULT NULL,
-    `phone`      varchar(255) NOT NULL UNIQUE,
+    `username`   varchar(50) NOT NULL UNIQUE,
+    `password`   varchar(200) NOT NULL,
+    `first_name` varchar(100) NOT NULL,
+    `last_name`  varchar(100) NOT NULL,
+    `email`      varchar(50) DEFAULT NULL,
+    `phone`      varchar(12) NOT NULL UNIQUE,
     `avatar`     text         DEFAULT NULL,
     `dob`        Date         NOT NULL,
     `address`    varchar(255) DEFAULT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE `t_users`
 
 CREATE TABLE `t_roles`
 (
-    `name`        varchar(255) NOT NULL,
+    `name`        varchar(50) NOT NULL,
     `description` varchar(255) DEFAULT NULL,
     `created_at`  DATETIME     DEFAULT CURRENT_TIMESTAMP,
     `updated_at`  DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -75,7 +75,7 @@ CREATE TABLE `t_roles`
 CREATE TABLE `t_users_roles`
 (
     `users_id`   varchar(255) NOT NULL,
-    `roles_name` varchar(255) NOT NULL,
+    `roles_name` varchar(50) NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (`users_id`) REFERENCES t_users (`id`) ON DELETE CASCADE,
     CONSTRAINT fk_role FOREIGN KEY (`roles_name`) REFERENCES t_roles (`name`) ON DELETE CASCADE,
     PRIMARY KEY (`users_id`, `roles_name`)
@@ -92,7 +92,7 @@ CREATE TABLE `t_brands`
 CREATE TABLE `t_categories`
 (
     `id`         varchar(255) NOT NULL,
-    `name`       varchar(255) NOT NULL UNIQUE,
+    `name`       varchar(150) NOT NULL UNIQUE,
     `code_name`  varchar(255) NOT NULL UNIQUE,
     `images`     text     DEFAULT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -122,7 +122,7 @@ CREATE TABLE `t_products`
 CREATE TABLE `t_payment_methods`
 (
     `id`         varchar(255) NOT NULL,
-    `name`       varchar(255) NOT NULL UNIQUE,
+    `name`       varchar(150) NOT NULL UNIQUE,
     `code_name`  varchar(255) NOT NULL UNIQUE,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -136,7 +136,7 @@ CREATE TABLE `t_payments`
     `amount`       bigint(20)   NOT NULL,
     `zp_trans_id`  bigint(20)   DEFAULT NULL,
     `refund_id`    bigint(20)   DEFAULT NULL,
-    `status`       varchar(255) NOT NULL,
+    `status`       varchar(100) NOT NULL,
     `created_at`   DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at`   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
@@ -145,7 +145,7 @@ CREATE TABLE `t_payments`
 CREATE TABLE `t_order_status`
 (
     `id`         varchar(255) NOT NULL,
-    `name`       varchar(255) NOT NULL UNIQUE,
+    `name`       varchar(150) NOT NULL UNIQUE,
     `code_name`  varchar(255) NOT NULL UNIQUE,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -155,8 +155,8 @@ CREATE TABLE `t_order_status`
 CREATE TABLE `t_order_recipient`
 (
     `id`         varchar(255) NOT NULL,
-    `full_name`  varchar(255) NOT NULL,
-    `phone`      varchar(255) NOT NULL,
+    `full_name`  varchar(200) NOT NULL,
+    `phone`      varchar(12) NOT NULL,
     `address`    text         NOT NULL,
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -253,7 +253,7 @@ CREATE TABLE `t_promotions`
 CREATE TABLE `t_banner`
 (
     `id`     varchar(255) not null,
-    `title`  varchar(255) not null,
+    `title`  varchar(50) not null,
     `images` text         not null,
     primary key (`id`)
 );
