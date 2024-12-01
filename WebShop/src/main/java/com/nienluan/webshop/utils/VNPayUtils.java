@@ -68,4 +68,39 @@ public class VNPayUtils {
                                         , StandardCharsets.US_ASCII))
                 .collect(Collectors.joining("&"));
     }
+
+    public static String buildRefundData(Map<String, String> paramsMap) {
+        return String.join("|",
+                paramsMap.get("vnp_RequestId"),
+                paramsMap.get("vnp_Version"),
+                paramsMap.get("vnp_Command"),
+                paramsMap.get("vnp_TmnCode"),
+                paramsMap.get("vnp_TransactionType"),
+                paramsMap.get("vnp_TxnRef"),
+                paramsMap.get("vnp_Amount"),
+                paramsMap.getOrDefault("vnp_TransactionNo", ""), // Không bắt buộc
+                paramsMap.get("vnp_TransactionDate"),
+                paramsMap.get("vnp_CreateBy"),
+                paramsMap.get("vnp_CreateDate"),
+                paramsMap.get("vnp_IpAddr"),
+                paramsMap.get("vnp_OrderInfo")
+        );
+    }
+
+    public static String buildQueryData(Map<String, String> paramsMap) {
+        return String.join("|",
+                paramsMap.get("vnp_RequestId"),
+                paramsMap.get("vnp_Version"),
+                paramsMap.get("vnp_Command"),
+                paramsMap.get("vnp_TmnCode"),
+                paramsMap.get("vnp_TxnRef"),
+                paramsMap.getOrDefault("vnp_TransactionNo", ""), // Không bắt buộc
+                paramsMap.get("vnp_TransactionDate"),
+                paramsMap.get("vnp_CreateDate"),
+                paramsMap.get("vnp_IpAddr"),
+                paramsMap.get("vnp_OrderInfo")
+        );
+    }
+
+
 }

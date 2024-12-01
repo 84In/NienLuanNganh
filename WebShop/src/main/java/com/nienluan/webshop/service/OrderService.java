@@ -1,5 +1,6 @@
 package com.nienluan.webshop.service;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.nienluan.webshop.dto.request.OrderDetailRequest;
@@ -52,10 +53,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -264,10 +262,10 @@ public class OrderService {
     }
 
 
-    public Page<OrderResponse> getAllOrders(String codeName,String keyword, Pageable pageable) {
+    public Page<OrderResponse> getAllOrders(String codeName, String keyword, Pageable pageable) {
         Page<Order> orderPage;
 
-        if ((codeName == null || codeName.isEmpty() ) && (keyword == null || keyword.isEmpty())) {
+        if ((codeName == null || codeName.isEmpty()) && (keyword == null || keyword.isEmpty())) {
             // Trả về tất cả nếu codename trống hoặc null
             orderPage = orderRepository.findAll(pageable);
         } else {
@@ -573,65 +571,104 @@ public class OrderService {
         return urlClient;
     }
 
-    public Boolean queryVNPay(HttpServletRequest request, Order order) {
+    public Map<String, String> queryVNPay(HttpServletRequest request, Order order) {
         Map<String, String> vnpParamsMap = vnPayService.getQueryVNPayConfig();
-        vnpParamsMap.put("vnp_OrderInfo", "Truy vấn đơn hàng: " + order.getId());
+        vnpParamsMap.put("vnp_RequestId", UUID.randomUUID().toString());
         vnpParamsMap.put("vnp_TxnRef", order.getId());
-
-        // Set transaction date in GMT+7 timezone
+        vnpParamsMap.put("vnp_OrderInfo", "Truy vấn đơn hàng: " + order.getId());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
         String vnpTransactionDate = formatter.format(order.getPayment().getPaymentDate());
         vnpParamsMap.put("vnp_TransactionDate", vnpTransactionDate);
         vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
 
-        String queryUrl = vnPayService.generateUrl(vnpParamsMap);
-        String refundUrl = vnPayService.getQueryEndpoint() + "?" + queryUrl;
+        // Tạo checksum từ dữ liệu gửi đi
+        String data = VNPayUtils.buildQueryData(vnpParamsMap);
+        String checksum = VNPayUtils.hmacSHA512(vnPayService.getSecretKey(), data);
+        vnpParamsMap.put("vnp_SecureHash", checksum);
 
         try {
+            // Gửi POST request đến VNPAY
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(refundUrl))
-                    .GET()
+                    .uri(URI.create(vnPayService.getQueryEndpoint()))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(vnpParamsMap)))
                     .build();
+
             HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            // Parse the response JSON to check vnp_ResponseCode
+            // Parse JSON response
             JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-            return "00".equals(jsonResponse.get("vnp_ResponseCode").getAsString());
+            Map<String, String> responseMap = new HashMap<>();
+            jsonResponse.entrySet().forEach(entry -> responseMap.put(entry.getKey(), entry.getValue().getAsString()));
+            if (!"00".equals(responseMap.get("vnp_ResponseCode"))) {
+
+                throw new AppException(ErrorCode.PAYMENT_FAIL);
+            }
+            // Kiểm tra checksum của phản hồi
+            String responseChecksum = responseMap.get("vnp_SecureHash");
+            String responseData = String.join("|",
+                    responseMap.get("vnp_ResponseId"),
+                    responseMap.get("vnp_Command"),
+                    responseMap.get("vnp_ResponseCode"),
+                    responseMap.get("vnp_Message"),
+                    responseMap.get("vnp_TmnCode"),
+                    responseMap.get("vnp_TxnRef"),
+                    responseMap.get("vnp_Amount"),
+                    responseMap.get("vnp_BankCode"),
+                    responseMap.get("vnp_PayDate"),
+                    responseMap.get("vnp_TransactionNo"),
+                    responseMap.get("vnp_TransactionType"),
+                    responseMap.get("vnp_TransactionStatus"),
+                    responseMap.get("vnp_OrderInfo"),
+                    responseMap.getOrDefault("vnp_PromotionCode", ""),
+                    responseMap.getOrDefault("vnp_PromotionAmount", "")
+            );
+
+            String calculatedChecksum = VNPayUtils.hmacSHA512(vnPayService.getSecretKey(), responseData);
+            if (!calculatedChecksum.equals(responseChecksum)) {
+                throw new AppException(ErrorCode.PAYMENT_FAIL);
+            }
+            return responseMap;
 
         } catch (IOException | InterruptedException e) {
-            throw new AppException(ErrorCode.PAYMENT_CANNOT_REFUND_VNPAY);
+            throw new AppException(ErrorCode.PAYMENT_FAIL);
         }
     }
 
     public Boolean refundVNPay(HttpServletRequest request, Order order) {
+        // Tạo map chứa các tham số bắt buộc
         Map<String, String> vnpParamsMap = vnPayService.getRefundVNPayConfig();
+        vnpParamsMap.put("vnp_RequestId", UUID.randomUUID().toString());
+        vnpParamsMap.put("vnp_TxnRef", order.getId());
         vnpParamsMap.put("vnp_Amount", String.valueOf(order.getPayment().getAmount().multiply(BigDecimal.valueOf(100L))));
         vnpParamsMap.put("vnp_OrderInfo", "Hoàn tiền cho đơn hàng: " + order.getId());
-        vnpParamsMap.put("vnp_TxnRef", order.getId());
-
-        // Set transaction date in GMT+7 timezone
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT+7"));
         String vnpTransactionDate = formatter.format(order.getPayment().getPaymentDate());
         vnpParamsMap.put("vnp_TransactionDate", vnpTransactionDate);
-
         vnpParamsMap.put("vnp_CreateBy", order.getUser().getUsername());
         vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
 
-        String queryUrl = vnPayService.generateUrl(vnpParamsMap);
-        String refundUrl = vnPayService.getRefundEndpoint() + "?" + queryUrl;
+        // Tạo checksum
+        String data = VNPayUtils.buildRefundData(vnpParamsMap);
+        String vnpSecureHash = VNPayUtils.hmacSHA512(vnPayService.getSecretKey(), data);
+        vnpParamsMap.put("vnp_SecureHash", vnpSecureHash);
+        Gson gson = new Gson();
+        String jsonBody = gson.toJson(vnpParamsMap);
 
         try {
+            // Gửi request POST
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(refundUrl))
-                    .GET()
+                    .uri(URI.create(vnPayService.getRefundEndpoint()))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
             HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            // Parse the response JSON to check vnp_ResponseCode
+            // Phân tích phản hồi
             JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
             return "00".equals(jsonResponse.get("vnp_ResponseCode").getAsString());
 
