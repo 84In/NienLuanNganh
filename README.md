@@ -56,7 +56,7 @@ VanouS E-commerce là ứng dụng nơi cho phép người dùng có thể tìm 
 8. **Quản lý đánh giá**:
    - Lọc các đánh giá người dùng.
 10. **Quản lý banner**:
-   - Chỉnh sửa các banner hệ thống.
+   - Chỉnh sửa các banner trên hệ thống.
 
 ## 📩 Liên hệ
 
