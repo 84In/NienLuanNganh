@@ -60,5 +60,5 @@ VanouS E-commerce là ứng dụng nơi cho phép người dùng có thể tìm 
 
 ## 📩 Liên hệ
 
-Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ qua email: pmss0168@gmail.com hoặc nttindev2304@gmail.com
+Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ qua email: pmss0168@gmail.com hoặc nttindev2304@gmail.com.
 Cảm ơn bạn đã quan tâm đến dự án của chúng tôi!
