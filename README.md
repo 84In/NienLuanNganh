@@ -1,6 +1,6 @@
 # VanouS E-commerce
 
-VanouS E-commerce là ứng dụng nơi cho phép người dùng có thể tìm kiếm mua sắm các loại mặt hàng đang được phân phối trên hệ thống của VanouS. Được xây dựng với các chức năng hỗ trợ người dùng mua sắm như thêm giỏ hàng, đặt hàng, thanh toán tiền mặt, ví điện tử, xem đơn hàng, đánh giá sản phẩm theo đơn hàng. Cùng với đó là các chức năng quản lý sản phẩm, đơn hàng và các tùy chỉnh khác phía quản trị.
+VanouS E-commerce là ứng dụng nơi cho phép người dùng có thể tìm kiếm mua sắm các loại mặt hàng đang được phân phối trên hệ thống của VanouS. Được xây dựng với các chức năng hỗ trợ người dùng mua sắm như thêm giỏ hàng, đặt hàng, thanh toán tiền mặt, ví điện tử, xem đơn hàng, đánh giá sản phẩm theo đơn hàng. Cùng với đó là các chức năng quản lý sản phẩm, đơn hàng, xem thống kê doanh số và các tùy chỉnh khác phía quản trị.
 
 ## 🎥 Demo
 
@@ -40,7 +40,7 @@ VanouS E-commerce là ứng dụng nơi cho phép người dùng có thể tìm 
    - Thông tin thu nhập hàng ngày, hàng tuần.
    - Thông tin người dùng mới trong tuần.
 2. **Quản lý người dùng**:
-   - Thêm người dùng quản trị mới.
+   - Thêm người dùng mới.
    - Sửa thông tin người dùng đã có trên ứng dụng.
 3. **Quản lý danh mục**:
    - Thêm, chỉnh sửa, hoặc xóa các danh mục.
@@ -52,10 +52,13 @@ VanouS E-commerce là ứng dụng nơi cho phép người dùng có thể tìm 
    - Hủy đơn hàng không thể đáp ứng.
    - Tìm kiếm đơn hàng theo từ khóa.
 6. **Quản lý mã giảm giá**:
-7. **Quản lý đánh giá**:
-8. **Quản lý banner**:
+   - Thêm mã, chỉnh sửa mã giảm giá
+8. **Quản lý đánh giá**:
+   - Lọc các đánh giá người dùng.
+10. **Quản lý banner**:
+   - Chỉnh sửa các banner hệ thống.
 
 ## 📩 Liên hệ
 
-Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ qua email: pmss0168@gmail.com.
+Nếu bạn có bất kỳ câu hỏi hoặc góp ý nào, vui lòng liên hệ qua email: pmss0168@gmail.com hoặc nttindev2304@gmail.com
 Cảm ơn bạn đã quan tâm đến dự án của chúng tôi!
