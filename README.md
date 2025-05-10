@@ -10,7 +10,9 @@ VanouS E-commerce is an application that allows users to search and shop for a v
    Database: MySQL
 
 🌟 Key Features
+
 Users
+
    Product Search:
       Search for products by keyword or category.
       Filter by price, brand, and sort options.
@@ -34,6 +36,7 @@ Users
       Update contact details: phone number, email, address, and password.
 
 Admin
+
    Statistics:
       View daily and weekly revenue.
       Track new users in the current week.
